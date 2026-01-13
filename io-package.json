@@ -1,0 +1,253 @@
+{
+	"common": {
+		"name": "solectrus-influxdb",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"uk": "Початкова версія",
+				"zh-cn": "首次出版"
+			}
+		},
+    "title": "Solectrus InfluxDB Adapter",
+    "titleLang": {
+      "en": "Solectrus InfluxDB Adapter",
+      "de": "Solectrus InfluxDB Adapter"
+    },
+    "desc": {
+      "en": "Writes configurable ioBroker states to InfluxDB",
+      "de": "Schreibt konfigurierbare ioBroker-Datenpunkte in eine InfluxDB"
+    },
+		"authors": [
+			"patricknitsch <patricknitsch@web.de>"
+		],
+		"keywords": [
+			"solectrus",
+			"influxdb"
+		],
+		"licenseInformation": {
+			"type": "free",
+			"license": "MIT"
+		},
+		"platform": "Javascript/Node.js",
+		"icon": "-influxdb.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/patricknitsch/ioBroker.-influxdb/main/admin/-influxdb.png",
+		"readme": "https://github.com/patricknitsch/ioBroker.-influxdb/blob/main/README.md",
+		"loglevel": "info",
+		"tier": 3,
+		"mode": "daemon",
+		"type": "communication",
+		"compact": true,
+		"connectionType": "local",
+		"dataSource": "push",
+		"adminUI": {
+			"config": "json"
+		},
+		"dependencies": [
+			{
+				"js-controller": ">=6.0.11"
+			}
+		],
+		"globalDependencies": [
+			{
+				"admin": ">=7.0.23"
+			}
+		]
+	},
+	"native": {
+		"interval": 5,
+		"influx": {
+			"url": "http://localhost:8086",
+			"org": "solectrus",
+			"bucket": "solectrus",
+			"token": ""
+		},
+		"sensors": [
+			{
+				"enabled": false,
+				"SensorName": "House Power",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "house",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Battery SOC",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "battery",
+				"field": "soc"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Battery Charging Power",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "battery",
+				"field": "charging_power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Batter Discharging Power",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "battery",
+				"field": "discharging_power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Heatpump Power",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "heatpump",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Heatpump Tank Temp",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "heatpump",
+				"field": "tank_temp"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Heatpump Status",
+				"sourceState": "",
+				"type": "string",
+				"measurement": "heatpump",
+				"field": "status"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Outdoor Forecast Temperature",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "outdoor_forecast",
+				"field": "temperature"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Grid Export Power",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "grid",
+				"field": "export_power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Grid Export Limit",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "grid",
+				"field": "export_limit"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Grid Import Power",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "grid",
+				"field": "import_power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Wallbox Power",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "wallbox",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Wallbox Connected",
+				"sourceState": "",
+				"type": "bool",
+				"measurement": "wallbox",
+				"field": "connected"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Case Temperature",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "case",
+				"field": "temperature"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Car Battery SOC",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "car",
+				"field": "battery_soc"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Car Mileage",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "car",
+				"field": "mileage"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Outdoor Temperature",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "outdoor",
+				"field": "temperature"
+			},
+			{
+				"enabled": false,
+				"SensorName": "System Status",
+				"sourceState": "",
+				"type": "string",
+				"measurement": "system",
+				"field": "status"
+			},
+			{
+				"enabled": false,
+				"SensorName": "System Status OK",
+				"sourceState": "",
+				"type": "bool",
+				"measurement": "system",
+				"field": "status_ok"
+			}
+		]
+	},
+	"objects": [],
+	"instanceObjects": [
+		{
+			"_id": "info",
+			"type": "channel",
+			"common": {
+				"name": "Information"
+			},
+			"native": {}
+		},
+		{
+			"_id": "info.connection",
+			"type": "state",
+			"common": {
+				"role": "indicator.connected",
+				"name": "Device or service connected",
+				"type": "boolean",
+				"read": true,
+				"write": false,
+				"def": false
+			},
+			"native": {}
+		}
+	]
+}
