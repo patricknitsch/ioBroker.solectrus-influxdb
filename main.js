@@ -240,5 +240,5 @@ if (require.main !== module) {
 	module.exports = options => new SolectrusInfluxdb(options);
 } else {
 	// otherwise start the instance directly
-	//(() => new SolectrusInfluxdb())();
+	(() => new SolectrusInfluxdb())();
 }
