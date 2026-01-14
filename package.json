@@ -1,5 +1,5 @@
 {
-  "name": "ioroker.solectrus-influxdb",
+  "name": "iobroker.solectrus-influxdb",
   "version": "0.0.1",
   "description": "Configure Sensors for Solectrus and push to InfluxDB",
   "author": {
