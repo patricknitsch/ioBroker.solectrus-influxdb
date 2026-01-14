@@ -178,6 +178,10 @@ Nur aktivierte Sensoren werden verarbeitet.
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (patricknitsch) change UI to look for Source in Tree
+
 ### 0.1.1 (2026-01-14)
 * (patricknitsch) add more Debugging
 * (patricknitsch) optimize translation
