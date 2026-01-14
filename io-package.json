@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "news": {
+      "0.1.2": {
+        "en": "change UI to look for Source in Tree",
+        "de": "ändern UI nach Quelle in Baum suchen",
+        "ru": "изменить UI для поиска источника в Tree",
+        "pt": "alterar a UI para procurar o Código Fonte na Árvore",
+        "nl": "uI wijzigen om naar bron in boom te zoeken",
+        "fr": "changer l'interface utilisateur pour chercher Source dans Tree",
+        "it": "cambiare l'interfaccia utente per cercare Sorgente in Albero",
+        "es": "cambiar UI para buscar Fuente en Árbol",
+        "pl": "zmienić interfejs użytkownika, aby szukać źródła w drzewie",
+        "uk": "змінити UI для перегляду Джерело в Дереві",
+        "zh-cn": "更改用户界面以查找树中的来源"
+      },
       "0.1.1": {
         "en": "add more Debugging\noptimize translation",
         "de": "mehr erfahren Debugging\noptimierung der übersetzung",
