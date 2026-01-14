@@ -222,7 +222,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 				}
 
 				this.writeApi.writePoint(point);
-				this.log.debug(`Write point: ${id} : ${point}`);
+				this.log.debug(`Write point: ${id} : ${value}`);
 			}
 
 			await this.writeApi.flush();
