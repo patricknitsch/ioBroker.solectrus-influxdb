@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "news": {
+      "0.1.1": {
+        "en": "add more Debugging\noptimize translation",
+        "de": "mehr erfahren Debugging\noptimierung der übersetzung",
+        "ru": "добавить больше Отладка\nоптимизация перевода",
+        "pt": "adicionar mais Depuração\notimizar tradução",
+        "nl": "meer toevoegen Debuggen\noptimale vertaling",
+        "fr": "ajouter plus Déboguement\noptimiser la traduction",
+        "it": "aggiungere altro Debug\nottimizzare la traduzione",
+        "es": "añadir más Debugging\noptimización de la traducción",
+        "pl": "dodać więcej Debugowanie\noptymalizacja tłumaczenia",
+        "uk": "додати більше Розгортання\nоптимізація перекладу",
+        "zh-cn": "添加更多内容 调试\n优化翻译"
+      },
       "0.1.0": {
         "en": "initial release",
         "de": "erstausstrahlung",
