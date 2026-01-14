@@ -20,7 +20,14 @@
   "Influx Field": "Influx Field",
   "Sensor Name": "Sensor Name",
   
-
+  "Inverter Power Summary": "Inverter Power Summary",
+  "Inverter Power 1": "Inverter Power 1",
+  "Inverter Power 2": "Inverter Power 2",
+  "Inverter Power 3": "Inverter Power 3",
+  "Inverter Power 4": "Inverter Power 4",
+  "Inverter Power 5": "Inverter Power 5",
+  "PV Forecast": "PV Forecast",
+  "PV Forecast Clearsky": "PV Forecast Clearsky",
   "House Power": "House power",
   "Battery SOC": "Battery state of charge",
   "Battery Charging Power": "Battery charging power",
@@ -39,6 +46,28 @@
   "Car Mileage": "Car mileage",
   "Outdoor Temp": "Outdoor temperature",
   "System Status": "System status",
-  "System Status OK": "System status OK"
+  "System Status OK": "System status OK",
+  "Userdefined 1": "Userdefined 1",
+  "Userdefined 2": "Userdefined 2",
+  "Userdefined 3": "Userdefined 3",
+  "Userdefined 4": "Userdefined 4",
+  "Userdefined 5": "Userdefined 5",
+  "Userdefined 6": "Userdefined 6",
+  "Userdefined 7": "Userdefined 7",
+  "Userdefined 8": "Userdefined 8",
+  "Userdefined 9": "Userdefined 9",
+  "Userdefined 10": "Userdefined 10",
+  "Userdefined 11": "Userdefined 11",
+  "Userdefined 12": "Userdefined 12",
+  "Userdefined 13": "Userdefined 13",
+  "Userdefined 14": "Userdefined 14",
+  "Userdefined 15": "Userdefined 15",
+  "Userdefined 16": "Userdefined 16",
+  "Userdefined 17": "Userdefined 17",
+  "Userdefined 18": "Userdefined 18",
+  "Userdefined 19": "Userdefined 19",
+  "Userdefined 20": "Userdefined 20"
+
+
 
 }

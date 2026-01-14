@@ -17,15 +17,33 @@
 				"zh-cn": "首次出版"
 			}
 		},
-    "title": "Solectrus InfluxDB Adapter",
-    "titleLang": {
-      "en": "Solectrus InfluxDB Adapter",
-      "de": "Solectrus InfluxDB Adapter"
-    },
-    "desc": {
-      "en": "Writes configurable ioBroker states to InfluxDB",
-      "de": "Schreibt konfigurierbare ioBroker-Datenpunkte in eine InfluxDB"
-    },
+		"title": "Solectrus InfluxDB Adapter",
+		"titleLang": {
+			"en": "Solectrus InfluxDB Adapter",
+			"de": "Solectrus InfluxDB Adapter",
+			"ru": "Адаптер Solectrus InfluxDB",
+			"pt": "Adaptador Solectrus InfluxDB",
+			"nl": "Solectrus InfluxDB-adapter",
+			"fr": "Adaptateur Solectrus InfluxDB",
+			"it": "Adattatore Solectrus InfluxDB",
+			"es": "Adaptador Solectrus InfluxDB",
+			"pl": "Adapter Solectrus InfluxDB",
+			"uk": "Адаптер Solectrus InfluxDB",
+			"zh-cn": "Solectrus InfluxDB 适配器"
+		},
+		"desc": {
+			"en": "Writes configurable ioBroker states to InfluxDB",
+			"de": "Schreibt konfigurierbare ioBroker-Datenpunkte in eine InfluxDB",
+			"ru": "Записывает настраиваемые состояния ioBroker в InfluxDB.",
+			"pt": "Grava estados configuráveis ​​do ioBroker no InfluxDB",
+			"nl": "Schrijft configureerbare ioBroker-statussen naar InfluxDB",
+			"fr": "Écrit les états ioBroker configurables dans InfluxDB",
+			"it": "Scrive stati ioBroker configurabili su InfluxDB",
+			"es": "Escribe estados configurables de ioBroker en InfluxDB",
+			"pl": "Zapisuje konfigurowalne stany ioBroker w InfluxDB",
+			"uk": "Записує настроювані стани ioBroker до InfluxDB",
+			"zh-cn": "将可配置的 ioBroker 状态写入 InfluxDB"
+		},
 		"authors": [
 			"patricknitsch <patricknitsch@web.de>"
 		],
@@ -74,6 +92,70 @@
 		"sensors": [
 			{
 				"enabled": false,
+				"SensorName": "Inverter Power Summary",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "piko20",
+				"field": "output_power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Inverter Power 1",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "piko20",
+				"field": "dc1_power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Inverter Power 2",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "piko20",
+				"field": "dc2_power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Inverter Power 3",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "piko20",
+				"field": "dc3_power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Inverter Power 4",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "piko20",
+				"field": "dc4_power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Inverter Power 5",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "piko20",
+				"field": "dc5_power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "PV Forecast",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "pv_forecast",
+				"field": "forecast"
+			},
+			{
+				"enabled": false,
+				"SensorName": "PV Forecast Clearsky",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "pv_forecast",
+				"field": "forecast_clear_sky"
+			},
+			{
+				"enabled": false,
 				"SensorName": "House Power",
 				"sourceState": "",
 				"type": "int",
@@ -90,7 +172,7 @@
 			},
 			{
 				"enabled": false,
-				"SensorName": "Battery Charging Power",
+				"SensorName": "Battery charging power",
 				"sourceState": "",
 				"type": "int",
 				"measurement": "battery",
@@ -98,7 +180,7 @@
 			},
 			{
 				"enabled": false,
-				"SensorName": "Batter Discharging Power",
+				"SensorName": "Battery Discharging power",
 				"sourceState": "",
 				"type": "int",
 				"measurement": "battery",
@@ -108,7 +190,7 @@
 				"enabled": false,
 				"SensorName": "Heatpump Power",
 				"sourceState": "",
-				"type": "int",
+				"type": "float",
 				"measurement": "heatpump",
 				"field": "power"
 			},
@@ -130,7 +212,7 @@
 			},
 			{
 				"enabled": false,
-				"SensorName": "Outdoor Forecast Temperature",
+				"SensorName": "Outdoor Temp Forecast",
 				"sourceState": "",
 				"type": "float",
 				"measurement": "outdoor_forecast",
@@ -178,7 +260,7 @@
 			},
 			{
 				"enabled": false,
-				"SensorName": "Case Temperature",
+				"SensorName": "Case Temp",
 				"sourceState": "",
 				"type": "float",
 				"measurement": "case",
@@ -202,7 +284,7 @@
 			},
 			{
 				"enabled": false,
-				"SensorName": "Outdoor Temperature",
+				"SensorName": "Outdoor Temp",
 				"sourceState": "",
 				"type": "float",
 				"measurement": "outdoor",
@@ -223,6 +305,166 @@
 				"type": "bool",
 				"measurement": "system",
 				"field": "status_ok"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 1",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom01",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 2",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom02",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 3",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "custom03",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 4",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "custom04",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 5",
+				"sourceState": "",
+				"type": "float",
+				"measurement": "custom05",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 6",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom06",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 7",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom07",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 8",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom08",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 9",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom09",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 10",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom10",
+				"field": "power"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 11",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom11",
+				"field": "value"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 12",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom12",
+				"field": "value"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 13",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom13",
+				"field": "value"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 14",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom14",
+				"field": "value"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 15",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom15",
+				"field": "value"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 16",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom16",
+				"field": "value"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 17",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom17",
+				"field": "value"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 18",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom18",
+				"field": "value"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 19",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom19",
+				"field": "value"
+			},
+			{
+				"enabled": false,
+				"SensorName": "Userdefined 20",
+				"sourceState": "",
+				"type": "int",
+				"measurement": "custom20",
+				"field": "value"
 			}
 		]
 	},

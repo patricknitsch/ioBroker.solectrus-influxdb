@@ -88,26 +88,383 @@
             }
           ],
           "default": [
-            { "enabled": true, "SensorName": "House Power", "sourceState": "", "type": "int", "measurement": "house", "field": "power" },
-            { "enabled": true, "SensorName": "Battery SOC", "sourceState": "", "type": "float", "measurement": "battery", "field": "soc" },
-            { "enabled": true, "SensorName": "Battery Charging Power", "sourceState": "", "type": "int", "measurement": "battery", "field": "charging_power" },
-            { "enabled": true, "SensorName": "Batter Discharging Power", "sourceState": "", "type": "int", "measurement": "battery", "field": "discharging_power" },
-            { "enabled": true, "SensorName": "Heatpump Power", "sourceState": "", "type": "int", "measurement": "heatpump", "field": "power" },
-            { "enabled": true, "SensorName": "Heatpump Tank Temp", "sourceState": "", "type": "float", "measurement": "heatpump", "field": "tank_temp" },
-            { "enabled": true, "SensorName": "Heatpump Status", "sourceState": "", "type": "string", "measurement": "heatpump", "field": "status" },
-            { "enabled": true, "SensorName": "Outdoor Forecast Temperature", "sourceState": "", "type": "float", "measurement": "outdoor_forecast", "field": "temperature" },
-            { "enabled": true, "SensorName": "Grid Export Power", "sourceState": "", "type": "int", "measurement": "grid", "field": "export_power" },
-            { "enabled": true, "SensorName": "Grid Export Limit", "sourceState": "", "type": "int", "measurement": "grid", "field": "export_limit" },
-            { "enabled": true, "SensorName": "Grid Import Power", "sourceState": "", "type": "int", "measurement": "grid", "field": "import_power" },
-            { "enabled": true, "SensorName": "Wallbox Power", "sourceState": "", "type": "int", "measurement": "wallbox", "field": "power" },
-            { "enabled": true, "SensorName": "Wallbox Connected", "sourceState": "", "type": "bool", "measurement": "wallbox", "field": "connected" },
-            { "enabled": true, "SensorName": "Case Temperature", "sourceState": "", "type": "float", "measurement": "case", "field": "temperature" },
-            { "enabled": true, "SensorName": "Car Battery SOC", "sourceState": "", "type": "float", "measurement": "car", "field": "battery_soc" },
-            { "enabled": true, "SensorName": "Car Mileage", "sourceState": "", "type": "int", "measurement": "car", "field": "mileage" },
-            { "enabled": true, "SensorName": "Outdoor Temperature", "sourceState": "", "type": "float", "measurement": "outdoor", "field": "temperature" },
-            { "enabled": true, "SensorName": "System Status", "sourceState": "", "type": "string", "measurement": "system", "field": "status" },
-            { "enabled": true, "SensorName": "System Status OK", "sourceState": "", "type": "bool", "measurement": "system", "field": "status_ok" }
-          ]
+						{
+							"enabled": false,
+							"SensorName": "Inverter Power Summary",
+							"sourceState": "",
+							"type": "float",
+							"measurement": "piko20",
+							"field": "output_power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Inverter Power 1",
+							"sourceState": "",
+							"type": "float",
+							"measurement": "piko20",
+							"field": "dc1_power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Inverter Power 2",
+							"sourceState": "",
+							"type": "float",
+							"measurement": "piko20",
+							"field": "dc2_power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Inverter Power 3",
+							"sourceState": "",
+							"type": "float",
+							"measurement": "piko20",
+							"field": "dc3_power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Inverter Power 4",
+							"sourceState": "",
+							"type": "int",
+							"measurement": "piko20",
+							"field": "dc4_power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Inverter Power 5",
+							"sourceState": "",
+							"type": "int",
+							"measurement": "piko20",
+							"field": "dc5_power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "PV Forecast",
+							"sourceState": "",
+							"type": "int",
+							"measurement": "pv_forecast",
+							"field": "forecast"
+						},
+						{
+							"enabled": false,
+							"SensorName": "PV Forecast Clearsky",
+							"sourceState": "",
+							"type": "int",
+							"measurement": "pv_forecast",
+							"field": "forecast_clear_sky"
+						},
+						{
+							"enabled": false,
+							"SensorName": "House Power",
+							"sourceState": "",
+							"type": "int",
+							"measurement": "house",
+							"field": "power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Battery SOC",
+							"sourceState": "",
+							"type": "float",
+							"measurement": "battery",
+							"field": "soc"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Battery charging power",
+							"sourceState": "",
+							"type": "int",
+							"measurement": "battery",
+							"field": "charging_power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Battery Discharging power",
+							"sourceState": "",
+							"type": "int",
+							"measurement": "battery",
+							"field": "discharging_power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Heatpump Power",
+							"sourceState": "",
+							"type": "float",
+							"measurement": "heatpump",
+							"field": "power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Heatpump Tank Temp",
+							"sourceState": "",
+							"type": "float",
+							"measurement": "heatpump",
+							"field": "tank_temp"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Heatpump Status",
+							"sourceState": "",
+							"type": "string",
+							"measurement": "heatpump",
+							"field": "status"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Outdoor Temp Forecast",
+							"sourceState": "",
+							"type": "float",
+							"measurement": "outdoor_forecast",
+							"field": "temperature"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Grid Export Power",
+							"sourceState": "",
+							"type": "int",
+							"measurement": "grid",
+							"field": "export_power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Grid Export Limit",
+							"sourceState": "",
+							"type": "int",
+							"measurement": "grid",
+							"field": "export_limit"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Grid Import Power",
+							"sourceState": "",
+							"type": "int",
+							"measurement": "grid",
+							"field": "import_power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Wallbox Power",
+							"sourceState": "",
+							"type": "int",
+							"measurement": "wallbox",
+							"field": "power"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Wallbox Connected",
+							"sourceState": "",
+							"type": "bool",
+							"measurement": "wallbox",
+							"field": "connected"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Case Temp",
+							"sourceState": "",
+							"type": "float",
+							"measurement": "case",
+							"field": "temperature"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Car Battery SOC",
+							"sourceState": "",
+							"type": "float",
+							"measurement": "car",
+							"field": "battery_soc"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Car Mileage",
+							"sourceState": "",
+							"type": "int",
+							"measurement": "car",
+							"field": "mileage"
+						},
+						{
+							"enabled": false,
+							"SensorName": "Outdoor Temp",
+							"sourceState": "",
+							"type": "float",
+							"measurement": "outdoor",
+							"field": "temperature"
+						},
+						{
+							"enabled": false,
+							"SensorName": "System Status",
+							"sourceState": "",
+							"type": "string",
+							"measurement": "system",
+							"field": "status"
+						},
+						{
+							"enabled": false,
+							"SensorName": "System Status OK",
+							"sourceState": "",
+							"type": "bool",
+							"measurement": "system",
+							"field": "status_ok"
+						},
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 1",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom01",
+              "field": "power"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 2",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom02",
+              "field": "power"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 3",
+              "sourceState": "",
+              "type": "float",
+              "measurement": "custom03",
+              "field": "power"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 4",
+              "sourceState": "",
+              "type": "float",
+              "measurement": "custom04",
+              "field": "power"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 5",
+              "sourceState": "",
+              "type": "float",
+              "measurement": "custom05",
+              "field": "power"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 6",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom06",
+              "field": "power"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 7",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom07",
+              "field": "power"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 8",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom08",
+              "field": "power"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 9",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom09",
+              "field": "power"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 10",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom10",
+              "field": "power"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 11",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom11",
+              "field": "value"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 12",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom12",
+              "field": "value"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 13",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom13",
+              "field": "value"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 14",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom14",
+              "field": "value"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 15",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom15",
+              "field": "value"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 16",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom16",
+              "field": "value"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 17",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom17",
+              "field": "value"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 18",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom18",
+              "field": "value"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 19",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom19",
+              "field": "value"
+            },
+            {
+              "enabled": false,
+              "SensorName": "Userdefined 20",
+              "sourceState": "",
+              "type": "int",
+              "measurement": "custom20",
+              "field": "value"
+            }
+					]
         }
       }
     }
