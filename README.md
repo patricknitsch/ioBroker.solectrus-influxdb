@@ -181,3 +181,5 @@ Nur aktivierte Sensoren werden verarbeitet.
 
 ### **WORK IN PROGRESS**
 * (patricknitsch) initial release
+
+## License

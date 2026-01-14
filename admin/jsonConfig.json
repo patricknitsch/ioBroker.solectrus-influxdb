@@ -8,26 +8,55 @@
       "items": {
         "influx.url": {
           "type": "text",
-          "label": "InfluxDB URL"
+          "label": "InfluxDB URL",
+          "newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
         },
         "influx.org": {
           "type": "text",
-          "label": "Organization"
+          "label": "Organization",
+          "newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
         },
         "influx.bucket": {
           "type": "text",
-          "label": "Bucket"
+          "label": "Bucket",
+          "newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
         },
         "influx.token": {
           "type": "password",
-          "label": "Token"
+          "label": "Token",
+          "newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
         },
         "influx.interval": {
           "type": "number",
           "label": "Polling interval (s)",
           "min": 5,
-          "max": 30
-
+          "max": 30,
+          "newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
         }
       }
     },

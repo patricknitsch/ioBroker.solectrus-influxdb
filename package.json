@@ -1,5 +1,5 @@
 {
-  "name": "iobroker.solectrus-influxdb",
+  "name": "ioroker.solectrus-influxdb",
   "version": "0.0.1",
   "description": "Configure Sensors for Solectrus and push to InfluxDB",
   "author": {
@@ -15,7 +15,8 @@
   "license": "MIT",
   "keywords": [
     "solectrus",
-    "influxdb"
+    "influxdb",
+    "ioBroker"
   ],
   "repository": {
     "type": "git",
@@ -36,7 +37,7 @@
     "@iobroker/adapter-dev": "^1.5.0",
     "@iobroker/dev-server": "^0.8.0",
     "@iobroker/eslint-config": "^2.2.0",
-    "@iobroker/testing": "^5.1.1",
+    "@iobroker/testing": "^5.2.2",
     "@tsconfig/node20": "^20.1.8",
     "@types/iobroker": "npm:@iobroker/types@^7.1.0",
     "@types/node": "^20.19.28",
