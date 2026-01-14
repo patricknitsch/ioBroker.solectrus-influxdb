@@ -91,7 +91,7 @@ Only enabled sensors are processed.
 
 ### Requirements
 - ioBroker >= latest stable
-- Node.js >= 18
+- Node.js >= 20
 - InfluxDB 2.x
 
 ---
@@ -168,7 +168,7 @@ Nur aktivierte Sensoren werden verarbeitet.
 
 ### Voraussetzungen
 - ioBroker >= aktuelle stabile Version
-- Node.js >= 18
+- Node.js >= 20
 - InfluxDB 2.x
 
 ---

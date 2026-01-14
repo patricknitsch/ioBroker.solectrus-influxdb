@@ -41,7 +41,7 @@
     "@tsconfig/node20": "^20.1.8",
     "@types/iobroker": "npm:@iobroker/types@^7.1.0",
     "@types/node": "^20.19.28",
-    "typescript": "~5.9.3"
+    "typescript": "^5.9.3"
   },
   "main": "main.js",
   "files": [
