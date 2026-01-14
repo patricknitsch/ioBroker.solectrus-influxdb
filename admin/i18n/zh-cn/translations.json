@@ -33,7 +33,7 @@
   "Outdoor Temp Forecast": "室外温度预报",
   "PV Forecast": "光伏预测",
   "PV Forecast Clearsky": "光伏预测 Clearsky",
-  "Polling Intervall (ms)": "轮询间隔（毫秒）",
+  "Polling Intervall (s)": "轮询间隔（秒）",
   "Sensor Name": "传感器名称",
   "Sensors Settings": "传感器设置",
   "Solectrus Sensors": "Solectrus 传感器",

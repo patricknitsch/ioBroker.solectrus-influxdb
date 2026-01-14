@@ -33,7 +33,7 @@
   "Outdoor Temp Forecast": "Прогноз температуры наружного воздуха",
   "PV Forecast": "Прогноз солнечной энергии",
   "PV Forecast Clearsky": "PV-прогноз Clearsky",
-  "Polling Intervall (ms)": "Интервал опроса (мс)",
+  "Polling Intervall (s)": "Интервал опроса (с)",
   "Sensor Name": "Имя датчика",
   "Sensors Settings": "Настройки датчика",
   "Solectrus Sensors": "Датчики Солекрус",

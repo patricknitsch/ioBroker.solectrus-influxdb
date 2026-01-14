@@ -33,7 +33,7 @@
   "Outdoor Temp Forecast": "Voorspelling van de buitentemperatuur",
   "PV Forecast": "PV-voorspelling",
   "PV Forecast Clearsky": "PV-voorspelling Clearsky",
-  "Polling Intervall (ms)": "Polling-interval (ms)",
+  "Polling Intervall (s)": "Polling-interval (s)",
   "Sensor Name": "Sensornaam",
   "Sensors Settings": "Sensorinstellingen",
   "Solectrus Sensors": "Solectrus-sensoren",

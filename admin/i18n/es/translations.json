@@ -33,7 +33,7 @@
   "Outdoor Temp Forecast": "Previsión de temperatura exterior",
   "PV Forecast": "Previsión fotovoltaica",
   "PV Forecast Clearsky": "Pronóstico fotovoltaico Clearsky",
-  "Polling Intervall (ms)": "Intervalo de sondeo (ms)",
+  "Polling Intervall (s)": "Intervalo(s) de sondeo",
   "Sensor Name": "Nombre del sensor",
   "Sensors Settings": "Configuración de sensores",
   "Solectrus Sensors": "Sensores Solectrus",

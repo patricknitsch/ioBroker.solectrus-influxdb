@@ -4,7 +4,7 @@
   "Organizaton": "Organization",
   "Bucket": "Bucket",
   "Token": "Token",
-  "Polling Intervall (ms)": "Polling interval (ms)",
+  "Polling Intervall (s)": "Polling interval (s)",
 
   "Solectrus Sensors": "Solectrus sensors",
   "Active": "Enabled",
