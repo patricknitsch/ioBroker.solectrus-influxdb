@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "news": {
+      "0.1.4": {
+        "en": "Bugfix with Icon",
+        "de": "Bugfix mit Icon",
+        "ru": "Bugfix с иконой",
+        "pt": "Correcção de Erros com Ícone",
+        "nl": "Bugfix met pictogram",
+        "fr": "Bugfix avec icône",
+        "it": "Bugfix con Icon",
+        "es": "Bugfix con Icon",
+        "pl": "Bugfix z ikoną",
+        "uk": "Помилки з іконкою",
+        "zh-cn": "带有图标的错误修正"
+      },
       "0.1.3": {
         "en": "Bugfix for License\nBugfix for Interval\nSynchronize Names, Measurements and Fields to SOLECTRUS Documentation",
         "de": "Bugfix für die Lizenz\nBugfix für Intervall\nSynchronisieren von Namen, Messungen und Feldern zu SOLECTRUS Dokumentation",
