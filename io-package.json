@@ -125,7 +125,8 @@
       "org": "solectrus",
       "bucket": "solectrus",
       "token": "",
-      "interval": 5
+      "interval": 5,
+      "flushInterval": 60
     },
     "sensors": [
       {
@@ -454,7 +455,7 @@
         "sourceState": "",
         "type": "float",
         "measurement": "heatpump",
-        "field": "power"
+        "field": "heating_power"
       },
       {
         "enabled": false,
