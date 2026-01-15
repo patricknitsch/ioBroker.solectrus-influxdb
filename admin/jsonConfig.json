@@ -451,7 +451,7 @@
 							"sourceState": "",
 							"type": "float",
 							"measurement": "heatpump",
-							"field": "power"
+							"field": "heating_power"
 						},
 						{
 							"enabled": false,
