@@ -1,6 +1,6 @@
 {
   "common": {
-    "name": "SOLECTRUS-influxdb",
+    "name": "solectrus-influxdb",
     "version": "0.1.2",
     "news": {
       "0.1.2": {
