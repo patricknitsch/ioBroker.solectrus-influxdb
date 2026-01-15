@@ -1,6 +1,6 @@
 {
   "common": {
-    "name": "solectrus-influxdb",
+    "name": "SOLECTRUS-influxdb",
     "version": "0.1.2",
     "news": {
       "0.1.2": {
@@ -57,17 +57,17 @@
       }
     },
     "titleLang": {
-      "en": "Solectrus InfluxDB",
-      "de": "Solectrus InfluxDB",
-      "ru": "Solectrus InfluxDB",
-      "pt": "Solectrus InfluxDB",
-      "nl": "Solectrus InfluxDB",
-      "fr": "Solectrus InfluxDB",
-      "it": "Solectrus InfluxDB",
-      "es": "Solectrus InfluxDB",
-      "pl": "Solectrus InfluxDB",
-      "uk": "Solectrus InfluxDB",
-      "zh-cn": "Solectrus InfluxDB"
+      "en": "SOLECTRUS InfluxDB",
+      "de": "SOLECTRUS InfluxDB",
+      "ru": "SOLECTRUS InfluxDB",
+      "pt": "SOLECTRUS InfluxDB",
+      "nl": "SOLECTRUS InfluxDB",
+      "fr": "SOLECTRUS InfluxDB",
+      "it": "SOLECTRUS InfluxDB",
+      "es": "SOLECTRUS InfluxDB",
+      "pl": "SOLECTRUS InfluxDB",
+      "uk": "SOLECTRUS InfluxDB",
+      "zh-cn": "SOLECTRUS InfluxDB"
     },
     "desc": {
       "en": "Writes configurable ioBroker states to InfluxDB",
@@ -86,7 +86,7 @@
       "patricknitsch <patricknitsch@web.de>"
     ],
     "keywords": [
-      "solectrus",
+      "SOLECTRUS",
       "influxdb"
     ],
     "licenseInformation": {
