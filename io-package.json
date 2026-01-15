@@ -450,14 +450,6 @@
       },
       {
         "enabled": false,
-        "SensorName": "CAR_MILEAGE",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "car",
-        "field": "mileage"
-      },
-      {
-        "enabled": false,
         "SensorName": "HEATPUMP_HEATING_POWER",
         "sourceState": "",
         "type": "float",
