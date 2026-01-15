@@ -223,7 +223,7 @@
         "type": "bool",
         "measurement": "system",
         "field": "status_ok"
-      },            
+      },
       {
         "enabled": false,
         "SensorName": "BATTERY_SOC",
