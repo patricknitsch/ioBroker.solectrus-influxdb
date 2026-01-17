@@ -61,8 +61,8 @@
         "influx.flushInterval": {
           "type": "number",
           "label": "Flush interval (s)",
-          "min": 30,
-          "max": 300,
+          "min": 10,
+          "max": 60,
           "newLine": true,
 					"xs": 12,
 					"sm": 12,
