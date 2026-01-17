@@ -67,10 +67,16 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * ===================================================== */
 
 	async clearBuffer() {
+		this.log.info('Clear Buffer...');
 		this.buffer = [];
-		this.saveBuffer();
+		try {
+			this.saveBuffer();
+			this.log.info('Buffer successfully cleared');
+		} catch (err) {
+			this.log.error(`Error at clearing Buffer: ${err.message}`);
+		}
 		this.updateBufferStates();
-		this.log.info('Buffer manuell gelöscht.');
+		this.log.info('Buffer cleared and State updated.');
 	}
 
 	loadBuffer() {
