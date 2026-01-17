@@ -185,6 +185,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 			},
 			native: {},
 		});
+		this.subscribeStates('info.buffer.clear');
 	}
 
 	validateInfluxConfig() {
@@ -315,6 +316,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 			return;
 		}
 		if (id === `${this.namespace}.info.buffer.clear` && state.val === true) {
+			this.log.debug('Trigger clearing Buffer');
 			this.clearBuffer();
 			this.setState('info.buffer.clear', false, true); // Reset Button
 			return;
