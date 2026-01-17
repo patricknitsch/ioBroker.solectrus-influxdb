@@ -351,6 +351,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 
 			this.buffer.push({
+				id: sensor.SensorName,
 				measurement: sensor.measurement,
 				field: sensor.field,
 				type: sensor.type,
@@ -410,7 +411,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 						point.stringField(entry.field, String(entry.value));
 				}
 
-				this.log.debug(`Write point: ${entry.name} : ${entry.value} to: ${entry.measurement} : ${entry.field}`);
+				this.log.debug(`Write point: ${entry.id} : ${entry.value} to: ${entry.measurement} : ${entry.field}`);
 				writeApi.writePoint(point);
 			}
 
