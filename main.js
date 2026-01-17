@@ -445,7 +445,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 			const isTypeConflict = this.isFieldTypeConflict(err);
 
 			if (isTypeConflict) {
-				this.log.error('InfluxDB field type conflict detected – clearing buffer to prevent endless retry');
+				this.log.warn('InfluxDB field type conflict detected – clearing buffer to prevent endless retry');
 				await this.clearBuffer();
 			}
 
