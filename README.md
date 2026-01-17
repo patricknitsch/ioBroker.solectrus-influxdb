@@ -178,6 +178,11 @@ Nur aktivierte Sensoren werden verarbeitet.
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* (Felliglanz) Improve sensor configuration UI (accordion)
+
 ### 0.1.4 (2026-01-15)
 
 * (patricknitsch) Bugfix with Icon
