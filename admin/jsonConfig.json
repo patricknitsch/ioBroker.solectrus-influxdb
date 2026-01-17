@@ -77,8 +77,10 @@
       "label": "Sensors Settings",
       "items": {
         "sensors": {
-          "type": "table",
+          "type": "accordion",
           "label": "SOLECTRUS Sensors",
+          "titleAttr": "SensorName",
+          "clone": true,
           "sm": 12,
           "md": 12,
           "lg": 12,
@@ -87,25 +89,36 @@
           "items": [
             {
               "attr": "enabled",
-              "title": "Enabled",
+              "label": "Enabled",
               "type": "checkbox",
-              "width": "80px"
+              "xs": 12,
+              "sm": 2,
+              "md": 2,
+              "lg": 2
             },
             {
               "attr": "SensorName",
-              "title": "Sensor Name",
+              "label": "Sensor Name",
               "type": "text",
-              "width": "250px"
+              "xs": 12,
+              "sm": 10,
+              "md": 4,
+              "lg": 4
             },
             {
               "attr": "sourceState",
-              "title": "ioBroker Source State",
+              "label": "ioBroker Source State",
               "type": "objectId",
-              "width": "300px"
+              "types": ["state"],
+              "newLine": true,
+              "xs": 12,
+              "sm": 12,
+              "md": 12,
+              "lg": 12
             },
             {
               "attr": "type",
-              "title": "Datatype",
+              "label": "Datatype",
               "type": "select",
               "options": [
                 { "label": "Default", "value": "" },
@@ -114,20 +127,30 @@
                 { "label": "Boolean", "value": "bool" },
                 { "label": "String", "value": "string" }
               ],
-              "width": "120px"
+              "newLine": true,
+              "xs": 12,
+              "sm": 4,
+              "md": 3,
+              "lg": 3
             },
             {
               "attr": "measurement",
-              "title": "Influx Measurement",
+              "label": "Influx Measurement",
               "type": "text",
               "default": "solectrus",
-              "width": "150px"
+              "xs": 12,
+              "sm": 4,
+              "md": 5,
+              "lg": 5
             },
             {
               "attr": "field",
-              "title": "Influx Field",
+              "label": "Influx Field",
               "type": "text",
-              "width": "150px"
+              "xs": 12,
+              "sm": 4,
+              "md": 4,
+              "lg": 4
             }
           ],
           "default": [
