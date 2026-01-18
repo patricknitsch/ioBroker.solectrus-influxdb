@@ -67,7 +67,7 @@
         "sensors": {
           "type": "accordion",
           "label": "SOLECTRUS Sensors",
-          "titleAttr": "SensorName",
+          "titleAttr": "_title",
           "clone": true,
           "sm": 12,
           "md": 12,
@@ -75,6 +75,17 @@
           "xs": 12,
           "xl": 12,
           "items": [
+            {
+              "attr": "_title",
+              "type": "text",
+              "hidden": "true",
+              "readOnly": true,
+              "onChange": {
+                "alsoDependsOn": ["enabled", "SensorName"],
+                "calculateFunc": "(data.enabled ? '🟢 ' : '⚪ ') + (data.SensorName || '')",
+                "ignoreOwnChanges": true
+              }
+            },
             {
               "attr": "enabled",
               "label": "Enabled",
