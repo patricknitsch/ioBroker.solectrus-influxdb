@@ -111,6 +111,8 @@
                         propsAttr: props && props.attr,
                         dataType: Array.isArray(props && props.data) ? 'array' : typeof (props && props.data),
                         dataKeys,
+                        custom: !!(props && props.custom),
+                        hasForceUpdate: !!(props && typeof props.forceUpdate === 'function'),
                         onChangeType: typeof (props && props.onChange),
                         onChangeLength: props && typeof props.onChange === 'function' ? props.onChange.length : undefined,
                     });
@@ -123,6 +125,38 @@
                 }
 
                 const onChange = props.onChange;
+
+                const cb = () => {
+                    try {
+                        if (props && typeof props.forceUpdate === 'function') {
+                            props.forceUpdate([attr], props.data);
+                        }
+                    } catch {
+                        // ignore
+                    }
+                };
+
+                const callOnChange = (label, ...args) => {
+                    try {
+                        if (typeof console !== 'undefined' && typeof console.info === 'function') {
+                            const dataKeys = dataIsObject ? Object.keys(props.data || {}) : [];
+                            console.info('[SolectrusSensorsEditor] onChange', {
+                                label,
+                                attr,
+                                custom: !!(props && props.custom),
+                                dataType: dataIsArray ? 'array' : typeof (props && props.data),
+                                dataKeys,
+                                nextSensorsLength: Array.isArray(nextSensors) ? nextSensors.length : undefined,
+                                onChangeLength: typeof onChange === 'function' ? onChange.length : undefined,
+                            });
+                        }
+                        onChange(...args);
+                    } catch (e) {
+                        if (typeof console !== 'undefined' && typeof console.error === 'function') {
+                            console.error('[SolectrusSensorsEditor] onChange failed', e);
+                        }
+                    }
+                };
 
                 // JsonConfig (modern Admin) passes:
                 // - props.data: the full data object (e.g., adapter native)
@@ -166,7 +200,14 @@
 
                 if (props && props.custom) {
                     // In "custom object" mode JsonConfig expects: onChange(attr, value, cb?, saveConfig?)
-                    onChange(attr, nextSensors);
+                    callOnChange('custom-object attr/value', attr, nextSensors, cb, false);
+                    return;
+                }
+
+                // Some Admin/JsonConfig variants still expect the dispatcher-style signature in custom components.
+                // Prefer (attr, value, cb, saveConfig) when available.
+                if (typeof attr === 'string' && attr && typeof onChange === 'function' && onChange.length >= 2) {
+                    callOnChange('adapter-config attr/value', attr, nextSensors, cb, false);
                     return;
                 }
 
@@ -174,12 +215,19 @@
                 // as first argument: onChange(updatedDataObject, val?, cb?, saveConfig?)
                 if (dataIsObject) {
                     const nextData = setByPath(props.data, attr, nextSensors);
-                    onChange(nextData);
+                    if (typeof console !== 'undefined' && typeof console.info === 'function') {
+                        console.info('[SolectrusSensorsEditor] nextData', {
+                            keys: nextData && typeof nextData === 'object' ? Object.keys(nextData) : null,
+                            hasInflux: !!(nextData && nextData.influx),
+                            hasSensors: !!(nextData && nextData.sensors),
+                        });
+                    }
+                    callOnChange('adapter-config full-data', nextData, undefined, cb, false);
                     return;
                 }
 
                 // Legacy fallback: some environments may pass the field value directly.
-                onChange(nextSensors);
+                callOnChange('legacy value-only', nextSensors);
             };
 
             const selectedSensor = sensors[selectedIndex] || null;
