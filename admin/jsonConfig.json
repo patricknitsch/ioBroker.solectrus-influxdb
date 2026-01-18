@@ -91,6 +91,11 @@
               "attr": "enabled",
               "label": "Enabled",
               "type": "checkbox",
+              "onChange": {
+                "alsoDependsOn": ["SensorName"],
+                "calculateFunc": "data._title = (data.enabled ? '🟢 ' : '⚪ ') + (data.SensorName || 'Sensor'); return data.enabled;",
+                "ignoreOwnChanges": true
+              },
               "xs": 12,
               "sm": 2,
               "md": 2,
@@ -100,6 +105,11 @@
               "attr": "SensorName",
               "label": "Sensor Name",
               "type": "text",
+              "onChange": {
+                "alsoDependsOn": ["enabled"],
+                "calculateFunc": "data._title = (data.enabled ? '🟢 ' : '⚪ ') + (data.SensorName || 'Sensor'); return data.SensorName;",
+                "ignoreOwnChanges": true
+              },
               "xs": 12,
               "sm": 10,
               "md": 4,
