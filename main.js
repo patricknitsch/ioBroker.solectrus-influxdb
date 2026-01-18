@@ -156,16 +156,17 @@ class SolectrusInfluxdb extends utils.Adapter {
 			return;
 		}
 
-		/* --- Influx Verbindung IMMER prüfen --- */
+		/* --- Always check Influx Connection --- */
 		const influxOk = await this.verifyInfluxConnection();
 		if (!influxOk) {
 			this.setState('info.lastError', 'InfluxDB connection failed – check URL, Token, Org and Bucket', true);
-			// Adapter läuft weiter → Retry erfolgt später beim Flush
+			// Adapter run → Retry later during flush
 		}
 
 		if (!Array.isArray(this.config.sensors)) {
 			this.config.sensors = [];
 		}
+
 		await this.ensureSensorTitlesInInstanceConfig();
 
 		if (!this.hasEnabledSensors()) {
