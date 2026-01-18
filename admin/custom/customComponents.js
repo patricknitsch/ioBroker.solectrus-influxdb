@@ -82,7 +82,9 @@
 
     function createSolectrusSensorsEditor(React) {
         return function SolectrusSensorsEditor(props) {
-            const attr = props.attr;
+            // This custom editor is purpose-built for this adapter and always edits `native.sensors`.
+            // Relying on `props.attr` is brittle across Admin versions and can lead to wiping the whole config.
+            const attr = 'sensors';
             const sensors = normalizeSensors(props.data && props.data[attr]);
 
             const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -94,9 +96,21 @@
             }, [sensors.length, selectedIndex]);
 
             const updateSensors = nextSensors => {
-                if (typeof props.onChange === 'function') {
-                    props.onChange(attr, nextSensors);
+                if (typeof props.onChange !== 'function') {
+                    return;
                 }
+
+                // Admin/jsonConfig had different custom component APIs across versions:
+                // - new: onChange(attr, value)
+                // - old: onChange(nextData)
+                if (props.onChange.length >= 2) {
+                    props.onChange(attr, nextSensors);
+                    return;
+                }
+
+                const nextData = Object.assign({}, props.data || {});
+                nextData[attr] = nextSensors;
+                props.onChange(nextData);
             };
 
             const selectedSensor = sensors[selectedIndex] || null;
