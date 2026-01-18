@@ -603,7 +603,7 @@
         },
         "sensors": {
           "type": "custom",
-          "name": "SolectrusSensorsEditor",
+          "name": "SolectrusSensors/Components/SolectrusSensorsEditor",
           "url": "custom/customComponents.js",
           "newLine": true,
           "sm": 12
