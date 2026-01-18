@@ -169,7 +169,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		await this.setObjectNotExistsAsync('info.connection', {
 			type: 'state',
 			common: {
-				name: 'InfluxDB connection',
+				name: 'Device or service connected',
 				type: 'boolean',
 				role: 'indicator.connected',
 				read: true,
@@ -205,7 +205,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		await this.setObjectNotExistsAsync('info.buffer.clear', {
 			type: 'state',
 			common: {
-				name: 'Buffer manuell löschen',
+				name: 'Clear Buffer manually',
 				type: 'boolean',
 				role: 'button',
 				read: false,
@@ -218,7 +218,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		await this.setObjectNotExistsAsync('info.lastError', {
 			type: 'state',
 			common: {
-				name: 'Letzter Fehler',
+				name: 'Last Error',
 				type: 'string',
 				role: 'text',
 				read: true,
@@ -423,6 +423,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 				continue;
 			}
 
+			this.log.debug(`Write point: ${id} : ${value} to: ${sensor.measurement} : ${sensor.field}`);
 			this.buffer.push({
 				id: sensor.SensorName,
 				measurement: sensor.measurement,

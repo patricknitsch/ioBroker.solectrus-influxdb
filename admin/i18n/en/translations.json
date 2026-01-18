@@ -1,12 +1,12 @@
 {
   "InfluxDB": "InfluxDB",
   "InfluxDB URL": "InfluxDB URL",
-  "Organizaton": "Organization",
+  "Organization": "Organization",
   "Bucket": "Bucket",
   "Token": "Token",
   "Polling Interval (s)": "Polling interval (s)",
 
-  "SOLECTRUS Sensors": "SOLECTRUS sensors",
+  "SOLECTRUS Sensors": "SOLECTRUS Sensors",
   "Active": "Enabled",
   "Sensors Settings": "Sensor Settings",
   "ioBroker Source State": "ioBroker source state",
@@ -66,8 +66,12 @@
   "CUSTOM_POWER_17": "CUSTOM_POWER_17",
   "CUSTOM_POWER_18": "CUSTOM_POWER_18",
   "CUSTOM_POWER_19": "CUSTOM_POWER_19",
-  "CUSTOM_POWER_20": "CUSTOM_POWER_20"
+  "CUSTOM_POWER_20": "CUSTOM_POWER_20",
 
-
+  "Last Error": "Last Error",
+  "Clear Buffer manually": "Clear Buffer manually",
+  "Oldest buffered timestamp": "Oldest buffered timestamp",
+  "Buffered points": "Buffered points",
+  "Device or service connected": "Device or service connected"
 
 }

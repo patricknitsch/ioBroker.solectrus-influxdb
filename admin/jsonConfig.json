@@ -48,7 +48,7 @@
         },
         "influx.interval": {
           "type": "number",
-          "label": "Polling interval (s)",
+          "label": "Polling Interval (s)",
           "min": 5,
           "max": 30,
           "newLine": true,
