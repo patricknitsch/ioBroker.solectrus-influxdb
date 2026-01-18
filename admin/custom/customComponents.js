@@ -82,10 +82,16 @@
 
     function createSolectrusSensorsEditor(React) {
         return function SolectrusSensorsEditor(props) {
-            // This custom editor is purpose-built for this adapter and always edits `native.sensors`.
-            // Relying on `props.attr` is brittle across Admin versions and can lead to wiping the whole config.
-            const attr = 'sensors';
-            const sensors = normalizeSensors(props.data && props.data[attr]);
+            const attr = (props && typeof props.attr === 'string' && props.attr) ? props.attr : 'sensors';
+            const dataIsArray = Array.isArray(props && props.data);
+            const dataIsObject = !!(props && props.data && typeof props.data === 'object' && !dataIsArray);
+
+            // Admin versions differ:
+            // - Some pass `props.data` as the full native object (then `attr` selects the field).
+            // - Some pass `props.data` directly as the field value (sensors array).
+            const sensors = dataIsArray
+                ? normalizeSensors(props.data)
+                : normalizeSensors(props.data && props.data[attr]);
 
             const [selectedIndex, setSelectedIndex] = React.useState(0);
 
@@ -116,19 +122,20 @@
                     return;
                 }
 
-                const dataIsObject = props.data && typeof props.data === 'object' && !Array.isArray(props.data);
-                const dataKeys = dataIsObject ? Object.keys(props.data) : [];
-                // If we have more than just `sensors` in data, assume onChange expects the FULL config object.
-                const looksLikeFullConfig = dataIsObject && dataKeys.some(k => k !== attr);
-
-                if (looksLikeFullConfig) {
-                    const nextData = Object.assign({}, props.data);
-                    nextData[attr] = nextSensors;
-                    props.onChange(nextData);
+                // Prefer the safest calling convention based on the actual data shape:
+                // - value-only mode: onChange(nextValue)
+                // - object mode: onChange(attr, nextValue)
+                if (dataIsArray) {
+                    props.onChange(nextSensors);
                     return;
                 }
 
-                // Otherwise treat this custom control as bound to a single value.
+                if (dataIsObject) {
+                    props.onChange(attr, nextSensors);
+                    return;
+                }
+
+                // Fallback: try value-only first
                 props.onChange(nextSensors);
             };
 
