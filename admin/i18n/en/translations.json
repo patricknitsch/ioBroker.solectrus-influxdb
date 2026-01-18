@@ -7,7 +7,6 @@
   "Polling Interval (s)": "Polling interval (s)",
 
   "SOLECTRUS Sensors": "SOLECTRUS Sensors",
-  "Active": "Enabled",
   "Sensors Settings": "Sensor Settings",
   "ioBroker Source State": "ioBroker source state",
   "Datatype": "Datatype",

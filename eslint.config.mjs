@@ -17,6 +17,7 @@ export default [
 			'admin/words.js',
 			'admin/admin.d.ts',
 			'admin/blockly.js',
+			'admin/custom/customComponents.js',
 			'**/adapter-config.d.ts',
 			'widgets/**/*.js'
 		],
@@ -25,6 +26,8 @@ export default [
 		// you may disable some 'jsdoc' warnings - but using jsdoc is highly recommended
 		// as this improves maintainability. jsdoc warnings will not block build process.
 		rules: {
+			// Allow CRLF on Windows to avoid massive prettier noise.
+			'prettier/prettier': ['error', { endOfLine: 'auto' }],
 			// 'jsdoc/require-jsdoc': 'off',
 			// 'jsdoc/require-param': 'off',
 			// 'jsdoc/require-param-description': 'off',

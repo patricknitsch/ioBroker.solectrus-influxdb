@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "news": {
+      "0.3.0": {
+        "en": "Better handling of Influx Connection, also if no sensor is active\nRebuild of UI with actual status of each sensor",
+        "de": "Bessere Handhabung der Influx-Verbindung, auch wenn kein Sensor aktiv ist\nWiederherstellen von UI mit Ist-Status jedes Sensors",
+        "ru": "Лучшее управление Influx Connection, даже если датчик не активен\nВосстановление пользовательского интерфейса с фактическим состоянием каждого датчика",
+        "pt": "Melhor manuseio da Influx Connection, também se nenhum sensor estiver ativo\nReconstruir a UI com status real de cada sensor",
+        "nl": "Betere behandeling van Influx Connection, ook als er geen sensor actief is\nHerbouwen van UI met actuele status van elke sensor",
+        "fr": "Meilleure gestion de la connexion Influx, aussi si aucun capteur n'est actif\nReconstruction de l'interface utilisateur avec l'état réel de chaque capteur",
+        "it": "Migliore gestione della connessione a influsso, anche se nessun sensore è attivo\nRicostruzione dell'interfaccia utente con stato effettivo di ogni sensore",
+        "es": "Mejor manejo de la conexión de influjo, también si ningún sensor está activo\nReconstrucción de la interfaz de usuario con el estado real de cada sensor",
+        "pl": "Lepsza obsługa połączenia Influm, również jeśli czujnik nie jest aktywny\nPrzebudowa interfejsu użytkownika z rzeczywistym statusem każdego czujnika",
+        "uk": "Найкраще управління підключенням Influx, також якщо не працює датчик\nВідновлення UI з фактичним статусом кожного датчика",
+        "zh-cn": "更好地处理内流连接, 如果没有传感器活动\n重建具有每个传感器实际状态的UI"
+      },
       "0.2.0": {
         "en": "Refactoring code and improve readability\nBuffer values and send to Influx if Influx is online\nSave max. 100000 values and send all to Influx if Influx is online again\nSplit Data Collecting and Influx writing\nUpdated Translations",
         "de": "Refactoring Code und Verbesserung der Lesbarkeit\nPufferwerte und senden Sie zu Influx, wenn Influx online ist\nSpeichern Sie max. 100000 Werte und senden Sie alle zu Influx, wenn Influx wieder online ist\nDaten sammeln und beeinflussen Schreiben\nAktualisierte Übersetzungen",
