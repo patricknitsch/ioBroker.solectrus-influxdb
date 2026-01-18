@@ -590,6 +590,25 @@
 					]
         }
       }
+    },
+    "sensor_experimental": {
+      "type": "panel",
+      "label": "Sensors (experimental)",
+      "items": {
+        "_sensorsMdInfo": {
+          "type": "staticText",
+          "text": "Experimental master/detail editor for sensors. Shows live enabled marker in the list. This does not change the existing accordion tab.",
+          "newLine": true,
+          "sm": 12
+        },
+        "sensors": {
+          "type": "custom",
+          "name": "SolectrusSensorsEditor",
+          "url": "custom/customComponents.js",
+          "newLine": true,
+          "sm": 12
+        }
+      }
     }
   }
 }
