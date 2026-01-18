@@ -350,8 +350,10 @@
                 gap: 12,
                 width: '100%',
                 minHeight: 360,
+                height: '70vh',
                 color: colors.text,
                 position: 'relative',
+                alignItems: 'stretch',
             };
 
             const leftStyle = {
@@ -363,6 +365,7 @@
                 display: 'flex',
                 flexDirection: 'column',
                 background: colors.panelBg,
+                height: '100%',
             };
 
             const rightStyle = {
@@ -371,6 +374,8 @@
                 borderRadius: 6,
                 padding: 12,
                 background: colors.panelBg2,
+                height: '100%',
+                overflow: 'auto',
             };
 
             const toolbarStyle = {
