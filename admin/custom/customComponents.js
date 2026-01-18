@@ -95,22 +95,35 @@
                 }
             }, [sensors.length, selectedIndex]);
 
+            React.useEffect(() => {
+                if (typeof console !== 'undefined' && typeof console.debug === 'function') {
+                    const keys = props && props.data ? Object.keys(props.data) : [];
+                    console.debug('[SolectrusSensorsEditor] mounted', {
+                        attr,
+                        propsAttr: props && props.attr,
+                        dataKeys: keys,
+                        onChangeType: typeof (props && props.onChange),
+                        onChangeLength: props && typeof props.onChange === 'function' ? props.onChange.length : undefined,
+                    });
+                }
+            }, []);
+
             const updateSensors = nextSensors => {
                 if (typeof props.onChange !== 'function') {
                     return;
                 }
 
-                // Admin/jsonConfig had different custom component APIs across versions:
-                // - new: onChange(attr, value)
-                // - old: onChange(nextData)
-                if (props.onChange.length >= 2) {
-                    props.onChange(attr, nextSensors);
-                    return;
-                }
-
-                const nextData = Object.assign({}, props.data || {});
-                nextData[attr] = nextSensors;
-                props.onChange(nextData);
+				// Modern jsonConfig API: onChange(attr, value).
+				// Do NOT rely on function.length (often 0 because of rest params), it can trigger wrong fallbacks.
+				try {
+					props.onChange(attr, nextSensors);
+					return;
+				} catch (e) {
+					// Very old Admin builds used onChange(nextData)
+					const nextData = Object.assign({}, props.data || {});
+					nextData[attr] = nextSensors;
+					props.onChange(nextData);
+				}
             };
 
             const selectedSensor = sensors[selectedIndex] || null;
