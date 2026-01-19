@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "news": {
+      "0.3.2": {
+        "en": "change Repo from ssh to https",
+        "de": "repo von ssh auf https ändern",
+        "ru": "изменение Repo с ssh на https",
+        "pt": "mudar o Repo de ssh para https",
+        "nl": "repo wijzigen van ssh naar https",
+        "fr": "changer Repo de ssh à https",
+        "it": "cambiare Repo da ssh a https",
+        "es": "cambio Repo de ssh a https",
+        "pl": "zmienić Repo z ssh na https",
+        "uk": "змінити Repo з Ssh на HTTPS",
+        "zh-cn": "从 ssh 改为 https"
+      },
       "0.3.1": {
         "en": "Fix some issues in UI",
         "de": "Einige Probleme in UI beheben",
@@ -80,19 +93,6 @@
         "pl": "Bugfix dla licencji\nBugfix dla Interval\nSynchronizacja nazw, pomiarów i pól do dokumentacji SOLECTRUS",
         "uk": "Помилки для ліцензії\nВиправлення помилок для Interval\nСинхронізувати назви, вимірювання та поля до документації SOLECTRUS",
         "zh-cn": "许可证的错误修正\nInterval 的错误修正\n将名称、测量和字段同步到 SOLECTRUS 文档"
-      },
-      "0.1.2": {
-        "en": "change UI to look for Source in Tree",
-        "de": "ändern UI nach Quelle in Baum suchen",
-        "ru": "изменить UI для поиска источника в Tree",
-        "pt": "alterar a UI para procurar o Código Fonte na Árvore",
-        "nl": "uI wijzigen om naar bron in boom te zoeken",
-        "fr": "changer l'interface utilisateur pour chercher Source dans Tree",
-        "it": "cambiare l'interfaccia utente per cercare Sorgente in Albero",
-        "es": "cambiar UI para buscar Fuente en Árbol",
-        "pl": "zmienić interfejs użytkownika, aby szukać źródła w drzewie",
-        "uk": "змінити UI для перегляду Джерело в Дереві",
-        "zh-cn": "更改用户界面以查找树中的来源"
       }
     },
     "titleLang": {
