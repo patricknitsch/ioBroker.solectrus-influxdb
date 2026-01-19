@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "news": {
+      "0.3.1": {
+        "en": "Fix some issues in UI",
+        "de": "Einige Probleme in UI beheben",
+        "ru": "Исправить некоторые проблемы в UI",
+        "pt": "Corrigir alguns problemas na UI",
+        "nl": "Enkele problemen in UI oplossen",
+        "fr": "Correction de certains problèmes en UI",
+        "it": "Risolvere alcuni problemi in UI",
+        "es": "Arreglar algunos problemas en la UI",
+        "pl": "Napraw kilka problemów w UI",
+        "uk": "Виправлення деяких питань УІ",
+        "zh-cn": "在UI中解决一些问题"
+      },
       "0.3.0": {
         "en": "Better handling of Influx Connection, also if no sensor is active\nRebuild of UI with actual status of each sensor",
         "de": "Bessere Handhabung der Influx-Verbindung, auch wenn kein Sensor aktiv ist\nWiederherstellen von UI mit Ist-Status jedes Sensors",
@@ -80,19 +93,6 @@
         "pl": "zmienić interfejs użytkownika, aby szukać źródła w drzewie",
         "uk": "змінити UI для перегляду Джерело в Дереві",
         "zh-cn": "更改用户界面以查找树中的来源"
-      },
-      "0.1.1": {
-        "en": "add more Debugging\noptimize translation",
-        "de": "mehr erfahren Debugging\noptimierung der übersetzung",
-        "ru": "добавить больше Отладка\nоптимизация перевода",
-        "pt": "adicionar mais Depuração\notimizar tradução",
-        "nl": "meer toevoegen Debuggen\noptimale vertaling",
-        "fr": "ajouter plus Déboguement\noptimiser la traduction",
-        "it": "aggiungere altro Debug\nottimizzare la traduzione",
-        "es": "añadir más Debugging\noptimización de la traducción",
-        "pl": "dodać więcej Debugowanie\noptymalizacja tłumaczenia",
-        "uk": "додати більше Розгортання\nоптимізація перекладу",
-        "zh-cn": "添加更多内容 调试\n优化翻译"
       }
     },
     "titleLang": {
