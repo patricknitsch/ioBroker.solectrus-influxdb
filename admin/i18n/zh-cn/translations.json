@@ -85,5 +85,6 @@
   ,"Select a sensor on the left or add a new one.": "Select a sensor on the left or add a new one."
   ,"Master/detail editor for sensors. Shows enabled status live in the list.": "Master/detail editor for sensors. Shows enabled status live in the list."
 
-  ,"SOLECTRUS Quick Start (InfluxDB)": "<div style='padding:12px'><img src='solectrus-influxdb.png' style='max-width:180px;height:auto;display:block;margin:0 auto 10px auto' alt='SOLECTRUS'><div style='font-weight:700;margin-bottom:6px'>SOLECTRUS 快速开始</div><ol style='margin:0 0 0 18px;padding:0'><li>在 InfluxDB 2.x 中创建一个对你的 bucket 具有写入权限的 API token。</li><li>在左侧填写 URL、组织、bucket 和 token 并保存。</li><li>打开“传感器”选项卡并映射你的 ioBroker 状态。</li><li>启用适配器并检查 <code>info.connection</code> 以及缓冲区相关状态。</li></ol><div style='margin-top:8px'><a href='https://github.com/patricknitsch/ioBroker.solectrus-influxdb#%EF%B8%8F-influxdb-configuration' target='_blank' rel='noreferrer'>打开文档</a></div></div>"
+  ,"SOLECTRUS Quick Start (InfluxDB)": "SOLECTRUS 快速开始\n1. 在 InfluxDB 2.x 中创建一个对你的 bucket 具有写入权限的 API token。\n2. 在左侧填写 URL、组织、bucket 和 token 并保存。\n3. 打开“传感器”选项卡并映射你的 ioBroker 状态。\n4. 启用适配器并检查 info.connection 以及缓冲区相关状态。"
+  ,"Open documentation": "打开文档"
 }

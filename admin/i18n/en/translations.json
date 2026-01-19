@@ -89,6 +89,7 @@
   ,"Select a sensor on the left or add a new one.": "Select a sensor on the left or add a new one."
   ,"Master/detail editor for sensors. Shows enabled status live in the list.": "Master/detail editor for sensors. Shows enabled status live in the list."
 
-  ,"SOLECTRUS Quick Start (InfluxDB)": "<div style='padding:12px'><img src='solectrus-influxdb.png' style='max-width:180px;height:auto;display:block;margin:0 auto 10px auto' alt='SOLECTRUS'><div style='font-weight:700;margin-bottom:6px'>SOLECTRUS Quick Start</div><ol style='margin:0 0 0 18px;padding:0'><li>Create an InfluxDB 2.x API token with write access to your bucket.</li><li>Enter URL, organization, bucket and token on the left and save.</li><li>Open the Sensors tab and map your ioBroker states.</li><li>Enable the adapter and check <code>info.connection</code> and the buffer states.</li></ol><div style='margin-top:8px'><a href='https://github.com/patricknitsch/ioBroker.solectrus-influxdb#%EF%B8%8F-influxdb-configuration' target='_blank' rel='noreferrer'>Open documentation</a></div></div>"
+  ,"SOLECTRUS Quick Start (InfluxDB)": "SOLECTRUS Quick Start\n1. Create an InfluxDB 2.x API token with write access to your bucket.\n2. Enter URL, organization, bucket and token on the left and save.\n3. Open the Sensors tab and map your ioBroker states.\n4. Enable the adapter and check info.connection and the buffer states."
+  ,"Open documentation": "Open documentation"
 
 }

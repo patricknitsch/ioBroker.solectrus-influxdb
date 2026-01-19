@@ -16,15 +16,43 @@
 					"lg": 4,
 					"xl": 4
         },
-        "_influxSolectrusQuickStart": {
-          "type": "staticText",
-          "text": "SOLECTRUS Quick Start (InfluxDB)",
+        "_influxSolectrusLogo": {
+          "type": "staticImage",
+          "src": "solectrus-influxdb.png",
           "newLine": false,
 					"xs": 12,
 					"sm": 12,
 					"md": 6,
 					"lg": 8,
 					"xl": 8
+        },
+        "_influxSolectrusQuickStart": {
+          "type": "staticText",
+          "text": "SOLECTRUS Quick Start (InfluxDB)",
+          "newLine": true,
+          "style": {
+            "whiteSpace": "pre-line"
+          },
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+        },
+        "_influxSolectrusDocs": {
+          "type": "staticLink",
+          "label": "Open documentation",
+          "href": "https://github.com/patricknitsch/ioBroker.solectrus-influxdb#%EF%B8%8F-influxdb-configuration",
+          "target": "_blank",
+          "button": true,
+          "variant": "outlined",
+          "icon": "book",
+          "newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
         },
         "influx.org": {
           "type": "text",

@@ -85,5 +85,6 @@
   ,"Select a sensor on the left or add a new one.": "Select a sensor on the left or add a new one."
   ,"Master/detail editor for sensors. Shows enabled status live in the list.": "Master/detail editor for sensors. Shows enabled status live in the list."
 
-  ,"SOLECTRUS Quick Start (InfluxDB)": "<div style='padding:12px'><img src='solectrus-influxdb.png' style='max-width:180px;height:auto;display:block;margin:0 auto 10px auto' alt='SOLECTRUS'><div style='font-weight:700;margin-bottom:6px'>Guia rápido SOLECTRUS</div><ol style='margin:0 0 0 18px;padding:0'><li>Crie no InfluxDB 2.x um token de API com permissão de escrita para o seu bucket.</li><li>Insira URL, organização, bucket e token à esquerda e salve.</li><li>Abra a aba “Sensores” e mapeie seus estados do ioBroker.</li><li>Ative o adaptador e verifique <code>info.connection</code> e os estados do buffer.</li></ol><div style='margin-top:8px'><a href='https://github.com/patricknitsch/ioBroker.solectrus-influxdb#%EF%B8%8F-influxdb-configuration' target='_blank' rel='noreferrer'>Abrir documentação</a></div></div>"
+  ,"SOLECTRUS Quick Start (InfluxDB)": "Guia rápido SOLECTRUS\n1. Crie no InfluxDB 2.x um token de API com permissão de escrita para o seu bucket.\n2. Insira URL, organização, bucket e token à esquerda e salve.\n3. Abra a aba “Sensores” e mapeie seus estados do ioBroker.\n4. Ative o adaptador e verifique info.connection e os estados do buffer."
+  ,"Open documentation": "Abrir documentação"
 }
