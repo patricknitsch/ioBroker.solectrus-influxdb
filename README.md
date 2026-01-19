@@ -31,6 +31,11 @@
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* (patricknitsch) Update Readme and split it in two own docs
+
 ### 0.3.3 (2026-01-19)
 
 * (patricknitsch) Try fixing automatic npm release
