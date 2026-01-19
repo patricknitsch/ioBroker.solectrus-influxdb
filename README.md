@@ -308,6 +308,11 @@ Jeder Sensor wird in der UI konfiguriert mit:
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* (patricknitsch) change Repo from ssh to https
+
 ### 0.3.1 (2026-01-19)
 
 * (Felliglanz) Fix some issues in UI
