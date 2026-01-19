@@ -20,7 +20,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/patricknitsch/ioBroker.solectrus-influxdb.git"
+    "url": "https://github.com/patricknitsch/ioBroker.solectrus-influxdb"
   },
   "engines": {
     "node": ">= 20"
