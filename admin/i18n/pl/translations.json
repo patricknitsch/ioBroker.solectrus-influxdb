@@ -59,6 +59,7 @@
   "Organization": "Organizacja",
   "Polling Interval (s)": "Interwał odpytywania (s)",
   "SOLECTRUS Sensors": "Czujniki SOLECTRUS",
+  "Sensors": "Czujniki",
   "SYSTEM_STATUS": "SYSTEM_STATUS",
   "SYSTEM_STATUS_OK": "SYSTEM_STATUS_OK",
   "Sensor Name": "Nazwa czujnika",
@@ -69,4 +70,21 @@
   "WALLBOX_CAR_CONNECTED": "WALLBOX_CAR_CONNECTED",
   "WALLBOX_POWER": "WALLBOX_POWER",
   "ioBroker Source State": "Stan źródła ioBroker"
+  ,"Add": "Add"
+  ,"Duplicate": "Duplicate"
+  ,"Delete": "Delete"
+  ,"Up": "Up"
+  ,"Down": "Down"
+  ,"Enabled": "Enabled"
+  ,"Unnamed": "(unnamed)"
+  ,"No sensors configured.": "No sensors configured."
+  ,"Select from existing states": "Select from existing states"
+  ,"Selection dialog not available": "Selection dialog not available"
+  ,"Select": "Select"
+  ,"e.g. some.adapter.0.channel.state": "e.g. some.adapter.0.channel.state"
+  ,"Select a sensor on the left or add a new one.": "Select a sensor on the left or add a new one."
+  ,"Master/detail editor for sensors. Shows enabled status live in the list.": "Master/detail editor for sensors. Shows enabled status live in the list."
+
+  ,"SOLECTRUS Quick Start (InfluxDB)": "Szybki start SOLECTRUS\n1. Utwórz w InfluxDB 2.x token API z uprawnieniami zapisu do Twojego bucketu.\n2. Wpisz po lewej URL, organizację, bucket i token, a następnie zapisz.\n3. Otwórz zakładkę „Czujniki” i zmapuj stany ioBroker.\n4. Włącz adapter i sprawdź info.connection oraz stany bufora."
+  ,"Open documentation": "Otwórz dokumentację"
 }

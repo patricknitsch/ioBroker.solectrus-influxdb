@@ -59,6 +59,7 @@
   "Organization": "组织",
   "Polling Interval (s)": "轮询间隔（秒）",
   "SOLECTRUS Sensors": "索莱克鲁斯传感器",
+  "Sensors": "传感器",
   "SYSTEM_STATUS": "系统状态",
   "SYSTEM_STATUS_OK": "系统状态正常",
   "Sensor Name": "传感器名称",
@@ -69,4 +70,21 @@
   "WALLBOX_CAR_CONNECTED": "WALLBOX_CAR_CONNECTED",
   "WALLBOX_POWER": "WALLBOX_POWER",
   "ioBroker Source State": "ioBroker 源状态"
+  ,"Add": "Add"
+  ,"Duplicate": "Duplicate"
+  ,"Delete": "Delete"
+  ,"Up": "Up"
+  ,"Down": "Down"
+  ,"Enabled": "Enabled"
+  ,"Unnamed": "(unnamed)"
+  ,"No sensors configured.": "No sensors configured."
+  ,"Select from existing states": "Select from existing states"
+  ,"Selection dialog not available": "Selection dialog not available"
+  ,"Select": "Select"
+  ,"e.g. some.adapter.0.channel.state": "e.g. some.adapter.0.channel.state"
+  ,"Select a sensor on the left or add a new one.": "Select a sensor on the left or add a new one."
+  ,"Master/detail editor for sensors. Shows enabled status live in the list.": "Master/detail editor for sensors. Shows enabled status live in the list."
+
+  ,"SOLECTRUS Quick Start (InfluxDB)": "SOLECTRUS 快速开始\n1. 在 InfluxDB 2.x 中创建一个对你的 bucket 具有写入权限的 API token。\n2. 在左侧填写 URL、组织、bucket 和 token 并保存。\n3. 打开“传感器”选项卡并映射你的 ioBroker 状态。\n4. 启用适配器并检查 info.connection 以及缓冲区相关状态。"
+  ,"Open documentation": "打开文档"
 }

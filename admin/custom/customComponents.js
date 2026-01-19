@@ -1,5 +1,6 @@
 /* eslint-disable */
 /* eslint-disable prettier/prettier */
+// @ts-nocheck
 
 // Minimal Module Federation remote container for ioBroker Admin jsonConfig "custom" control.
 // Exposes: SolectrusSensors/Components -> default export is an object containing { SolectrusSensorsEditor }.
@@ -118,8 +119,8 @@
             };
 
             const themeType = getThemeType();
-            const win = globalThis.window || globalThis;
-            const isDark = themeType === 'dark' || (!!(win && win.matchMedia) && win.matchMedia('(prefers-color-scheme: dark)').matches);
+            // Do NOT fall back to prefers-color-scheme here: ioBroker Admin theme must win.
+            const isDark = themeType === 'dark';
             const colors = isDark
                 ? {
                       panelBg: '#1f1f1f',
@@ -146,6 +147,34 @@
 
             const socket = (props && props.socket) || globalThis.socket || globalThis._socket || null;
             const theme = (props && props.theme) || null;
+
+            const t = text => {
+                try {
+                    if (props && typeof props.t === 'function') {
+                        return props.t(text);
+                    }
+                } catch {
+                    // ignore
+                }
+
+                const I18n =
+                    (AdapterReact && AdapterReact.I18n) ||
+                    globalThis.I18n ||
+                    (globalThis.window && globalThis.window.I18n);
+
+                try {
+                    if (I18n && typeof I18n.t === 'function') {
+                        return I18n.t(text);
+                    }
+                    if (I18n && typeof I18n.getTranslation === 'function') {
+                        return I18n.getTranslation(text);
+                    }
+                } catch {
+                    // ignore
+                }
+
+                return text;
+            };
 
             // Admin versions differ:
             // - Some pass `props.data` as the full native object (then `attr` selects the field).
@@ -387,7 +416,8 @@
             };
 
             const listStyle = {
-                overflow: 'auto',
+                overflowY: 'auto',
+                overflowX: 'hidden',
                 flex: 1,
             };
 
@@ -413,6 +443,7 @@
                 display: 'flex',
                 gap: 8,
                 alignItems: 'center',
+                overflow: 'hidden',
                 color: colors.text,
             });
 
@@ -456,26 +487,26 @@
                     React.createElement(
                         'div',
                         { style: toolbarStyle },
-                        React.createElement('button', { type: 'button', style: btnStyle, onClick: addSensor }, 'Hinzufügen'),
+                        React.createElement('button', { type: 'button', style: btnStyle, onClick: addSensor }, t('Add')),
                         React.createElement(
                             'button',
                             { type: 'button', style: btnStyle, onClick: cloneSelected, disabled: !selectedSensor },
-                            'Duplizieren'
+                            t('Duplicate')
                         ),
                         React.createElement(
                             'button',
                             { type: 'button', style: btnStyle, onClick: deleteSelected, disabled: !selectedSensor },
-                            'Löschen'
+                            t('Delete')
                         ),
                         React.createElement(
                             'button',
                             { type: 'button', style: btnStyle, onClick: () => moveSelected(-1), disabled: selectedIndex <= 0 },
-                            'Hoch'
+                            t('Up')
                         ),
                         React.createElement(
                             'button',
                             { type: 'button', style: btnStyle, onClick: () => moveSelected(1), disabled: selectedIndex >= sensors.length - 1 },
-                            'Runter'
+                            t('Down')
                         )
                     ),
                     React.createElement(
@@ -492,18 +523,27 @@
                                           onClick: () => setSelectedIndex(i),
                                       },
                                       React.createElement('span', { style: { width: 22 } }, s.enabled ? '🟢' : '⚪'),
-                                      React.createElement('span', { style: { fontWeight: 600 } }, s.SensorName || '(unnamed)'),
                                       React.createElement(
                                           'span',
-                                          { style: { opacity: 0.75, marginLeft: 'auto', color: colors.textMuted } },
-                                          s.field || ''
+                                          {
+                                              style: {
+                                                  fontWeight: 600,
+                                                  flex: 1,
+                                                  minWidth: 0,
+                                                  overflow: 'hidden',
+                                                  textOverflow: 'ellipsis',
+                                                  whiteSpace: 'nowrap',
+                                              },
+                                              title: s.SensorName || t('Unnamed'),
+                                          },
+                                          s.SensorName || t('Unnamed')
                                       )
                                   )
                               )
                             : React.createElement(
                                   'div',
                                   { style: { padding: 12, opacity: 0.9, color: colors.textMuted } },
-                                  'Keine Sensoren konfiguriert.'
+                                  t('No sensors configured.')
                               )
                     )
                 ),
@@ -530,10 +570,10 @@
                                           checked: !!selectedSensor.enabled,
                                           onChange: e => updateSelected('enabled', !!e.target.checked),
                                       }),
-                                      React.createElement('span', null, 'Aktiv')
+                                      React.createElement('span', null, t('Enabled'))
                                   )
                               ),
-                              React.createElement('label', { style: labelStyle }, 'Sensorname'),
+                              React.createElement('label', { style: labelStyle }, t('Sensor Name')),
                               React.createElement('input', {
                                   style: inputStyle,
                                   type: 'text',
@@ -543,7 +583,7 @@
                               React.createElement(
                                   'label',
                                   { style: labelStyle },
-                                  'ioBroker Datenpunkt (State-ID)'
+                                  t('ioBroker Source State')
                               ),
                               React.createElement(
                                   'div',
@@ -553,7 +593,7 @@
                                       type: 'text',
                                       value: selectedSensor.sourceState || '',
                                       onChange: e => updateSelected('sourceState', e.target.value),
-                                      placeholder: 'z.B. some.adapter.0.channel.state',
+                                      placeholder: t('e.g. some.adapter.0.channel.state'),
                                   }),
                                   React.createElement(
                                       'button',
@@ -562,8 +602,8 @@
                                           style: Object.assign({}, btnStyle, { padding: '8px 10px' }),
                                           disabled: !(DialogSelectID && socket && theme),
                                           title: DialogSelectID && socket && theme
-                                              ? 'Aus bestehenden Datenpunkten auswählen'
-                                              : 'Auswahl-Dialog nicht verfügbar'
+                                              ? t('Select from existing states')
+                                              : t('Selection dialog not available')
                                           ,
                                           onClick: () => {
                                               if (!(DialogSelectID && socket && theme)) {
@@ -581,7 +621,7 @@
                                               setShowSelectStateId(true);
                                           },
                                       },
-                                      'Auswählen'
+                                      t('Select')
                                   )
                               ),
                               React.createElement(
@@ -590,7 +630,7 @@
                                   React.createElement(
                                       'div',
                                       null,
-                                      React.createElement('label', { style: labelStyle }, 'Datentyp'),
+                                      React.createElement('label', { style: labelStyle }, t('Datatype')),
                                       React.createElement(
                                           'select',
                                           {
@@ -598,17 +638,17 @@
                                               value: selectedSensor.type || '',
                                               onChange: e => updateSelected('type', e.target.value),
                                           },
-                                          React.createElement('option', { value: '' }, 'Standard'),
-                                          React.createElement('option', { value: 'int' }, 'Ganzzahl'),
-                                          React.createElement('option', { value: 'float' }, 'Fließkomma'),
-                                          React.createElement('option', { value: 'bool' }, 'Boolean'),
-                                          React.createElement('option', { value: 'string' }, 'Text')
+                                          React.createElement('option', { value: '' }, t('Standard')),
+                                          React.createElement('option', { value: 'int' }, t('Integer')),
+                                          React.createElement('option', { value: 'float' }, t('Float')),
+                                          React.createElement('option', { value: 'bool' }, t('Boolean')),
+                                          React.createElement('option', { value: 'string' }, t('String'))
                                       )
                                   ),
                                   React.createElement(
                                       'div',
                                       null,
-                                      React.createElement('label', { style: labelStyle }, 'Influx Measurement'),
+                                      React.createElement('label', { style: labelStyle }, t('Influx Measurement')),
                                       React.createElement('input', {
                                           style: inputStyle,
                                           type: 'text',
@@ -617,7 +657,7 @@
                                       })
                                   )
                               ),
-                              React.createElement('label', { style: labelStyle }, 'Influx Field'),
+                              React.createElement('label', { style: labelStyle }, t('Influx Field')),
                               React.createElement('input', {
                                   style: inputStyle,
                                   type: 'text',
@@ -648,7 +688,7 @@
                         : React.createElement(
                               'div',
                               { style: { opacity: 0.9, color: colors.textMuted } },
-                              'Wähle links einen Sensor aus oder füge einen neuen hinzu.'
+                              t('Select a sensor on the left or add a new one.')
                           )
                 )
             );
