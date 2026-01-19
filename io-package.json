@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "0.3.2",
+    "version": "0.3.3",
     "news": {
+      "0.3.3": {
+        "en": "Try fixing automatic npm release",
+        "de": "Versuchen Sie, automatische npm-Release zu beheben",
+        "ru": "Попробуйте исправить автоматический выпуск npm",
+        "pt": "Tente corrigir a liberação automática do npm",
+        "nl": "Probeer het repareren van automatische npm release",
+        "fr": "Essayez de fixer la libération automatique npm",
+        "it": "Prova a fissare il rilascio automatico npm",
+        "es": "Prueba la fijación automática npm de liberación",
+        "pl": "Spróbuj naprawić automatyczne wydanie npm",
+        "uk": "Спробуйте виправити автоматичний npm реліз",
+        "zh-cn": "尝试修复自动 npm 释放"
+      },
       "0.3.2": {
         "en": "change Repo from ssh to https",
         "de": "repo von ssh auf https ändern",
@@ -80,19 +93,6 @@
         "pl": "Bugfix z ikoną",
         "uk": "Помилки з іконкою",
         "zh-cn": "带有图标的错误修正"
-      },
-      "0.1.3": {
-        "en": "Bugfix for License\nBugfix for Interval\nSynchronize Names, Measurements and Fields to SOLECTRUS Documentation",
-        "de": "Bugfix für die Lizenz\nBugfix für Intervall\nSynchronisieren von Namen, Messungen und Feldern zu SOLECTRUS Dokumentation",
-        "ru": "Bugfix для лицензии\nBugfix для Интервал\nСинхронизация имен, измерений и полей с документацией SOLECTRUS",
-        "pt": "Correção de Erros para a Licença\nCorreção de Erros para Intervalo\nSincronizar Nomes, Medições e Campos para Documentação SOLECTRUS",
-        "nl": "Bugfix voor licentie\nBugfix voor Interval\nNames, metingen en velden synchroniseren naar SOLECTRUS-documentatie",
-        "fr": "Correction de bogue pour la licence\nBugfix pour Interval\nSynchroniser les noms, les mesures et les champs vers la documentation SOLECTRUS",
-        "it": "Bugfix per la licenza\nBugfix per Interval\nSincronizza nomi, misure e campi alla documentazione SOLECTRUS",
-        "es": "Bugfix para licencia\nBugfix para Interval\nSincronizar Nombres, Medidas y Campos a la Documentación SOLECTRUS",
-        "pl": "Bugfix dla licencji\nBugfix dla Interval\nSynchronizacja nazw, pomiarów i pól do dokumentacji SOLECTRUS",
-        "uk": "Помилки для ліцензії\nВиправлення помилок для Interval\nСинхронізувати назви, вимірювання та поля до документації SOLECTRUS",
-        "zh-cn": "许可证的错误修正\nInterval 的错误修正\n将名称、测量和字段同步到 SOLECTRUS 文档"
       }
     },
     "titleLang": {
