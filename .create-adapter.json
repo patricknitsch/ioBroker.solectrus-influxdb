@@ -37,7 +37,7 @@
 	"authorName": "patricknitsch",
 	"authorGithub": "patricknitsch",
 	"authorEmail": "patricknitsch@web.de",
-	"gitRemoteProtocol": "SSH",
+	"gitRemoteProtocol": "HTTPS",
 	"gitCommit": "no",
 	"defaultBranch": "main",
 	"license": "MIT License",
