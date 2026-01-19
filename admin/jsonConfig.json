@@ -20,6 +20,13 @@
           "type": "staticImage",
           "src": "solectrus-influxdb.png",
           "newLine": false,
+					"style": {
+						"maxWidth": 220,
+						"width": "100%",
+						"height": "auto",
+						"display": "block",
+						"margin": "0 auto"
+					},
 					"xs": 12,
 					"sm": 12,
 					"md": 6,
@@ -28,7 +35,19 @@
         },
         "_influxSolectrusQuickStart": {
           "type": "staticText",
-          "text": "SOLECTRUS Quick Start (InfluxDB)",
+          "text": {
+            "en": "SOLECTRUS Quick Start\n1. Create an InfluxDB 2.x API token with write access to your bucket.\n2. Enter URL, organization, bucket and token on the left and save.\n3. Open the Sensors tab and map your ioBroker states.\n4. Enable the adapter and check info.connection and the buffer states.",
+            "de": "SOLECTRUS Kurzanleitung\n1. Erstelle in InfluxDB 2.x einen API-Token mit Schreibrechten für deinen Bucket.\n2. Trage URL, Organisation, Bucket und Token links ein und speichere.\n3. Öffne den Tab „Sensoren“ und verknüpfe deine ioBroker-Datenpunkte.\n4. Aktiviere den Adapter und prüfe info.connection sowie die Buffer-States.",
+            "es": "Guía rápida SOLECTRUS\n1. Crea en InfluxDB 2.x un token de API con permiso de escritura para tu bucket.\n2. Introduce la URL, la organización, el bucket y el token a la izquierda y guarda.\n3. Abre la pestaña “Sensores” y asigna tus estados de ioBroker.\n4. Activa el adaptador y comprueba info.connection y los estados del buffer.",
+            "fr": "Guide rapide SOLECTRUS\n1. Créez dans InfluxDB 2.x un jeton API avec droit d’écriture sur votre bucket.\n2. Saisissez l’URL, l’organisation, le bucket et le jeton à gauche et enregistrez.\n3. Ouvrez l’onglet « Capteurs » et mappez vos états ioBroker.\n4. Activez l’adaptateur et vérifiez info.connection et les états du buffer.",
+            "it": "Guida rapida SOLECTRUS\n1. Crea in InfluxDB 2.x un token API con permesso di scrittura per il tuo bucket.\n2. Inserisci URL, organizzazione, bucket e token a sinistra e salva.\n3. Apri la scheda “Sensori” e mappa i tuoi stati ioBroker.\n4. Abilita l’adattatore e controlla info.connection e gli stati del buffer.",
+            "nl": "SOLECTRUS snelstart\n1. Maak in InfluxDB 2.x een API-token met schrijfrechten voor je bucket.\n2. Vul URL, organisatie, bucket en token links in en sla op.\n3. Open het tabblad “Sensoren” en koppel je ioBroker-states.\n4. Schakel de adapter in en controleer info.connection en de buffer-states.",
+            "pl": "Szybki start SOLECTRUS\n1. Utwórz w InfluxDB 2.x token API z uprawnieniami zapisu do Twojego bucketu.\n2. Wpisz po lewej URL, organizację, bucket i token, a następnie zapisz.\n3. Otwórz zakładkę „Czujniki” i zmapuj stany ioBroker.\n4. Włącz adapter i sprawdź info.connection oraz stany bufora.",
+            "pt": "Guia rápido SOLECTRUS\n1. Crie no InfluxDB 2.x um token de API com permissão de escrita para o seu bucket.\n2. Insira URL, organização, bucket e token à esquerda e salve.\n3. Abra a aba “Sensores” e mapeie seus estados do ioBroker.\n4. Ative o adaptador e verifique info.connection e os estados do buffer.",
+            "ru": "Быстрый старт SOLECTRUS\n1. Создайте в InfluxDB 2.x API-токен с правами записи для вашего bucket.\n2. Введите слева URL, организацию, bucket и токен и сохраните.\n3. Откройте вкладку «Датчики» и сопоставьте ваши состояния ioBroker.\n4. Включите адаптер и проверьте info.connection и состояния буфера.",
+            "uk": "Швидкий старт SOLECTRUS\n1. Створіть в InfluxDB 2.x API-токен з правами запису для вашого bucket.\n2. Введіть ліворуч URL, організацію, bucket і токен та збережіть.\n3. Відкрийте вкладку «Датчики» і зіставте ваші стани ioBroker.\n4. Увімкніть адаптер і перевірте info.connection та стани буфера.",
+            "zh-cn": "SOLECTRUS 快速开始\n1. 在 InfluxDB 2.x 中创建一个对你的 bucket 具有写入权限的 API token。\n2. 在左侧填写 URL、组织、bucket 和 token 并保存。\n3. 打开“传感器”选项卡并映射你的 ioBroker 状态。\n4. 启用适配器并检查 info.connection 以及缓冲区相关状态。"
+          },
           "newLine": true,
           "style": {
             "whiteSpace": "pre-line"
@@ -44,9 +63,7 @@
           "label": "Open documentation",
           "href": "https://github.com/patricknitsch/ioBroker.solectrus-influxdb#%EF%B8%8F-influxdb-configuration",
           "target": "_blank",
-          "button": true,
-          "variant": "outlined",
-          "icon": "book",
+          "button": false,
           "newLine": true,
 					"xs": 12,
 					"sm": 12,
