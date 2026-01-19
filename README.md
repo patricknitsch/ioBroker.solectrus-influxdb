@@ -31,8 +31,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.3.4 (2026-01-19)
 
 * (patricknitsch) Update Readme and split it in two own docs
 

@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "news": {
+      "0.3.4": {
+        "en": "Update Readme and split it in two own docs",
+        "de": "Aktualisieren Sie Readme und teilen Sie es in zwei eigenen Docs",
+        "ru": "Обновите Readme и разделите его на два собственных документа",
+        "pt": "Atualizar o Readme e dividi-lo em dois documentos próprios",
+        "nl": "Update Readme en deel het in twee eigen documenten",
+        "fr": "Mettre à jour Readme et le diviser en deux documents",
+        "it": "Aggiornare Readme e dividerlo in due propri documenti",
+        "es": "Actualizar Readme y dividirlo en dos puntos propios",
+        "pl": "Uaktualnij Readme i podziel na dwa własne dokumenty",
+        "uk": "Update Readme і розбити його в два власних docs",
+        "zh-cn": "更新 Readme 并将其分成两个自己的文件"
+      },
       "0.3.3": {
         "en": "Try fixing automatic npm release",
         "de": "Versuchen Sie, automatische npm-Release zu beheben",
@@ -80,19 +93,6 @@
         "pl": "Ulepszenie konfiguracji czujnika UI (akordeon)",
         "uk": "Покращення конфігурації датчика UI (акордеон)",
         "zh-cn": "改进传感器配置 UI (accordion)"
-      },
-      "0.1.4": {
-        "en": "Bugfix with Icon",
-        "de": "Bugfix mit Icon",
-        "ru": "Bugfix с иконой",
-        "pt": "Correcção de Erros com Ícone",
-        "nl": "Bugfix met pictogram",
-        "fr": "Bugfix avec icône",
-        "it": "Bugfix con Icon",
-        "es": "Bugfix con Icon",
-        "pl": "Bugfix z ikoną",
-        "uk": "Помилки з іконкою",
-        "zh-cn": "带有图标的错误修正"
       }
     },
     "titleLang": {
