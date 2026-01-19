@@ -66,7 +66,7 @@
       "items": {
         "_sensorsMdInfo": {
           "type": "staticText",
-          "text": "Master/Detail-Editor für Sensoren. Zeigt den Aktiv-Status live in der Liste.",
+          "text": "Master/detail editor for sensors. Shows enabled status live in the list.",
           "newLine": true,
           "sm": 12
         },

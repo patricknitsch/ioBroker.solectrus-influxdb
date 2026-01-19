@@ -69,4 +69,19 @@
   "WALLBOX_CAR_CONNECTED": "WALLBOX_CAR_CONNECTED",
   "WALLBOX_POWER": "WALLBOX_POWER",
   "ioBroker Source State": "ioBroker-Quellstatus"
+
+  ,"Add": "Hinzufügen"
+  ,"Duplicate": "Duplizieren"
+  ,"Delete": "Löschen"
+  ,"Up": "Hoch"
+  ,"Down": "Runter"
+  ,"Enabled": "Aktiv"
+  ,"Unnamed": "(unbenannt)"
+  ,"No sensors configured.": "Keine Sensoren konfiguriert."
+  ,"Select from existing states": "Aus bestehenden Datenpunkten auswählen"
+  ,"Selection dialog not available": "Auswahl-Dialog nicht verfügbar"
+  ,"Select": "Auswählen"
+  ,"e.g. some.adapter.0.channel.state": "z.B. some.adapter.0.channel.state"
+  ,"Select a sensor on the left or add a new one.": "Wähle links einen Sensor aus oder füge einen neuen hinzu."
+  ,"Master/detail editor for sensors. Shows enabled status live in the list.": "Master/Detail-Editor für Sensoren. Zeigt den Aktiv-Status live in der Liste."
 }
