@@ -160,63 +160,63 @@
         }
       }
     },
-  "calc": {
-    "type": "panel",
-    "label": "Calculations",
-    "items": {
-      "values": {
-        "type": "panel",
-        "label": "Values",
-        "items": {
-          "hint": {
-            "type": "staticText",
-            "text": "Configure values via the Master/Detail editor.",
-            "sm": 12
-          },
+    "calc": {
+      "type": "panel",
+      "label": "Calculations",
+      "items": {
+        "values": {
+          "type": "panel",
+          "label": "Values",
           "items": {
-            "type": "custom",
-            "url": "custom/customComponents.js",
-            "name": "DataSolectrusItems/Components/DataSolectrusItemsEditor",
-            "label": "Configured values",
-            "sm": 12
+            "hint": {
+              "type": "staticText",
+              "text": "Configure values via the Master/Detail editor.",
+              "sm": 12
+            },
+            "items": {
+              "type": "custom",
+              "url": "custom/customComponents.js",
+              "name": "DataSolectrusItems/Components/DataSolectrusItemsEditor",
+              "label": "Configured values",
+              "sm": 12
+            }
           }
-        }
-      },
-      "runtime": {
-        "type": "panel",
-        "label": "Runtime",
-        "items": {
-          "calc.enabled": {
-            "type": "checkbox",
-            "label": "Enable calculations",
-            "default": false,
-            "sm": 12
-          },
-          "calc.pollIntervalSeconds": {
-            "type": "number",
-            "label": "Poll interval (seconds)",
-            "min": 1,
-            "max": 3600,
-            "default": 5,
-            "sm": 6
-          },
-          "calc.snapshotInputs": {
-            "type": "checkbox",
-            "label": "Read inputs on tick (snapshot)",
-            "default": false,
-            "sm": 12
-          },
-          "calc.snapshotDelayMs": {
-            "type": "number",
-            "label": "Snapshot delay (ms)",
-            "min": 0,
-            "max": 5000,
-            "default": 0,
-            "sm": 6
+        },
+        "runtime": {
+          "type": "panel",
+          "label": "Runtime",
+          "items": {
+            "calc.enabled": {
+              "type": "checkbox",
+              "label": "Enable calculations",
+              "default": false,
+              "sm": 12
+            },
+            "calc.pollIntervalSeconds": {
+              "type": "number",
+              "label": "Poll interval (seconds)",
+              "min": 1,
+              "max": 3600,
+              "default": 5,
+              "sm": 6
+            },
+            "calc.snapshotInputs": {
+              "type": "checkbox",
+              "label": "Read inputs on tick (snapshot)",
+              "default": false,
+              "sm": 12
+            },
+            "calc.snapshotDelayMs": {
+              "type": "number",
+              "label": "Snapshot delay (ms)",
+              "min": 0,
+              "max": 5000,
+              "default": 0,
+              "sm": 6
+            }
           }
         }
       }
     }
-  }
   }
 }
