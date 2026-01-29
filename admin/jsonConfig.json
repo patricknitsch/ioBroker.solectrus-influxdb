@@ -159,6 +159,98 @@
           "sm": 12
         }
       }
+    },
+    "calc": {
+      "type": "panel",
+      "label": "Calculations",
+      "items": {
+        "_calcInfo": {
+          "type": "staticText",
+          "text": {
+            "en": "Create calculated values (data-solectrus-like) and write them to Influx via the existing buffer/flush pipeline.",
+            "de": "Erzeuge berechnete Werte (data-solectrus-ähnlich) und schreibe sie über den bestehenden Buffer/Flush nach Influx."
+          },
+          "newLine": true,
+          "xs": 12
+        },
+        "_calcLeft": {
+          "type": "panel",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4,
+          "items": {
+            "calc.enabled": {
+              "type": "checkbox",
+              "label": "Enable calculations",
+              "newLine": true,
+              "xs": 12
+            },
+            "calc.interval": {
+              "type": "number",
+              "label": "Calculation interval (s)",
+              "min": 1,
+              "max": 60,
+              "newLine": true,
+              "xs": 12
+            },
+            "calc.snapshot": {
+              "type": "checkbox",
+              "label": "Snapshot mode (read all inputs first)",
+              "newLine": true,
+              "xs": 12
+            },
+            "calc.snapshotDelayMs": {
+              "type": "number",
+              "label": "Snapshot delay (ms)",
+              "min": 0,
+              "max": 2000,
+              "newLine": true,
+              "xs": 12
+            },
+            "calc.writeStates": {
+              "type": "checkbox",
+              "label": "Write calc.* states (debug)",
+              "newLine": true,
+              "xs": 12
+            }
+          }
+        },
+
+        "_calcRight": {
+          "type": "panel",
+          "newLine": false,
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 8,
+          "xl": 8,
+          "items": {
+            "calc.itemsJson": {
+              "type": "jsonEditor",
+              "label": "Items (JSON)",
+              "newLine": true,
+              "xs": 12,
+              "sm": 12,
+              "md": 12,
+              "lg": 12,
+              "xl": 12
+            },
+            "_calcExample": {
+              "type": "staticText",
+              "text": {
+                "en": "Example:\n[\n  {\n    \"enabled\": true,\n    \"targetId\": \"pv_power\",\n    \"measurement\": \"KOSTAL\",\n    \"field\": \"pv_power\",\n    \"type\": \"float\",\n    \"sourceStates\": {\n      \"p\": \"modbus.0.inputRegisters.100\"\n    },\n    \"formula\": \"max(p,0)\",\n    \"clampNegative\": true\n  }\n]\n\nUse sourceStates keys inside formula. Functions: min,max,abs,round,floor,ceil,pow,sqrt,clamp.",
+                "de": "Beispiel:\n[\n  {\n    \"enabled\": true,\n    \"targetId\": \"pv_power\",\n    \"measurement\": \"KOSTAL\",\n    \"field\": \"pv_power\",\n    \"type\": \"float\",\n    \"sourceStates\": {\n      \"p\": \"modbus.0.inputRegisters.100\"\n    },\n    \"formula\": \"max(p,0)\",\n    \"clampNegative\": true\n  }\n]\n\nDie Keys aus sourceStates werden in der Formel verwendet. Funktionen: min,max,abs,round,floor,ceil,pow,sqrt,clamp."
+              },
+              "newLine": true,
+              "style": { "whiteSpace": "pre-line" },
+              "xs": 12
+            }
+          }
+        }
+      }
     }
   }
 }

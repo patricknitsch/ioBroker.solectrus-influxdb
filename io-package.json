@@ -543,7 +543,15 @@
         "measurement": "outdoor_forecast",
         "field": "temperature"
       }
-    ]
+    ],
+    "calc": {
+      "enabled": false,
+      "interval": 5,
+      "snapshot": true,
+      "snapshotDelayMs": 150,
+      "writeStates": true,
+      "itemsJson": "[]"
+    }
   },
   "objects": [],
   "instanceObjects": [

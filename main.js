@@ -8,6 +8,7 @@ const utils = require('@iobroker/adapter-core');
 const { InfluxDB, Point } = require('@influxdata/influxdb-client');
 const fs = require('fs');
 const path = require('path');
+const { createCalcEngine } = require('./lib/calc');
 
 class SolectrusInfluxdb extends utils.Adapter {
 	constructor(options) {
@@ -39,6 +40,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.bufferFile = path.join(this.adapterDir, 'buffer.json');
 		this.maxBufferSize = 100_000;
 
+		/* ---------- Calc (data-solectrus integration) ---------- */
+		this.calcEngine = null;
+
 		this.on('ready', this.onReady.bind(this));
 		this.on('unload', this.onUnload.bind(this));
 		this.on('stateChange', this.onStateChange.bind(this));
@@ -47,6 +51,18 @@ class SolectrusInfluxdb extends utils.Adapter {
 	/* =====================================================
 	 * HELPERS
 	 * ===================================================== */
+
+	pushToBuffer = entry => {
+		this.buffer.push(entry);
+
+		if (this.buffer.length > this.maxBufferSize) {
+			this.log.warn('Buffer limit reached – dropping oldest entries');
+			this.buffer.splice(0, this.buffer.length - this.maxBufferSize);
+		}
+
+		this.saveBuffer();
+		this.updateBufferStates();
+	};
 
 	parseFieldTypeConflictError(err) {
 		if (!err || !err.message) {
@@ -182,6 +198,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		/* Flush loop – start immediately */
 		this.scheduleNextFlush(1000);
+
+		/* Calc engine (data-solectrus integration) */
+		try {
+			this.calcEngine = createCalcEngine(this, entry => this.pushToBuffer(entry));
+			this.calcEngine.start(this.config);
+		} catch (e) {
+			this.log.error(`Calc engine failed to start: ${e?.message || e}`);
+		}
 
 		this.log.info('Adapter started successfully');
 	}
@@ -611,6 +635,17 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 			if (this.flushTimer) {
 				clearTimeout(this.flushTimer);
+			}
+
+			// stop calc engine
+			if (this.calcEngine) {
+				try {
+					this.calcEngine.stop();
+				} catch {
+					// ignore
+				} finally {
+					this.calcEngine = null;
+				}
 			}
 
 			this.saveBuffer();
