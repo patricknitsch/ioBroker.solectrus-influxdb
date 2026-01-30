@@ -545,6 +545,12 @@
       }
     ]
   },
+  "encryptedNative": [
+    "influx.token"
+  ],
+  "protectedNative": [
+    "influx.token"
+  ],
   "objects": [],
   "instanceObjects": [
     {
