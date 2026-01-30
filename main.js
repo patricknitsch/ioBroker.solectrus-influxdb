@@ -6,8 +6,10 @@
 
 const utils = require('@iobroker/adapter-core');
 const { InfluxDB, Point } = require('@influxdata/influxdb-client');
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const MAX_DELAY_MS = 2_147_483_647; // Node.js timer limit
 
 class SolectrusInfluxdb extends utils.Adapter {
 	constructor(options) {
@@ -48,6 +50,17 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * HELPERS
 	 * ===================================================== */
 
+	clampDelay(ms, fallbackMs) {
+		let v = Number(ms);
+		if (!Number.isFinite(v) || v <= 0) {
+			v = fallbackMs;
+		}
+		if (v > MAX_DELAY_MS) {
+			v = MAX_DELAY_MS;
+		}
+		return v;
+	}
+
 	parseFieldTypeConflictError(err) {
 		if (!err || !err.message) {
 			return null;
@@ -61,16 +74,13 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 
 		return {
-			field: match[1], // z.B. inverter_power
-			measurement: match[2], // z.B. KOSTAL
+			field: match[1],
+			measurement: match[2],
 		};
 	}
 
 	isFieldTypeConflict(err) {
-		if (!err || !err.message) {
-			return false;
-		}
-		return err.message.toLowerCase().includes('field type conflict');
+		return !!(err && err.message && err.message.toLowerCase().includes('field type conflict'));
 	}
 
 	getSensorStateId(sensor) {
@@ -81,16 +91,48 @@ class SolectrusInfluxdb extends utils.Adapter {
 		return !!this.writeApi && this.influxVerified && !this.isUnloading;
 	}
 
-	getCollectInterval() {
-		return Number(this.config.influx?.interval) > 0 ? Number(this.config.influx.interval) * 1000 : 5000;
+	getCollectIntervalMs() {
+		const sec = Number(this.config.influx?.interval);
+		const ms = sec > 0 ? sec * 1000 : 5000;
+		return this.clampDelay(ms, 5000);
 	}
 
-	getFlushInterval() {
-		return Number(this.config.influx?.interval) > 0 ? (Number(this.config.influx.interval) + 5) * 1000 : 10_000;
+	getFlushIntervalMs() {
+		// keep your current logic: flush ~ interval + 5 sec (min 10s)
+		const sec = Number(this.config.influx?.interval);
+		const base = sec > 0 ? (sec + 5) * 1000 : 10_000;
+		return this.clampDelay(base, 10_000);
 	}
 
 	hasEnabledSensors() {
-		return Array.isArray(this.config.sensors) && this.config.sensors.some(s => s.enabled);
+		return Array.isArray(this.config.sensors) && this.config.sensors.some(s => s && s.enabled);
+	}
+
+	/* =====================================================
+	 * OBJECT TREE (INTERMEDIATE OBJECTS)
+	 * ===================================================== */
+
+	async ensureObjectTree() {
+		// info channel
+		await this.setObjectNotExistsAsync('info', {
+			type: 'channel',
+			common: { name: 'Info' },
+			native: {},
+		});
+
+		// buffer channel
+		await this.setObjectNotExistsAsync('info.buffer', {
+			type: 'channel',
+			common: { name: 'Buffer' },
+			native: {},
+		});
+
+		// sensors channel
+		await this.setObjectNotExistsAsync('sensors', {
+			type: 'channel',
+			common: { name: 'Sensors' },
+			native: {},
+		});
 	}
 
 	/* =====================================================
@@ -107,7 +149,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.log.error(`Error at clearing Buffer: ${err.message}`);
 		}
 		this.updateBufferStates();
-		this.log.info('Buffer cleared and State updated.');
 	}
 
 	loadBuffer() {
@@ -134,6 +175,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.setState('info.buffer.size', this.buffer.length, true);
 		if (this.buffer.length > 0) {
 			this.setState('info.buffer.oldest', new Date(this.buffer[0].ts).toISOString(), true);
+		} else {
+			// optional: clear oldest when empty
+			this.setState('info.buffer.oldest', '', true);
 		}
 	}
 
@@ -142,6 +186,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * ===================================================== */
 
 	async onReady() {
+		await this.ensureObjectTree();
 		await this.createInfoStates();
 
 		this.setState('info.connection', false, true);
@@ -153,14 +198,15 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		if (!this.validateInfluxConfig()) {
 			this.log.error('InfluxDB configuration incomplete');
+			this.setState('info.lastError', 'InfluxDB configuration incomplete (URL/Token/Org/Bucket missing)', true);
 			return;
 		}
 
-		/* --- Always check Influx Connection --- */
+		/* --- Always check Influx Connection once at startup --- */
 		const influxOk = await this.verifyInfluxConnection();
 		if (!influxOk) {
 			this.setState('info.lastError', 'InfluxDB connection failed – check URL, Token, Org and Bucket', true);
-			// Adapter run → Retry later during flush
+			// Adapter continues running; flush loop will retry
 		}
 
 		if (!Array.isArray(this.config.sensors)) {
@@ -178,7 +224,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 		await this.prepareSensors();
 
 		/* Collect loop */
-		this.collectTimer = setInterval(() => this.collectPoints().catch(() => {}), this.getCollectInterval());
+		const collectMs = this.getCollectIntervalMs();
+		this.log.info(`Collect interval: ${Math.round(collectMs / 1000)}s`);
+		this.collectTimer = this.setInterval(() => this.collectPoints().catch(() => {}), collectMs);
 
 		/* Flush loop – start immediately */
 		this.scheduleNextFlush(1000);
@@ -208,10 +256,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 			});
 
 			if (changed) {
-				await this.setForeignObjectAsync(objId, obj);
+				await this.setForeignObject(objId, obj);
 			}
 		} catch (e) {
-			// Not critical for adapter runtime; it only affects nicer admin display.
 			this.log.debug(`Cannot migrate sensor titles: ${e}`);
 		}
 	}
@@ -283,6 +330,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * INFLUX
 	 * ===================================================== */
 
+	validateInfluxConfig() {
+		const cfg = this.config.influx;
+		return cfg && cfg.url?.trim() && cfg.token?.trim() && cfg.org?.trim() && cfg.bucket?.trim();
+	}
+
 	async verifyInfluxConnection() {
 		try {
 			const { url, token, org, bucket } = this.config.influx;
@@ -291,7 +343,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.writeApi = this.influx.getWriteApi(org, bucket, 'ms');
 
 			const testPoint = new Point('adapter_connection_test').booleanField('ok', true).timestamp(new Date());
-
 			this.writeApi.writePoint(testPoint);
 			await this.writeApi.flush();
 
@@ -323,11 +374,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 	}
 
-	validateInfluxConfig() {
-		const cfg = this.config.influx;
-		return cfg && cfg.url?.trim() && cfg.token?.trim() && cfg.org?.trim() && cfg.bucket?.trim();
-	}
-
 	async ensureInflux() {
 		if (this.isInfluxReady()) {
 			return true;
@@ -342,11 +388,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 	async prepareSensors() {
 		for (const sensor of this.config.sensors) {
-			if (!sensor.enabled) {
+			if (!sensor || !sensor.enabled) {
 				continue;
 			}
 
 			const id = this.getSensorStateId(sensor);
+
 			const typeMapping = {
 				int: 'number',
 				float: 'number',
@@ -354,9 +401,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 				string: 'string',
 			};
 
-			// Use configured type
 			const iobType = typeMapping[sensor.type] || 'mixed';
-
 			const obj = await this.getObjectAsync(id);
 
 			/** @type {ioBroker.SettableStateObject} */
@@ -392,21 +437,13 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 			this.sourceToSensorId[sensor.sourceState] = id;
 
-			if (sensor.sourceState) {
-				const obj = await this.getForeignObjectAsync(sensor.sourceState);
-				if (!obj) {
-					this.log.warn(`Source state not found: ${sensor.sourceState}`);
-					continue;
-				}
-
-				const state = await this.getForeignStateAsync(sensor.sourceState);
-				if (state) {
-					this.cache[id] = state.val;
-					this.setState(id, state.val, true);
-				}
-
-				this.subscribeForeignStates(sensor.sourceState);
+			const state = await this.getForeignStateAsync(sensor.sourceState);
+			if (state) {
+				this.cache[id] = state.val;
+				this.setState(id, state.val, true);
 			}
+
+			this.subscribeForeignStates(sensor.sourceState);
 		}
 	}
 
@@ -417,17 +454,16 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 
 		const { measurement, field } = conflict;
-
-		const sensor = this.config.sensors.find(s => s.measurement === measurement && s.field === field);
+		const sensor = this.config.sensors.find(s => s && s.measurement === measurement && s.field === field);
 
 		if (!sensor) {
-			this.log.warn(`Kein Sensor für Messung "${measurement}" und Feld "${field}" gefunden.`);
+			this.log.warn(`No sensor found for measurement "${measurement}" and field "${field}".`);
 			return;
 		}
 
 		sensor.enabled = false;
 
-		const msg = `Sensor "${sensor.SensorName}" was deactivated because of Field-Type-Conflict (Messung: ${measurement}, Feld: ${field})`;
+		const msg = `Sensor "${sensor.SensorName}" was deactivated because of Field-Type-Conflict (measurement: ${measurement}, field: ${field})`;
 		this.log.error(msg);
 		this.setState('info.lastError', msg, true);
 	}
@@ -440,13 +476,29 @@ class SolectrusInfluxdb extends utils.Adapter {
 		if (!state || this.isUnloading) {
 			return;
 		}
-		if (id === `${this.namespace}.info.buffer.clear` && state.val === true) {
-			this.log.debug('Trigger clearing Buffer');
-			this.clearBuffer();
-			this.setState('info.buffer.clear', false, true); // Reset Button
+
+		const isOwn = id.startsWith(`${this.namespace}.`);
+
+		// Own states: ignore ack=true
+		if (isOwn && state.ack) {
 			return;
 		}
 
+		// Foreign states: normally only process ack=true
+		if (!isOwn && !state.ack) {
+			return;
+		}
+
+		// Button handling (do NOT rely on state.val)
+		if (id === `${this.namespace}.info.buffer.clear`) {
+			this.log.info('Manual buffer clear triggered');
+			this.clearBuffer().catch(() => {});
+			// Optional reset for UI convenience (even though read:false)
+			this.setState('info.buffer.clear', false, true);
+			return;
+		}
+
+		// Foreign sensor updates
 		const sensorId = this.sourceToSensorId[id];
 		if (!sensorId) {
 			return;
@@ -464,7 +516,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		const now = Date.now();
 
 		for (const sensor of this.config.sensors) {
-			if (!sensor.enabled) {
+			if (!sensor || !sensor.enabled) {
 				continue;
 			}
 
@@ -499,12 +551,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * FLUSH
 	 * ===================================================== */
 
-	scheduleNextFlush(delay) {
+	scheduleNextFlush(delayMs) {
+		const delay = this.clampDelay(delayMs, this.getFlushIntervalMs());
+
 		if (this.flushTimer) {
-			clearTimeout(this.flushTimer);
+			this.clearTimeout(this.flushTimer);
 		}
 
-		this.flushTimer = setTimeout(() => {
+		this.flushTimer = this.setTimeout(() => {
 			this.flushBuffer().catch(() => {});
 		}, delay);
 	}
@@ -514,30 +568,31 @@ class SolectrusInfluxdb extends utils.Adapter {
 			return;
 		}
 
-		/* --- No active sensors → write nothing --- */
-		if (!this.hasEnabledSensors()) {
-			this.log.debug('Flush skipped: no enabled sensors');
-			this.scheduleNextFlush(this.getFlushInterval());
-			return;
-		}
-
-		/* --- Check Influx if Sensors active --- */
 		const influxReady = await this.ensureInflux();
 		if (!influxReady) {
-			this.log.warn('Influx not ready');
 			return this.handleFlushFailure();
 		}
 
-		/* --- Buffer empty → write nothing, Connection ok --- */
+		/* --- No active sensors → do not write, but connection is known-good --- */
+		if (!this.hasEnabledSensors()) {
+			this.log.debug('Flush skipped: no enabled sensors');
+			this.flushFailures = 0;
+			this.setState('info.connection', true, true);
+			this.scheduleNextFlush(this.getFlushIntervalMs());
+			return;
+		}
+
+		/* --- Buffer empty → nothing to write, but connection ok --- */
 		if (this.buffer.length === 0) {
 			this.flushFailures = 0;
 			this.setState('info.connection', true, true);
-			this.scheduleNextFlush(this.getFlushInterval());
+			this.scheduleNextFlush(this.getFlushIntervalMs());
 			return;
 		}
 
 		const writeApi = this.writeApi;
 		if (!writeApi) {
+			// Should not happen if ensureInflux() returned true, but stay safe
 			return this.handleFlushFailure();
 		}
 
@@ -571,16 +626,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 			this.flushFailures = 0;
 			this.setState('info.connection', true, true);
-			this.scheduleNextFlush(this.getFlushInterval());
+			this.scheduleNextFlush(this.getFlushIntervalMs());
 		} catch (err) {
 			this.log.error(`Flush failed: ${err.message}`);
 			await this.closeWriteApi();
 
 			if (this.isFieldTypeConflict(err)) {
-				this.log.error('Field type conflict detected – disabling affected sensors');
-
+				this.log.error('Field type conflict detected – disabling affected sensor');
 				this.disableSensorByFieldTypeConflict(err);
-
 				await this.clearBuffer();
 			}
 
@@ -592,7 +645,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.flushFailures++;
 		this.setState('info.connection', false, true);
 
-		const delay = Math.min(this.getFlushInterval() * this.flushFailures, this.maxFlushInterval);
+		const base = this.getFlushIntervalMs();
+		const delay = Math.min(base * this.flushFailures, this.maxFlushInterval);
 
 		this.log.warn(`Retry flush in ${Math.round(delay / 1000)}s`);
 		this.scheduleNextFlush(delay);
@@ -607,10 +661,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.isUnloading = true;
 
 			if (this.collectTimer) {
-				clearInterval(this.collectTimer);
+				this.clearInterval(this.collectTimer);
 			}
 			if (this.flushTimer) {
-				clearTimeout(this.flushTimer);
+				this.clearTimeout(this.flushTimer);
 			}
 
 			this.saveBuffer();
@@ -625,7 +679,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 }
 
 /* =====================================================
- * START
+ * START (Compact Mode)
  * ===================================================== */
 
 if (require.main !== module) {

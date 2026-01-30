@@ -18,6 +18,17 @@
 
 ---
 
+## Overview
+The SOLECTRUS InfluxDB Adapter stores selected ioBroker states into an InfluxDB 2.x database.
+
+It is designed for energy monitoring systems such as photovoltaic installations, battery storage, heat pumps, wallboxes, grid import/export monitoring, and custom sensors.
+
+The concept is based on the SOLECTRUS Home Assistant integration by ledermann, but it works with any InfluxDB 2.x instance.
+
+The adapter ensures reliable time-series storage and prevents data loss during temporary InfluxDB outages.
+
+---
+
 ## Documentation
 
 [🇺🇸 Documentation](./docs/en/README.md)
@@ -26,11 +37,29 @@
 
 ---
 
+### Requirements
+- ioBroker >= latest stable
+- Node.js >= 20
+- InfluxDB 2.x
+
+---
+
 ## Changelog
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* (patricknitsch) Using node:package format
+* (patricknitsch) encrypt sensitive information -> Token must be re-entered
+* (patricknitsch) onStateChange ignores ack flag
+* (patricknitsch) creation of intermediate objects missing
+* (patricknitsch) using this.setTimeout
+* (patricknitsch) check and limit configurable timeouts/intervals
+* (patricknitsch) Extend Readme
+
 ### 0.3.4 (2026-01-19)
 
 * (patricknitsch) Update Readme and split it in two own docs
