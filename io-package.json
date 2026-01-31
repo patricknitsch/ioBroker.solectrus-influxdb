@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "0.3.5",
+    "version": "1.0.0",
     "news": {
+      "1.0.0": {
+        "en": "change Config for Encryption -> Credentials must be re-entered",
+        "de": "config for Encryption -> Einsichtspunkte müssen neu eingeteilt werden",
+        "ru": "изменить конфигурацию для шифрования -> Полномочия должны быть повторно введены",
+        "pt": "mudar a Configuração para Criptografia -> As credenciais devem ser reentradas",
+        "nl": "configuratie wijzigen voor versleuteling -> De geloofsbrieven moeten opnieuw worden ingevoerd",
+        "fr": "modifier Config pour chiffrement -> Les pouvoirs doivent être rétablis",
+        "it": "cambiamento Configurazione per Crittografia -> Le credenziali devono essere reintegrate",
+        "es": "cambio Config for Encryption - Propiedad Las credenciales deben reiniciarse",
+        "pl": "zmień konfigurację szyfrowania - > Należności należy ponownie wprowadzić",
+        "uk": "змінити Налаштування для шифрування -> Потенціали повинні бути повторними",
+        "zh-cn": "更改加密配置 - > 全权证书必须重新输入"
+      },
       "0.3.5": {
         "en": "Using node:package format\nencrypt sensitive information -> Token must be re-entered\nonStateChange ignores ack flag\ncreation of intermediate objects missing\nusing this.setTimeout\ncheck and limit configurable timeouts/intervals\nExtend Readme",
         "de": "Verwendung von node:package format\nencrypt sensitive information -> Token muss wieder eingeschleudert werden\nonState Ändern ignoriert ack flag\nerstellung von zwischenobjekten fehlt\nmit diesem.setTimeout\nüberprüfen und konfigurierbare timeouts/intervals begrenzen\nExtend Readme",
@@ -80,19 +93,6 @@
         "pl": "Lepsza obsługa połączenia Influm, również jeśli czujnik nie jest aktywny\nPrzebudowa interfejsu użytkownika z rzeczywistym statusem każdego czujnika",
         "uk": "Найкраще управління підключенням Influx, також якщо не працює датчик\nВідновлення UI з фактичним статусом кожного датчика",
         "zh-cn": "更好地处理内流连接, 如果没有传感器活动\n重建具有每个传感器实际状态的UI"
-      },
-      "0.2.0": {
-        "en": "Refactoring code and improve readability\nBuffer values and send to Influx if Influx is online\nSave max. 100000 values and send all to Influx if Influx is online again\nSplit Data Collecting and Influx writing\nUpdated Translations",
-        "de": "Refactoring Code und Verbesserung der Lesbarkeit\nPufferwerte und senden Sie zu Influx, wenn Influx online ist\nSpeichern Sie max. 100000 Werte und senden Sie alle zu Influx, wenn Influx wieder online ist\nDaten sammeln und beeinflussen Schreiben\nAktualisierte Übersetzungen",
-        "ru": "Рефакторинг кода и улучшение читаемости\nБуферные значения и отправка в Influx, если Influx онлайн\nСохраните максимум 100000 значений и отправьте все в Influx, если Influx снова онлайн\nСплит-сбор данных и запись Influx\nОбновленные переводы",
-        "pt": "Refactorar código e melhorar a legibilidade\nValores de buffer e enviar para Influx se Influx está online\nSalvar valores de máx. 100000 e enviar tudo para Influx se Influx está online novamente\nDividir a Coleta de Dados e escrever o Influx\nTradução Actualizada",
-        "nl": "Code refactoreren en leesbaarheid verbeteren\nBufferwaarden en stuur naar Influx als Influx online is\nBespaar max. 100000 waarden en stuur alles naar Influx als Influx weer online is\nGesplitste gegevens verzamelen en Instroom schrijven\nBijgewerkte vertalingen",
-        "fr": "Refactorer le code et améliorer la lisibilité\nValeurs tampon et envoyer à Influx si Influx est en ligne\nEnregistrer max. 100000 valeurs et envoyer tout à Influx si Influx est à nouveau en ligne\nCollecte de données fractionnées et écriture de l'influence\nTraductions actualisées",
-        "it": "Refactoring code e migliorare la leggibilità\nBuffer valori e inviare a Influx se Influx è online\nSalvare i valori max. 100000 e inviare tutti a Influx se Influx è di nuovo online\nRaccogliere e influenzare la scrittura\nTraduzione aggiornata",
-        "es": "Refactoring code and improve readability\nValores de amortiguación y enviar a Influx si Influx está en línea\nGuardar valores máx. 100000 y enviar todo a Influx si Influx está en línea de nuevo\nCopia de datos y escritura de la influencia\nTraducciones actualizadas",
-        "pl": "Przekształcanie kodu i poprawa czytelności\nWartości buforowe i wysłać do Influm, jeśli Influm jest online\nZapisz maks. 100000 wartości i wysłać wszystko do Instruct, jeśli Instruct jest ponownie online\nPodziel zbieranie danych i zapisywanie informacji\nAktualizacja tłumaczeń",
-        "uk": "Рефакторинг коду і поліпшення працездатності\nЗначення буфера і відправка в Інфлюкс, якщо Influx онлайн\nЗаощаджуйте максимум 100000 значень і відправте всі на Influx якщо Influx знову\nСпліт збору даних та написання Influx\nОновлені переклади",
-        "zh-cn": "重构代码和改进可读性\n如果 Influx 在线, 缓冲值和发送到 Influx\n如果Influx再次在线, 请保存最大值 10万 并全部发送到 Influx\n拆分数据收集和内流写入\n更新翻译"
       }
     },
     "titleLang": {

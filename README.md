@@ -49,8 +49,7 @@ The adapter ensures reliable time-series storage and prevents data loss during t
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.0.0 (2026-01-31)
 
 * (patricknitsch) change Config for Encryption -> Credentials must be re-entered
 
