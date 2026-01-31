@@ -159,13 +159,11 @@
     ]
   },
   "native": {
-    "influx": {
-      "url": "http://localhost:8086",
-      "org": "solectrus",
-      "bucket": "solectrus",
-      "token": "",
-      "interval": 5
-    },
+    "influxUrl": "http://localhost:8086",
+    "influxOrg": "solectrus",
+    "influxBucket": "solectrus",
+    "influxInterval": 5,
+    "influxToken": "",
     "sensors": [
       {
         "enabled": false,
@@ -546,10 +544,10 @@
     ]
   },
   "encryptedNative": [
-    "influx.token"
+    "influxToken"
   ],
   "protectedNative": [
-    "influx.token"
+    "influxToken"
   ],
   "objects": [],
   "instanceObjects": [

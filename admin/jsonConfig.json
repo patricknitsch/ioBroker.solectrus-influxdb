@@ -9,91 +9,91 @@
         "_influxLeft": {
           "type": "panel",
           "newLine": true,
-					"xs": 12,
-					"sm": 12,
-					"md": 6,
-					"lg": 4,
-					"xl": 4,
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4,
           "items": {
-            "influx.url": {
+            "influxUrl": {
               "type": "text",
               "label": "InfluxDB URL",
               "newLine": true,
-						"xs": 12,
-						"sm": 12,
-						"md": 12,
-						"lg": 12,
-						"xl": 12
+              "xs": 12,
+              "sm": 12,
+              "md": 12,
+              "lg": 12,
+              "xl": 12
             },
-            "influx.org": {
+            "influxOrg": {
               "type": "text",
               "label": "Organization",
               "newLine": true,
-						"xs": 12,
-						"sm": 12,
-						"md": 12,
-						"lg": 12,
-						"xl": 12
+              "xs": 12,
+              "sm": 12,
+              "md": 12,
+              "lg": 12,
+              "xl": 12
             },
-            "influx.bucket": {
+            "influxBucket": {
               "type": "text",
               "label": "Bucket",
               "newLine": true,
-						"xs": 12,
-						"sm": 12,
-						"md": 12,
-						"lg": 12,
-						"xl": 12
+              "xs": 12,
+              "sm": 12,
+              "md": 12,
+              "lg": 12,
+              "xl": 12
             },
-            "influx.token": {
+            "influxToken": {
               "type": "password",
               "label": "Token",
               "newLine": true,
-						"xs": 12,
-						"sm": 12,
-						"md": 12,
-						"lg": 12,
-						"xl": 12
+              "xs": 12,
+              "sm": 12,
+              "md": 12,
+              "lg": 12,
+              "xl": 12
             },
-            "influx.interval": {
+            "influxInterval": {
               "type": "number",
               "label": "Polling Interval (s)",
               "min": 5,
               "max": 30,
               "newLine": true,
-						"xs": 12,
-						"sm": 12,
-						"md": 12,
-						"lg": 12,
-						"xl": 12
+              "xs": 12,
+              "sm": 12,
+              "md": 12,
+              "lg": 12,
+              "xl": 12
             }
           }
         },
         "_influxRight": {
           "type": "panel",
           "newLine": false,
-					"xs": 12,
-					"sm": 12,
-					"md": 6,
-					"lg": 8,
-					"xl": 8,
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 8,
+          "xl": 8,
           "items": {
             "_influxSolectrusLogo": {
               "type": "staticImage",
               "src": "solectrus-influxdb.png",
               "newLine": true,
-						"style": {
-							"maxWidth": 220,
-							"width": "100%",
-							"height": "auto",
-							"display": "block",
-							"margin": "0 auto"
-						},
-						"xs": 12,
-						"sm": 12,
-						"md": 12,
-						"lg": 12,
-						"xl": 12
+              "style": {
+                "maxWidth": 220,
+                "width": "100%",
+                "height": "auto",
+                "display": "block",
+                "margin": "0 auto"
+              },
+              "xs": 12,
+              "sm": 12,
+              "md": 12,
+              "lg": 12,
+              "xl": 12
             },
             "_influxSolectrusQuickStart": {
               "type": "staticText",
@@ -101,7 +101,7 @@
                 "en": "SOLECTRUS Quick Start\n1. Create an InfluxDB 2.x API token with write access to your bucket.\n2. Enter URL, organization, bucket and token on the left and save.\n3. Open the Sensors tab and map your ioBroker states.\n4. Enable the adapter and check info.connection and the buffer states.",
                 "de": "SOLECTRUS Kurzanleitung\n1. Erstelle in InfluxDB 2.x einen API-Token mit Schreibrechten für deinen Bucket.\n2. Trage URL, Organisation, Bucket und Token links ein und speichere.\n3. Öffne den Tab „Sensoren“ und verknüpfe deine ioBroker-Datenpunkte.\n4. Aktiviere den Adapter und prüfe info.connection sowie die Buffer-States.",
                 "es": "Guía rápida SOLECTRUS\n1. Crea en InfluxDB 2.x un token de API con permiso de escritura para tu bucket.\n2. Introduce la URL, la organización, el bucket y el token a la izquierda y guarda.\n3. Abre la pestaña “Sensores” y asigna tus estados de ioBroker.\n4. Activa el adaptador y comprueba info.connection y los estados del buffer.",
-                "fr": "Guide rapide SOLECTRUS\n1. Créez dans InfluxDB 2.x un jeton API avec droit d’écriture sur votre bucket.\n2. Saisissez l’URL, l’organisation, le bucket et le jeton à gauche et enregistrez.\n3. Ouvrez l’onglet « Capteurs » et mappez vos états ioBroker.\n4. Activez l’adaptateur et vérifiez info.connection et les états du buffer.",
+                "fr": "Guide rapide SOLECTRUS\n1. Créez dans InfluxDB 2.x un jeton API avec droit d’écriture sur votre bucket.\n2. Saisissez l’URL, l’organisation, le bucket et le jeton à gauche et enregistrez.\n3. Ouvrez l’onglet « Capteurs » et mappez vos états ioBroker.\n4. Activez l’adaptateur et vérifiez info.connection et les états du buffer.",
                 "it": "Guida rapida SOLECTRUS\n1. Crea in InfluxDB 2.x un token API con permesso di scrittura per il tuo bucket.\n2. Inserisci URL, organizzazione, bucket e token a sinistra e salva.\n3. Apri la scheda “Sensori” e mappa i tuoi stati ioBroker.\n4. Abilita l’adattatore e controlla info.connection e gli stati del buffer.",
                 "nl": "SOLECTRUS snelstart\n1. Maak in InfluxDB 2.x een API-token met schrijfrechten voor je bucket.\n2. Vul URL, organisatie, bucket en token links in en sla op.\n3. Open het tabblad “Sensoren” en koppel je ioBroker-states.\n4. Schakel de adapter in en controleer info.connection en de buffer-states.",
                 "pl": "Szybki start SOLECTRUS\n1. Utwórz w InfluxDB 2.x token API z uprawnieniami zapisu do Twojego bucketu.\n2. Wpisz po lewej URL, organizację, bucket i token, a następnie zapisz.\n3. Otwórz zakładkę „Czujniki” i zmapuj stany ioBroker.\n4. Włącz adapter i sprawdź info.connection oraz stany bufora.",
@@ -114,11 +114,11 @@
               "style": {
                 "whiteSpace": "pre-line"
               },
-						"xs": 12,
-						"sm": 12,
-						"md": 12,
-						"lg": 12,
-						"xl": 12
+              "xs": 12,
+              "sm": 12,
+              "md": 12,
+              "lg": 12,
+              "xl": 12
             },
             "_influxSolectrusDocs": {
               "type": "staticLink",
@@ -127,11 +127,11 @@
               "target": "_blank",
               "button": false,
               "newLine": true,
-						"xs": 12,
-						"sm": 12,
-						"md": 12,
-						"lg": 12,
-						"xl": 12
+              "xs": 12,
+              "sm": 12,
+              "md": 12,
+              "lg": 12,
+              "xl": 12
             }
           }
         }
@@ -146,10 +146,10 @@
           "text": "Master/detail editor for sensors. Shows enabled status live in the list.",
           "newLine": true,
           "xs": 12,
-          "sm": 12
-          ,"md": 12
-          ,"lg": 12
-          ,"xl": 12
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "sensors": {
           "type": "custom",

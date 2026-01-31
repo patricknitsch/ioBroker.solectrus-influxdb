@@ -50,6 +50,16 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * HELPERS
 	 * ===================================================== */
 
+	getInfluxConfig() {
+		// New top-level config (preferred)
+		const url = (this.config.influxUrl || '').trim();
+		const org = (this.config.influxOrg || '').trim();
+		const bucket = (this.config.influxBucket || '').trim();
+		const token = (this.config.influxToken || '').trim();
+
+		return { url, token, org, bucket };
+	}
+
 	clampDelay(ms, fallbackMs) {
 		let v = Number(ms);
 		if (!Number.isFinite(v) || v <= 0) {
@@ -92,14 +102,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 	}
 
 	getCollectIntervalMs() {
-		const sec = Number(this.config.influx?.interval);
+		const sec = Number(this.config.influxInterval);
 		const ms = sec > 0 ? sec * 1000 : 5000;
 		return this.clampDelay(ms, 5000);
 	}
 
 	getFlushIntervalMs() {
 		// keep your current logic: flush ~ interval + 5 sec (min 10s)
-		const sec = Number(this.config.influx?.interval);
+		const sec = Number(this.config.influxInterval);
 		const base = sec > 0 ? (sec + 5) * 1000 : 10_000;
 		return this.clampDelay(base, 10_000);
 	}
@@ -331,13 +341,13 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * ===================================================== */
 
 	validateInfluxConfig() {
-		const cfg = this.config.influx;
-		return cfg && cfg.url?.trim() && cfg.token?.trim() && cfg.org?.trim() && cfg.bucket?.trim();
+		const cfg = this.getInfluxConfig();
+		return !!(cfg.url && cfg.token && cfg.org && cfg.bucket);
 	}
 
 	async verifyInfluxConnection() {
 		try {
-			const { url, token, org, bucket } = this.config.influx;
+			const { url, token, org, bucket } = this.getInfluxConfig();
 
 			this.influx = new InfluxDB({ url, token });
 			this.writeApi = this.influx.getWriteApi(org, bucket, 'ms');
