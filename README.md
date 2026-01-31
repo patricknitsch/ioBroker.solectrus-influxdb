@@ -49,6 +49,11 @@ The adapter ensures reliable time-series storage and prevents data loss during t
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* (patricknitsch) change Config for Encryption -> Credentials must be re-entered
+
 ### 0.3.5 (2026-01-30)
 
 * (patricknitsch) Using node:package format
