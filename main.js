@@ -609,18 +609,33 @@ class SolectrusInfluxdb extends utils.Adapter {
 		try {
 			for (const entry of this.buffer) {
 				const point = new Point(entry.measurement).timestamp(entry.ts);
+				let fieldValue;
 
 				switch (entry.type) {
 					case 'int':
-						point.intField(entry.field, parseInt(entry.value, 10));
+						fieldValue = parseInt(entry.value, 10);
+						if (Number.isNaN(fieldValue)) {
+							this.log.warn(`Skip NaN int value for ${entry.measurement}.${entry.field}`);
+							continue;
+						}
+						point.intField(entry.field, fieldValue);
 						break;
 					case 'float':
-						point.floatField(entry.field, parseFloat(entry.value));
+						fieldValue = parseFloat(entry.value);
+						if (Number.isNaN(fieldValue)) {
+							this.log.warn(`Skip NaN float value for ${entry.measurement}.${entry.field}`);
+							continue;
+						}
+						point.floatField(entry.field, fieldValue);
 						break;
 					case 'bool':
 						point.booleanField(entry.field, Boolean(entry.value));
 						break;
 					default:
+						if (entry.value === undefined || entry.value === null) {
+							this.log.warn(`Skip empty string value for ${entry.measurement}.${entry.field}`);
+							continue;
+						}
 						point.stringField(entry.field, String(entry.value));
 				}
 
