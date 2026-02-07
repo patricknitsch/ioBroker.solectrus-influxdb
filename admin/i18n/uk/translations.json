@@ -87,4 +87,15 @@
 
   ,"SOLECTRUS Quick Start (InfluxDB)": "Швидкий старт SOLECTRUS\n1. Створіть в InfluxDB 2.x API-токен з правами запису для вашого bucket.\n2. Введіть ліворуч URL, організацію, bucket і токен та збережіть.\n3. Відкрийте вкладку «Датчики» і зіставте ваші стани ioBroker.\n4. Увімкніть адаптер і перевірте info.connection та стани буфера."
   ,"Open documentation": "Відкрити документацію"
+
+  ,"Enable Data-SOLECTRUS (formula engine)": "Enable Data-SOLECTRUS (formula engine)"
+  ,"Data Values": "Data Values"
+  ,"Data Runtime": "Data Runtime"
+  ,"dsValuesHint": "Configure computed values via the Master/Detail editor. Each value can mirror a source state or compute a formula from multiple inputs."
+  ,"dsPollIntervalLabel": "Poll interval (seconds)"
+  ,"dsSnapshotInputsLabel": "Read inputs on tick (snapshot)"
+  ,"dsSnapshotDelayLabel": "Snapshot delay (ms)"
+  ,"Item": "Item"
+  ,"No items configured.": "No items configured."
+  ,"Select an item on the left or add a new one.": "Select an item on the left or add a new one."
 }

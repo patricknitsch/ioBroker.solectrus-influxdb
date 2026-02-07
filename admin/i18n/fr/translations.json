@@ -87,4 +87,15 @@
 
   ,"SOLECTRUS Quick Start (InfluxDB)": "Guide rapide SOLECTRUS\n1. Créez dans InfluxDB 2.x un jeton API avec droit d’écriture sur votre bucket.\n2. Saisissez l’URL, l’organisation, le bucket et le jeton à gauche et enregistrez.\n3. Ouvrez l’onglet « Capteurs » et mappez vos états ioBroker.\n4. Activez l’adaptateur et vérifiez info.connection et les états du buffer."
   ,"Open documentation": "Ouvrir la documentation"
+
+  ,"Enable Data-SOLECTRUS (formula engine)": "Enable Data-SOLECTRUS (formula engine)"
+  ,"Data Values": "Data Values"
+  ,"Data Runtime": "Data Runtime"
+  ,"dsValuesHint": "Configure computed values via the Master/Detail editor. Each value can mirror a source state or compute a formula from multiple inputs."
+  ,"dsPollIntervalLabel": "Poll interval (seconds)"
+  ,"dsSnapshotInputsLabel": "Read inputs on tick (snapshot)"
+  ,"dsSnapshotDelayLabel": "Snapshot delay (ms)"
+  ,"Item": "Item"
+  ,"No items configured.": "No items configured."
+  ,"Select an item on the left or add a new one.": "Select an item on the left or add a new one."
 }

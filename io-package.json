@@ -142,6 +142,7 @@
     "mode": "daemon",
     "type": "communication",
     "compact": true,
+    "messagebox": true,
     "connectionType": "local",
     "dataSource": "push",
     "adminUI": {
@@ -164,6 +165,11 @@
     "influxBucket": "solectrus",
     "influxInterval": 5,
     "influxToken": "",
+    "enableDataSolectrus": false,
+    "dsPollIntervalSeconds": 5,
+    "dsSnapshotInputs": false,
+    "dsSnapshotDelayMs": 0,
+    "dsItems": [],
     "sensors": [
       {
         "enabled": false,

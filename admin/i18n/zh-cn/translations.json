@@ -87,4 +87,15 @@
 
   ,"SOLECTRUS Quick Start (InfluxDB)": "SOLECTRUS 快速开始\n1. 在 InfluxDB 2.x 中创建一个对你的 bucket 具有写入权限的 API token。\n2. 在左侧填写 URL、组织、bucket 和 token 并保存。\n3. 打开“传感器”选项卡并映射你的 ioBroker 状态。\n4. 启用适配器并检查 info.connection 以及缓冲区相关状态。"
   ,"Open documentation": "打开文档"
+
+  ,"Enable Data-SOLECTRUS (formula engine)": "Enable Data-SOLECTRUS (formula engine)"
+  ,"Data Values": "Data Values"
+  ,"Data Runtime": "Data Runtime"
+  ,"dsValuesHint": "Configure computed values via the Master/Detail editor. Each value can mirror a source state or compute a formula from multiple inputs."
+  ,"dsPollIntervalLabel": "Poll interval (seconds)"
+  ,"dsSnapshotInputsLabel": "Read inputs on tick (snapshot)"
+  ,"dsSnapshotDelayLabel": "Snapshot delay (ms)"
+  ,"Item": "Item"
+  ,"No items configured.": "No items configured."
+  ,"Select an item on the left or add a new one.": "Select an item on the left or add a new one."
 }
