@@ -631,8 +631,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 				continue;
 			}
 
+			// ds.* states from this adapter may not exist yet (created by initDataSolectrus later)
+			const isOwnDsState = sensor.sourceState.startsWith(`${this.namespace}.ds.`);
 			const foreignObj = await this.getForeignObjectAsync(sensor.sourceState);
-			if (!foreignObj) {
+			if (!foreignObj && !isOwnDsState) {
 				this.log.warn(`Source state not found: ${sensor.sourceState}`);
 				continue;
 			}
@@ -681,8 +683,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		const isOwn = id.startsWith(`${this.namespace}.`);
 
-		// Own states: ignore ack=true
+		// Own states with ack: still forward if this state is a sensor source
+		// (e.g. ds.* states produced by Data-SOLECTRUS used as sensor input)
 		if (isOwn && state.ack) {
+			const sensorId = this.sourceToSensorId[id];
+			if (sensorId) {
+				this.cache[sensorId] = state.val;
+				this.setState(sensorId, state.val, true);
+			}
 			return;
 		}
 
