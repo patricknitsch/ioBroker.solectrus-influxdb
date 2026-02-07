@@ -182,14 +182,22 @@
         "_dsValuesHint": {
           "type": "staticText",
           "text": "dsValuesHint",
-          "sm": 12
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "dsItems": {
           "type": "custom",
           "url": "custom/customComponentsDS.js?v=20260207-1",
           "name": "DataSolectrusItems/Components/DataSolectrusItemsEditor",
           "label": "Configured values",
-          "sm": 12
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         }
       }
     },
@@ -204,13 +212,21 @@
           "min": 1,
           "max": 3600,
           "default": 5,
-          "sm": 6
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "dsSnapshotInputs": {
           "type": "checkbox",
           "label": "dsSnapshotInputsLabel",
           "default": false,
-          "sm": 12
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         },
         "dsSnapshotDelayMs": {
           "type": "number",
@@ -218,7 +234,11 @@
           "min": 0,
           "max": 5000,
           "default": 0,
-          "sm": 6
+          "xs": 12,
+          "sm": 12,
+          "md": 12,
+          "lg": 12,
+          "xl": 12
         }
       }
     }
