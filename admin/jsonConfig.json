@@ -186,7 +186,7 @@
         },
         "dsItems": {
           "type": "custom",
-          "url": "custom/customComponents.js?v=20260207-1",
+          "url": "custom/customComponentsDS.js?v=20260207-1",
           "name": "DataSolectrusItems/Components/DataSolectrusItemsEditor",
           "label": "Configured values",
           "sm": 12
