@@ -99,6 +99,7 @@
             jsonPath: '',
             inputs: [],
             formula: '',
+            rules: [],
             type: '',
             role: '',
             unit: '',
@@ -666,7 +667,7 @@
 
     function createDataSolectrusItemsEditor(React, AdapterReact) {
         return function DataSolectrusItemsEditor(props) {
-            const DEFAULT_ITEMS_ATTR = 'dsItems';
+            const DEFAULT_ITEMS_ATTR = 'items';
             const attr = (props && typeof props.attr === 'string' && props.attr) ? props.attr : DEFAULT_ITEMS_ATTR;
             const dataIsArray = Array.isArray(props && props.data);
             const dataIsObject = !!(props && props.data && typeof props.data === 'object' && !dataIsArray);
@@ -969,6 +970,9 @@
             const [formulaLiveLoading, setFormulaLiveLoading] = React.useState(false);
             const [formulaPreview, setFormulaPreview] = React.useState(null);
             const [formulaPreviewLoading, setFormulaPreviewLoading] = React.useState(false);
+            const [autocompleteSuggestions, setAutocompleteSuggestions] = React.useState([]);
+            const [autocompleteIndex, setAutocompleteIndex] = React.useState(0);
+            const [syntaxHighlightEnabled, setSyntaxHighlightEnabled] = React.useState(true);
 
             React.useEffect(() => {
                 const onDocMouseDown = e => {
@@ -1363,6 +1367,117 @@
                 } catch {
                     // ignore
                 }
+            };
+
+            // Tokenize formula for syntax highlighting
+            const tokenizeFormula = text => {
+                const tokens = [];
+                const keywords = ['IF', 'min', 'max', 'clamp', 's', 'v', 'jp'];
+                const operators = ['+', '-', '*', '/', '%', '(', ')', '&&', '||', '!', '==', '!=', '>=', '<=', '>', '<', '?', ':'];
+                
+                let i = 0;
+                while (i < text.length) {
+                    const char = text[i];
+                    
+                    // Skip whitespace
+                    if (/\s/.test(char)) {
+                        tokens.push({ type: 'whitespace', value: char });
+                        i++;
+                        continue;
+                    }
+                    
+                    // Numbers
+                    if (/\d/.test(char)) {
+                        let num = char;
+                        i++;
+                        while (i < text.length && /[\d.]/.test(text[i])) {
+                            num += text[i];
+                            i++;
+                        }
+                        tokens.push({ type: 'number', value: num });
+                        continue;
+                    }
+                    
+                    // Strings
+                    if (char === '"' || char === "'") {
+                        const quote = char;
+                        let str = char;
+                        i++;
+                        while (i < text.length && text[i] !== quote) {
+                            str += text[i];
+                            i++;
+                        }
+                        if (i < text.length) str += text[i++];
+                        tokens.push({ type: 'string', value: str });
+                        continue;
+                    }
+                    
+                    // Two-char operators
+                    const twoChar = text.slice(i, i + 2);
+                    if (operators.includes(twoChar)) {
+                        tokens.push({ type: 'operator', value: twoChar });
+                        i += 2;
+                        continue;
+                    }
+                    
+                    // Single-char operators
+                    if (operators.includes(char)) {
+                        tokens.push({ type: 'operator', value: char });
+                        i++;
+                        continue;
+                    }
+                    
+                    // Identifiers/Keywords
+                    if (/[a-zA-Z_$]/.test(char)) {
+                        let identifier = char;
+                        i++;
+                        while (i < text.length && /[a-zA-Z0-9_$]/.test(text[i])) {
+                            identifier += text[i];
+                            i++;
+                        }
+                        const type = keywords.includes(identifier) ? 'keyword' : 'variable';
+                        tokens.push({ type, value: identifier });
+                        continue;
+                    }
+                    
+                    // Unknown
+                    tokens.push({ type: 'unknown', value: char });
+                    i++;
+                }
+                
+                return tokens;
+            };
+
+            // Get autocomplete suggestions
+            const getAutocompleteSuggestions = (text, cursorPos, inputVars) => {
+                if (!text || cursorPos < 0) return [];
+                
+                // Get word at cursor
+                let wordStart = cursorPos;
+                while (wordStart > 0 && /[a-zA-Z0-9_$]/.test(text[wordStart - 1])) {
+                    wordStart--;
+                }
+                const wordPrefix = text.slice(wordStart, cursorPos).toLowerCase();
+                
+                if (!wordPrefix) return [];
+                
+                const suggestions = [];
+                
+                // Input variables
+                inputVars.forEach(v => {
+                    if (v.key.toLowerCase().startsWith(wordPrefix)) {
+                        suggestions.push({ type: 'variable', value: v.key, desc: t('Variables (Inputs)') });
+                    }
+                });
+                
+                // Functions
+                ['IF', 'min', 'max', 'clamp', 's', 'v', 'jp'].forEach(fn => {
+                    if (fn.toLowerCase().startsWith(wordPrefix)) {
+                        suggestions.push({ type: 'function', value: fn, desc: t('Functions') });
+                    }
+                });
+                
+                return suggestions;
             };
 
             const updateSelected = (field, value) => {
@@ -1950,18 +2065,20 @@
                                 React.createElement(
                                     'div',
                                     { style: { display: 'flex', flexWrap: 'wrap', gap: 8 } },
-                                    ['+', '-', '*', '/', '%', '(', ')', '&&', '||', '!', '==', '!=', '>=', '<=', '>', '<', '?', ':'].map(op =>
-                                        React.createElement(
+                                    ['+', '-', '*', '/', '%', '(', ')', '&&', '||', '!', '==', '!=', '>=', '<=', '>', '<', '?', ':'].map(op => {
+                                        const tooltipKey = op === '(' || op === ')' ? 'op.()' : (op === '?' || op === ':' ? 'op.?:' : `op.${op}`);
+                                        return React.createElement(
                                             'button',
                                             {
                                                 key: op,
                                                 type: 'button',
                                                 style: chipBtnStyle,
                                                 onClick: () => insertIntoFormulaDraft({ text: op }),
+                                                title: t(tooltipKey),
                                             },
                                             op
-                                        )
-                                    )
+                                        );
+                                    })
                                 ),
 
                                 React.createElement('div', { style: sectionTitleStyle }, t('Functions')),
@@ -1975,6 +2092,7 @@
                                             style: chipBtnStyle,
                                             onClick: () =>
                                                 insertIntoFormulaDraft({ text: 'min(a, b)', selectStartWithinText: 4, selectEndWithinText: 5 }),
+                                            title: t('fn.min'),
                                         },
                                         t('min')
                                     ),
@@ -1985,6 +2103,7 @@
                                             style: chipBtnStyle,
                                             onClick: () =>
                                                 insertIntoFormulaDraft({ text: 'max(a, b)', selectStartWithinText: 4, selectEndWithinText: 5 }),
+                                            title: t('fn.max'),
                                         },
                                         t('max')
                                     ),
@@ -1999,6 +2118,7 @@
                                                     selectStartWithinText: 6,
                                                     selectEndWithinText: 11,
                                                 }),
+                                            title: t('fn.clamp'),
                                         },
                                         t('clamp')
                                     ),
@@ -2013,6 +2133,7 @@
                                                     selectStartWithinText: 3,
                                                     selectEndWithinText: 12,
                                                 }),
+                                            title: t('fn.IF'),
                                         },
                                         t('IF')
                                     )
@@ -2054,6 +2175,60 @@
                                             title: t('Pick a state id and insert jp("id", "$.value")'),
                                         },
                                         t('Insert jp()')
+                                    )
+                                ),
+
+                                React.createElement('div', { style: sectionTitleStyle }, t('Examples')),
+                                React.createElement(
+                                    'div',
+                                    { style: { fontSize: 11, color: colors.textMuted, marginBottom: 6 } },
+                                    t('Common formula patterns')
+                                ),
+                                React.createElement(
+                                    'div',
+                                    { style: { display: 'flex', flexDirection: 'column', gap: 8 } },
+                                    [
+                                        { key: 'sum', label: 'ex.sum', formula: 'ex.sum.formula' },
+                                        { key: 'surplus', label: 'ex.surplus', formula: 'ex.surplus.formula' },
+                                        { key: 'percent', label: 'ex.percent', formula: 'ex.percent.formula' },
+                                        { key: 'positive', label: 'ex.positive', formula: 'ex.positive.formula' },
+                                        { key: 'condition', label: 'ex.condition', formula: 'ex.condition.formula' },
+                                        { key: 'clamp01', label: 'ex.clamp01', formula: 'ex.clamp01.formula' },
+                                    ].map(ex =>
+                                        React.createElement(
+                                            'button',
+                                            {
+                                                key: ex.key,
+                                                type: 'button',
+                                                style: Object.assign({}, chipBtnStyle, {
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'flex-start',
+                                                    padding: '8px 10px',
+                                                    borderRadius: 8,
+                                                    textAlign: 'left',
+                                                }),
+                                                onClick: () => insertIntoFormulaDraft({ text: t(ex.formula) }),
+                                                title: t(ex.formula),
+                                            },
+                                            React.createElement(
+                                                'div',
+                                                { style: { fontSize: 12, fontWeight: 500, marginBottom: 2 } },
+                                                t(ex.label)
+                                            ),
+                                            React.createElement(
+                                                'div',
+                                                {
+                                                    style: {
+                                                        fontSize: 11,
+                                                        fontFamily:
+                                                            "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+                                                        color: colors.textMuted,
+                                                    },
+                                                },
+                                                t(ex.formula)
+                                            )
+                                        )
                                     )
                                 )
                             ),
@@ -2110,21 +2285,215 @@
                                               : React.createElement('span', { style: valuePillStyle }, t('n/a'))
                                     )
                                 ),
-                                React.createElement('textarea', {
-                                    ref: formulaEditorRef,
-                                    style: Object.assign({}, inputStyle, {
-                                        minHeight: 260,
-                                        flex: 1,
-                                        resize: 'none',
-                                        fontFamily:
-                                            "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-                                        lineHeight: 1.45,
+                                // Formula editor container with syntax highlighting and autocomplete
+                                React.createElement(
+                                    'div',
+                                    { style: { position: 'relative', flex: 1, display: 'flex', flexDirection: 'column', minHeight: 260 } },
+                                    // Syntax highlighting overlay (behind textarea)
+                                    syntaxHighlightEnabled && React.createElement(
+                                        'div',
+                                        {
+                                            style: Object.assign({}, inputStyle, {
+                                                position: 'absolute',
+                                                top: 0,
+                                                left: 0,
+                                                right: 0,
+                                                bottom: 0,
+                                                pointerEvents: 'none',
+                                                whiteSpace: 'pre-wrap',
+                                                wordWrap: 'break-word',
+                                                color: 'transparent',
+                                                overflow: 'auto',
+                                                fontFamily:
+                                                    "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+                                                lineHeight: 1.45,
+                                                minHeight: 260,
+                                            }),
+                                        },
+                                        tokenizeFormula(formulaDraft).map((token, i) => {
+                                            let tokenColor = colors.text;
+                                            if (token.type === 'keyword') tokenColor = isDark ? '#c792ea' : '#9334e9';
+                                            if (token.type === 'function') tokenColor = isDark ? '#82aaff' : '#2563eb';
+                                            if (token.type === 'variable') tokenColor = isDark ? '#82e0aa' : '#16a34a';
+                                            if (token.type === 'number') tokenColor = isDark ? '#f78c6c' : '#ea580c';
+                                            if (token.type === 'string') tokenColor = isDark ? '#c3e88d' : '#65a30d';
+                                            if (token.type === 'operator') tokenColor = isDark ? '#89ddff' : '#0891b2';
+                                            
+                                            return React.createElement(
+                                                'span',
+                                                { key: i, style: { color: tokenColor } },
+                                                token.value
+                                            );
+                                        })
+                                    ),
+                                    // Actual textarea (on top, with transparent text when highlighting is on)
+                                    React.createElement('textarea', {
+                                        ref: formulaEditorRef,
+                                        style: Object.assign({}, inputStyle, {
+                                            flex: 1,
+                                            minHeight: 260,
+                                            resize: 'none',
+                                            fontFamily:
+                                                "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+                                            lineHeight: 1.45,
+                                            background: syntaxHighlightEnabled ? 'transparent' : inputStyle.background,
+                                            color: syntaxHighlightEnabled ? 'transparent' : colors.text,
+                                            caretColor: colors.text,
+                                            position: syntaxHighlightEnabled ? 'relative' : 'static',
+                                            zIndex: syntaxHighlightEnabled ? 1 : 'auto',
+                                        }),
+                                        value: formulaDraft,
+                                        onChange: e => {
+                                            setFormulaDraft(e.target.value);
+                                            // Trigger autocomplete
+                                            const el = formulaEditorRef.current;
+                                            if (el) {
+                                                const pos = el.selectionStart;
+                                                const suggestions = getAutocompleteSuggestions(
+                                                    e.target.value,
+                                                    pos,
+                                                    vars
+                                                );
+                                                setAutocompleteSuggestions(suggestions);
+                                                setAutocompleteIndex(0);
+                                            }
+                                        },
+                                        onKeyDown: e => {
+                                            // Handle autocomplete navigation
+                                            if (autocompleteSuggestions.length > 0) {
+                                                if (e.key === 'ArrowDown') {
+                                                    e.preventDefault();
+                                                    setAutocompleteIndex(prev => 
+                                                        (prev + 1) % autocompleteSuggestions.length
+                                                    );
+                                                    return;
+                                                }
+                                                if (e.key === 'ArrowUp') {
+                                                    e.preventDefault();
+                                                    setAutocompleteIndex(prev => 
+                                                        prev === 0 ? autocompleteSuggestions.length - 1 : prev - 1
+                                                    );
+                                                    return;
+                                                }
+                                                if (e.key === 'Enter' || e.key === 'Tab') {
+                                                    e.preventDefault();
+                                                    const selected = autocompleteSuggestions[autocompleteIndex];
+                                                    if (selected) {
+                                                        const el = formulaEditorRef.current;
+                                                        const pos = el.selectionStart;
+                                                        const text = formulaDraft;
+                                                        
+                                                        // Find word start
+                                                        let wordStart = pos;
+                                                        while (wordStart > 0 && /[a-zA-Z0-9_$]/.test(text[wordStart - 1])) {
+                                                            wordStart--;
+                                                        }
+                                                        
+                                                        const before = text.slice(0, wordStart);
+                                                        const after = text.slice(pos);
+                                                        const newText = before + selected.value + after;
+                                                        
+                                                        setFormulaDraft(newText);
+                                                        setAutocompleteSuggestions([]);
+                                                        
+                                                        // Move cursor after inserted text
+                                                        globalThis.requestAnimationFrame(() => {
+                                                            const newPos = wordStart + selected.value.length;
+                                                            el.setSelectionRange(newPos, newPos);
+                                                            el.focus();
+                                                        });
+                                                    }
+                                                    return;
+                                                }
+                                                if (e.key === 'Escape') {
+                                                    setAutocompleteSuggestions([]);
+                                                    return;
+                                                }
+                                            }
+                                        },
+                                        placeholder: t('e.g. pv1 + pv2 + pv3'),
+                                        spellCheck: false,
                                     }),
-                                    value: formulaDraft,
-                                    onChange: e => setFormulaDraft(e.target.value),
-                                    placeholder: t('e.g. pv1 + pv2 + pv3'),
-                                    spellCheck: false,
-                                }),
+                                    // Autocomplete dropdown
+                                    autocompleteSuggestions.length > 0 && React.createElement(
+                                        'div',
+                                        {
+                                            style: {
+                                                position: 'absolute',
+                                                top: '100%',
+                                                left: 0,
+                                                marginTop: 4,
+                                                minWidth: 200,
+                                                maxWidth: 400,
+                                                borderRadius: 8,
+                                                border: `1px solid ${colors.border}`,
+                                                background: colors.panelBg,
+                                                boxShadow: isDark ? '0 8px 24px rgba(0,0,0,0.45)' : '0 8px 24px rgba(0,0,0,0.15)',
+                                                zIndex: 2000,
+                                                maxHeight: 180,
+                                                overflowY: 'auto',
+                                                padding: 4,
+                                            },
+                                        },
+                                        autocompleteSuggestions.map((suggestion, idx) =>
+                                            React.createElement(
+                                                'div',
+                                                {
+                                                    key: idx,
+                                                    style: {
+                                                        padding: '6px 10px',
+                                                        borderRadius: 6,
+                                                        cursor: 'pointer',
+                                                        background: idx === autocompleteIndex ? colors.active : 'transparent',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: 8,
+                                                    },
+                                                    onClick: () => {
+                                                        const el = formulaEditorRef.current;
+                                                        const pos = el.selectionStart;
+                                                        const text = formulaDraft;
+                                                        
+                                                        let wordStart = pos;
+                                                        while (wordStart > 0 && /[a-zA-Z0-9_$]/.test(text[wordStart - 1])) {
+                                                            wordStart--;
+                                                        }
+                                                        
+                                                        const before = text.slice(0, wordStart);
+                                                        const after = text.slice(pos);
+                                                        const newText = before + suggestion.value + after;
+                                                        
+                                                        setFormulaDraft(newText);
+                                                        setAutocompleteSuggestions([]);
+                                                        
+                                                        globalThis.requestAnimationFrame(() => {
+                                                            const newPos = wordStart + suggestion.value.length;
+                                                            el.setSelectionRange(newPos, newPos);
+                                                            el.focus();
+                                                        });
+                                                    },
+                                                },
+                                                React.createElement(
+                                                    'span',
+                                                    {
+                                                        style: {
+                                                            fontSize: 13,
+                                                            fontFamily:
+                                                                "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+                                                            color: suggestion.type === 'variable' ? (isDark ? '#82e0aa' : '#16a34a') : (isDark ? '#82aaff' : '#2563eb'),
+                                                        },
+                                                    },
+                                                    suggestion.value
+                                                ),
+                                                suggestion.desc && React.createElement(
+                                                    'span',
+                                                    { style: { fontSize: 11, color: colors.textMuted } },
+                                                    suggestion.desc
+                                                )
+                                            )
+                                        )
+                                    )
+                                ),
                                 React.createElement(
                                     'div',
                                     { style: { display: 'flex', justifyContent: 'space-between', gap: 8 } },
@@ -2440,7 +2809,9 @@
                                       React.createElement(
                                           'span',
                                           null,
-                                          (selectedItem.mode || 'formula') === 'source' ? t('Source') : t('Formula')
+                                          (selectedItem.mode || 'formula') === 'source' 
+                                              ? t('Source') 
+                                              : (selectedItem.mode === 'state-machine' ? t('State Machine') : t('Formula'))
                                       ),
                                       React.createElement('span', { style: { opacity: 0.75 } }, '▾')
                                   ),
@@ -2469,6 +2840,17 @@
                                                     },
                                                 },
                                                 t('Source')
+                                            ),
+                                            React.createElement(
+                                                'div',
+                                                {
+                                                    style: dropdownItemStyle(selectedItem.mode === 'state-machine'),
+                                                    onClick: () => {
+                                                        updateSelected('mode', 'state-machine');
+                                                        setOpenDropdown(null);
+                                                    },
+                                                },
+                                                t('State Machine')
                                             )
                                         )
                                       : null
@@ -2499,7 +2881,313 @@
 										placeholder: t('e.g. $.apower'),
 									})
                                     )
-                                  : React.createElement(
+                                  : selectedItem.mode === 'state-machine'
+                                      ? React.createElement(
+                                            React.Fragment,
+                                            null,
+                                            React.createElement(
+                                                'div',
+                                                { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 } },
+                                                React.createElement('div', { style: labelStyle }, t('Inputs')),
+                                                React.createElement(
+                                                    'button',
+                                                    { type: 'button', style: btnStyle, onClick: addInput },
+                                                    t('Add input')
+                                                )
+                                            ),
+                                            (Array.isArray(selectedItem.inputs) ? selectedItem.inputs : []).map((inp, idx) =>
+                                                React.createElement(
+                                                    'div',
+                                                    {
+                                                        key: idx,
+                                                        style: {
+                                                            display: 'grid',
+                                                            gridTemplateColumns: '140px 1fr 160px 90px 90px',
+                                                            gap: 8,
+                                                            alignItems: 'center',
+                                                            marginTop: 8,
+                                                        },
+                                                    },
+                                                    React.createElement('input', {
+                                                        style: inputStyle,
+                                                        type: 'text',
+                                                        value: (inp && inp.key) || '',
+                                                        placeholder: t('Key'),
+                                                        onChange: e => updateInput(idx, 'key', e.target.value),
+                                                    }),
+                                                    React.createElement('input', {
+                                                        style: inputStyle,
+                                                        type: 'text',
+                                                        value: (inp && inp.sourceState) || '',
+                                                        placeholder: t('ioBroker Source State'),
+                                                        onChange: e => updateInput(idx, 'sourceState', e.target.value),
+                                                    }),
+                                                    React.createElement('input', {
+                                                        style: inputStyle,
+                                                        type: 'text',
+                                                        value: (inp && inp.jsonPath) || '',
+                                                        placeholder: t('JSONPath (optional)'),
+                                                        onChange: e => updateInput(idx, 'jsonPath', e.target.value),
+                                                        title: t('e.g. $.apower'),
+                                                    }),
+                                                    React.createElement(
+                                                        'div',
+                                                        { style: { display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'stretch' } },
+                                                        React.createElement(
+                                                            'label',
+                                                            {
+                                                                style: {
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    gap: 6,
+                                                                    fontSize: 11,
+                                                                    color: colors.textMuted,
+                                                                    cursor: 'pointer',
+                                                                },
+                                                                title: t('Clamp input negative to 0'),
+                                                            },
+                                                            React.createElement('input', {
+                                                                type: 'checkbox',
+                                                                checked: !!(inp && inp.noNegative),
+                                                                onChange: e => updateInput(idx, 'noNegative', !!e.target.checked),
+                                                            }),
+                                                            React.createElement('span', null, 'neg→0')
+                                                        ),
+                                                        renderSelectButton(() => setSelectContext({ kind: 'input', index: idx }))
+                                                    ),
+                                                    React.createElement(
+                                                        'button',
+                                                        { type: 'button', style: btnDangerStyle, onClick: () => deleteInput(idx) },
+                                                        t('Delete')
+                                                    )
+                                                )
+                                            ),
+                                            React.createElement(
+                                                'div',
+                                                {
+                                                    style: {
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'space-between',
+                                                        marginTop: 20,
+                                                        paddingTop: 10,
+                                                        borderTop: `1px solid ${colors.divider}`,
+                                                    },
+                                                },
+                                                React.createElement('div', { style: labelStyle }, t('Rules')),
+                                                React.createElement(
+                                                    'button',
+                                                    {
+                                                        type: 'button',
+                                                        style: btnStyle,
+                                                        onClick: () => {
+                                                            const rules = Array.isArray(selectedItem.rules) ? selectedItem.rules : [];
+                                                            const itemType = selectedItem.type || 'string';
+                                                            const defaultValue = itemType === 'boolean' ? false : '';
+                                                            rules.push({ condition: '', value: defaultValue });
+                                                            updateSelected('rules', rules);
+                                                        },
+                                                    },
+                                                    t('Add rule')
+                                                )
+                                            ),
+                                            React.createElement(
+                                                'div',
+                                                { style: { fontSize: 11, color: colors.textMuted, marginTop: 4, marginBottom: 8 } },
+                                                t('Rules are evaluated top-to-bottom; first matching rule wins.')
+                                            ),
+                                            React.createElement(
+                                                'div',
+                                                {
+                                                    style: {
+                                                        backgroundColor: colors.cardBg,
+                                                        border: `1px solid ${colors.divider}`,
+                                                        borderRadius: 4,
+                                                        padding: 10,
+                                                        marginTop: 4,
+                                                        marginBottom: 8,
+                                                    },
+                                                },
+                                                React.createElement(
+                                                    'div',
+                                                    { style: { fontSize: 11, fontWeight: 600, color: colors.textMuted, marginBottom: 8 } },
+                                                    t('Examples')
+                                                ),
+                                                React.createElement(
+                                                    'div',
+                                                    { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
+                                                    React.createElement(
+                                                        'button',
+                                                        {
+                                                            type: 'button',
+                                                            style: Object.assign({}, btnStyle, { padding: '4px 8px', fontSize: 11 }),
+                                                            onClick: () => {
+                                                                const rules = Array.isArray(selectedItem.rules) ? [...selectedItem.rules] : [];
+                                                                const itemType = selectedItem.type || 'string';
+                                                                if (itemType === 'boolean') {
+                                                                    rules.push({ condition: 'battery > 80', value: true });
+                                                                    rules.push({ condition: 'true', value: false });
+                                                                } else {
+                                                                    rules.push({ condition: 'soc < 10', value: 'Battery-Empty' });
+                                                                    rules.push({ condition: 'soc < 30', value: 'Battery-Low' });
+                                                                    rules.push({ condition: 'soc >= 80', value: 'Battery-Full' });
+                                                                    rules.push({ condition: 'true', value: 'Battery-Normal' });
+                                                                }
+                                                                updateSelected('rules', rules);
+                                                            },
+                                                            title: (selectedItem.type || 'string') === 'boolean' ? 'Battery OK check' : 'Battery status levels',
+                                                        },
+                                                        (selectedItem.type || 'string') === 'boolean' ? '✓ Battery OK' : '🔋 Battery Levels'
+                                                    ),
+                                                    React.createElement(
+                                                        'button',
+                                                        {
+                                                            type: 'button',
+                                                            style: Object.assign({}, btnStyle, { padding: '4px 8px', fontSize: 11 }),
+                                                            onClick: () => {
+                                                                const rules = Array.isArray(selectedItem.rules) ? [...selectedItem.rules] : [];
+                                                                const itemType = selectedItem.type || 'string';
+                                                                if (itemType === 'boolean') {
+                                                                    rules.push({ condition: 'surplus > 0', value: true });
+                                                                    rules.push({ condition: 'true', value: false });
+                                                                } else {
+                                                                    rules.push({ condition: 'surplus > 1000', value: 'High-Surplus' });
+                                                                    rules.push({ condition: 'surplus > 0', value: 'Surplus' });
+                                                                    rules.push({ condition: 'true', value: 'No-Surplus' });
+                                                                }
+                                                                updateSelected('rules', rules);
+                                                            },
+                                                            title: (selectedItem.type || 'string') === 'boolean' ? 'Has surplus check' : 'Surplus categories',
+                                                        },
+                                                        (selectedItem.type || 'string') === 'boolean' ? '⚡ Has Surplus' : '⚡ Surplus Levels'
+                                                    ),
+                                                    React.createElement(
+                                                        'button',
+                                                        {
+                                                            type: 'button',
+                                                            style: Object.assign({}, btnStyle, { padding: '4px 8px', fontSize: 11 }),
+                                                            onClick: () => {
+                                                                const rules = Array.isArray(selectedItem.rules) ? [...selectedItem.rules] : [];
+                                                                const itemType = selectedItem.type || 'string';
+                                                                if (itemType === 'boolean') {
+                                                                    rules.push({ condition: 'hour >= 6 && hour < 20', value: true });
+                                                                    rules.push({ condition: 'true', value: false });
+                                                                } else {
+                                                                    rules.push({ condition: 'hour >= 6 && hour < 12', value: 'Morning' });
+                                                                    rules.push({ condition: 'hour >= 12 && hour < 18', value: 'Afternoon' });
+                                                                    rules.push({ condition: 'hour >= 18 && hour < 22', value: 'Evening' });
+                                                                    rules.push({ condition: 'true', value: 'Night' });
+                                                                }
+                                                                updateSelected('rules', rules);
+                                                            },
+                                                            title: (selectedItem.type || 'string') === 'boolean' ? 'Daytime check' : 'Time of day categories',
+                                                        },
+                                                        (selectedItem.type || 'string') === 'boolean' ? '🌞 Is Daytime' : '🕐 Time of Day'
+                                                    )
+                                                )
+                                            ),
+                                            (Array.isArray(selectedItem.rules) ? selectedItem.rules : []).map((rule, ruleIdx) =>
+                                                React.createElement(
+                                                    'div',
+                                                    {
+                                                        key: ruleIdx,
+                                                        style: {
+                                                            border: `1px solid ${colors.divider}`,
+                                                            borderRadius: 4,
+                                                            padding: 12,
+                                                            marginTop: 8,
+                                                            backgroundColor: colors.cardBg,
+                                                        },
+                                                    },
+                                                    React.createElement(
+                                                        'div',
+                                                        { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 } },
+                                                        React.createElement('span', { style: { fontWeight: 600, fontSize: 11, color: colors.textMuted } }, `${t('Rule')} ${ruleIdx + 1}`),
+                                                        React.createElement(
+                                                            'button',
+                                                            {
+                                                                type: 'button',
+                                                                style: Object.assign({}, btnDangerStyle, { padding: '4px 8px', fontSize: 11 }),
+                                                                onClick: () => {
+                                                                    const rules = Array.isArray(selectedItem.rules) ? selectedItem.rules : [];
+                                                                    rules.splice(ruleIdx, 1);
+                                                                    updateSelected('rules', rules);
+                                                                },
+                                                            },
+                                                            t('Delete')
+                                                        )
+                                                    ),
+                                                    React.createElement(
+                                                        'div',
+                                                        { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+                                                        React.createElement('label', { style: Object.assign({}, labelStyle, { marginTop: 0 }) }, t('Condition')),
+                                                        React.createElement(
+                                                            'div',
+                                                            { style: { fontSize: 10, color: colors.textMuted } },
+                                                            t('Use inputs and operators: <, >, ==, &&, ||')
+                                                        )
+                                                    ),
+                                                    React.createElement('input', {
+                                                        style: Object.assign({}, inputStyle, { fontFamily: 'monospace' }),
+                                                        type: 'text',
+                                                        value: (rule && rule.condition) || '',
+                                                        onChange: e => {
+                                                            const rules = Array.isArray(selectedItem.rules) ? [...selectedItem.rules] : [];
+                                                            rules[ruleIdx] = Object.assign({}, rules[ruleIdx], { condition: e.target.value });
+                                                            updateSelected('rules', rules);
+                                                        },
+                                                        placeholder: t('e.g. soc < 10 or true for default'),
+                                                        title: t('Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)'),
+                                                    }),
+                                                    React.createElement('label', { style: labelStyle }, t('Output Value')),
+                                                    selectedItem.type === 'boolean'
+                                                        ? React.createElement(
+                                                              'div',
+                                                              { style: { display: 'flex', gap: 8 } },
+                                                              React.createElement(
+                                                                  'label',
+                                                                  { style: { display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' } },
+                                                                  React.createElement('input', {
+                                                                      type: 'radio',
+                                                                      checked: rule && rule.value === true,
+                                                                      onChange: () => {
+                                                                          const rules = Array.isArray(selectedItem.rules) ? [...selectedItem.rules] : [];
+                                                                          rules[ruleIdx] = Object.assign({}, rules[ruleIdx], { value: true });
+                                                                          updateSelected('rules', rules);
+                                                                      },
+                                                                  }),
+                                                                  React.createElement('span', null, 'true')
+                                                              ),
+                                                              React.createElement(
+                                                                  'label',
+                                                                  { style: { display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' } },
+                                                                  React.createElement('input', {
+                                                                      type: 'radio',
+                                                                      checked: rule && rule.value === false,
+                                                                      onChange: () => {
+                                                                          const rules = Array.isArray(selectedItem.rules) ? [...selectedItem.rules] : [];
+                                                                          rules[ruleIdx] = Object.assign({}, rules[ruleIdx], { value: false });
+                                                                          updateSelected('rules', rules);
+                                                                      },
+                                                                  }),
+                                                                  React.createElement('span', null, 'false')
+                                                              )
+                                                          )
+                                                        : React.createElement('input', {
+                                                              style: inputStyle,
+                                                              type: 'text',
+                                                              value: (rule && rule.value !== undefined && rule.value !== null) ? String(rule.value) : '',
+                                                              onChange: e => {
+                                                                  const rules = Array.isArray(selectedItem.rules) ? [...selectedItem.rules] : [];
+                                                                  rules[ruleIdx] = Object.assign({}, rules[ruleIdx], { value: e.target.value });
+                                                                  updateSelected('rules', rules);
+                                                              },
+                                                              placeholder: t('e.g. Battery-Empty'),
+                                                          })
+                                                )
+                                            )
+                                        )
+                                      : React.createElement(
                                         React.Fragment,
                                         null,
                                         React.createElement(
@@ -2726,42 +3414,50 @@
                                           placeholder: 'W',
                                       })
                                   ),
-                                  React.createElement(
-                                      'div',
-                                      null,
-                                      React.createElement(
-                                          'label',
-                                          { style: { display: 'flex', alignItems: 'center', gap: 8, marginTop: 10 } },
-                                          React.createElement('input', {
-                                              type: 'checkbox',
-                                              checked: !!selectedItem.clamp,
-                                              onChange: e => updateSelected('clamp', !!e.target.checked),
-                                          }),
-                                          React.createElement('span', null, t('Clamp result'))
-                                      )
-                                  )
+                                  selectedItem.mode !== 'state-machine'
+                                      ? React.createElement(
+                                            'div',
+                                            null,
+                                            React.createElement(
+                                                'label',
+                                                { style: { display: 'flex', alignItems: 'center', gap: 8, marginTop: 10 } },
+                                                React.createElement('input', {
+                                                    type: 'checkbox',
+                                                    checked: !!selectedItem.clamp,
+                                                    onChange: e => updateSelected('clamp', !!e.target.checked),
+                                                }),
+                                                React.createElement('span', null, t('Clamp result'))
+                                            )
+                                        )
+                                      : null
                               ),
-                              React.createElement(
-                                  'label',
-                                  {
-                                      style: { display: 'flex', alignItems: 'center', gap: 8, marginTop: 10 },
-                                      title: t('Clamp negative to 0 (tooltip)')
-                                  },
-                                  React.createElement('input', {
-                                      type: 'checkbox',
-                                      checked: !!selectedItem.noNegative,
-                                      onChange: e => updateSelected('noNegative', !!e.target.checked),
-                                  }),
-                                  React.createElement('span', null, t('Clamp negative to 0'))
-                              ),
-                              React.createElement(
-                                  'div',
-                                  { style: { marginLeft: 26, marginTop: 4, fontSize: 12, color: colors.textMuted } },
-                                  t(selectedItem && selectedItem.mode === 'formula'
-                                      ? 'Clamp negative to 0 (hint formula)'
-                                      : 'Clamp negative to 0 (hint source)')
-                              ),
-                              selectedItem.clamp
+                              selectedItem.mode !== 'state-machine'
+                                  ? React.createElement(
+                                        React.Fragment,
+                                        null,
+                                        React.createElement(
+                                            'label',
+                                            {
+                                                style: { display: 'flex', alignItems: 'center', gap: 8, marginTop: 10 },
+                                                title: t('Clamp negative to 0 (tooltip)')
+                                            },
+                                            React.createElement('input', {
+                                                type: 'checkbox',
+                                                checked: !!selectedItem.noNegative,
+                                                onChange: e => updateSelected('noNegative', !!e.target.checked),
+                                            }),
+                                            React.createElement('span', null, t('Clamp negative to 0'))
+                                        ),
+                                        React.createElement(
+                                            'div',
+                                            { style: { marginLeft: 26, marginTop: 4, fontSize: 12, color: colors.textMuted } },
+                                            t(selectedItem && selectedItem.mode === 'formula'
+                                                ? 'Clamp negative to 0 (hint formula)'
+                                                : 'Clamp negative to 0 (hint source)')
+                                        )
+                                    )
+                                  : null,
+                              selectedItem.clamp && selectedItem.mode !== 'state-machine'
                                   ? React.createElement(
                                         'div',
                                         { style: rowStyle2 },
