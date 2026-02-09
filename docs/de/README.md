@@ -1,73 +1,274 @@
+# SOLECTRUS InfluxDB Adapter -- Dokumentation
 
-# 🚀 Schnellstart – Adapter verwenden
+## Inhaltsverzeichnis
 
-## Schritt-für-Schritt Einrichtung
+1. [InfluxDB-Konfiguration](#1-influxdb-konfiguration)
+2. [Sensoren](#2-sensoren)
+3. [Data-SOLECTRUS Formel-Engine](#3-data-solectrus-formel-engine)
+4. [Item-Modi](#4-item-modi)
+5. [Formel-Builder](#5-formel-builder)
+6. [State Machine Modus](#6-state-machine-modus)
+7. [Data Runtime Einstellungen](#7-data-runtime-einstellungen)
+8. [Monitoring & Buffer](#8-monitoring--buffer)
+9. [Berechnete Werte als Sensor-Quellen verwenden](#9-berechnete-werte-als-sensor-quellen-verwenden)
+10. [Debugging](#10-debugging)
 
-### 1️⃣ Adapter installieren
-Installiere den **SOLECTRUS InfluxDB Adapter** über die ioBroker Admin-Oberfläche.
+---
 
-### 2️⃣ InfluxDB-Daten eintragen
-Adapter → **InfluxDB Tab**
+## 1. InfluxDB-Konfiguration
+
+Adapter-Einstellungen öffnen und zum Tab **InfluxDB** wechseln.
 
 | Feld | Beschreibung |
 |------|--------------|
-| `URL` | Adresse des InfluxDB 2.x Servers |
-| `Organization` | Deine Organisation |
-| `Bucket` | Ziel-Bucket |
-| `Token` | API-Token mit Schreibrechten |
+| URL | InfluxDB 2.x Server-Adresse (z.B. `http://192.168.1.10:8086`) |
+| Organization | Deine InfluxDB-Organisation |
+| Bucket | Ziel-Bucket für Zeitreihendaten |
+| Token | API-Token mit **Schreibrechten** |
+| Polling Interval (s) | Wie oft Sensorwerte gesammelt werden (5-30 Sekunden) |
 
-Der Adapter prüft die Verbindung mit einem Test-Write.
+Der Adapter prüft die Verbindung beim Start durch Schreiben eines Test-Punktes. Der Verbindungsstatus wird in `info.connection` angezeigt.
 
-### 3️⃣ Sensoren konfigurieren
-Im Tab **Sensors**:
-
-| Einstellung | Beschreibung |
-|------------|--------------|
-| `Enabled` | Sensor aktivieren |
-| `Sensor Name` | Anzeigename |
-| `ioBroker Source State` | Bestehenden Datenpunkt auswählen |
-| `Datatype` | int / float / bool / string |
-| `Measurement` | Influx Measurement |
-| `Field` | Influx Feldname |
-
-➡ Mindestens ein Sensor muss aktiviert sein.
-
-### 4️⃣ Speichern & Adapter starten
-Nach dem Speichern:
-- Adapter abonniert die Datenpunkte
-- Zustände erscheinen unter  
-  `solectrus-influxdb.X.sensors.*`
-
-### 5️⃣ Datensammlung
-Der Adapter:
-1. Liest Sensorwerte  
-2. Speichert sie im Puffer  
-3. Schreibt sie gesammelt nach InfluxDB  
-
-### 6️⃣ Wenn InfluxDB nicht erreichbar ist
-Es gehen keine Daten verloren:
-- Werte bleiben im Buffer  
-- Automatische Wiederholungsversuche  
-- Nach Wiederverbindung werden alle Werte übertragen  
-
-### 7️⃣ Überwachung
-
-| Zustand | Bedeutung |
-|--------|-----------|
-| `info.connection` | Verbindung zu InfluxDB |
-| `info.buffer.size` | Anzahl gepufferter Punkte |
-| `info.buffer.oldest` | Ältester gespeicherter Zeitstempel |
-| `info.lastError` | Letzter kritischer Fehler |
-
-### 8️⃣ Buffer manuell löschen
-
-State:
-`solectrus-influxdb.X.info.buffer.clear`
-
-Button drücken → Buffer wird geleert.
-
-## Debugging
-
-Loglevel auf Debug setzen.
+Am Ende dieses Tabs befindet sich eine Checkbox zum Aktivieren der **Data-SOLECTRUS** Formel-Engine (siehe Abschnitt 3).
 
 ---
+
+## 2. Sensoren
+
+Zum Tab **Sensors** wechseln. Der Master/Detail-Editor zeigt alle konfigurierten Sensoren mit ihrem Live-Status.
+
+### Sensor hinzufügen
+
+Auf **Add** klicken und konfigurieren:
+
+| Einstellung | Beschreibung |
+|-------------|--------------|
+| Enabled | Sensor aktivieren/deaktivieren |
+| Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) |
+| ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. |
+| Datatype | `int`, `float`, `bool` oder `string` |
+| Influx Measurement | InfluxDB Measurement-Name (z.B. `INVERTER_POWER`) |
+| Influx Field | InfluxDB Feldname (z.B. `value`) |
+
+Mindestens ein Sensor muss aktiviert sein, damit Daten geschrieben werden.
+
+### Funktionsweise
+
+1. Der Adapter abonniert den Quell-Datenpunkt jedes Sensors
+2. Werte werden unter `solectrus-influxdb.X.sensors.*` gespiegelt
+3. In jedem Polling-Intervall werden aktuelle Werte in den Schreibpuffer aufgenommen
+4. Der Puffer wird gebündelt nach InfluxDB geschrieben
+
+### NaN-Schutz
+
+Ungültige Werte (`NaN` bei int/float, `null`/`undefined` bei Strings) werden automatisch übersprungen und im Log gewarnt.
+
+### Field-Type-Konflikte
+
+Meldet InfluxDB einen Field-Type-Konflikt (z.B. Float in ein bestehendes Int-Feld schreiben), wird der betroffene Sensor automatisch deaktiviert und der Buffer geleert.
+
+---
+
+## 3. Data-SOLECTRUS Formel-Engine
+
+Die Formel-Engine ist ein optionales Feature zur Berechnung abgeleiteter Werte aus beliebigen ioBroker-States. Aktivierung über die Checkbox **Enable Data-SOLECTRUS (formula engine)** im InfluxDB-Tab.
+
+Bei Aktivierung erscheinen zwei zusätzliche Tabs:
+
+- **Data Values** -- Berechnete Items konfigurieren
+- **Data Runtime** -- Globale Polling- und Snapshot-Einstellungen
+
+### Konzepte
+
+- **Items** sind die Bausteine. Jedes Item liest einen oder mehrere ioBroker-States und erzeugt einen Ausgabe-State unter `solectrus-influxdb.X.ds.*`
+- Items können in drei Modi betrieben werden: **Source**, **Formula** oder **State Machine**
+- Items lassen sich in **Ordner/Gruppen** organisieren
+- Berechnete Werte können als Sensor-Quellen für die InfluxDB-Speicherung verwendet werden
+
+---
+
+## 4. Item-Modi
+
+### Source-Modus
+
+Spiegelt einen einzelnen ioBroker-State. Optional kann ein Wert aus einem JSON-Payload per JSONPath extrahiert werden.
+
+| Einstellung | Beschreibung |
+|-------------|--------------|
+| ioBroker Source State | Der zu spiegelnde State |
+| JSONPath (optional) | Verschachtelten Wert extrahieren, z.B. `$.apower` |
+| Datatype | `number` (Standard), `boolean`, `string` oder `mixed` |
+| Clamp negative to 0 | Negative Ausgabewerte durch 0 ersetzen |
+
+### Formula-Modus
+
+Berechnet einen Wert aus mehreren benannten Inputs mittels mathematischem Ausdruck.
+
+| Einstellung | Beschreibung |
+|-------------|--------------|
+| Inputs | Benannte Variablen, jeweils mit einem ioBroker-Quell-State verknüpft |
+| Formula expression | Mathematischer Ausdruck mit den Input-Variablennamen |
+| Datatype | Ausgabetyp |
+| Clamp / Min / Max | Optionale Ausgabebegrenzung |
+
+**Input-Konfiguration:**
+
+| Feld | Beschreibung |
+|------|--------------|
+| Key | Variablenname für die Formel (z.B. `pv1`) |
+| ioBroker Source State | State, aus dem der Wert gelesen wird |
+| JSONPath (optional) | Aus JSON-Payload extrahieren |
+| Clamp input negative to 0 | Diesen Input vor der Formelauswertung auf 0 begrenzen |
+
+**Beispielformel:** `pv1 + pv2 + pv3`
+
+### Verfügbare Funktionen
+
+| Funktion | Beschreibung | Beispiel |
+|----------|--------------|----------|
+| `min(a, b)` | Kleinerer von zwei Werten | `min(5, 10)` = 5 |
+| `max(a, b)` | Größerer von zwei Werten | `max(0, wert)` |
+| `clamp(v, min, max)` | Wert zwischen Grenzen begrenzen | `clamp(v, 0, 100)` |
+| `IF(bed, dann, sonst)` | Bedingung | `IF(soc > 80, überschuss, 0)` |
+| `abs(v)` | Absolutwert | `abs(-5)` = 5 |
+| `round(v)` | Auf Ganzzahl runden | `round(3.7)` = 4 |
+| `floor(v)` / `ceil(v)` | Abrunden / Aufrunden | `floor(3.7)` = 3 |
+| `pow(basis, exp)` | Potenz | `pow(2, 3)` = 8 |
+
+### State-Funktionen (erweitert)
+
+Diese Funktionen lesen ioBroker-States direkt in einer Formel, ohne benannte Inputs zu definieren:
+
+| Funktion | Beschreibung | Beispiel |
+|----------|--------------|----------|
+| `s("id")` | State als sicheren Zahlenwert lesen (0 falls nicht verfügbar) | `s("hm-rpc.0.power") + 100` |
+| `v("id")` | State als Rohwert lesen (String/Zahl/Boolean) | `v("mqtt.0.status")` |
+| `jp("id", "$.pfad")` | Wert aus JSON-State per JSONPath extrahieren | `jp("shelly.0.json", "$.apower")` |
+
+### Unterstützte Operatoren
+
+`+`, `-`, `*`, `/`, `%`, `()`, `&&`, `||`, `!`, `==`, `!=`, `>=`, `<=`, `>`, `<`, `? :`
+
+---
+
+## 5. Formel-Builder
+
+Neben dem Formel-Eingabefeld auf **Builder...** klicken um den visuellen Formel-Builder zu öffnen.
+
+Der Builder bietet:
+
+- **Variablen (Inputs)** -- Klick fügt benannte Input-Variablen ein
+- **Operatoren** -- Klick fügt Operatoren ein, mit Tooltips zur Erklärung
+- **Funktionen** -- Funktions-Vorlagen einfügen (`min`, `max`, `clamp`, `IF`)
+- **State-Funktionen** -- `s()`, `v()` oder `jp()` mit State-Auswahldialog einfügen
+- **Beispiele** -- Häufige Formelmuster (PV-Summe, Überschuss, Prozent, Begrenzung, Bedingungen)
+- **Live-Vorschau** -- Formelergebnis in Echtzeit sehen (Adapter muss laufen)
+
+Die Formel ist jederzeit als Klartext editierbar. Der Builder fügt Bausteine nur an der Cursorposition ein.
+
+---
+
+## 6. State Machine Modus
+
+Der State Machine Modus erzeugt String- oder Boolean-States basierend auf Regeln. Regeln werden von oben nach unten ausgewertet; die **erste passende Regel gewinnt**.
+
+Einsatzgebiete:
+- Numerische Statuscodes in lesbare Labels übersetzen
+- Betriebsmodi anhand mehrerer Sensorwerte bestimmen
+- Boolean-Flags aus komplexen Bedingungen erzeugen
+
+### Konfiguration
+
+| Einstellung | Beschreibung |
+|-------------|--------------|
+| Inputs | Benannte Variablen (wie im Formula-Modus) |
+| Datatype | `string` oder `boolean` |
+| Rules | Geordnete Liste von Bedingungs-/Ausgabe-Paaren |
+
+### Regeln
+
+Jede Regel hat:
+
+| Feld | Beschreibung |
+|------|--------------|
+| Condition | Formelausdruck, der als wahr/falsch ausgewertet wird. Input-Variablennamen und Operatoren verwenden. |
+| Output Value | Der String- oder Boolean-Wert, der bei passender Bedingung ausgegeben wird. |
+
+**Spezielle Bedingungen:**
+- `true` oder leer = Standard/Fallback-Regel (passt immer)
+- Input-Variablen und Operatoren verwenden: `soc < 10`, `battery > 80 && surplus > 0`
+
+### Beispiel
+
+Für ein Item mit Inputs `soc` (Batterie-Ladezustand) und `surplus` (PV-Überschuss):
+
+| Bedingung | Ausgabewert |
+|-----------|-------------|
+| `soc < 10` | `Akku-Leer` |
+| `soc < 30` | `Akku-Niedrig` |
+| `surplus > 1000 && soc > 80` | `Voll-Export` |
+| `true` | `Normal` |
+
+Ergebnis: Der Ausgabe-State enthält `Akku-Leer`, `Akku-Niedrig`, `Voll-Export` oder `Normal` je nach aktuellen Werten.
+
+---
+
+## 7. Data Runtime Einstellungen
+
+Im Tab **Data Runtime**:
+
+| Einstellung | Beschreibung | Standard |
+|-------------|--------------|----------|
+| Poll interval (seconds) | Wie oft berechnete Items neu ausgewertet werden | 5 |
+| Read inputs on tick (snapshot) | Alle Input-States bei jedem Auswertungszyklus frisch lesen | aus |
+| Snapshot delay (ms) | Wartezeit nach Snapshot-Lesen vor der Auswertung | 0 |
+
+---
+
+## 8. Monitoring & Buffer
+
+### Adapter-States
+
+| State | Beschreibung |
+|-------|--------------|
+| `info.connection` | `true` wenn InfluxDB erreichbar |
+| `info.buffer.size` | Anzahl gepufferter Datenpunkte |
+| `info.buffer.oldest` | Zeitstempel des ältesten gepufferten Punktes |
+| `info.buffer.clear` | Button zum manuellen Leeren des Buffers |
+| `info.lastError` | Letzte kritische Fehlermeldung |
+
+### Data-SOLECTRUS States (wenn aktiviert)
+
+Berechnete Werte erscheinen unter `solectrus-influxdb.X.ds.*` mit Diagnose-States pro Item.
+
+### Buffer-Verhalten
+
+- Werte werden persistent auf die Festplatte gepuffert (`buffer.json`)
+- Maximale Buffer-Größe: 100.000 Punkte
+- Bei InfluxDB-Ausfall steigen die Wiederholungsintervalle exponentiell (bis 5 Minuten)
+- Nach Wiederverbindung werden alle gepufferten Punkte übertragen
+
+---
+
+## 9. Berechnete Werte als Sensor-Quellen verwenden
+
+Data-SOLECTRUS berechnete Werte können als Sensor-Input für die InfluxDB-Speicherung genutzt werden:
+
+1. Berechnetes Item (Source, Formula oder State Machine) im Tab **Data Values** anlegen
+2. Im Tab **Sensors** einen neuen Sensor hinzufügen
+3. Als **ioBroker Source State** den berechneten Wert auswählen: `solectrus-influxdb.X.ds.<outputId>`
+4. Measurement, Field und Datentyp wie gewohnt konfigurieren
+
+Der Adapter regelt die Initialisierungsreihenfolge automatisch -- Sensor-Abonnements für `ds.*`-States funktionieren auch wenn die Formel-Engine nach dem Sensor-Setup startet.
+
+---
+
+## 10. Debugging
+
+Loglevel des Adapters auf **Debug** setzen für detaillierte Ausgaben zu:
+
+- Sensorwert-Erfassung
+- InfluxDB-Schreiboperationen
+- Formelauswertungs-Details
+- State Machine Regelabgleich
+- Buffer-Operationen
