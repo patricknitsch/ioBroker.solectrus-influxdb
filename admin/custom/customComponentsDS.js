@@ -666,6 +666,27 @@
     }
 
     function createDataSolectrusItemsEditor(React, AdapterReact) {
+        // Wrapper that keeps cursor position stable in controlled text inputs.
+        // React resets the cursor when a parent re-render supplies a new value prop.
+        function StableInput(props) {
+            var value = props.value, onChange = props.onChange;
+            var rest = {};
+            for (var k in props) { if (k !== 'value' && k !== 'onChange') rest[k] = props[k]; }
+            var localRef = React.useRef(value || '');
+            var update = React.useState(0)[1];
+            if (value !== undefined && value !== localRef.current) {
+                localRef.current = value || '';
+            }
+            return React.createElement('input', Object.assign({}, rest, {
+                value: localRef.current,
+                onChange: function (e) {
+                    localRef.current = e.target.value;
+                    update(function (c) { return c + 1; });
+                    if (onChange) onChange(e);
+                },
+            }));
+        }
+
         return function DataSolectrusItemsEditor(props) {
             const DEFAULT_ITEMS_ATTR = 'items';
             const attr = (props && typeof props.attr === 'string' && props.attr) ? props.attr : DEFAULT_ITEMS_ATTR;
@@ -2766,14 +2787,14 @@
                                   React.createElement('span', null, t('Enabled'))
                               ),
                               React.createElement('label', { style: labelStyle }, t('Name')),
-                              React.createElement('input', {
+                              React.createElement(StableInput, {
                                   style: inputStyle,
                                   type: 'text',
                                   value: selectedItem.name || '',
                                   onChange: e => updateSelected('name', e.target.value),
                               }),
                               React.createElement('label', { style: labelStyle }, t('Folder/Group')),
-                              React.createElement('input', {
+                              React.createElement(StableInput, {
                                   style: inputStyle,
                                   type: 'text',
                                   value: selectedItem.group || '',
@@ -2781,7 +2802,7 @@
                                   placeholder: 'pv',
                               }),
                               React.createElement('label', { style: labelStyle }, t('Target ID')),
-                              React.createElement('input', {
+                              React.createElement(StableInput, {
                                   style: inputStyle,
                                   type: 'text',
                                   value: selectedItem.targetId || '',
@@ -2863,7 +2884,7 @@
                                         React.createElement(
                                             'div',
                                             { style: { display: 'flex', gap: 8, alignItems: 'center' } },
-                                            React.createElement('input', {
+                                            React.createElement(StableInput, {
                                                 style: Object.assign({}, inputStyle, { flex: 1 }),
                                                 type: 'text',
                                                 value: selectedItem.sourceState || '',
@@ -2873,7 +2894,7 @@
                                             renderSelectButton(() => setSelectContext({ kind: 'itemSource' }))
                                         ),
 									React.createElement('label', { style: labelStyle }, t('JSONPath (optional)')),
-									React.createElement('input', {
+									React.createElement(StableInput, {
 										style: inputStyle,
 										type: 'text',
 										value: selectedItem.jsonPath || '',
@@ -2908,21 +2929,21 @@
                                                             marginTop: 8,
                                                         },
                                                     },
-                                                    React.createElement('input', {
+                                                    React.createElement(StableInput, {
                                                         style: inputStyle,
                                                         type: 'text',
                                                         value: (inp && inp.key) || '',
                                                         placeholder: t('Key'),
                                                         onChange: e => updateInput(idx, 'key', e.target.value),
                                                     }),
-                                                    React.createElement('input', {
+                                                    React.createElement(StableInput, {
                                                         style: inputStyle,
                                                         type: 'text',
                                                         value: (inp && inp.sourceState) || '',
                                                         placeholder: t('ioBroker Source State'),
                                                         onChange: e => updateInput(idx, 'sourceState', e.target.value),
                                                     }),
-                                                    React.createElement('input', {
+                                                    React.createElement(StableInput, {
                                                         style: inputStyle,
                                                         type: 'text',
                                                         value: (inp && inp.jsonPath) || '',
@@ -3127,7 +3148,7 @@
                                                             t('Use inputs and operators: <, >, ==, &&, ||')
                                                         )
                                                     ),
-                                                    React.createElement('input', {
+                                                    React.createElement(StableInput, {
                                                         style: Object.assign({}, inputStyle, { fontFamily: 'monospace' }),
                                                         type: 'text',
                                                         value: (rule && rule.condition) || '',
@@ -3173,7 +3194,7 @@
                                                                   React.createElement('span', null, 'false')
                                                               )
                                                           )
-                                                        : React.createElement('input', {
+                                                        : React.createElement(StableInput, {
                                                               style: inputStyle,
                                                               type: 'text',
                                                               value: (rule && rule.value !== undefined && rule.value !== null) ? String(rule.value) : '',
@@ -3213,21 +3234,21 @@
                                                         marginTop: 8,
                                                     },
                                                 },
-                                                React.createElement('input', {
+                                                React.createElement(StableInput, {
                                                     style: inputStyle,
                                                     type: 'text',
                                                     value: (inp && inp.key) || '',
                                                     placeholder: t('Key'),
                                                     onChange: e => updateInput(idx, 'key', e.target.value),
                                                 }),
-                                                React.createElement('input', {
+                                                React.createElement(StableInput, {
                                                     style: inputStyle,
                                                     type: 'text',
                                                     value: (inp && inp.sourceState) || '',
                                                     placeholder: t('ioBroker Source State'),
                                                     onChange: e => updateInput(idx, 'sourceState', e.target.value),
                                                 }),
-															React.createElement('input', {
+															React.createElement(StableInput, {
 																style: inputStyle,
 																type: 'text',
 																value: (inp && inp.jsonPath) || '',
@@ -3390,7 +3411,7 @@
                                       'div',
                                       null,
                                       React.createElement('label', { style: labelStyle }, t('Role')),
-                                      React.createElement('input', {
+                                      React.createElement(StableInput, {
                                           style: inputStyle,
                                           type: 'text',
                                           value: selectedItem.role || '',
@@ -3406,7 +3427,7 @@
                                       'div',
                                       null,
                                       React.createElement('label', { style: labelStyle }, t('Unit')),
-                                      React.createElement('input', {
+                                      React.createElement(StableInput, {
                                           style: inputStyle,
                                           type: 'text',
                                           value: selectedItem.unit || '',
