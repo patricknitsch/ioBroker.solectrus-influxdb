@@ -84,6 +84,30 @@
     }
 
     function createSolectrusSensorsEditor(React, AdapterReact) {
+        // Wrapper that keeps cursor position stable in controlled text inputs.
+        // React resets the cursor when a parent re-render supplies a new `value` prop.
+        // StableInput stores the value in local state so the DOM input is only
+        // updated from props when the value actually changed externally.
+        function StableInput(props) {
+            const { value, onChange, ...rest } = props;
+            const localRef = React.useRef(value || '');
+            const [, forceRender] = React.useState(0);
+
+            // Sync from parent when value changed externally (not by our own onChange)
+            if (value !== undefined && value !== localRef.current) {
+                localRef.current = value || '';
+            }
+
+            return React.createElement('input', Object.assign({}, rest, {
+                value: localRef.current,
+                onChange: function (e) {
+                    localRef.current = e.target.value;
+                    forceRender(function (c) { return c + 1; });
+                    if (onChange) onChange(e);
+                },
+            }));
+        }
+
         return function SolectrusSensorsEditor(props) {
             const attr = (props && typeof props.attr === 'string' && props.attr) ? props.attr : 'sensors';
             const dataIsArray = Array.isArray(props && props.data);
@@ -574,7 +598,7 @@
                                   )
                               ),
                               React.createElement('label', { style: labelStyle }, t('Sensor Name')),
-                              React.createElement('input', {
+                              React.createElement(StableInput, {
                                   style: inputStyle,
                                   type: 'text',
                                   value: selectedSensor.SensorName || '',
@@ -588,7 +612,7 @@
                               React.createElement(
                                   'div',
                                   { style: { display: 'flex', gap: 8, alignItems: 'center' } },
-                                  React.createElement('input', {
+                                  React.createElement(StableInput, {
                                       style: Object.assign({}, inputStyle, { flex: 1 }),
                                       type: 'text',
                                       value: selectedSensor.sourceState || '',
@@ -649,7 +673,7 @@
                                       'div',
                                       null,
                                       React.createElement('label', { style: labelStyle }, t('Influx Measurement')),
-                                      React.createElement('input', {
+                                      React.createElement(StableInput, {
                                           style: inputStyle,
                                           type: 'text',
                                           value: selectedSensor.measurement || '',
@@ -658,7 +682,7 @@
                                   )
                               ),
                               React.createElement('label', { style: labelStyle }, t('Influx Field')),
-                              React.createElement('input', {
+                              React.createElement(StableInput, {
                                   style: inputStyle,
                                   type: 'text',
                                   value: selectedSensor.field || '',
