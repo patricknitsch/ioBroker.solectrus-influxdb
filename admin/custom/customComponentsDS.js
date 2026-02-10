@@ -9,7 +9,7 @@
     'use strict';
 
     const REMOTE_NAME = 'DataSolectrusItems';
-    const UI_VERSION = '2026-02-04 20260204-1';
+    const UI_VERSION = '2026-02-10 v0.3.6 (cursor-fix)';
     const DEBUG = false;
     let shareScope;
 
@@ -666,27 +666,6 @@
     }
 
     function createDataSolectrusItemsEditor(React, AdapterReact) {
-        // Wrapper that keeps cursor position stable in controlled text inputs.
-        // React resets the cursor when a parent re-render supplies a new value prop.
-        function StableInput(props) {
-            var value = props.value, onChange = props.onChange;
-            var rest = {};
-            for (var k in props) { if (k !== 'value' && k !== 'onChange') rest[k] = props[k]; }
-            var localRef = React.useRef(value || '');
-            var update = React.useState(0)[1];
-            if (value !== undefined && value !== localRef.current) {
-                localRef.current = value || '';
-            }
-            return React.createElement('input', Object.assign({}, rest, {
-                value: localRef.current,
-                onChange: function (e) {
-                    localRef.current = e.target.value;
-                    update(function (c) { return c + 1; });
-                    if (onChange) onChange(e);
-                },
-            }));
-        }
-
         return function DataSolectrusItemsEditor(props) {
             const DEFAULT_ITEMS_ATTR = 'items';
             const attr = (props && typeof props.attr === 'string' && props.attr) ? props.attr : DEFAULT_ITEMS_ATTR;
@@ -982,6 +961,19 @@
             const [openDropdown, setOpenDropdown] = React.useState(null);
             const [collapsedFolders, setCollapsedFolders] = React.useState({});
 
+            const cloneForDraft = item => {
+                if (!item || typeof item !== 'object') return null;
+                try {
+                    return JSON.parse(JSON.stringify(item));
+                } catch {
+                    return Object.assign({}, item);
+                }
+            };
+
+            // Draft copy of the selected item to avoid pushing changes to Admin on every keystroke.
+            // Admin may re-render/remount custom controls on each props.onChange, which resets cursor.
+            const [selectedDraft, setSelectedDraft] = React.useState(null);
+
 			const [formulaBuilderOpen, setFormulaBuilderOpen] = React.useState(false);
 			const [formulaDraft, setFormulaDraft] = React.useState('');
 			const formulaEditorRef = React.useRef(null);
@@ -1029,6 +1021,13 @@
                     setSelectedIndex(Math.max(0, items.length - 1));
                 }
             }, [items.length, selectedIndex]);
+
+            const selectedItem = items[selectedIndex] || null;
+
+            React.useEffect(() => {
+                setSelectedDraft(cloneForDraft(selectedItem));
+                // eslint-disable-next-line react-hooks/exhaustive-deps
+            }, [selectedIndex]);
 
             React.useEffect(() => {
                 if (!formulaBuilderOpen) return;
@@ -1091,15 +1090,6 @@
                 }
 
                 const onChange = props.onChange;
-                const cb = () => {
-                    try {
-                        if (props && typeof props.forceUpdate === 'function') {
-                            props.forceUpdate([attr], props.data);
-                        }
-                    } catch {
-                        // ignore
-                    }
-                };
 
                 const safeItems = normalizeItems(nextItems).map(it => ensureTitle(it, t));
 
@@ -1125,14 +1115,21 @@
                 if (dataIsObject) {
                     const nextData = setByPath(props.data, attr, safeItems);
                     onChange(nextData);
-                    cb();
+                    try {
+                        if (props && typeof props.forceUpdate === 'function') {
+                            // IMPORTANT: pass the updated data object to avoid forcing a re-render with stale props.data
+                            props.forceUpdate([attr], nextData);
+                        }
+                    } catch {
+                        // ignore
+                    }
                     return;
                 }
 
                 onChange(safeItems);
             };
 
-            const selectedItem = items[selectedIndex] || null;
+            const editItem = selectedDraft || selectedItem || {};
 
             // Group items by their group/folder field
             const groupedItems = React.useMemo(() => {
@@ -1501,12 +1498,56 @@
                 return suggestions;
             };
 
+            const ensureDraftBase = prevDraft => {
+                if (prevDraft && typeof prevDraft === 'object') return prevDraft;
+                return cloneForDraft(selectedItem) || {};
+            };
+
+            const setDraftField = (field, value) => {
+                setSelectedDraft(prev => {
+                    const base = ensureDraftBase(prev);
+                    const next = Object.assign({}, base);
+                    next[field] = value;
+                    return next;
+                });
+            };
+
+            const setDraftInputField = (index, field, value) => {
+                setSelectedDraft(prev => {
+                    const base = ensureDraftBase(prev);
+                    const next = Object.assign({}, base);
+                    const inputs = Array.isArray(base.inputs) ? base.inputs.slice() : [];
+                    const cur = inputs[index] && typeof inputs[index] === 'object' ? Object.assign({}, inputs[index]) : {};
+                    cur[field] = value;
+                    inputs[index] = cur;
+                    next.inputs = inputs;
+                    return next;
+                });
+            };
+
+            const setDraftRuleField = (index, field, value) => {
+                setSelectedDraft(prev => {
+                    const base = ensureDraftBase(prev);
+                    const next = Object.assign({}, base);
+                    const rules = Array.isArray(base.rules) ? base.rules.slice() : [];
+                    const cur = rules[index] && typeof rules[index] === 'object' ? Object.assign({}, rules[index]) : {};
+                    cur[field] = value;
+                    rules[index] = cur;
+                    next.rules = rules;
+                    return next;
+                });
+            };
+
             const updateSelected = (field, value) => {
+                // Only update title if field affects the title
+                const titleAffectingFields = ['enabled', 'name', 'group', 'targetId'];
+                const shouldUpdateTitle = titleAffectingFields.includes(field);
+                
                 const nextItems = items.map((it, i) => {
                     if (i !== selectedIndex) return it;
                     const next = Object.assign({}, it || {});
                     next[field] = value;
-                    return ensureTitle(next, t);
+                    return shouldUpdateTitle ? ensureTitle(next, t) : next;
                 });
                 updateItems(nextItems);
             };
@@ -1550,25 +1591,40 @@
 
             const updateInput = (index, field, value) => {
                 if (!selectedItem) return;
-                const inputs = Array.isArray(selectedItem.inputs) ? selectedItem.inputs.slice() : [];
+                const baseItem = selectedDraft || selectedItem;
+                const inputs = Array.isArray(baseItem && baseItem.inputs) ? baseItem.inputs.slice() : [];
                 const cur = inputs[index] && typeof inputs[index] === 'object' ? Object.assign({}, inputs[index]) : {};
                 cur[field] = value;
                 inputs[index] = cur;
                 updateSelected('inputs', inputs);
+                setSelectedDraft(prev => {
+                    const base = ensureDraftBase(prev);
+                    return Object.assign({}, base, { inputs });
+                });
             };
 
             const addInput = () => {
                 if (!selectedItem) return;
-                const inputs = Array.isArray(selectedItem.inputs) ? selectedItem.inputs.slice() : [];
+                const baseItem = selectedDraft || selectedItem;
+                const inputs = Array.isArray(baseItem && baseItem.inputs) ? baseItem.inputs.slice() : [];
 				inputs.push({ key: '', sourceState: '', jsonPath: '', noNegative: false });
                 updateSelected('inputs', inputs);
+                setSelectedDraft(prev => {
+                    const base = ensureDraftBase(prev);
+                    return Object.assign({}, base, { inputs });
+                });
             };
 
             const deleteInput = index => {
                 if (!selectedItem) return;
-                const inputs = Array.isArray(selectedItem.inputs) ? selectedItem.inputs.slice() : [];
+                const baseItem = selectedDraft || selectedItem;
+                const inputs = Array.isArray(baseItem && baseItem.inputs) ? baseItem.inputs.slice() : [];
                 inputs.splice(index, 1);
                 updateSelected('inputs', inputs);
+                setSelectedDraft(prev => {
+                    const base = ensureDraftBase(prev);
+                    return Object.assign({}, base, { inputs });
+                });
             };
 
             const rootStyle = {
@@ -2787,26 +2843,29 @@
                                   React.createElement('span', null, t('Enabled'))
                               ),
                               React.createElement('label', { style: labelStyle }, t('Name')),
-                              React.createElement(StableInput, {
+                              React.createElement('input', {
                                   style: inputStyle,
                                   type: 'text',
-                                  value: selectedItem.name || '',
-                                  onChange: e => updateSelected('name', e.target.value),
+                                  value: editItem.name || '',
+                                  onChange: e => setDraftField('name', e.target.value),
+                                  onBlur: e => updateSelected('name', e.target.value),
                               }),
                               React.createElement('label', { style: labelStyle }, t('Folder/Group')),
-                              React.createElement(StableInput, {
+                              React.createElement('input', {
                                   style: inputStyle,
                                   type: 'text',
-                                  value: selectedItem.group || '',
-                                  onChange: e => updateSelected('group', e.target.value),
+                                  value: editItem.group || '',
+                                  onChange: e => setDraftField('group', e.target.value),
+                                  onBlur: e => updateSelected('group', e.target.value),
                                   placeholder: 'pv',
                               }),
                               React.createElement('label', { style: labelStyle }, t('Target ID')),
-                              React.createElement(StableInput, {
+                              React.createElement('input', {
                                   style: inputStyle,
                                   type: 'text',
-                                  value: selectedItem.targetId || '',
-                                  onChange: e => updateSelected('targetId', e.target.value),
+                                  value: editItem.targetId || '',
+                                  onChange: e => setDraftField('targetId', e.target.value),
+                                  onBlur: e => updateSelected('targetId', e.target.value),
                                   placeholder: 'pvGesamt',
                               }),
                               React.createElement('label', { style: labelStyle }, t('Mode')),
@@ -2884,21 +2943,23 @@
                                         React.createElement(
                                             'div',
                                             { style: { display: 'flex', gap: 8, alignItems: 'center' } },
-                                            React.createElement(StableInput, {
+                                            React.createElement('input', {
                                                 style: Object.assign({}, inputStyle, { flex: 1 }),
                                                 type: 'text',
-                                                value: selectedItem.sourceState || '',
-                                                onChange: e => updateSelected('sourceState', e.target.value),
+                                                value: editItem.sourceState || '',
+                                                onChange: e => setDraftField('sourceState', e.target.value),
+                                                onBlur: e => updateSelected('sourceState', e.target.value),
                                                 placeholder: t('e.g. some.adapter.0.channel.state'),
                                             }),
                                             renderSelectButton(() => setSelectContext({ kind: 'itemSource' }))
                                         ),
 									React.createElement('label', { style: labelStyle }, t('JSONPath (optional)')),
-									React.createElement(StableInput, {
+									React.createElement('input', {
 										style: inputStyle,
 										type: 'text',
-										value: selectedItem.jsonPath || '',
-										onChange: e => updateSelected('jsonPath', e.target.value),
+						value: editItem.jsonPath || '',
+						onChange: e => setDraftField('jsonPath', e.target.value),
+						onBlur: e => updateSelected('jsonPath', e.target.value),
 										placeholder: t('e.g. $.apower'),
 									})
                                     )
@@ -2916,7 +2977,7 @@
                                                     t('Add input')
                                                 )
                                             ),
-                                            (Array.isArray(selectedItem.inputs) ? selectedItem.inputs : []).map((inp, idx) =>
+                                            (Array.isArray(editItem.inputs) ? editItem.inputs : []).map((inp, idx) =>
                                                 React.createElement(
                                                     'div',
                                                     {
@@ -2929,26 +2990,29 @@
                                                             marginTop: 8,
                                                         },
                                                     },
-                                                    React.createElement(StableInput, {
+                                                    React.createElement('input', {
                                                         style: inputStyle,
                                                         type: 'text',
                                                         value: (inp && inp.key) || '',
                                                         placeholder: t('Key'),
-                                                        onChange: e => updateInput(idx, 'key', e.target.value),
+                                                        onChange: e => setDraftInputField(idx, 'key', e.target.value),
+                                                        onBlur: e => updateInput(idx, 'key', e.target.value),
                                                     }),
-                                                    React.createElement(StableInput, {
+                                                    React.createElement('input', {
                                                         style: inputStyle,
                                                         type: 'text',
                                                         value: (inp && inp.sourceState) || '',
                                                         placeholder: t('ioBroker Source State'),
-                                                        onChange: e => updateInput(idx, 'sourceState', e.target.value),
+                                                        onChange: e => setDraftInputField(idx, 'sourceState', e.target.value),
+                                                        onBlur: e => updateInput(idx, 'sourceState', e.target.value),
                                                     }),
-                                                    React.createElement(StableInput, {
+                                                    React.createElement('input', {
                                                         style: inputStyle,
                                                         type: 'text',
                                                         value: (inp && inp.jsonPath) || '',
                                                         placeholder: t('JSONPath (optional)'),
-                                                        onChange: e => updateInput(idx, 'jsonPath', e.target.value),
+                                                        onChange: e => setDraftInputField(idx, 'jsonPath', e.target.value),
+                                                        onBlur: e => updateInput(idx, 'jsonPath', e.target.value),
                                                         title: t('e.g. $.apower'),
                                                     }),
                                                     React.createElement(
@@ -3002,11 +3066,12 @@
                                                         type: 'button',
                                                         style: btnStyle,
                                                         onClick: () => {
-                                                            const rules = Array.isArray(selectedItem.rules) ? selectedItem.rules : [];
+                                                            const rules = Array.isArray(editItem.rules) ? editItem.rules.slice() : [];
                                                             const itemType = selectedItem.type || 'string';
                                                             const defaultValue = itemType === 'boolean' ? false : '';
                                                             rules.push({ condition: '', value: defaultValue });
                                                             updateSelected('rules', rules);
+                                                            setDraftField('rules', rules);
                                                         },
                                                     },
                                                     t('Add rule')
@@ -3107,7 +3172,7 @@
                                                     )
                                                 )
                                             ),
-                                            (Array.isArray(selectedItem.rules) ? selectedItem.rules : []).map((rule, ruleIdx) =>
+                                            (Array.isArray(editItem.rules) ? editItem.rules : []).map((rule, ruleIdx) =>
                                                 React.createElement(
                                                     'div',
                                                     {
@@ -3130,9 +3195,10 @@
                                                                 type: 'button',
                                                                 style: Object.assign({}, btnDangerStyle, { padding: '4px 8px', fontSize: 11 }),
                                                                 onClick: () => {
-                                                                    const rules = Array.isArray(selectedItem.rules) ? selectedItem.rules : [];
+                                                                    const rules = Array.isArray(editItem.rules) ? editItem.rules.slice() : [];
                                                                     rules.splice(ruleIdx, 1);
                                                                     updateSelected('rules', rules);
+                                                                    setDraftField('rules', rules);
                                                                 },
                                                             },
                                                             t('Delete')
@@ -3148,15 +3214,12 @@
                                                             t('Use inputs and operators: <, >, ==, &&, ||')
                                                         )
                                                     ),
-                                                    React.createElement(StableInput, {
+                                                    React.createElement('input', {
                                                         style: Object.assign({}, inputStyle, { fontFamily: 'monospace' }),
                                                         type: 'text',
                                                         value: (rule && rule.condition) || '',
-                                                        onChange: e => {
-                                                            const rules = Array.isArray(selectedItem.rules) ? [...selectedItem.rules] : [];
-                                                            rules[ruleIdx] = Object.assign({}, rules[ruleIdx], { condition: e.target.value });
-                                                            updateSelected('rules', rules);
-                                                        },
+                                                        onChange: e => setDraftRuleField(ruleIdx, 'condition', e.target.value),
+                                                        onBlur: () => updateSelected('rules', Array.isArray(editItem.rules) ? editItem.rules : []),
                                                         placeholder: t('e.g. soc < 10 or true for default'),
                                                         title: t('Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)'),
                                                     }),
@@ -3172,9 +3235,10 @@
                                                                       type: 'radio',
                                                                       checked: rule && rule.value === true,
                                                                       onChange: () => {
-                                                                          const rules = Array.isArray(selectedItem.rules) ? [...selectedItem.rules] : [];
+                                                                          const rules = Array.isArray(editItem.rules) ? editItem.rules.slice() : [];
                                                                           rules[ruleIdx] = Object.assign({}, rules[ruleIdx], { value: true });
                                                                           updateSelected('rules', rules);
+                                                                          setDraftField('rules', rules);
                                                                       },
                                                                   }),
                                                                   React.createElement('span', null, 'true')
@@ -3186,23 +3250,21 @@
                                                                       type: 'radio',
                                                                       checked: rule && rule.value === false,
                                                                       onChange: () => {
-                                                                          const rules = Array.isArray(selectedItem.rules) ? [...selectedItem.rules] : [];
+                                                                          const rules = Array.isArray(editItem.rules) ? editItem.rules.slice() : [];
                                                                           rules[ruleIdx] = Object.assign({}, rules[ruleIdx], { value: false });
                                                                           updateSelected('rules', rules);
+                                                                          setDraftField('rules', rules);
                                                                       },
                                                                   }),
                                                                   React.createElement('span', null, 'false')
                                                               )
                                                           )
-                                                        : React.createElement(StableInput, {
+                                                        : React.createElement('input', {
                                                               style: inputStyle,
                                                               type: 'text',
                                                               value: (rule && rule.value !== undefined && rule.value !== null) ? String(rule.value) : '',
-                                                              onChange: e => {
-                                                                  const rules = Array.isArray(selectedItem.rules) ? [...selectedItem.rules] : [];
-                                                                  rules[ruleIdx] = Object.assign({}, rules[ruleIdx], { value: e.target.value });
-                                                                  updateSelected('rules', rules);
-                                                              },
+                                                              onChange: e => setDraftRuleField(ruleIdx, 'value', e.target.value),
+                                                              onBlur: () => updateSelected('rules', Array.isArray(editItem.rules) ? editItem.rules : []),
                                                               placeholder: t('e.g. Battery-Empty'),
                                                           })
                                                 )
@@ -3221,7 +3283,7 @@
                                                 t('Add input')
                                             )
                                         ),
-                                        (Array.isArray(selectedItem.inputs) ? selectedItem.inputs : []).map((inp, idx) =>
+                                        (Array.isArray(editItem.inputs) ? editItem.inputs : []).map((inp, idx) =>
                                             React.createElement(
                                                 'div',
                                                 {
@@ -3234,26 +3296,29 @@
                                                         marginTop: 8,
                                                     },
                                                 },
-                                                React.createElement(StableInput, {
+                                                React.createElement('input', {
                                                     style: inputStyle,
                                                     type: 'text',
                                                     value: (inp && inp.key) || '',
                                                     placeholder: t('Key'),
-                                                    onChange: e => updateInput(idx, 'key', e.target.value),
+                                                    onChange: e => setDraftInputField(idx, 'key', e.target.value),
+                                                    onBlur: e => updateInput(idx, 'key', e.target.value),
                                                 }),
-                                                React.createElement(StableInput, {
+                                                React.createElement('input', {
                                                     style: inputStyle,
                                                     type: 'text',
                                                     value: (inp && inp.sourceState) || '',
                                                     placeholder: t('ioBroker Source State'),
-                                                    onChange: e => updateInput(idx, 'sourceState', e.target.value),
+                                                    onChange: e => setDraftInputField(idx, 'sourceState', e.target.value),
+                                                    onBlur: e => updateInput(idx, 'sourceState', e.target.value),
                                                 }),
-															React.createElement(StableInput, {
+															React.createElement('input', {
 																style: inputStyle,
 																type: 'text',
 																value: (inp && inp.jsonPath) || '',
 																placeholder: t('JSONPath (optional)'),
-																onChange: e => updateInput(idx, 'jsonPath', e.target.value),
+										onChange: e => setDraftInputField(idx, 'jsonPath', e.target.value),
+										onBlur: e => updateInput(idx, 'jsonPath', e.target.value),
 																title: t('e.g. $.apower'),
 															}),
                                                 React.createElement(
@@ -3300,8 +3365,9 @@
     									),
                                         React.createElement('textarea', {
                                             style: Object.assign({}, inputStyle, { minHeight: 80 }),
-                                            value: selectedItem.formula || '',
-                                            onChange: e => updateSelected('formula', e.target.value),
+                                            value: editItem.formula || '',
+                                            onChange: e => setDraftField('formula', e.target.value),
+                                            onBlur: e => updateSelected('formula', e.target.value),
                                             placeholder: t('e.g. pv1 + pv2 + pv3'),
                                         })
                                     ),
@@ -3411,11 +3477,12 @@
                                       'div',
                                       null,
                                       React.createElement('label', { style: labelStyle }, t('Role')),
-                                      React.createElement(StableInput, {
+                                      React.createElement('input', {
                                           style: inputStyle,
                                           type: 'text',
-                                          value: selectedItem.role || '',
-                                          onChange: e => updateSelected('role', e.target.value),
+                                          value: editItem.role || '',
+                                          onChange: e => setDraftField('role', e.target.value),
+                                          onBlur: e => updateSelected('role', e.target.value),
                                           placeholder: 'value.power',
                                       })
                                   )
@@ -3427,11 +3494,12 @@
                                       'div',
                                       null,
                                       React.createElement('label', { style: labelStyle }, t('Unit')),
-                                      React.createElement(StableInput, {
+                                      React.createElement('input', {
                                           style: inputStyle,
                                           type: 'text',
-                                          value: selectedItem.unit || '',
-                                          onChange: e => updateSelected('unit', e.target.value),
+                                          value: editItem.unit || '',
+                                          onChange: e => setDraftField('unit', e.target.value),
+                                          onBlur: e => updateSelected('unit', e.target.value),
                                           placeholder: 'W',
                                       })
                                   ),
@@ -3489,8 +3557,9 @@
                                             React.createElement('input', {
                                                 style: inputStyle,
                                                 type: 'number',
-                                                value: selectedItem.min || '',
-                                                onChange: e => updateSelected('min', e.target.value),
+                                                value: editItem.min || '',
+                                                onChange: e => setDraftField('min', e.target.value),
+                                                onBlur: e => updateSelected('min', e.target.value),
                                             })
                                         ),
                                         React.createElement(
@@ -3500,8 +3569,9 @@
                                             React.createElement('input', {
                                                 style: inputStyle,
                                                 type: 'number',
-                                                value: selectedItem.max || '',
-                                                onChange: e => updateSelected('max', e.target.value),
+                                                value: editItem.max || '',
+                                                onChange: e => setDraftField('max', e.target.value),
+                                                onBlur: e => updateSelected('max', e.target.value),
                                             })
                                         )
                                     )

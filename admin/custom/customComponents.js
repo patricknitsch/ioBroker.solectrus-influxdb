@@ -84,30 +84,6 @@
     }
 
     function createSolectrusSensorsEditor(React, AdapterReact) {
-        // Wrapper that keeps cursor position stable in controlled text inputs.
-        // React resets the cursor when a parent re-render supplies a new `value` prop.
-        // StableInput stores the value in local state so the DOM input is only
-        // updated from props when the value actually changed externally.
-        function StableInput(props) {
-            const { value, onChange, ...rest } = props;
-            const localRef = React.useRef(value || '');
-            const [, forceRender] = React.useState(0);
-
-            // Sync from parent when value changed externally (not by our own onChange)
-            if (value !== undefined && value !== localRef.current) {
-                localRef.current = value || '';
-            }
-
-            return React.createElement('input', Object.assign({}, rest, {
-                value: localRef.current,
-                onChange: function (e) {
-                    localRef.current = e.target.value;
-                    forceRender(function (c) { return c + 1; });
-                    if (onChange) onChange(e);
-                },
-            }));
-        }
-
         return function SolectrusSensorsEditor(props) {
             const attr = (props && typeof props.attr === 'string' && props.attr) ? props.attr : 'sensors';
             const dataIsArray = Array.isArray(props && props.data);
@@ -210,11 +186,30 @@
             const [selectedIndex, setSelectedIndex] = React.useState(0);
             const [showSelectStateId, setShowSelectStateId] = React.useState(false);
 
+            const cloneForDraft = item => {
+                if (!item || typeof item !== 'object') return null;
+                try {
+                    return JSON.parse(JSON.stringify(item));
+                } catch {
+                    return Object.assign({}, item);
+                }
+            };
+
+            // Draft copy of the selected sensor to avoid pushing changes to Admin on every keystroke.
+            // Admin may re-render/remount custom controls on each props.onChange, which resets cursor.
+            const [selectedDraft, setSelectedDraft] = React.useState(null);
+
             React.useEffect(() => {
                 if (selectedIndex > sensors.length - 1) {
                     setSelectedIndex(Math.max(0, sensors.length - 1));
                 }
             }, [sensors.length, selectedIndex]);
+
+            const selectedSensor = sensors[selectedIndex] || null;
+
+            React.useEffect(() => {
+                setSelectedDraft(cloneForDraft(selectedSensor));
+            }, [selectedIndex]);
 
             React.useEffect(() => {
                 if (DEBUG && typeof console !== 'undefined' && typeof console.info === 'function') {
@@ -248,10 +243,10 @@
 
                 const onChange = props.onChange;
 
-                const cb = () => {
+                const cb = (nextData) => {
                     try {
                         if (props && typeof props.forceUpdate === 'function') {
-                            props.forceUpdate([attr], props.data);
+                            props.forceUpdate([attr], nextData || props.data);
                         }
                     } catch {
                         // ignore
@@ -341,7 +336,7 @@
                     // Passing (attr, value) can be misinterpreted by some Admin builds and lead to setValue
                     // attempting to write into a string (e.g. "Cannot create property 'sensors' on string 'sensors'").
                     callOnChange('adapter-config full-data', nextData);
-                    cb();
+                    cb(nextData);
                     return;
                 }
 
@@ -349,14 +344,32 @@
                 callOnChange('legacy value-only', nextSensors);
             };
 
-            const selectedSensor = sensors[selectedIndex] || null;
+            const editSensor = selectedDraft || selectedSensor || {};
+
+            const ensureDraftBase = prevDraft => {
+                if (prevDraft && typeof prevDraft === 'object') return prevDraft;
+                return cloneForDraft(selectedSensor) || {};
+            };
+
+            const setDraftField = (field, value) => {
+                setSelectedDraft(prev => {
+                    const base = ensureDraftBase(prev);
+                    const next = Object.assign({}, base);
+                    next[field] = value;
+                    return next;
+                });
+            };
 
             const updateSelected = (field, value) => {
+                // Only recalculate title for fields that affect it
+                const titleAffectingFields = ['enabled', 'SensorName'];
+                const shouldUpdateTitle = titleAffectingFields.includes(field);
+
                 const nextSensors = sensors.map((s, i) => {
                     if (i !== selectedIndex) return s;
                     const next = Object.assign({}, s || {});
                     next[field] = value;
-                    return ensureTitle(next);
+                    return shouldUpdateTitle ? ensureTitle(next) : next;
                 });
                 updateSensors(nextSensors);
             };
@@ -584,7 +597,7 @@
                                   React.createElement(
                                       'div',
                                       { style: { fontSize: 16, fontWeight: 700 } },
-                                      calcTitle(selectedSensor)
+                                      calcTitle(editSensor)
                                   ),
                                   React.createElement(
                                       'label',
@@ -598,11 +611,12 @@
                                   )
                               ),
                               React.createElement('label', { style: labelStyle }, t('Sensor Name')),
-                              React.createElement(StableInput, {
+                              React.createElement('input', {
                                   style: inputStyle,
                                   type: 'text',
-                                  value: selectedSensor.SensorName || '',
-                                  onChange: e => updateSelected('SensorName', e.target.value),
+                                  value: editSensor.SensorName || '',
+                                  onChange: e => setDraftField('SensorName', e.target.value),
+                                  onBlur: e => updateSelected('SensorName', e.target.value),
                               }),
                               React.createElement(
                                   'label',
@@ -612,11 +626,12 @@
                               React.createElement(
                                   'div',
                                   { style: { display: 'flex', gap: 8, alignItems: 'center' } },
-                                  React.createElement(StableInput, {
+                                  React.createElement('input', {
                                       style: Object.assign({}, inputStyle, { flex: 1 }),
                                       type: 'text',
-                                      value: selectedSensor.sourceState || '',
-                                      onChange: e => updateSelected('sourceState', e.target.value),
+                                      value: editSensor.sourceState || '',
+                                      onChange: e => setDraftField('sourceState', e.target.value),
+                                      onBlur: e => updateSelected('sourceState', e.target.value),
                                       placeholder: t('e.g. some.adapter.0.channel.state'),
                                   }),
                                   React.createElement(
@@ -673,20 +688,22 @@
                                       'div',
                                       null,
                                       React.createElement('label', { style: labelStyle }, t('Influx Measurement')),
-                                      React.createElement(StableInput, {
+                                      React.createElement('input', {
                                           style: inputStyle,
                                           type: 'text',
-                                          value: selectedSensor.measurement || '',
-                                          onChange: e => updateSelected('measurement', e.target.value),
+                                          value: editSensor.measurement || '',
+                                          onChange: e => setDraftField('measurement', e.target.value),
+                                          onBlur: e => updateSelected('measurement', e.target.value),
                                       })
                                   )
                               ),
                               React.createElement('label', { style: labelStyle }, t('Influx Field')),
-                              React.createElement(StableInput, {
+                              React.createElement('input', {
                                   style: inputStyle,
                                   type: 'text',
-                                  value: selectedSensor.field || '',
-                                  onChange: e => updateSelected('field', e.target.value),
+                                  value: editSensor.field || '',
+                                  onChange: e => setDraftField('field', e.target.value),
+                                  onBlur: e => updateSelected('field', e.target.value),
                               }),
                               showSelectStateId && DialogSelectID && socket && theme
                                   ? React.createElement(DialogSelectID, {
