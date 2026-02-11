@@ -209,7 +209,7 @@
         "dsPollIntervalSeconds": {
           "type": "number",
           "label": "dsPollIntervalLabel",
-          "min": 1,
+          "min": 5,
           "max": 3600,
           "default": 5,
           "xs": 12,
