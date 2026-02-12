@@ -170,9 +170,6 @@
     "dsSnapshotInputs": false,
     "dsSnapshotDelayMs": 0,
     "dsItems": [],
-    "dsItemsEditor": [],
-    "items": [],
-    "itemsEditor": [],
     "sensors": [
       {
         "enabled": false,
