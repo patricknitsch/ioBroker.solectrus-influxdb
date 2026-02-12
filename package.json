@@ -27,7 +27,8 @@
   },
   "dependencies": {
     "@influxdata/influxdb-client": "^1.35.0",
-    "@iobroker/adapter-core": "^3.3.2"
+    "@iobroker/adapter-core": "^3.3.2",
+    "jsep": "^1.4.0"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^5.0.0",

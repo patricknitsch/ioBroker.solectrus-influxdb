@@ -9,7 +9,152 @@ const { InfluxDB, Point } = require('@influxdata/influxdb-client');
 const fs = require('node:fs');
 const path = require('node:path');
 
+/* ---------- Data-SOLECTRUS imports ---------- */
+const {
+	parseExpression,
+	normalizeFormulaExpression: normalizeFormulaExpressionImpl,
+	analyzeAst: analyzeAstImpl,
+	evalFormulaAst: evalFormulaAstImpl,
+} = require('./lib/data-solectrus/formula');
+const {
+	applyJsonPath: applyJsonPathImpl,
+	getNumericFromJsonPath: getNumericFromJsonPathImpl,
+	getValueFromJsonPath: getValueFromJsonPathImpl,
+} = require('./lib/data-solectrus/jsonpath');
+const dsStateRegistry = require('./lib/data-solectrus/services/stateRegistry');
+const dsItemManager = require('./lib/data-solectrus/services/itemManager');
+const dsTickRunner = require('./lib/data-solectrus/services/tickRunner');
+const dsEvaluator = require('./lib/data-solectrus/services/evaluator');
+
 const MAX_DELAY_MS = 2_147_483_647; // Node.js timer limit
+
+/* =====================================================
+ * Data-SOLECTRUS Adapter Proxy
+ *
+ * Wraps the real adapter so the data-solectrus service
+ * modules can operate with their original property names.
+ * Own-state operations (setObjectAsync, setStateAsync, …)
+ * transparently prefix IDs with "ds." to avoid conflicts
+ * with the InfluxDB sensor states.
+ * ===================================================== */
+function createDsProxy(adapter) {
+	const self = {
+		/* ---------- DS-specific state ---------- */
+		cache: new Map(),
+		cacheTs: new Map(),
+		compiledItems: new Map(),
+		subscribedIds: new Set(),
+		currentSnapshot: null,
+		lastGoodValue: new Map(),
+		lastGoodTs: new Map(),
+		consecutiveErrorCounts: new Map(),
+		tickTimer: null,
+		itemsConfigSignature: '',
+		warnedOnce: new Set(),
+		debuggedOnce: new Set(),
+		isUnloading: false,
+
+		/* ---------- Constants ---------- */
+		MAX_FORMULA_LENGTH: 8000,
+		MAX_AST_NODES: 2000,
+		MAX_AST_DEPTH: 60,
+		MAX_DISCOVERED_STATE_IDS_PER_ITEM: 250,
+		MAX_TOTAL_SOURCE_IDS: 5000,
+		TICK_TIME_BUDGET_RATIO: 0.8,
+
+		/* ---------- Config proxy ---------- */
+		config: new Proxy({}, {
+			get(_, prop) {
+				switch (prop) {
+					case 'items': return adapter.config.dsItems || [];
+					case 'pollIntervalSeconds': return adapter.config.dsPollIntervalSeconds || 5;
+					case 'snapshotInputs': return adapter.config.dsSnapshotInputs || false;
+					case 'snapshotDelayMs': return adapter.config.dsSnapshotDelayMs || 0;
+					case 'errorRetriesBeforeZero': return 3;
+					default: return adapter.config[prop];
+				}
+			},
+		}),
+
+		/* ---------- Own-state methods (prefix with ds.) ---------- */
+		setObjectNotExistsAsync: (id, obj) => adapter.setObjectNotExistsAsync(`ds.${id}`, obj),
+		setObjectAsync: (id, obj) => adapter.setObjectAsync(`ds.${id}`, obj),
+		extendObjectAsync: (id, obj) => adapter.extendObjectAsync(`ds.${id}`, obj),
+		getObjectAsync: (id) => adapter.getObjectAsync(`ds.${id}`),
+		setStateAsync: (id, val, ack) => adapter.setStateAsync(`ds.${id}`, val, ack),
+		setState: (id, val, ack) => adapter.setState(`ds.${id}`, val, ack),
+
+		/* ---------- DS-specific methods ---------- */
+		warnOnce(key, msg) {
+			if (self.warnedOnce.size > 500) self.warnedOnce.clear();
+			if (self.warnedOnce.has(key)) return;
+			self.warnedOnce.add(key);
+			adapter.log.warn(`[DS] ${msg}`);
+		},
+		debugOnce(key, msg) {
+			if (self.debuggedOnce.size > 500) self.debuggedOnce.clear();
+			if (self.debuggedOnce.has(key)) return;
+			self.debuggedOnce.add(key);
+			adapter.log.debug(`[DS] ${msg}`);
+		},
+		safeNum(val, fallback = 0) {
+			const n = Number(val);
+			return Number.isFinite(n) ? n : fallback;
+		},
+		applyJsonPath(obj, jsonPath) {
+			return applyJsonPathImpl(obj, jsonPath);
+		},
+		getNumericFromJsonPath(rawValue, jsonPath, warnKeyPrefix = '') {
+			return getNumericFromJsonPathImpl(rawValue, jsonPath, {
+				safeNum: self.safeNum.bind(self),
+				warnOnce: self.warnOnce.bind(self),
+				debugOnce: self.debugOnce.bind(self),
+				warnKeyPrefix,
+			});
+		},
+		getValueFromJsonPath(rawValue, jsonPath, warnKeyPrefix = '') {
+			return getValueFromJsonPathImpl(rawValue, jsonPath, {
+				warnOnce: self.warnOnce.bind(self),
+				warnKeyPrefix,
+			});
+		},
+		normalizeFormulaExpression(expr) {
+			return normalizeFormulaExpressionImpl(expr);
+		},
+		analyzeAst(ast) {
+			return analyzeAstImpl(ast, { maxNodes: self.MAX_AST_NODES, maxDepth: self.MAX_AST_DEPTH });
+		},
+		evalFormula(expr, vars) {
+			const normalized = self.normalizeFormulaExpression(expr);
+			if (normalized && normalized.length > self.MAX_FORMULA_LENGTH) {
+				throw new Error(`Formula too long (>${self.MAX_FORMULA_LENGTH} chars)`);
+			}
+			const ast = parseExpression(String(normalized));
+			self.analyzeAst(ast);
+			return self.evalFormulaAst(ast, vars);
+		},
+		evalFormulaAst(ast, vars) {
+			return evalFormulaAstImpl(ast, vars, self.formulaFunctions);
+		},
+	};
+
+	// Formula functions need the proxy (for v/s/jp), so create after self exists.
+	self.formulaFunctions = dsEvaluator.createFormulaFunctions(self);
+
+	// Return a Proxy that delegates anything not on `self` to the real adapter.
+	return new Proxy(self, {
+		get(target, prop) {
+			if (prop in target) return target[prop];
+			const val = adapter[prop];
+			if (typeof val === 'function') return val.bind(adapter);
+			return val;
+		},
+		set(target, prop, value) {
+			target[prop] = value;
+			return true;
+		},
+	});
+}
 
 class SolectrusInfluxdb extends utils.Adapter {
 	constructor(options) {
@@ -33,6 +178,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		this.isUnloading = false;
 
+		/* ---------- Data-SOLECTRUS proxy ---------- */
+		this.dsProxy = null; // initialized in onReady if enabled
+
 		/* ---------- Retry ---------- */
 		this.flushFailures = 0;
 		this.maxFlushInterval = 300_000; // 5 min
@@ -44,6 +192,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.on('ready', this.onReady.bind(this));
 		this.on('unload', this.onUnload.bind(this));
 		this.on('stateChange', this.onStateChange.bind(this));
+		this.on('message', this.onMessage.bind(this));
 	}
 
 	/* =====================================================
@@ -241,7 +390,50 @@ class SolectrusInfluxdb extends utils.Adapter {
 		/* Flush loop – start immediately */
 		this.scheduleNextFlush(1000);
 
+		/* ---------- Data-SOLECTRUS (optional) ---------- */
+		if (this.config.enableDataSolectrus) {
+			await this.initDataSolectrus();
+		} else {
+			this.log.info('Data-SOLECTRUS formula engine is disabled');
+		}
+
 		this.log.info('Adapter started successfully');
+	}
+
+	/* =====================================================
+	 * DATA-SOLECTRUS INTEGRATION
+	 * ===================================================== */
+
+	async initDataSolectrus() {
+		this.log.info('Initializing Data-SOLECTRUS formula engine…');
+
+		const ds = createDsProxy(this);
+		this.dsProxy = ds;
+
+		// Ensure ds channel hierarchy
+		await this.setObjectNotExistsAsync('ds', {
+			type: 'channel',
+			common: { name: 'Data-SOLECTRUS' },
+			native: {},
+		});
+		await this.setObjectNotExistsAsync('ds.info', {
+			type: 'channel',
+			common: { name: 'DS Info' },
+			native: {},
+		});
+
+		await dsStateRegistry.createInfoStates(ds);
+
+		// Config compatibility: some Admin versions may store under dsItemsEditor
+		const items = Array.isArray(this.config.dsItems) ? this.config.dsItems : [];
+		const itemsEditor = Array.isArray(this.config.dsItemsEditor) ? this.config.dsItemsEditor : [];
+		this.config.dsItems = items.length ? items : itemsEditor;
+
+		await dsItemManager.ensureItemTitlesInInstanceConfig(ds);
+		await dsItemManager.prepareItems(ds);
+
+		this.log.info('Data-SOLECTRUS formula engine started');
+		dsTickRunner.scheduleNextTick(ds);
 	}
 
 	async ensureSensorTitlesInInstanceConfig() {
@@ -439,8 +631,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 				continue;
 			}
 
+			// ds.* states from this adapter may not exist yet (created by initDataSolectrus later)
+			const isOwnDsState = sensor.sourceState.startsWith(`${this.namespace}.ds.`);
 			const foreignObj = await this.getForeignObjectAsync(sensor.sourceState);
-			if (!foreignObj) {
+			if (!foreignObj && !isOwnDsState) {
 				this.log.warn(`Source state not found: ${sensor.sourceState}`);
 				continue;
 			}
@@ -489,8 +683,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		const isOwn = id.startsWith(`${this.namespace}.`);
 
-		// Own states: ignore ack=true
+		// Own states with ack: still forward if this state is a sensor source
+		// (e.g. ds.* states produced by Data-SOLECTRUS used as sensor input)
 		if (isOwn && state.ack) {
+			const sensorId = this.sourceToSensorId[id];
+			if (sensorId) {
+				this.cache[sensorId] = state.val;
+				this.setState(sensorId, state.val, true);
+			}
 			return;
 		}
 
@@ -510,12 +710,67 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		// Foreign sensor updates
 		const sensorId = this.sourceToSensorId[id];
-		if (!sensorId) {
-			return;
+		if (sensorId) {
+			this.cache[sensorId] = state.val;
+			this.setState(sensorId, state.val, true);
 		}
 
-		this.cache[sensorId] = state.val;
-		this.setState(sensorId, state.val, true);
+		// Forward to Data-SOLECTRUS cache (if enabled)
+		if (this.dsProxy && !isOwn) {
+			this.dsProxy.cache.set(id, state.val);
+			this.dsProxy.cacheTs.set(id, typeof state.ts === 'number' ? state.ts : Date.now());
+		}
+	}
+
+	/* =====================================================
+	 * MESSAGE (formula preview for Data-SOLECTRUS)
+	 * ===================================================== */
+
+	onMessage(obj) {
+		try {
+			if (!obj || !obj.command) return;
+			if (obj.command !== 'evalFormulaPreview') return;
+			if (!this.dsProxy) {
+				if (obj.callback) this.sendTo(obj.from, obj.command, { ok: false, error: 'Data-SOLECTRUS is not enabled' }, obj.callback);
+				return;
+			}
+
+			const msg = obj.message && typeof obj.message === 'object' ? obj.message : {};
+			const expr = msg.expr !== undefined ? String(msg.expr) : '';
+			const varsIn = msg.vars && typeof msg.vars === 'object' ? msg.vars : {};
+
+			const safeVars = Object.create(null);
+			const keys = Object.keys(varsIn).slice(0, 200);
+			for (const kRaw of keys) {
+				const k = String(kRaw);
+				if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(k)) continue;
+				if (k === '__proto__' || k === 'prototype' || k === 'constructor') continue;
+				const v = varsIn[kRaw];
+				if (typeof v === 'string') {
+					safeVars[k] = v.length > 2000 ? v.slice(0, 2000) : v;
+				} else if (typeof v === 'number' || typeof v === 'boolean' || v === null || v === undefined) {
+					safeVars[k] = v;
+				} else {
+					try {
+						const json = JSON.stringify(v);
+						if (json && json.length <= 5000) safeVars[k] = v;
+					} catch { /* ignore */ }
+				}
+			}
+
+			let result;
+			try {
+				result = this.dsProxy.evalFormula(expr, safeVars);
+			} catch (e) {
+				if (obj.callback) this.sendTo(obj.from, obj.command, { ok: false, error: e.message || String(e) }, obj.callback);
+				return;
+			}
+			if (obj.callback) this.sendTo(obj.from, obj.command, { ok: true, value: result }, obj.callback);
+		} catch (e) {
+			try {
+				if (obj && obj.callback) this.sendTo(obj.from, obj.command, { ok: false, error: e.message || String(e) }, obj.callback);
+			} catch { /* ignore */ }
+		}
 	}
 
 	/* =====================================================
@@ -684,6 +939,15 @@ class SolectrusInfluxdb extends utils.Adapter {
 	async onUnload(callback) {
 		try {
 			this.isUnloading = true;
+
+			// Clean up Data-SOLECTRUS
+			if (this.dsProxy) {
+				this.dsProxy.isUnloading = true;
+				if (this.dsProxy.tickTimer) {
+					clearTimeout(this.dsProxy.tickTimer);
+					this.dsProxy.tickTimer = null;
+				}
+			}
 
 			if (this.collectTimer) {
 				this.clearInterval(this.collectTimer);

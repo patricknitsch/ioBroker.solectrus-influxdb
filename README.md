@@ -19,21 +19,34 @@
 ---
 
 ## Overview
-The SOLECTRUS InfluxDB Adapter stores selected ioBroker states into an InfluxDB 2.x database.
+The SOLECTRUS InfluxDB Adapter stores selected ioBroker states into an InfluxDB 2.x database and optionally computes derived values using a built-in formula engine.
 
 It is designed for energy monitoring systems such as photovoltaic installations, battery storage, heat pumps, wallboxes, grid import/export monitoring, and custom sensors.
 
-The concept is based on the SOLECTRUS Home Assistant integration by ledermann, but it works with any InfluxDB 2.x instance.
+### Features
 
-The adapter ensures reliable time-series storage and prevents data loss during temporary InfluxDB outages.
+- **Sensor Mapping** -- Map any ioBroker state to an InfluxDB measurement/field with configurable data type (int, float, bool, string)
+- **Reliable Buffering** -- Persistent write buffer (up to 100k points) survives InfluxDB outages and adapter restarts
+- **Data-SOLECTRUS Formula Engine** (optional) -- Compute derived values from multiple inputs using formulas, source mirroring, or rule-based state machines
+- **State Machine Mode** -- Generate string/boolean states from rule conditions (first-match-wins), ideal for status labels and operating modes
+- **Formula Builder** -- Visual editor with drag-and-drop building blocks, live preview, operator tooltips, and example patterns
+- **Folder Grouping** -- Organize computed values into folders for better overview
+
+### Quick Start
+
+1. Install the adapter via the ioBroker admin UI
+2. Configure InfluxDB connection (URL, Organization, Bucket, Token) on the **InfluxDB** tab
+3. Map your ioBroker states on the **Sensors** tab
+4. (Optional) Enable **Data-SOLECTRUS** checkbox to unlock the formula engine with **Data Values** and **Data Runtime** tabs
+5. Save and start the adapter
 
 ---
 
 ## Documentation
 
-[🇺🇸 Documentation](./docs/en/README.md)
+[English Documentation](./docs/en/README.md)
 
-[🇩🇪 Dokumentation](./docs/de/README.md)
+[Deutsche Dokumentation](./docs/de/README.md)
 
 ---
 
