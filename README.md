@@ -62,6 +62,11 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* (patricknitsch) Fix Eslint-Errors
+
 ### 1.1.0 (2026-02-12)
 
 * (claude) Add Formula Engine to build own sensors
