@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "news": {
+      "1.1.1": {
+        "en": "Fix Eslint-Errors",
+        "de": "Fix Eslint-Errors",
+        "ru": "Исправить ошибки Эслинта",
+        "pt": "Corrigir erros de Eslint",
+        "nl": "Fix Eslint-Errors",
+        "fr": "Corriger les épaves",
+        "it": "Fissare Eslint-Errors",
+        "es": "Corrección Eslint-Errors",
+        "pl": "Naprawiono błędy Eslint-",
+        "uk": "Фіксація Eslint-Errors",
+        "zh-cn": "修复 Eslint- 错误"
+      },
       "1.1.0": {
         "en": "Add Formula Engine to build own sensors",
         "de": "Formel Engine hinzufügen, um eigene Sensoren zu bauen",
@@ -80,19 +93,6 @@
         "pl": "zmienić Repo z ssh na https",
         "uk": "змінити Repo з Ssh на HTTPS",
         "zh-cn": "从 ssh 改为 https"
-      },
-      "0.3.1": {
-        "en": "Fix some issues in UI",
-        "de": "Einige Probleme in UI beheben",
-        "ru": "Исправить некоторые проблемы в UI",
-        "pt": "Corrigir alguns problemas na UI",
-        "nl": "Enkele problemen in UI oplossen",
-        "fr": "Correction de certains problèmes en UI",
-        "it": "Risolvere alcuni problemi in UI",
-        "es": "Arreglar algunos problemas en la UI",
-        "pl": "Napraw kilka problemów w UI",
-        "uk": "Виправлення деяких питань УІ",
-        "zh-cn": "在UI中解决一些问题"
       }
     },
     "titleLang": {
