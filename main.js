@@ -63,43 +63,63 @@ function createDsProxy(adapter) {
 		TICK_TIME_BUDGET_RATIO: 0.8,
 
 		/* ---------- Config proxy ---------- */
-		config: new Proxy({}, {
-			get(_, prop) {
-				switch (prop) {
-					case 'items': {
-						const its = adapter.config['dsItems'];
-						const itsEd = adapter.config['dsItemsEditor'];
-						const a = Array.isArray(its) && its.length ? its
-							: Array.isArray(itsEd) && itsEd.length ? itsEd : [];
-						return a;
+		config: new Proxy(
+			{},
+			{
+				get(_, prop) {
+					switch (prop) {
+						case 'items': {
+							const its = adapter.config['dsItems'];
+							const itsEd = adapter.config['dsItemsEditor'];
+							const a =
+								Array.isArray(its) && its.length
+									? its
+									: Array.isArray(itsEd) && itsEd.length
+										? itsEd
+										: [];
+							return a;
+						}
+						case 'pollIntervalSeconds':
+							return adapter.config.dsPollIntervalSeconds || 5;
+						case 'snapshotInputs':
+							return adapter.config.dsSnapshotInputs || false;
+						case 'snapshotDelayMs':
+							return adapter.config.dsSnapshotDelayMs || 0;
+						case 'errorRetriesBeforeZero':
+							return 3;
+						default:
+							return adapter.config[prop];
 					}
-					case 'pollIntervalSeconds': return adapter.config.dsPollIntervalSeconds || 5;
-					case 'snapshotInputs': return adapter.config.dsSnapshotInputs || false;
-					case 'snapshotDelayMs': return adapter.config.dsSnapshotDelayMs || 0;
-					case 'errorRetriesBeforeZero': return 3;
-					default: return adapter.config[prop];
-				}
+				},
 			},
-		}),
+		),
 
 		/* ---------- Own-state methods (prefix with ds.) ---------- */
 		setObjectNotExistsAsync: (id, obj) => adapter.setObjectNotExistsAsync(`ds.${id}`, obj),
 		setObjectAsync: (id, obj) => adapter.setObjectAsync(`ds.${id}`, obj),
 		extendObjectAsync: (id, obj) => adapter.extendObjectAsync(`ds.${id}`, obj),
-		getObjectAsync: (id) => adapter.getObjectAsync(`ds.${id}`),
+		getObjectAsync: id => adapter.getObjectAsync(`ds.${id}`),
 		setStateAsync: (id, val, ack) => adapter.setStateAsync(`ds.${id}`, val, ack),
 		setState: (id, val, ack) => adapter.setState(`ds.${id}`, val, ack),
 
 		/* ---------- DS-specific methods ---------- */
 		warnOnce(key, msg) {
-			if (self.warnedOnce.size > 500) self.warnedOnce.clear();
-			if (self.warnedOnce.has(key)) return;
+			if (self.warnedOnce.size > 500) {
+				self.warnedOnce.clear();
+			}
+			if (self.warnedOnce.has(key)) {
+				return;
+			}
 			self.warnedOnce.add(key);
 			adapter.log.warn(`[DS] ${msg}`);
 		},
 		debugOnce(key, msg) {
-			if (self.debuggedOnce.size > 500) self.debuggedOnce.clear();
-			if (self.debuggedOnce.has(key)) return;
+			if (self.debuggedOnce.size > 500) {
+				self.debuggedOnce.clear();
+			}
+			if (self.debuggedOnce.has(key)) {
+				return;
+			}
 			self.debuggedOnce.add(key);
 			adapter.log.debug(`[DS] ${msg}`);
 		},
@@ -150,9 +170,13 @@ function createDsProxy(adapter) {
 	// Return a Proxy that delegates anything not on `self` to the real adapter.
 	return new Proxy(self, {
 		get(target, prop) {
-			if (prop in target) return target[prop];
+			if (prop in target) {
+				return target[prop];
+			}
 			const val = adapter[prop];
-			if (typeof val === 'function') return val.bind(adapter);
+			if (typeof val === 'function') {
+				return val.bind(adapter);
+			}
 			return val;
 		},
 		set(target, prop, value) {
@@ -729,10 +753,21 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 	onMessage(obj) {
 		try {
-			if (!obj || !obj.command) return;
-			if (obj.command !== 'evalFormulaPreview') return;
+			if (!obj || !obj.command) {
+				return;
+			}
+			if (obj.command !== 'evalFormulaPreview') {
+				return;
+			}
 			if (!this.dsProxy) {
-				if (obj.callback) this.sendTo(obj.from, obj.command, { ok: false, error: 'Data-SOLECTRUS is not enabled' }, obj.callback);
+				if (obj.callback) {
+					this.sendTo(
+						obj.from,
+						obj.command,
+						{ ok: false, error: 'Data-SOLECTRUS is not enabled' },
+						obj.callback,
+					);
+				}
 				return;
 			}
 
@@ -744,8 +779,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 			const keys = Object.keys(varsIn).slice(0, 200);
 			for (const kRaw of keys) {
 				const k = String(kRaw);
-				if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(k)) continue;
-				if (k === '__proto__' || k === 'prototype' || k === 'constructor') continue;
+				if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(k)) {
+					continue;
+				}
+				if (k === '__proto__' || k === 'prototype' || k === 'constructor') {
+					continue;
+				}
 				const v = varsIn[kRaw];
 				if (typeof v === 'string') {
 					safeVars[k] = v.length > 2000 ? v.slice(0, 2000) : v;
@@ -754,8 +793,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 				} else {
 					try {
 						const json = JSON.stringify(v);
-						if (json && json.length <= 5000) safeVars[k] = v;
-					} catch { /* ignore */ }
+						if (json && json.length <= 5000) {
+							safeVars[k] = v;
+						}
+					} catch {
+						/* ignore */
+					}
 				}
 			}
 
@@ -763,14 +806,22 @@ class SolectrusInfluxdb extends utils.Adapter {
 			try {
 				result = this.dsProxy.evalFormula(expr, safeVars);
 			} catch (e) {
-				if (obj.callback) this.sendTo(obj.from, obj.command, { ok: false, error: e.message || String(e) }, obj.callback);
+				if (obj.callback) {
+					this.sendTo(obj.from, obj.command, { ok: false, error: e.message || String(e) }, obj.callback);
+				}
 				return;
 			}
-			if (obj.callback) this.sendTo(obj.from, obj.command, { ok: true, value: result }, obj.callback);
+			if (obj.callback) {
+				this.sendTo(obj.from, obj.command, { ok: true, value: result }, obj.callback);
+			}
 		} catch (e) {
 			try {
-				if (obj && obj.callback) this.sendTo(obj.from, obj.command, { ok: false, error: e.message || String(e) }, obj.callback);
-			} catch { /* ignore */ }
+				if (obj && obj.callback) {
+					this.sendTo(obj.from, obj.command, { ok: false, error: e.message || String(e) }, obj.callback);
+				}
+			} catch {
+				/* ignore */
+			}
 		}
 	}
 

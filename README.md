@@ -62,6 +62,11 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* (claude) Add Formula Engine to build own sensors
+
 ### 1.0.0 (2026-01-31)
 
 * (patricknitsch) change Config for Encryption -> Credentials must be re-entered
