@@ -66,7 +66,13 @@ function createDsProxy(adapter) {
 		config: new Proxy({}, {
 			get(_, prop) {
 				switch (prop) {
-					case 'items': return adapter.config['dsItems'] || [];
+					case 'items': {
+						const its = adapter.config['dsItems'];
+						const itsEd = adapter.config['dsItemsEditor'];
+						const a = Array.isArray(its) && its.length ? its
+							: Array.isArray(itsEd) && itsEd.length ? itsEd : [];
+						return a;
+					}
 					case 'pollIntervalSeconds': return adapter.config.dsPollIntervalSeconds || 5;
 					case 'snapshotInputs': return adapter.config.dsSnapshotInputs || false;
 					case 'snapshotDelayMs': return adapter.config.dsSnapshotDelayMs || 0;
@@ -423,12 +429,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 		});
 
 		await dsStateRegistry.createInfoStates(ds);
-
-		// Config compatibility: some Admin versions may store under dsItemsEditor
-		// Use bracket notation to avoid TypeScript never[] inference from empty default arrays
-		const items = Array.isArray(this.config['dsItems']) ? this.config['dsItems'] : [];
-		const itemsEditor = Array.isArray(this.config['dsItemsEditor']) ? this.config['dsItemsEditor'] : [];
-		this.config['dsItems'] = items.length ? items : itemsEditor;
 
 		await dsItemManager.ensureItemTitlesInInstanceConfig(ds);
 		await dsItemManager.prepareItems(ds);
