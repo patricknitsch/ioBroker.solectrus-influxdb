@@ -56,8 +56,18 @@ Mindestens ein Sensor muss aktiviert sein, damit Daten geschrieben werden.
 
 1. Der Adapter abonniert den Quell-Datenpunkt jedes Sensors
 2. Werte werden unter `solectrus-influxdb.X.sensors.*` gespiegelt
-3. In jedem Polling-Intervall werden aktuelle Werte in den Schreibpuffer aufgenommen
-4. Der Puffer wird gebündelt nach InfluxDB geschrieben
+3. In jedem Polling-Intervall werden aktuelle Werte in den Schreibpuffer aufgenommen (**Collect**)
+4. Direkt nach dem Collect wird der Puffer an InfluxDB gesendet (**Flush**)
+
+### Collect & Flush Architektur
+
+Collect und Flush laufen nahezu gleichzeitig, ohne sich gegenseitig zu blockieren:
+
+1. **Collect** sammelt alle Sensorwerte und schreibt sie in den Buffer
+2. **Sofort-Flush** -- nach dem Collect wird der Flush im nächsten Event-Loop-Tick ausgelöst (kein zusätzliches Warte-Intervall)
+3. **Snapshot-and-Swap** -- beim Start des Flush wird der aktuelle Buffer als Batch entnommen und durch ein leeres Array ersetzt. Während der Flush-Vorgang auf die InfluxDB-Antwort wartet, schreibt ein paralleler Collect bereits in den neuen (leeren) Buffer. Der Batch wird dabei nicht verändert.
+4. **Fehlerfall** -- schlägt der Flush fehl, wird der Batch chronologisch korrekt wieder vor den aktuellen Buffer gestellt. Es gehen keine Werte verloren.
+5. **Überlappungsschutz** -- ein `isFlushing`-Guard verhindert, dass mehrere Flush-Vorgänge gleichzeitig laufen
 
 ### NaN-Schutz
 
@@ -245,8 +255,11 @@ Berechnete Werte erscheinen unter `solectrus-influxdb.X.ds.*` mit Diagnose-State
 
 - Werte werden persistent auf die Festplatte gepuffert (`buffer.json`)
 - Maximale Buffer-Größe: 100.000 Punkte
+- Der Flush erfolgt **nur bei bestehender InfluxDB-Verbindung** (`ensureInflux()` prüft vor jedem Flush)
 - Bei InfluxDB-Ausfall steigen die Wiederholungsintervalle exponentiell (bis 5 Minuten)
 - Nach Wiederverbindung werden alle gepufferten Punkte übertragen
+- Während eines Flush wird der Buffer nicht verändert (Snapshot-and-Swap Verfahren)
+- Bei Flush-Fehler werden die Daten automatisch in den Buffer zurückgestellt
 
 ---
 

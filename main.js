@@ -207,6 +207,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.flushTimer = null;
 
 		this.isUnloading = false;
+		this.isFlushing = false;
 
 		/* ---------- Data-SOLECTRUS proxy ---------- */
 		this.dsProxy = null; // initialized in onReady if enabled
@@ -241,7 +242,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 	clampDelay(ms, fallbackMs) {
 		let v = Number(ms);
-		if (!Number.isFinite(v) || v <= 0) {
+		if (!Number.isFinite(v) || v < 0) {
 			v = fallbackMs;
 		}
 		if (v > MAX_DELAY_MS) {
@@ -287,10 +288,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 	}
 
 	getFlushIntervalMs() {
-		// keep your current logic: flush ~ interval + 5 sec (min 10s)
+		// Fallback interval used for retries and safety-net scheduling.
+		// Normal flushes are triggered directly by collectPoints().
 		const sec = Number(this.config.influxInterval);
-		const base = sec > 0 ? (sec + 5) * 1000 : 10_000;
-		return this.clampDelay(base, 10_000);
+		const base = sec > 0 ? sec * 1000 : 5000;
+		return this.clampDelay(base, 5000);
 	}
 
 	hasEnabledSensors() {
@@ -871,6 +873,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		this.saveBuffer();
 		this.updateBufferStates();
+
+		// Trigger flush immediately after collect (if not already running)
+		if (this.buffer.length > 0 && !this.isFlushing) {
+			this.scheduleNextFlush(0);
+		}
 	}
 
 	/* =====================================================
@@ -891,6 +898,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 	async flushBuffer() {
 		if (this.isUnloading) {
+			return;
+		}
+
+		// Guard against overlapping flushes
+		if (this.isFlushing) {
+			this.scheduleNextFlush(this.getFlushIntervalMs());
 			return;
 		}
 
@@ -922,8 +935,15 @@ class SolectrusInfluxdb extends utils.Adapter {
 			return this.handleFlushFailure();
 		}
 
+		// Snapshot-and-swap: take current buffer, replace with empty array.
+		// Collects during the async flush write to the new empty buffer,
+		// so the batch being flushed is never modified concurrently.
+		const batch = this.buffer;
+		this.buffer = [];
+		this.isFlushing = true;
+
 		try {
-			for (const entry of this.buffer) {
+			for (const entry of batch) {
 				const point = new Point(entry.measurement).timestamp(entry.ts);
 				let fieldValue;
 
@@ -961,7 +981,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 			await writeApi.flush();
 
-			this.buffer = [];
+			// Success: batch is done, save buffer (may contain new entries from concurrent collects)
 			this.saveBuffer();
 			this.updateBufferStates();
 
@@ -972,6 +992,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.log.error(`Flush failed: ${err.message}`);
 			await this.closeWriteApi();
 
+			// Merge failed batch back: prepend to current buffer to preserve chronological order
+			this.buffer = batch.concat(this.buffer);
+			this.saveBuffer();
+			this.updateBufferStates();
+
 			if (this.isFieldTypeConflict(err)) {
 				this.log.error('Field type conflict detected – disabling affected sensor');
 				this.disableSensorByFieldTypeConflict(err);
@@ -979,6 +1004,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 
 			this.handleFlushFailure();
+		} finally {
+			this.isFlushing = false;
 		}
 	}
 
