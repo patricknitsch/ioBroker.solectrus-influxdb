@@ -56,8 +56,18 @@ At least one sensor must be enabled for data to be written.
 
 1. The adapter subscribes to each sensor's source state
 2. Values are mirrored under `solectrus-influxdb.X.sensors.*`
-3. On each polling interval, current values are added to the write buffer
-4. The buffer is flushed to InfluxDB in batches
+3. On each polling interval, current values are added to the write buffer (**Collect**)
+4. Immediately after collect, the buffer is flushed to InfluxDB (**Flush**)
+
+### Collect & Flush Architecture
+
+Collect and flush run near-simultaneously without blocking each other:
+
+1. **Collect** gathers all sensor values and writes them into the buffer
+2. **Immediate flush** -- after collect, the flush is triggered on the next event-loop tick (no additional wait interval)
+3. **Snapshot-and-swap** -- when the flush starts, the current buffer is taken as a batch and replaced with a new empty array. While the flush awaits the InfluxDB response, a concurrent collect already writes into the new (empty) buffer. The batch is never modified during the flush.
+4. **Failure recovery** -- if the flush fails, the batch is prepended back to the current buffer in chronological order. No values are lost.
+5. **Overlap guard** -- an `isFlushing` flag prevents multiple flush operations from running concurrently
 
 ### NaN protection
 
@@ -245,8 +255,11 @@ Computed values appear under `solectrus-influxdb.X.ds.*` with per-item diagnosti
 
 - Values are persistently buffered to disk (`buffer.json`)
 - Maximum buffer size: 100,000 points
+- Flushing only occurs when an **active InfluxDB connection** is confirmed (`ensureInflux()` checks before every flush)
 - On InfluxDB outage, retry intervals increase exponentially (up to 5 minutes)
 - After reconnection, all buffered points are flushed
+- During a flush, the buffer is never modified (snapshot-and-swap pattern)
+- On flush failure, data is automatically restored to the buffer
 
 ---
 
