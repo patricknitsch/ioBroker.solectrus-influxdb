@@ -720,6 +720,7 @@
                                             const selectedStr = Array.isArray(selected) ? selected[0] : selected;
                                             setShowSelectStateId(false);
                                             if (selectedStr) {
+                                                setDraftField('sourceState', selectedStr);
                                                 updateSelected('sourceState', selectedStr);
                                             }
                                         },

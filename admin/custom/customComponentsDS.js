@@ -1876,9 +1876,11 @@
                         setSelectContext(null);
                         if (!selectedStr) return;
                         if (selectContext.kind === 'itemSource') {
+                            setDraftField('sourceState', selectedStr);
                             updateSelected('sourceState', selectedStr);
                         }
                         if (selectContext.kind === 'input' && Number.isFinite(selectContext.index)) {
+                            setDraftInputField(selectContext.index, 'sourceState', selectedStr);
                             updateInput(selectContext.index, 'sourceState', selectedStr);
                         }
                         if (selectContext.kind === 'formulaFn') {
