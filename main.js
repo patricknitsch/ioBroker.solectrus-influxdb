@@ -207,6 +207,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.flushTimer = null;
 
 		this.isUnloading = false;
+		this.isFlushing = false;
 
 		/* ---------- Data-SOLECTRUS proxy ---------- */
 		this.dsProxy = null; // initialized in onReady if enabled
@@ -894,6 +895,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 			return;
 		}
 
+		// Guard against overlapping flushes
+		if (this.isFlushing) {
+			this.scheduleNextFlush(this.getFlushIntervalMs());
+			return;
+		}
+
 		const influxReady = await this.ensureInflux();
 		if (!influxReady) {
 			return this.handleFlushFailure();
@@ -922,8 +929,15 @@ class SolectrusInfluxdb extends utils.Adapter {
 			return this.handleFlushFailure();
 		}
 
+		// Snapshot-and-swap: take current buffer, replace with empty array.
+		// Collects during the async flush write to the new empty buffer,
+		// so the batch being flushed is never modified concurrently.
+		const batch = this.buffer;
+		this.buffer = [];
+		this.isFlushing = true;
+
 		try {
-			for (const entry of this.buffer) {
+			for (const entry of batch) {
 				const point = new Point(entry.measurement).timestamp(entry.ts);
 				let fieldValue;
 
@@ -961,7 +975,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 			await writeApi.flush();
 
-			this.buffer = [];
+			// Success: batch is done, save buffer (may contain new entries from concurrent collects)
 			this.saveBuffer();
 			this.updateBufferStates();
 
@@ -972,6 +986,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.log.error(`Flush failed: ${err.message}`);
 			await this.closeWriteApi();
 
+			// Merge failed batch back: prepend to current buffer to preserve chronological order
+			this.buffer = batch.concat(this.buffer);
+			this.saveBuffer();
+			this.updateBufferStates();
+
 			if (this.isFieldTypeConflict(err)) {
 				this.log.error('Field type conflict detected – disabling affected sensor');
 				this.disableSensorByFieldTypeConflict(err);
@@ -979,6 +998,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 
 			this.handleFlushFailure();
+		} finally {
+			this.isFlushing = false;
 		}
 	}
 
