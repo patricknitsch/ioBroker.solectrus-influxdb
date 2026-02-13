@@ -242,7 +242,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 	clampDelay(ms, fallbackMs) {
 		let v = Number(ms);
-		if (!Number.isFinite(v) || v <= 0) {
+		if (!Number.isFinite(v) || v < 0) {
 			v = fallbackMs;
 		}
 		if (v > MAX_DELAY_MS) {
@@ -288,10 +288,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 	}
 
 	getFlushIntervalMs() {
-		// keep your current logic: flush ~ interval + 5 sec (min 10s)
+		// Fallback interval used for retries and safety-net scheduling.
+		// Normal flushes are triggered directly by collectPoints().
 		const sec = Number(this.config.influxInterval);
-		const base = sec > 0 ? (sec + 5) * 1000 : 10_000;
-		return this.clampDelay(base, 10_000);
+		const base = sec > 0 ? sec * 1000 : 5000;
+		return this.clampDelay(base, 5000);
 	}
 
 	hasEnabledSensors() {
@@ -872,6 +873,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		this.saveBuffer();
 		this.updateBufferStates();
+
+		// Trigger flush immediately after collect (if not already running)
+		if (this.buffer.length > 0 && !this.isFlushing) {
+			this.scheduleNextFlush(0);
+		}
 	}
 
 	/* =====================================================
