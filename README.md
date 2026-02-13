@@ -63,7 +63,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	### **WORK IN PROGRESS**
 -->
 
-### **WORK IN PROGRESS **
+### **WORK IN PROGRESS**
 
 * (claude) Concurrent collect and flush without delay of 5s
 
