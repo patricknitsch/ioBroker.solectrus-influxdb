@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "news": {
+      "1.2.1": {
+        "en": "Fix wrong package",
+        "de": "Fehlerhaftes Paket beheben",
+        "ru": "Исправить неправильный пакет",
+        "pt": "Corrigir o pacote errado",
+        "nl": "Foute verpakking herstellen",
+        "fr": "Correction du mauvais paquet",
+        "it": "Fissare il pacchetto sbagliato",
+        "es": "Arregla el paquete equivocado",
+        "pl": "Napraw zły pakiet",
+        "uk": "Виправити неправильний пакет",
+        "zh-cn": "修正错误的软件包"
+      },
       "1.2.0": {
         "en": "Concurrent collect and flush without delay of 5s",
         "de": "Gleichzeitig sammeln und spülen ohne Verzögerung von 5s",
@@ -80,19 +93,6 @@
         "pl": "Uaktualnij Readme i podziel na dwa własne dokumenty",
         "uk": "Update Readme і розбити його в два власних docs",
         "zh-cn": "更新 Readme 并将其分成两个自己的文件"
-      },
-      "0.3.3": {
-        "en": "Try fixing automatic npm release",
-        "de": "Versuchen Sie, automatische npm-Release zu beheben",
-        "ru": "Попробуйте исправить автоматический выпуск npm",
-        "pt": "Tente corrigir a liberação automática do npm",
-        "nl": "Probeer het repareren van automatische npm release",
-        "fr": "Essayez de fixer la libération automatique npm",
-        "it": "Prova a fissare il rilascio automatico npm",
-        "es": "Prueba la fijación automática npm de liberación",
-        "pl": "Spróbuj naprawić automatyczne wydanie npm",
-        "uk": "Спробуйте виправити автоматичний npm реліз",
-        "zh-cn": "尝试修复自动 npm 释放"
       }
     },
     "titleLang": {
