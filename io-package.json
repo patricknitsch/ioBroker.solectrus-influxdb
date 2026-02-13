@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "news": {
+      "1.2.0": {
+        "en": "Concurrent collect and flush without delay of 5s",
+        "de": "Gleichzeitig sammeln und spülen ohne Verzögerung von 5s",
+        "ru": "Параллельный сбор и смыв без задержки 5s",
+        "pt": "Coleta concomitante e flush sem demora de 5s",
+        "nl": "Gelijktijdig verzamelen en spoelen zonder vertraging van 5s",
+        "fr": "Collecte simultanée et rinçage sans délai de 5s",
+        "it": "Concurrent raccogliere e filo senza ritardo di 5s",
+        "es": "Recopilación y descarga simultánea sin demora de 5s",
+        "pl": "Równoczesne zbieranie i spłukiwanie bez zwłoki 5 s",
+        "uk": "Збір і полоскання без затримки 5s",
+        "zh-cn": "同步收集并冲出5s"
+      },
       "1.1.2": {
         "en": "Fix Eslint-Warnings",
         "de": "Fix Eslint-Warnings",
