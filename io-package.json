@@ -29,19 +29,6 @@
         "uk": "Фіксація Eslint-Errors",
         "zh-cn": "修复 Eslint- 错误"
       },
-      "1.1.0": {
-        "en": "Add Formula Engine to build own sensors",
-        "de": "Formel Engine hinzufügen, um eigene Sensoren zu bauen",
-        "ru": "Добавьте Formula Engine для создания собственных датчиков",
-        "pt": "Adicionar motor de fórmula para construir sensores próprios",
-        "nl": "Formule Motor toevoegen om eigen sensoren te bouwen",
-        "fr": "Ajouter Formula Engine pour construire ses propres capteurs",
-        "it": "Aggiungi Formula Engine per costruire i propri sensori",
-        "es": "Añadir Fórmula Motor para construir sensores propios",
-        "pl": "Dodaj silnik formuły do budowy własnych czujników",
-        "uk": "Додати двигун формули для побудови власних датчиків",
-        "zh-cn": "添加公式引擎以构建自己的传感器"
-      },
       "1.0.0": {
         "en": "change Config for Encryption -> Credentials must be re-entered",
         "de": "config for Encryption -> Einsichtspunkte müssen neu eingeteilt werden",
