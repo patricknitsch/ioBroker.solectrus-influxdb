@@ -859,7 +859,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 			// Warn once per sensor when a negative value is collected
 			if (typeof value === 'number' && value < 0 && !this.negativeValueWarned.has(id)) {
 				this.negativeValueWarned.add(id);
-				this.log.warn(`Sensor "${sensor.SensorName}" delivers negative value (${value}). Negative values will be sent to InfluxDB.`);
+				this.log.warn(
+					`Sensor "${sensor.SensorName}" delivers negative value (${value}). Negative values will be sent to InfluxDB.`,
+				);
 			}
 
 			this.log.debug(`Collect point: ${id} : ${value} to: ${sensor.measurement} : ${sensor.field}`);
