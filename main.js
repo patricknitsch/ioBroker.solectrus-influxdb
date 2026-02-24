@@ -208,6 +208,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		this.isUnloading = false;
 		this.isFlushing = false;
+		this.negativeValueWarned = new Set();
 
 		/* ---------- Data-SOLECTRUS proxy ---------- */
 		this.dsProxy = null; // initialized in onReady if enabled
@@ -853,6 +854,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 			if (value === undefined || value === null) {
 				continue;
+			}
+
+			// Warn once per sensor when a negative value is collected
+			if (typeof value === 'number' && value < 0 && !this.negativeValueWarned.has(id)) {
+				this.negativeValueWarned.add(id);
+				this.log.warn(`Sensor "${sensor.SensorName}" delivers negative value (${value}). Negative values will be sent to InfluxDB.`);
 			}
 
 			this.log.debug(`Collect point: ${id} : ${value} to: ${sensor.measurement} : ${sensor.field}`);
