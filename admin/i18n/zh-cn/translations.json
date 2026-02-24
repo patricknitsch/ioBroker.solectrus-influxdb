@@ -152,6 +152,7 @@
   "Unsupported operator": "Unsupported operator",
   "Unexpected token": "Unexpected token",
   "n/a": "n/a",
+  "negativeValuesHint": "注意：SOLECTRUS 不接受负值。如果传感器提供负值，适配器启动后会记录一次警告。请检查你的源状态或使用 Data-SOLECTRUS 公式引擎的\u201c将负值限制为 0\u201d选项。",
   "Pick a state id and insert s(\"id\")": "Pick a state id and insert s(\"id\")",
   "Pick a state id and insert v(\"id\")": "Pick a state id and insert v(\"id\")",
   "Pick a state id and insert jp(\"id\", \"$.value\")": "Pick a state id and insert jp(\"id\", \"$.value\")",

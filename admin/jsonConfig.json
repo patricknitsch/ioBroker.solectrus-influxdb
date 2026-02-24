@@ -149,19 +149,7 @@
             },
             "_influxNegativeValuesHint": {
               "type": "staticText",
-              "text": {
-                "en": "Note: SOLECTRUS does not accept negative values. If a sensor delivers negative values, a warning will be logged once after adapter start. Check your source states or use the Data-SOLECTRUS formula engine with the \"Clamp negative to 0\" option.",
-                "de": "Hinweis: SOLECTRUS akzeptiert keine negativen Werte. Liefert ein Sensor negative Werte, wird nach dem Adapterstart einmalig eine Warnung protokolliert. Prüfe deine Quell-Datenpunkte oder nutze die Data-SOLECTRUS Formel-Engine mit der Option „Negative Werte auf 0 begrenzen".",
-                "es": "Nota: SOLECTRUS no acepta valores negativos. Si un sensor entrega valores negativos, se registrará una advertencia una vez tras el inicio del adaptador. Comprueba tus estados fuente o utiliza el motor de fórmulas Data-SOLECTRUS con la opción «Limitar negativos a 0».",
-                "fr": "Remarque : SOLECTRUS n'accepte pas les valeurs négatives. Si un capteur fournit des valeurs négatives, un avertissement sera enregistré une seule fois après le démarrage de l'adaptateur. Vérifiez vos états source ou utilisez le moteur de formules Data-SOLECTRUS avec l'option « Limiter les négatifs à 0 ».",
-                "it": "Nota: SOLECTRUS non accetta valori negativi. Se un sensore fornisce valori negativi, verrà registrato un avviso una sola volta dopo l'avvio dell'adattatore. Controlla i tuoi stati sorgente oppure usa il motore formule Data-SOLECTRUS con l'opzione «Limita negativi a 0».",
-                "nl": "Let op: SOLECTRUS accepteert geen negatieve waarden. Als een sensor negatieve waarden levert, wordt na de adapterstart eenmalig een waarschuwing gelogd. Controleer je bronstates of gebruik de Data-SOLECTRUS formule-engine met de optie 'Negatieve waarden op 0 begrenzen'.",
-                "pl": "Uwaga: SOLECTRUS nie akceptuje wartości ujemnych. Jeśli czujnik dostarcza wartości ujemne, po uruchomieniu adaptera zostanie jednorazowo zapisane ostrzeżenie. Sprawdź swoje stany źródłowe lub użyj silnika formuł Data-SOLECTRUS z opcją „Ogranicz ujemne do 0".",
-                "pt": "Nota: SOLECTRUS não aceita valores negativos. Se um sensor fornecer valores negativos, um aviso será registrado uma vez após o início do adaptador. Verifique seus estados de origem ou use o motor de fórmulas Data-SOLECTRUS com a opção «Limitar negativos a 0».",
-                "ru": "Примечание: SOLECTRUS не принимает отрицательные значения. Если датчик передаёт отрицательные значения, после запуска адаптера в лог будет записано однократное предупреждение. Проверьте ваши исходные состояния или используйте формульный движок Data-SOLECTRUS с опцией «Ограничить отрицательные до 0».",
-                "uk": "Примітка: SOLECTRUS не приймає від'ємних значень. Якщо датчик передає від'ємні значення, після запуску адаптера буде записано одноразове попередження. Перевірте ваші вихідні стани або використовуйте формульний двигун Data-SOLECTRUS з опцією «Обмежити від'ємні до 0».",
-                "zh-cn": "注意：SOLECTRUS 不接受负值。如果传感器提供负值，适配器启动后会记录一次警告。请检查你的源状态或使用 Data-SOLECTRUS 公式引擎的"将负值限制为 0"选项。"
-              },
+              "text": "negativeValuesHint",
               "newLine": true,
               "style": {
                 "whiteSpace": "pre-line",
