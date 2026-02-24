@@ -73,6 +73,10 @@ Collect and flush run near-simultaneously without blocking each other:
 
 Invalid values (`NaN` for int/float, `null`/`undefined` for strings) are automatically skipped with a log warning.
 
+### Negative values
+
+SOLECTRUS does not accept negative values. If a sensor delivers a negative value after adapter start, a warning is logged **once**. The values are still sent to InfluxDB but may cause incorrect evaluations there. To fix this, check your source states or use the Data-SOLECTRUS formula engine with the **Clamp negative to 0** option.
+
 ### Field type conflicts
 
 If InfluxDB reports a field type conflict (e.g. writing a float to an existing int field), the affected sensor is automatically disabled and the buffer is cleared.

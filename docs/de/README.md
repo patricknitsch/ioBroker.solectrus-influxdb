@@ -73,6 +73,10 @@ Collect und Flush laufen nahezu gleichzeitig, ohne sich gegenseitig zu blockiere
 
 Ungültige Werte (`NaN` bei int/float, `null`/`undefined` bei Strings) werden automatisch übersprungen und im Log gewarnt.
 
+### Negative Werte
+
+SOLECTRUS akzeptiert keine negativen Werte. Liefert ein Sensor nach dem Adapterstart einen negativen Wert, wird **einmalig** eine Warnung im Log ausgegeben. Die Werte werden trotzdem an InfluxDB gesendet, können dort aber zu fehlerhaften Auswertungen führen. Abhilfe: Quell-Datenpunkte prüfen oder die Data-SOLECTRUS Formel-Engine mit der Option **Negative Werte auf 0 begrenzen** (Clamp negative to 0) verwenden.
+
 ### Field-Type-Konflikte
 
 Meldet InfluxDB einen Field-Type-Konflikt (z.B. Float in ein bestehendes Int-Feld schreiben), wird der betroffene Sensor automatisch deaktiviert und der Buffer geleert.
