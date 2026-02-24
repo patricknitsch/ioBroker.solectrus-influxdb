@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "news": {
+      "1.2.2": {
+        "en": "Synchronize Formal Engine with Repo from Felliglanz\nAdd Warning after first start, if value is negative\nAdd Comment on first page, that SOLECTRUS doesn't accept negative values\nUpdate Readme and Translations",
+        "de": "Synchronisieren Sie Formal Engine mit Repo von Felli\nWarnung nach dem ersten Start hinzufügen, wenn der Wert negativ ist\nKommentar auf der ersten Seite hinzufügen, dass SOLECTRUS keine negativen Werte akzeptiert\nReadme und Übersetzungen aktualisieren",
+        "ru": "Синхронизируйте формальный двигатель с Repo от Felliglanz\nДобавьте предупреждение после первого запуска, если значение отрицательное\nДобавить комментарий на первой странице, что SOLECTRUS не принимает отрицательные значения\nОбновление Readme и переводов",
+        "pt": "Sincronizar o Motor Formal com o Repo de Felliglanz\nAdicionar aviso após o primeiro início, se o valor for negativo\nAdicionar Comentário na primeira página, que o SOLECTRUS não aceita valores negativos\nAtualizar Readme e traduções",
+        "nl": "Formal Engine synchroniseren met Repo van Felliglanz\nWaarschuwing toevoegen na eerste start, als waarde negatief is\nCommentaar toevoegen op de eerste pagina, dat SOLECTRUS geen negatieve waarden accepteert\nReadme en vertalingen bijwerken",
+        "fr": "Synchronisez le moteur formel avec Repo de Felliglanz\nAjouter un avertissement après le premier démarrage, si la valeur est négative\nAjouter un commentaire sur la première page, que SOLECTRUS n'accepte pas les valeurs négatives\nMettre à jour le texte et les traductions",
+        "it": "Synchronize Formal Engine con Repo di Felliglanz\nAggiungi Avvertenza dopo il primo avvio, se il valore è negativo\nAggiungi commento alla prima pagina, che SOLECTRUS non accetta valori negativi\nAggiornamento Readme e Traduzioni",
+        "es": "Synchronize Formal Engine with Repo from Felliglanz\nAñadir Advertencia después del primer comienzo, si el valor es negativo\nAgregar comentario en la primera página, que SOLECTRUS no acepta valores negativos\nActualizar Readme y Traducciones",
+        "pl": "Synchronizuj formalny silnik z Repo z Felliglanz\nDodaj ostrzeżenie po pierwszym uruchomieniu, jeśli wartość jest ujemna\nDodaj komentarz na pierwszej stronie, że SOLECTRUS nie akceptuje wartości ujemnych\nAktualizacja Readme i tłumaczenia",
+        "uk": "Синхронізувати формувальний двигун з репо від Felliglanz\nДодати Попередження після першого початку, якщо значення негативно\nДодати коментар на першій сторінці, що SOLECTRUS не приймає негативних значень\nОновлення перекладу",
+        "zh-cn": "用 Felliglanz 的 Repo 同步正式引擎\n如果数值为负数, 在第一次启动后添加警告\n在第一页添加注释, SOLECTRUS 不接受负值\n更新阅读和翻译"
+      },
       "1.2.1": {
         "en": "Fix wrong package",
         "de": "Fehlerhaftes Paket beheben",
@@ -80,19 +93,6 @@
         "pl": "Korzystanie z węzła: format pakietu\nszyfrowanie informacji wrażliwych - > Token musi zostać ponownie wprowadzony\nonState Zmiana ignoruje flagę ack\ntworzenie brakujących obiektów pośrednich\nużywając tego .setTimeout\nsprawdzanie i ograniczanie konfigurowalnych przerw / przerw\nRozszerzenie Readme",
         "uk": "Використання вершини: формат упаковки\nшифрування конфіденційної інформації -> Токен повинен бути повторним\nголовна Зміна ігнорує прапор ack\nстворення проміжних об'єктів відсутні\nза допомогою this.setTimeout\nреєстрація та обмеження на налаштування часових витоків/міжналів\nПродовжити читання",
         "zh-cn": "使用节点: 包格式\n加密敏感信息 - > 托肯必须重新进入\n状态 更改忽略了阿克旗\n创建缺少的中间对象\n使用此. 设置超时\n检查和限制可配置的超时/间歇\n扩展读取"
-      },
-      "0.3.4": {
-        "en": "Update Readme and split it in two own docs",
-        "de": "Aktualisieren Sie Readme und teilen Sie es in zwei eigenen Docs",
-        "ru": "Обновите Readme и разделите его на два собственных документа",
-        "pt": "Atualizar o Readme e dividi-lo em dois documentos próprios",
-        "nl": "Update Readme en deel het in twee eigen documenten",
-        "fr": "Mettre à jour Readme et le diviser en deux documents",
-        "it": "Aggiornare Readme e dividerlo in due propri documenti",
-        "es": "Actualizar Readme y dividirlo en dos puntos propios",
-        "pl": "Uaktualnij Readme i podziel na dwa własne dokumenty",
-        "uk": "Update Readme і розбити його в два власних docs",
-        "zh-cn": "更新 Readme 并将其分成两个自己的文件"
       }
     },
     "titleLang": {

@@ -62,8 +62,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.2.2 (2026-02-24)
 
 * (claude) Synchronize Formal Engine with Repo from Felliglanz
 * (claude) Add Warning after first start, if value is negative
