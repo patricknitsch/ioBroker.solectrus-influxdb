@@ -152,6 +152,7 @@
   "Unsupported operator": "Unsupported operator",
   "Unexpected token": "Unexpected token",
   "n/a": "n/a",
+  "negativeValuesHint": "Remarque : SOLECTRUS n'accepte pas les valeurs négatives. Si un capteur fournit des valeurs négatives, un avertissement sera enregistré une seule fois après le démarrage de l'adaptateur. Vérifiez vos états source ou utilisez le moteur de formules Data-SOLECTRUS avec l'option « Limiter les négatifs à 0 ».",
   "Pick a state id and insert s(\"id\")": "Pick a state id and insert s(\"id\")",
   "Pick a state id and insert v(\"id\")": "Pick a state id and insert v(\"id\")",
   "Pick a state id and insert jp(\"id\", \"$.value\")": "Pick a state id and insert jp(\"id\", \"$.value\")",

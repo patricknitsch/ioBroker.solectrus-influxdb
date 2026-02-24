@@ -2033,7 +2033,9 @@
 
                 const close = () => setFormulaBuilderOpen(false);
                 const apply = () => {
-                    updateSelected('formula', String(formulaDraft || ''));
+                    const newFormula = String(formulaDraft || '');
+                    updateSelected('formula', newFormula);
+                    setDraftField('formula', newFormula);
                     setFormulaBuilderOpen(false);
                 };
 

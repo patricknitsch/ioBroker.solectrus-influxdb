@@ -146,6 +146,22 @@
               "md": 12,
               "lg": 12,
               "xl": 12
+            },
+            "_influxNegativeValuesHint": {
+              "type": "staticText",
+              "text": "negativeValuesHint",
+              "newLine": true,
+              "style": {
+                "whiteSpace": "pre-line",
+                "color": "#e67e22",
+                "fontSize": "0.85em",
+                "marginTop": 8
+              },
+              "xs": 12,
+              "sm": 12,
+              "md": 12,
+              "lg": 12,
+              "xl": 12
             }
           }
         }
