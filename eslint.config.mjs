@@ -18,6 +18,7 @@ export default [
 			'admin/admin.d.ts',
 			'admin/blockly.js',
 			'admin/custom/customComponents.js',
+			'admin/custom/customComponentsForecast.js',
 			'**/adapter-config.d.ts',
 			'widgets/**/*.js'
 		],

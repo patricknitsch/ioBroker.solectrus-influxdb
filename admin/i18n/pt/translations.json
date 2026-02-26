@@ -218,5 +218,19 @@
   "Use inputs and operators: <, >, ==, &&, ||": "Use inputs and operators: <, >, ==, &&, ||",
   "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)": "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)",
   "e.g. soc < 10 or true for default": "e.g. soc < 10 or true for default",
-  "e.g. Battery-Empty": "e.g. Battery-Empty"
+  "e.g. Battery-Empty": "e.g. Battery-Empty",
+  "Forecast": "Previsão",
+  "forecastHint": "Configure fontes de previsão de pvforecast ou adaptadores semelhantes. O adaptador lê pastas inteiras de valores horários e os grava no InfluxDB com os timestamps corretos.",
+  "Forecast Sources": "Fontes de previsão",
+  "No forecasts configured.": "Nenhuma previsão configurada.",
+  "Select a forecast on the left or add a new one.": "Selecione uma previsão à esquerda ou adicione uma nova.",
+  "Base Path": "Caminho base",
+  "Scan Folders": "Verificar pastas",
+  "Scanning…": "Verificando…",
+  "Day Offset": "Deslocamento de dia",
+  "Forecast Interval (s)": "Intervalo de previsão (s)",
+  "No folders found.": "Nenhuma pasta encontrada.",
+  "Add Template": "Adicionar modelo",
+  "e.g. pvforecast.0.summary.power": "ex. pvforecast.0.summary.power",
+  "Folders": "Pastas"
 }

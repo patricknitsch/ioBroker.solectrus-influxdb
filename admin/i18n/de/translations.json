@@ -218,5 +218,19 @@
   "Use inputs and operators: <, >, ==, &&, ||": "Nutze Inputs und Operatoren: <, >, ==, &&, ||",
   "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)": "Formel-Syntax: soc < 10, battery > 80 && surplus > 0, true (für Standard/Fallback)",
   "e.g. soc < 10 or true for default": "z.B. soc < 10 oder true für Standard",
-  "e.g. Battery-Empty": "z.B. Akku-Leer"
+  "e.g. Battery-Empty": "z.B. Akku-Leer",
+  "Forecast": "Prognose",
+  "forecastHint": "Konfiguriere Prognosequellen von pvforecast oder ähnlichen Adaptern. Der Adapter liest ganze Ordner mit Stundenwerten und schreibt sie mit korrekten Zeitstempeln in die InfluxDB.",
+  "Forecast Sources": "Prognosequellen",
+  "No forecasts configured.": "Keine Prognosen konfiguriert.",
+  "Select a forecast on the left or add a new one.": "Wähle links eine Prognose aus oder füge eine neue hinzu.",
+  "Base Path": "Basispfad",
+  "Scan Folders": "Ordner scannen",
+  "Scanning…": "Scanne…",
+  "Day Offset": "Tagesversatz",
+  "Forecast Interval (s)": "Prognose-Intervall (s)",
+  "No folders found.": "Keine Ordner gefunden.",
+  "Add Template": "Vorlage hinzufügen",
+  "e.g. pvforecast.0.summary.power": "z.B. pvforecast.0.summary.power",
+  "Folders": "Ordner"
 }
