@@ -612,10 +612,8 @@
                 case '%':
                     return Number(a) % Number(b);
                 case '==':
-                    // eslint-disable-next-line eqeqeq
                     return a == b;
                 case '!=':
-                    // eslint-disable-next-line eqeqeq
                     return a != b;
                 case '<':
                     return a < b;
