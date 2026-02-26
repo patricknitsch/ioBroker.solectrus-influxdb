@@ -65,7 +65,8 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 
 ### **WORK IN PROGRESS**
 
-* (claude) Fix DS Tick time budget 
+* (claude) Fix DS Tick time budget
+* (patricknitsch) Update Admin Package
 
 ### 1.2.2 (2026-02-24)
 
