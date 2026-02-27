@@ -227,5 +227,9 @@
 	"e.g. INVERTER_POWER_FORECAST": "z.B. INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "z.B. pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "z.B. inverter_forecast",
-	"e.g. power": "z.B. power"
+	"e.g. power": "z.B. power",
+	"No forecasts configured.": "Keine Prognosen konfiguriert.",
+	"Select a forecast on the left or add a new one.": "Wähle links eine Prognose aus oder erstelle eine neue.",
+	"forecastEntryHint": "Der Adapter abonniert den JSON-Quell-State und schreibt jeden Array-Eintrag mit dem Zeitstempel aus den JSON-Daten in InfluxDB. Mehrere Einträge können auf denselben Quell-State zeigen, aber verschiedene Wert-Felder extrahieren (z.B. y, clearsky, temp).",
+	"Enable Forecast Sources": "Prognosequellen aktivieren"
 }

@@ -227,5 +227,9 @@
 	"e.g. INVERTER_POWER_FORECAST": "np. INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "np. pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "np. inverter_forecast",
-	"e.g. power": "np. power"
+	"e.g. power": "np. power",
+	"No forecasts configured.": "Brak skonfigurowanych prognoz.",
+	"Select a forecast on the left or add a new one.": "Wybierz prognozę po lewej stronie lub utwórz nową.",
+	"forecastEntryHint": "Adapter subskrybuje stan JSON źródła i zapisuje każdy wpis tablicy do InfluxDB, używając znacznika czasu z danych JSON. Wiele wpisów może wskazywać na to samo źródło, ale wyodrębniać różne pola wartości (np. y, clearsky, temp).",
+	"Enable Forecast Sources": "Włącz źródła prognoz"
 }

@@ -698,7 +698,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * ===================================================== */
 
 	async prepareForecastSources() {
-		if (!Array.isArray(this.config.forecasts)) {
+		if (!this.config.enableForecast || !Array.isArray(this.config.forecasts)) {
 			return;
 		}
 

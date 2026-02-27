@@ -227,5 +227,9 @@
 	"e.g. INVERTER_POWER_FORECAST": "напр. INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "напр. pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "напр. inverter_forecast",
-	"e.g. power": "напр. power"
+	"e.g. power": "напр. power",
+	"No forecasts configured.": "Прогнозы не настроены.",
+	"Select a forecast on the left or add a new one.": "Выберите прогноз слева или создайте новый.",
+	"forecastEntryHint": "Адаптер подписывается на JSON-состояние источника и записывает каждую запись массива в InfluxDB, используя метку времени из данных JSON. Несколько записей могут указывать на один источник, но извлекать разные поля значений (напр. y, clearsky, temp).",
+	"Enable Forecast Sources": "Включить источники прогнозов"
 }

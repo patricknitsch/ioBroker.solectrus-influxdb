@@ -226,5 +226,9 @@
 	"e.g. INVERTER_POWER_FORECAST": "es. INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "es. pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "es. inverter_forecast",
-	"e.g. power": "es. power"
+	"e.g. power": "es. power",
+	"No forecasts configured.": "Nessuna previsione configurata.",
+	"Select a forecast on the left or add a new one.": "Seleziona una previsione a sinistra o creane una nuova.",
+	"forecastEntryHint": "L'adattatore si iscrive allo stato JSON di origine e scrive ogni voce dell'array in InfluxDB utilizzando il timestamp dai dati JSON. Più voci possono puntare alla stessa sorgente ma estrarre diversi campi valore (es. y, clearsky, temp).",
+	"Enable Forecast Sources": "Attiva fonti di previsione"
 }

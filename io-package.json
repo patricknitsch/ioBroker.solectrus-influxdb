@@ -161,6 +161,7 @@
 		"influxInterval": 5,
 		"influxToken": "",
 		"enableDataSolectrus": false,
+		"enableForecast": false,
 		"dsPollIntervalSeconds": 5,
 		"dsSnapshotInputs": false,
 		"dsSnapshotDelayMs": 0,

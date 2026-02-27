@@ -227,5 +227,9 @@
 	"e.g. INVERTER_POWER_FORECAST": "例如 INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "例如 pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "例如 inverter_forecast",
-	"e.g. power": "例如 power"
+	"e.g. power": "例如 power",
+	"No forecasts configured.": "未配置预报。",
+	"Select a forecast on the left or add a new one.": "在左侧选择一个预报或创建一个新的。",
+	"forecastEntryHint": "适配器订阅 JSON 源状态，并使用 JSON 数据中的时间戳将每个数组条目写入 InfluxDB。多个条目可以指向同一个源，但提取不同的值字段（例如 y、clearsky、temp）。",
+	"Enable Forecast Sources": "启用预报数据源"
 }

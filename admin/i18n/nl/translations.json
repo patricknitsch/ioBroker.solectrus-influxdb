@@ -227,5 +227,9 @@
 	"e.g. INVERTER_POWER_FORECAST": "bijv. INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "bijv. pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "bijv. inverter_forecast",
-	"e.g. power": "bijv. power"
+	"e.g. power": "bijv. power",
+	"No forecasts configured.": "Geen prognoses geconfigureerd.",
+	"Select a forecast on the left or add a new one.": "Selecteer links een prognose of maak een nieuwe aan.",
+	"forecastEntryHint": "De adapter abonneert op de JSON-bronstatus en schrijft elke array-entry naar InfluxDB met de tijdstempel uit de JSON-gegevens. Meerdere entries kunnen naar dezelfde bron wijzen maar verschillende waardevelden extraheren (bijv. y, clearsky, temp).",
+	"Enable Forecast Sources": "Prognosebronnen activeren"
 }

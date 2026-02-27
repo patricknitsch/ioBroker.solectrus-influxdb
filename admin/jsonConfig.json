@@ -80,6 +80,16 @@
 							"md": 12,
 							"lg": 12,
 							"xl": 12
+						},
+						"enableForecast": {
+							"type": "checkbox",
+							"label": "Enable Forecast Sources",
+							"newLine": true,
+							"xs": 12,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
 						}
 					}
 				},
@@ -220,6 +230,7 @@
 		"forecast": {
 			"type": "panel",
 			"label": "Forecast",
+			"hidden": "!data.enableForecast",
 			"items": {
 				"_forecastHint": {
 					"type": "staticText",
@@ -232,79 +243,11 @@
 					"xl": 12
 				},
 				"forecasts": {
-					"type": "table",
-					"label": "Forecast Sources",
+					"type": "custom",
+					"name": "SolectrusForecast/Components/SolectrusForecastEditor",
+					"url": "custom/customComponentsForecast.js?v=20260227-1",
 					"newLine": true,
-					"xs": 12,
-					"sm": 12,
-					"md": 12,
-					"lg": 12,
-					"xl": 12,
-					"items": [
-						{
-							"attr": "enabled",
-							"type": "checkbox",
-							"title": "Enabled",
-							"width": "5%",
-							"default": true
-						},
-						{
-							"attr": "name",
-							"type": "text",
-							"title": "Name",
-							"width": "15%",
-							"placeholder": "e.g. INVERTER_POWER_FORECAST"
-						},
-						{
-							"attr": "sourceState",
-							"type": "text",
-							"title": "ioBroker Source State",
-							"width": "22%",
-							"placeholder": "e.g. pvforecast.0.summary.JSONData"
-						},
-						{
-							"attr": "tsField",
-							"type": "text",
-							"title": "Timestamp Field",
-							"width": "8%",
-							"default": "t",
-							"placeholder": "t"
-						},
-						{
-							"attr": "valField",
-							"type": "text",
-							"title": "Value Field",
-							"width": "10%",
-							"default": "y",
-							"placeholder": "y"
-						},
-						{
-							"attr": "measurement",
-							"type": "text",
-							"title": "Influx Measurement",
-							"width": "15%",
-							"placeholder": "e.g. inverter_forecast"
-						},
-						{
-							"attr": "field",
-							"type": "text",
-							"title": "Influx Field",
-							"width": "10%",
-							"default": "power",
-							"placeholder": "e.g. power"
-						},
-						{
-							"attr": "type",
-							"type": "select",
-							"title": "Datatype",
-							"width": "10%",
-							"default": "int",
-							"options": [
-								{ "label": "Integer", "value": "int" },
-								{ "label": "Float", "value": "float" }
-							]
-						}
-					]
+					"sm": 12
 				}
 			}
 		},
