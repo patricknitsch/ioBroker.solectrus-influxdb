@@ -4,14 +4,15 @@
 
 1. [InfluxDB-Konfiguration](#1-influxdb-konfiguration)
 2. [Sensoren](#2-sensoren)
-3. [Data-SOLECTRUS Formel-Engine](#3-data-solectrus-formel-engine)
-4. [Item-Modi](#4-item-modi)
-5. [Formel-Builder](#5-formel-builder)
-6. [State Machine Modus](#6-state-machine-modus)
-7. [Data Runtime Einstellungen](#7-data-runtime-einstellungen)
-8. [Monitoring & Buffer](#8-monitoring--buffer)
-9. [Berechnete Werte als Sensor-Quellen verwenden](#9-berechnete-werte-als-sensor-quellen-verwenden)
-10. [Debugging](#10-debugging)
+3. [Prognosequellen](#3-prognosequellen)
+4. [Data-SOLECTRUS Formel-Engine](#4-data-solectrus-formel-engine)
+5. [Item-Modi](#5-item-modi)
+6. [Formel-Builder](#6-formel-builder)
+7. [State Machine Modus](#7-state-machine-modus)
+8. [Data Runtime Einstellungen](#8-data-runtime-einstellungen)
+9. [Monitoring & Buffer](#9-monitoring--buffer)
+10. [Berechnete Werte als Sensor-Quellen verwenden](#10-berechnete-werte-als-sensor-quellen-verwenden)
+11. [Debugging](#11-debugging)
 
 ---
 
@@ -83,7 +84,63 @@ Meldet InfluxDB einen Field-Type-Konflikt (z.B. Float in ein bestehendes Int-Fel
 
 ---
 
-## 3. Data-SOLECTRUS Formel-Engine
+## 3. Prognosequellen
+
+Der Tab **Prognose** ermöglicht es, JSON-basierte Prognosedaten (z.B. vom pvforecast-Adapter) zu sammeln und mit den korrekten Zeitstempeln aus den JSON-Daten in InfluxDB zu schreiben.
+
+### Funktionsweise
+
+1. Der Adapter abonniert einen oder mehrere JSON-States (z.B. `pvforecast.0.summary.JSONData`)
+2. Wenn sich der JSON-State ändert, parst der Adapter das JSON-Array
+3. Jeder Eintrag im Array enthält einen Zeitstempel und ein oder mehrere Wert-Felder
+4. Der Adapter schreibt jeden Wert in das konfigurierte InfluxDB-Measurement und -Field mit dem Zeitstempel aus den JSON-Daten
+5. Da InfluxDB Punkte mit gleichem Measurement, Tags und Zeitstempel überschreibt, werden **bestehende Prognosepunkte automatisch aktualisiert**, wenn sich die Quelldaten ändern
+
+### JSON-Format
+
+Der Quell-State muss ein JSON-Array von Objekten enthalten. Jedes Objekt muss mindestens ein Zeitstempel-Feld und ein Wert-Feld haben:
+
+```json
+[
+  { "t": 1709035200000, "y": 1500, "clearsky": 2000, "temp": 12.5, "weather_code": 1 },
+  { "t": 1709038800000, "y": 2200, "clearsky": 2800, "temp": 14.0, "weather_code": 2 }
+]
+```
+
+### Konfiguration
+
+Wechsle zum Tab **Prognose** und füge pro JSON-Feld, das nach InfluxDB geschrieben werden soll, eine Zeile hinzu:
+
+| Einstellung | Beschreibung |
+|-------------|-------------|
+| Aktiviert | Prognoseeintrag aktivieren/deaktivieren |
+| Name | Anzeigename (z.B. `INVERTER_POWER_FORECAST`) |
+| ioBroker Source State | Der JSON-Quell-State (z.B. `pvforecast.0.summary.JSONData`) |
+| Zeitstempel-Feld | Name des Zeitstempel-Feldes im JSON (Standard: `t`) |
+| Wert-Feld | Name des Wert-Feldes zum Extrahieren (z.B. `y`, `clearsky`, `temp`) |
+| Influx Measurement | Der InfluxDB-Measurement-Name |
+| Influx Field | Der InfluxDB-Feldname |
+| Datentyp | `int` oder `float` |
+
+### Beispiel-Konfiguration
+
+Um Leistung, Clearsky-Leistung und Temperatur von pvforecast nach InfluxDB zu schreiben, füge drei Zeilen hinzu, die auf den gleichen Source-State zeigen, aber verschiedene Wert-Felder verwenden:
+
+| Name | Source State | Wert-Feld | Measurement | Field |
+|------|-------------|-----------|-------------|-------|
+| INVERTER_POWER_FORECAST | pvforecast.0.summary.JSONData | y | inverter_forecast | power |
+| INVERTER_POWER_FORECAST_CLEARSKY | pvforecast.0.summary.JSONData | clearsky | inverter_forecast_clearsky | power |
+| OUTDOOR_TEMP_FORECAST | pvforecast.0.summary.JSONData | temp | outdoor_forecast | temperature |
+
+### Zeitstempel-Behandlung
+
+- **Millisekunden** (Zahl ≥ 10¹²): Direkt verwendet
+- **Sekunden** (Zahl < 10¹²): Automatisch in Millisekunden umgerechnet
+- **ISO-String**: Geparst über `Date`-Konstruktor
+
+---
+
+## 4. Data-SOLECTRUS Formel-Engine
 
 Die Formel-Engine ist ein optionales Feature zur Berechnung abgeleiteter Werte aus beliebigen ioBroker-States. Aktivierung über die Checkbox **Enable Data-SOLECTRUS (formula engine)** im InfluxDB-Tab.
 
@@ -101,7 +158,7 @@ Bei Aktivierung erscheinen zwei zusätzliche Tabs:
 
 ---
 
-## 4. Item-Modi
+## 5. Item-Modi
 
 ### Source-Modus
 
@@ -165,7 +222,7 @@ Diese Funktionen lesen ioBroker-States direkt in einer Formel, ohne benannte Inp
 
 ---
 
-## 5. Formel-Builder
+## 6. Formel-Builder
 
 Neben dem Formel-Eingabefeld auf **Builder...** klicken um den visuellen Formel-Builder zu öffnen.
 
@@ -182,7 +239,7 @@ Die Formel ist jederzeit als Klartext editierbar. Der Builder fügt Bausteine nu
 
 ---
 
-## 6. State Machine Modus
+## 7. State Machine Modus
 
 Der State Machine Modus erzeugt String- oder Boolean-States basierend auf Regeln. Regeln werden von oben nach unten ausgewertet; die **erste passende Regel gewinnt**.
 
@@ -227,7 +284,7 @@ Ergebnis: Der Ausgabe-State enthält `Akku-Leer`, `Akku-Niedrig`, `Voll-Export` 
 
 ---
 
-## 7. Data Runtime Einstellungen
+## 8. Data Runtime Einstellungen
 
 Im Tab **Data Runtime**:
 
@@ -239,7 +296,7 @@ Im Tab **Data Runtime**:
 
 ---
 
-## 8. Monitoring & Buffer
+## 9. Monitoring & Buffer
 
 ### Adapter-States
 
@@ -267,7 +324,7 @@ Berechnete Werte erscheinen unter `solectrus-influxdb.X.ds.*` mit Diagnose-State
 
 ---
 
-## 9. Berechnete Werte als Sensor-Quellen verwenden
+## 10. Berechnete Werte als Sensor-Quellen verwenden
 
 Data-SOLECTRUS berechnete Werte können als Sensor-Input für die InfluxDB-Speicherung genutzt werden:
 
@@ -280,7 +337,7 @@ Der Adapter regelt die Initialisierungsreihenfolge automatisch -- Sensor-Abonnem
 
 ---
 
-## 10. Debugging
+## 11. Debugging
 
 Loglevel des Adapters auf **Debug** setzen für detaillierte Ausgaben zu:
 

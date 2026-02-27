@@ -210,6 +210,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.isFlushing = false;
 		this.negativeValueWarned = new Set();
 
+		/* ---------- Forecast ---------- */
+		// Maps sourceState → array of forecast config entries that use it
+		this.forecastSourceMap = {};
+
 		/* ---------- Data-SOLECTRUS proxy ---------- */
 		this.dsProxy = null; // initialized in onReady if enabled
 
@@ -414,6 +418,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 
 		await this.prepareSensors();
+		await this.prepareForecastSources();
 
 		/* Collect loop */
 		const collectMs = this.getCollectIntervalMs();
@@ -688,6 +693,128 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 	}
 
+	/* =====================================================
+	 * FORECAST
+	 * ===================================================== */
+
+	async prepareForecastSources() {
+		if (!Array.isArray(this.config.forecasts)) {
+			return;
+		}
+
+		for (const fc of this.config.forecasts) {
+			if (!fc || !fc.enabled || !fc.sourceState) {
+				continue;
+			}
+
+			if (!this.forecastSourceMap[fc.sourceState]) {
+				this.forecastSourceMap[fc.sourceState] = [];
+			}
+			this.forecastSourceMap[fc.sourceState].push(fc);
+		}
+
+		const sourceStates = Object.keys(this.forecastSourceMap);
+		if (sourceStates.length === 0) {
+			return;
+		}
+
+		this.log.info(`Forecast: subscribing to ${sourceStates.length} JSON source(s)`);
+		for (const stateId of sourceStates) {
+			this.subscribeForeignStates(stateId);
+		}
+	}
+
+	processForecastJson(sourceState, jsonVal) {
+		const mappings = this.forecastSourceMap[sourceState];
+		if (!mappings || mappings.length === 0) {
+			return;
+		}
+
+		let data;
+		try {
+			data = typeof jsonVal === 'string' ? JSON.parse(jsonVal) : jsonVal;
+		} catch (err) {
+			this.log.warn(`Forecast: failed to parse JSON from ${sourceState}: ${err.message}`);
+			return;
+		}
+
+		if (!Array.isArray(data)) {
+			this.log.warn(`Forecast: expected JSON array from ${sourceState}, got ${typeof data}`);
+			return;
+		}
+
+		let totalPoints = 0;
+
+		for (const fc of mappings) {
+			const tsField = fc.tsField || 't';
+			const valField = fc.valField || 'y';
+
+			for (const entry of data) {
+				if (!entry || typeof entry !== 'object') {
+					continue;
+				}
+
+				const rawTs = entry[tsField];
+				const rawVal = entry[valField];
+
+				if (rawTs === undefined || rawTs === null || rawVal === undefined || rawVal === null) {
+					continue;
+				}
+
+				// Parse timestamp: number (ms or s) or string (ISO)
+				let ts;
+				if (typeof rawTs === 'number') {
+					ts = rawTs < 1e12 ? rawTs * 1000 : rawTs;
+				} else {
+					ts = new Date(rawTs).getTime();
+				}
+
+				if (!Number.isFinite(ts)) {
+					this.log.debug(`Forecast: invalid timestamp ${rawTs} in ${sourceState}`);
+					continue;
+				}
+
+				let value;
+				if (fc.type === 'int') {
+					value = parseInt(rawVal, 10);
+				} else {
+					value = parseFloat(rawVal);
+				}
+
+				if (Number.isNaN(value)) {
+					continue;
+				}
+
+				this.buffer.push({
+					id: fc.name || 'forecast',
+					measurement: fc.measurement,
+					field: fc.field,
+					type: fc.type,
+					value,
+					ts,
+				});
+				totalPoints++;
+			}
+		}
+
+		if (totalPoints > 0) {
+			this.log.info(`Forecast: buffered ${totalPoints} points from ${sourceState}`);
+
+			if (this.buffer.length > this.maxBufferSize) {
+				this.log.warn('Buffer limit reached – dropping oldest entries');
+				this.buffer.splice(0, this.buffer.length - this.maxBufferSize);
+			}
+
+			this.saveBuffer();
+			this.updateBufferStates();
+
+			// Trigger immediate flush
+			if (!this.isFlushing) {
+				this.scheduleNextFlush(0);
+			}
+		}
+	}
+
 	disableSensorByFieldTypeConflict(err) {
 		const conflict = this.parseFieldTypeConflictError(err);
 		if (!conflict) {
@@ -750,6 +877,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 		if (sensorId) {
 			this.cache[sensorId] = state.val;
 			this.setState(sensorId, state.val, true);
+		}
+
+		// Forecast JSON source updates
+		if (this.forecastSourceMap[id]) {
+			this.processForecastJson(id, state.val);
 		}
 
 		// Forward to Data-SOLECTRUS cache (if enabled)

@@ -4,14 +4,15 @@
 
 1. [InfluxDB Configuration](#1-influxdb-configuration)
 2. [Sensors](#2-sensors)
-3. [Data-SOLECTRUS Formula Engine](#3-data-solectrus-formula-engine)
-4. [Item Modes](#4-item-modes)
-5. [Formula Builder](#5-formula-builder)
-6. [State Machine Mode](#6-state-machine-mode)
-7. [Data Runtime Settings](#7-data-runtime-settings)
-8. [Monitoring & Buffer](#8-monitoring--buffer)
-9. [Using Computed Values as Sensor Sources](#9-using-computed-values-as-sensor-sources)
-10. [Debugging](#10-debugging)
+3. [Forecast Sources](#3-forecast-sources)
+4. [Data-SOLECTRUS Formula Engine](#4-data-solectrus-formula-engine)
+5. [Item Modes](#5-item-modes)
+6. [Formula Builder](#6-formula-builder)
+7. [State Machine Mode](#7-state-machine-mode)
+8. [Data Runtime Settings](#8-data-runtime-settings)
+9. [Monitoring & Buffer](#9-monitoring--buffer)
+10. [Using Computed Values as Sensor Sources](#10-using-computed-values-as-sensor-sources)
+11. [Debugging](#11-debugging)
 
 ---
 
@@ -83,7 +84,63 @@ If InfluxDB reports a field type conflict (e.g. writing a float to an existing i
 
 ---
 
-## 3. Data-SOLECTRUS Formula Engine
+## 3. Forecast Sources
+
+The **Forecast** tab allows you to collect JSON-based forecast data (e.g. from the pvforecast adapter) and write it to InfluxDB with the correct timestamps from the JSON data.
+
+### How it works
+
+1. The adapter subscribes to one or more JSON states (e.g. `pvforecast.0.summary.JSONData`)
+2. When the JSON state changes, the adapter parses the JSON array
+3. Each entry in the array contains a timestamp and one or more value fields
+4. The adapter writes each value to the configured InfluxDB measurement and field using the timestamp from the JSON data
+5. Because InfluxDB overwrites points with the same measurement, tags, and timestamp, **existing forecast points are automatically updated** when the source data changes
+
+### JSON format
+
+The source state must contain a JSON array of objects. Each object must have at least a timestamp field and a value field:
+
+```json
+[
+  { "t": 1709035200000, "y": 1500, "clearsky": 2000, "temp": 12.5, "weather_code": 1 },
+  { "t": 1709038800000, "y": 2200, "clearsky": 2800, "temp": 14.0, "weather_code": 2 }
+]
+```
+
+### Configuration
+
+Go to the **Forecast** tab and add one row per JSON field you want to write to InfluxDB:
+
+| Setting | Description |
+|---------|-------------|
+| Enabled | Activate/deactivate this forecast entry |
+| Name | Display name (e.g. `INVERTER_POWER_FORECAST`) |
+| ioBroker Source State | The JSON source state (e.g. `pvforecast.0.summary.JSONData`) |
+| Timestamp Field | Name of the timestamp field in the JSON (default: `t`) |
+| Value Field | Name of the value field to extract (e.g. `y`, `clearsky`, `temp`) |
+| Influx Measurement | The InfluxDB measurement name |
+| Influx Field | The InfluxDB field name |
+| Datatype | `int` or `float` |
+
+### Example setup
+
+To write power, clearsky power, and temperature from pvforecast to InfluxDB, add three rows pointing to the same source state but with different value fields:
+
+| Name | Source State | Value Field | Measurement | Field |
+|------|-------------|-------------|-------------|-------|
+| INVERTER_POWER_FORECAST | pvforecast.0.summary.JSONData | y | inverter_forecast | power |
+| INVERTER_POWER_FORECAST_CLEARSKY | pvforecast.0.summary.JSONData | clearsky | inverter_forecast_clearsky | power |
+| OUTDOOR_TEMP_FORECAST | pvforecast.0.summary.JSONData | temp | outdoor_forecast | temperature |
+
+### Timestamp handling
+
+- **Milliseconds** (number ≥ 10¹²): Used directly
+- **Seconds** (number < 10¹²): Automatically converted to milliseconds
+- **ISO string**: Parsed via `Date` constructor
+
+---
+
+## 4. Data-SOLECTRUS Formula Engine
 
 The formula engine is an optional feature that lets you compute derived values from any ioBroker states. Enable it by checking **Enable Data-SOLECTRUS (formula engine)** on the InfluxDB tab.
 
@@ -101,7 +158,7 @@ When enabled, two additional tabs appear:
 
 ---
 
-## 4. Item Modes
+## 5. Item Modes
 
 ### Source Mode
 
@@ -165,7 +222,7 @@ These functions read ioBroker states directly in a formula, without defining nam
 
 ---
 
-## 5. Formula Builder
+## 6. Formula Builder
 
 Click **Builder...** next to the formula input to open the visual formula builder.
 
@@ -182,7 +239,7 @@ The formula is always editable as plain text. The builder only inserts building 
 
 ---
 
-## 6. State Machine Mode
+## 7. State Machine Mode
 
 The state machine mode generates string or boolean states based on rules. Rules are evaluated top-to-bottom; the **first matching rule wins**.
 
@@ -227,7 +284,7 @@ Result: The output state will contain `Battery-Empty`, `Battery-Low`, `Full-Expo
 
 ---
 
-## 7. Data Runtime Settings
+## 8. Data Runtime Settings
 
 On the **Data Runtime** tab:
 
@@ -239,7 +296,7 @@ On the **Data Runtime** tab:
 
 ---
 
-## 8. Monitoring & Buffer
+## 9. Monitoring & Buffer
 
 ### Adapter states
 
@@ -267,7 +324,7 @@ Computed values appear under `solectrus-influxdb.X.ds.*` with per-item diagnosti
 
 ---
 
-## 9. Using Computed Values as Sensor Sources
+## 10. Using Computed Values as Sensor Sources
 
 You can use Data-SOLECTRUS computed values as input for sensors to write them to InfluxDB:
 
@@ -280,7 +337,7 @@ The adapter handles the initialization order automatically -- sensor subscriptio
 
 ---
 
-## 10. Debugging
+## 11. Debugging
 
 Set the adapter log level to **Debug** for detailed output including:
 
