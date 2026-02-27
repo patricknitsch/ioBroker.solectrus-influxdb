@@ -210,10 +210,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.isFlushing = false;
 		this.negativeValueWarned = new Set();
 
-		/* ---------- Forecast ---------- */
-		this.forecastTimer = null;
-		this.forecastSources = []; // resolved forecast configs with state IDs
-
 		/* ---------- Data-SOLECTRUS proxy ---------- */
 		this.dsProxy = null; // initialized in onReady if enabled
 
@@ -426,10 +422,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		/* Flush loop – start immediately */
 		this.scheduleNextFlush(1000);
-
-		/* ---------- Forecast sources ---------- */
-		await this.prepareForecastSources();
-		this.scheduleForecastCollection();
 
 		/* ---------- Data-SOLECTRUS (optional) ---------- */
 		if (this.config.enableDataSolectrus) {
@@ -898,136 +890,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 	}
 
 	/* =====================================================
-	 * FORECAST COLLECTION
-	 * ===================================================== */
-
-	/**
-	 * Resolve configured forecast entries – discover state IDs under each basePath+folder.
-	 */
-	async prepareForecastSources() {
-		const forecasts = Array.isArray(this.config.forecasts) ? this.config.forecasts : [];
-		const enabled = forecasts.filter(f => f && f.enabled && f.basePath && f.measurement && f.field);
-		if (!enabled.length) {
-			this.log.debug('No forecast sources enabled');
-			return;
-		}
-		this.log.info(`Preparing ${enabled.length} forecast source(s)…`);
-		for (const fc of enabled) {
-			const stateIds = [];
-			const folders = Array.isArray(fc.folders) ? fc.folders.filter(fd => fd && fd.enabled) : [];
-			for (const fd of folders) {
-				const prefix = `${fc.basePath}.${fd.folder}.`;
-				try {
-					const objs = await this.getForeignObjectsAsync(`${prefix}*`, 'state');
-					const ids = Object.keys(objs || {}).sort();
-					for (const id of ids) {
-						stateIds.push({ id, dayOffset: fd.dayOffset || 0, folder: fd.folder });
-					}
-				} catch (err) {
-					this.log.warn(`Forecast: failed to enumerate states under "${prefix}": ${err.message}`);
-				}
-			}
-			if (stateIds.length) {
-				this.forecastSources.push({
-					name: fc.name || 'forecast',
-					measurement: fc.measurement,
-					field: fc.field,
-					type: fc.type || 'int',
-					interval: Math.max(60, Number(fc.interval) || 900),
-					states: stateIds,
-				});
-				this.log.info(`Forecast "${fc.name}": ${stateIds.length} state(s) across ${folders.length} folder(s)`);
-			} else {
-				this.log.warn(`Forecast "${fc.name}": no states found under "${fc.basePath}"`);
-			}
-		}
-	}
-
-	/**
-	 * Start the forecast collection timer(s).
-	 * Uses the smallest configured interval for a single unified timer.
-	 */
-	scheduleForecastCollection() {
-		if (!this.forecastSources.length) {
-			return;
-		}
-		const minInterval = Math.min(...this.forecastSources.map(s => s.interval));
-		const ms = minInterval * 1000;
-		this.log.info(`Forecast collection interval: ${minInterval}s`);
-
-		// Collect once immediately, then on interval
-		this.collectForecast().catch(() => {});
-		this.forecastTimer = this.setInterval(() => this.collectForecast().catch(() => {}), ms);
-	}
-
-	/**
-	 * Derive a UTC timestamp from a day offset and a state name like "11:00:00" or "11:30".
-	 * @param {number} dayOffset – 0 = today, 1 = tomorrow, …
-	 * @param {string} stateName – last segment of the state ID, e.g. "11:00:00"
-	 * @returns {number|null} Unix ms timestamp, or null if parsing fails
-	 */
-	deriveForecastTimestamp(dayOffset, stateName) {
-		const parts = String(stateName).split(':').map(Number);
-		if (parts.length < 2 || parts.some(n => !Number.isFinite(n))) {
-			return null;
-		}
-		const [hours, minutes, seconds] = parts;
-		const now = new Date();
-		const date = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-		date.setDate(date.getDate() + dayOffset);
-		date.setHours(hours, minutes, seconds || 0, 0);
-		return date.getTime();
-	}
-
-	/**
-	 * Read all forecast states, derive timestamps, push to buffer.
-	 */
-	async collectForecast() {
-		if (this.isUnloading || !this.forecastSources.length) {
-			return;
-		}
-		let totalPoints = 0;
-		for (const src of this.forecastSources) {
-			for (const entry of src.states) {
-				try {
-					const stateObj = await this.getForeignStateAsync(entry.id);
-					if (!stateObj || stateObj.val == null) {
-						continue;
-					}
-					const stateName = entry.id.split('.').pop();
-					const ts = this.deriveForecastTimestamp(entry.dayOffset, stateName);
-					if (ts == null) {
-						this.log.debug(`Forecast: cannot derive timestamp from "${stateName}" (${entry.id})`);
-						continue;
-					}
-					const value = Number(stateObj.val);
-					if (!Number.isFinite(value)) {
-						continue;
-					}
-					this.buffer.push({
-						id: src.name,
-						measurement: src.measurement,
-						field: src.field,
-						type: src.type,
-						value,
-						ts,
-					});
-					totalPoints++;
-				} catch (err) {
-					this.log.debug(`Forecast: failed to read "${entry.id}": ${err.message}`);
-				}
-			}
-		}
-		if (totalPoints > 0) {
-			this.log.debug(`Forecast: buffered ${totalPoints} point(s)`);
-			this.saveBuffer();
-			if (!this.isFlushing) {
-				this.scheduleNextFlush(0);
-			}
-		}
-	}
-
-	/* =====================================================
 	 * FLUSH
 	 * ===================================================== */
 
@@ -1184,9 +1046,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 				}
 			}
 
-			if (this.forecastTimer) {
-				this.clearInterval(this.forecastTimer);
-			}
 			if (this.collectTimer) {
 				this.clearInterval(this.collectTimer);
 			}

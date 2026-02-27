@@ -4,15 +4,14 @@
 
 1. [InfluxDB Configuration](#1-influxdb-configuration)
 2. [Sensors](#2-sensors)
-3. [Forecast Sources](#3-forecast-sources)
-4. [Data-SOLECTRUS Formula Engine](#4-data-solectrus-formula-engine)
-5. [Item Modes](#5-item-modes)
-6. [Formula Builder](#6-formula-builder)
-7. [State Machine Mode](#7-state-machine-mode)
-8. [Data Runtime Settings](#8-data-runtime-settings)
-9. [Monitoring & Buffer](#9-monitoring--buffer)
-10. [Using Computed Values as Sensor Sources](#10-using-computed-values-as-sensor-sources)
-11. [Debugging](#11-debugging)
+3. [Data-SOLECTRUS Formula Engine](#3-data-solectrus-formula-engine)
+4. [Item Modes](#4-item-modes)
+5. [Formula Builder](#5-formula-builder)
+6. [State Machine Mode](#6-state-machine-mode)
+7. [Data Runtime Settings](#7-data-runtime-settings)
+8. [Monitoring & Buffer](#8-monitoring--buffer)
+9. [Using Computed Values as Sensor Sources](#9-using-computed-values-as-sensor-sources)
+10. [Debugging](#10-debugging)
 
 ---
 
@@ -84,67 +83,7 @@ If InfluxDB reports a field type conflict (e.g. writing a float to an existing i
 
 ---
 
-## 3. Forecast Sources
-
-The **Forecast** tab allows you to collect entire folders of hourly forecast values (e.g. from the pvforecast adapter) and write them to InfluxDB with correct timestamps.
-
-### How it works
-
-1. pvforecast (or similar adapters) stores hourly forecast values in a tree structure:
-   ```
-   pvforecast.0.summary.power.hoursToday.11:00:00     → 1500
-   pvforecast.0.summary.power.hoursTomorrow.11:00:00   → 1200
-   pvforecast.0.summary.power.hoursDay3.11:00:00       → 900
-   ```
-2. Each folder (hoursToday, hoursTomorrow, etc.) represents a day
-3. Each state name (11:00:00) represents the time of day
-4. The adapter reads **all** states in each enabled folder and derives the correct UTC timestamp from the folder's day offset + the state name
-
-### Configuration
-
-Click **Add** or **Add Template** to create a forecast source:
-
-| Setting | Description |
-|---------|-------------|
-| Name | SOLECTRUS sensor name (e.g. `INVERTER_POWER_FORECAST`) |
-| Base Path | Object tree root (e.g. `pvforecast.0.summary.power`) |
-| Influx Measurement | InfluxDB measurement name |
-| Influx Field | InfluxDB field name |
-| Datatype | `int` or `float` |
-| Forecast Interval (s) | How often forecast data is collected (60-3600s, default 900 = 15 min) |
-
-### Folders
-
-Click **Scan Folders** to automatically discover sub-folders under the base path. Each folder can be individually enabled/disabled and gets a **Day Offset**:
-
-| Folder | Day Offset |
-|--------|-----------|
-| hoursToday | 0 (today) |
-| hoursTomorrow | 1 (tomorrow) |
-| hoursDay3 | 2 (day after tomorrow) |
-| … up to 7 days with pvnode | … |
-
-The day offset is auto-guessed from the folder name but can be adjusted manually.
-
-### Templates
-
-Three pre-configured templates are available:
-
-| Template | Base Path | Measurement | Field |
-|----------|-----------|-------------|-------|
-| INVERTER_POWER_FORECAST | pvforecast.0.summary.power | inverter_forecast | power |
-| INVERTER_POWER_FORECAST_CLEARSKY | pvforecast.0.summary.power_clearsky | inverter_forecast_clearsky | power |
-| OUTDOOR_TEMP_FORECAST | pvforecast.0.summary.temperature | outdoor_forecast | temperature |
-
-### Collection behavior
-
-- Forecast data uses a **separate timer** from regular sensors (default: every 15 minutes)
-- Values are pushed into the same buffer as sensor data and flushed together
-- Each collected value gets a **derived timestamp** (not `Date.now()` like regular sensors)
-
----
-
-## 4. Data-SOLECTRUS Formula Engine
+## 3. Data-SOLECTRUS Formula Engine
 
 The formula engine is an optional feature that lets you compute derived values from any ioBroker states. Enable it by checking **Enable Data-SOLECTRUS (formula engine)** on the InfluxDB tab.
 
@@ -162,7 +101,7 @@ When enabled, two additional tabs appear:
 
 ---
 
-## 5. Item Modes
+## 4. Item Modes
 
 ### Source Mode
 
@@ -226,7 +165,7 @@ These functions read ioBroker states directly in a formula, without defining nam
 
 ---
 
-## 6. Formula Builder
+## 5. Formula Builder
 
 Click **Builder...** next to the formula input to open the visual formula builder.
 
@@ -243,7 +182,7 @@ The formula is always editable as plain text. The builder only inserts building 
 
 ---
 
-## 7. State Machine Mode
+## 6. State Machine Mode
 
 The state machine mode generates string or boolean states based on rules. Rules are evaluated top-to-bottom; the **first matching rule wins**.
 
@@ -288,7 +227,7 @@ Result: The output state will contain `Battery-Empty`, `Battery-Low`, `Full-Expo
 
 ---
 
-## 8. Data Runtime Settings
+## 7. Data Runtime Settings
 
 On the **Data Runtime** tab:
 
@@ -300,7 +239,7 @@ On the **Data Runtime** tab:
 
 ---
 
-## 9. Monitoring & Buffer
+## 8. Monitoring & Buffer
 
 ### Adapter states
 
@@ -328,7 +267,7 @@ Computed values appear under `solectrus-influxdb.X.ds.*` with per-item diagnosti
 
 ---
 
-## 10. Using Computed Values as Sensor Sources
+## 9. Using Computed Values as Sensor Sources
 
 You can use Data-SOLECTRUS computed values as input for sensors to write them to InfluxDB:
 
@@ -341,7 +280,7 @@ The adapter handles the initialization order automatically -- sensor subscriptio
 
 ---
 
-## 11. Debugging
+## 10. Debugging
 
 Set the adapter log level to **Debug** for detailed output including:
 

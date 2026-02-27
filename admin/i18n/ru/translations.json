@@ -218,19 +218,5 @@
   "Use inputs and operators: <, >, ==, &&, ||": "Use inputs and operators: <, >, ==, &&, ||",
   "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)": "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)",
   "e.g. soc < 10 or true for default": "e.g. soc < 10 or true for default",
-  "e.g. Battery-Empty": "e.g. Battery-Empty",
-  "Forecast": "Прогноз",
-  "forecastHint": "Настройте источники прогнозов из pvforecast или аналогичных адаптеров. Адаптер считывает целые папки с почасовыми значениями и записывает их в InfluxDB с правильными временными метками.",
-  "Forecast Sources": "Источники прогнозов",
-  "No forecasts configured.": "Прогнозы не настроены.",
-  "Select a forecast on the left or add a new one.": "Выберите прогноз слева или добавьте новый.",
-  "Base Path": "Базовый путь",
-  "Scan Folders": "Сканировать папки",
-  "Scanning…": "Сканирование…",
-  "Day Offset": "Смещение дня",
-  "Forecast Interval (s)": "Интервал прогноза (с)",
-  "No folders found.": "Папки не найдены.",
-  "Add Template": "Добавить шаблон",
-  "e.g. pvforecast.0.summary.power": "напр. pvforecast.0.summary.power",
-  "Folders": "Папки"
+  "e.g. Battery-Empty": "e.g. Battery-Empty"
 }

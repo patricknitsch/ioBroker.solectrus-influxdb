@@ -218,19 +218,5 @@
   "Use inputs and operators: <, >, ==, &&, ||": "Use inputs and operators: <, >, ==, &&, ||",
   "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)": "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)",
   "e.g. soc < 10 or true for default": "e.g. soc < 10 or true for default",
-  "e.g. Battery-Empty": "e.g. Battery-Empty",
-  "Forecast": "预报",
-  "forecastHint": "配置来自 pvforecast 或类似适配器的预报数据源。适配器读取包含小时值的整个文件夹，并使用正确的时间戳将其写入 InfluxDB。",
-  "Forecast Sources": "预报数据源",
-  "No forecasts configured.": "未配置预报。",
-  "Select a forecast on the left or add a new one.": "在左侧选择一个预报或添加新的预报。",
-  "Base Path": "基础路径",
-  "Scan Folders": "扫描文件夹",
-  "Scanning…": "扫描中…",
-  "Day Offset": "天偏移",
-  "Forecast Interval (s)": "预报间隔（秒）",
-  "No folders found.": "未找到文件夹。",
-  "Add Template": "添加模板",
-  "e.g. pvforecast.0.summary.power": "例如 pvforecast.0.summary.power",
-  "Folders": "文件夹"
+  "e.g. Battery-Empty": "e.g. Battery-Empty"
 }

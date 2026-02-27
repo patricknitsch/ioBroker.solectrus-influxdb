@@ -218,19 +218,5 @@
   "Use inputs and operators: <, >, ==, &&, ||": "Use inputs and operators: <, >, ==, &&, ||",
   "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)": "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)",
   "e.g. soc < 10 or true for default": "e.g. soc < 10 or true for default",
-  "e.g. Battery-Empty": "e.g. Battery-Empty",
-  "Forecast": "Forecast",
-  "forecastHint": "Configure forecast sources from pvforecast or similar adapters. The adapter reads entire folders of hourly values and writes them to InfluxDB with correct timestamps.",
-  "Forecast Sources": "Forecast Sources",
-  "No forecasts configured.": "No forecasts configured.",
-  "Select a forecast on the left or add a new one.": "Select a forecast on the left or add a new one.",
-  "Base Path": "Base Path",
-  "Scan Folders": "Scan Folders",
-  "Scanning…": "Scanning…",
-  "Day Offset": "Day Offset",
-  "Forecast Interval (s)": "Forecast Interval (s)",
-  "No folders found.": "No folders found.",
-  "Add Template": "Add Template",
-  "e.g. pvforecast.0.summary.power": "e.g. pvforecast.0.summary.power",
-  "Folders": "Folders"
+  "e.g. Battery-Empty": "e.g. Battery-Empty"
 }

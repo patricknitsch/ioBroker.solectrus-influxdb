@@ -217,32 +217,6 @@
         }
       }
     },
-    "forecast": {
-      "type": "panel",
-      "label": "Forecast",
-      "items": {
-        "_forecastHint": {
-          "type": "staticText",
-          "text": "forecastHint",
-          "xs": 12,
-          "sm": 12,
-          "md": 12,
-          "lg": 12,
-          "xl": 12
-        },
-        "forecasts": {
-          "type": "custom",
-          "url": "custom/customComponentsForecast.js?v=20260226-1",
-          "name": "SolectrusForecast/Components/SolectrusForecastEditor",
-          "label": "Forecast Sources",
-          "xs": 12,
-          "sm": 12,
-          "md": 12,
-          "lg": 12,
-          "xl": 12
-        }
-      }
-    },
     "dataRuntime": {
       "type": "panel",
       "label": "Data Runtime",

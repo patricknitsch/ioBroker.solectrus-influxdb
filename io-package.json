@@ -170,7 +170,6 @@
     "dsSnapshotInputs": false,
     "dsSnapshotDelayMs": 0,
     "dsItems": [],
-    "forecasts": [],
     "sensors": [
       {
         "enabled": false,

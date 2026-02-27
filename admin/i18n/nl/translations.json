@@ -218,19 +218,5 @@
   "Use inputs and operators: <, >, ==, &&, ||": "Use inputs and operators: <, >, ==, &&, ||",
   "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)": "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)",
   "e.g. soc < 10 or true for default": "e.g. soc < 10 or true for default",
-  "e.g. Battery-Empty": "e.g. Battery-Empty",
-  "Forecast": "Prognose",
-  "forecastHint": "Configureer prognosebronnen van pvforecast of vergelijkbare adapters. De adapter leest volledige mappen met uurwaarden en schrijft ze met correcte tijdstempels naar InfluxDB.",
-  "Forecast Sources": "Prognosebronnen",
-  "No forecasts configured.": "Geen prognoses geconfigureerd.",
-  "Select a forecast on the left or add a new one.": "Selecteer links een prognose of voeg een nieuwe toe.",
-  "Base Path": "Basispad",
-  "Scan Folders": "Mappen scannen",
-  "Scanning…": "Scannen…",
-  "Day Offset": "Dagverschuiving",
-  "Forecast Interval (s)": "Prognose-interval (s)",
-  "No folders found.": "Geen mappen gevonden.",
-  "Add Template": "Sjabloon toevoegen",
-  "e.g. pvforecast.0.summary.power": "bijv. pvforecast.0.summary.power",
-  "Folders": "Mappen"
+  "e.g. Battery-Empty": "e.g. Battery-Empty"
 }

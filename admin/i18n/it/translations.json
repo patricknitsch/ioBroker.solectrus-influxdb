@@ -217,19 +217,5 @@
   "Use inputs and operators: <, >, ==, &&, ||": "Use inputs and operators: <, >, ==, &&, ||",
   "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)": "Formula syntax: soc < 10, battery > 80 && surplus > 0, true (for default/fallback)",
   "e.g. soc < 10 or true for default": "e.g. soc < 10 or true for default",
-  "e.g. Battery-Empty": "e.g. Battery-Empty",
-  "Forecast": "Previsione",
-  "forecastHint": "Configura le fonti di previsione da pvforecast o adattatori simili. L'adattatore legge intere cartelle di valori orari e li scrive in InfluxDB con i timestamp corretti.",
-  "Forecast Sources": "Fonti di previsione",
-  "No forecasts configured.": "Nessuna previsione configurata.",
-  "Select a forecast on the left or add a new one.": "Seleziona una previsione a sinistra o aggiungine una nuova.",
-  "Base Path": "Percorso base",
-  "Scan Folders": "Scansiona cartelle",
-  "Scanning…": "Scansione…",
-  "Day Offset": "Offset giorno",
-  "Forecast Interval (s)": "Intervallo previsione (s)",
-  "No folders found.": "Nessuna cartella trovata.",
-  "Add Template": "Aggiungi modello",
-  "e.g. pvforecast.0.summary.power": "es. pvforecast.0.summary.power",
-  "Folders": "Cartelle"
+  "e.g. Battery-Empty": "e.g. Battery-Empty"
 }
