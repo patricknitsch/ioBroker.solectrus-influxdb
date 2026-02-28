@@ -282,6 +282,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 		return `sensors.${sensor.SensorName.toLowerCase().replace(/[^a-z0-9]+/g, '_')}`;
 	}
 
+	getForecastStateId(fc) {
+		return `forecasts.${(fc.name || 'forecast').toLowerCase().replace(/[^a-z0-9]+/g, '_')}`;
+	}
+
 	isInfluxReady() {
 		return !!this.writeApi && this.influxVerified && !this.isUnloading;
 	}
@@ -327,6 +331,13 @@ class SolectrusInfluxdb extends utils.Adapter {
 		await this.setObjectNotExistsAsync('sensors', {
 			type: 'channel',
 			common: { name: 'Sensors' },
+			native: {},
+		});
+
+		// forecasts channel
+		await this.setObjectNotExistsAsync('forecasts', {
+			type: 'channel',
+			common: { name: 'Forecasts' },
 			native: {},
 		});
 	}
@@ -707,6 +718,48 @@ class SolectrusInfluxdb extends utils.Adapter {
 				continue;
 			}
 
+			// Create ioBroker state for this forecast entry
+			const id = this.getForecastStateId(fc);
+			const typeMapping = { int: 'number', float: 'number' };
+			const iobType = typeMapping[fc.type] || 'number';
+			const obj = await this.getObjectAsync(id);
+
+			if (!obj) {
+				this.setObject(id, {
+					type: 'state',
+					common: {
+						name: fc.name || 'Forecast',
+						type: iobType,
+						role: 'value',
+						read: true,
+						write: false,
+					},
+					native: {
+						sourceState: fc.sourceState,
+						valField: fc.valField || 'y',
+						measurement: fc.measurement,
+						field: fc.field,
+					},
+				});
+			} else {
+				this.extendObject(id, {
+					type: 'state',
+					common: {
+						name: fc.name || 'Forecast',
+						type: iobType,
+						role: 'value',
+						read: true,
+						write: false,
+					},
+					native: {
+						sourceState: fc.sourceState,
+						valField: fc.valField || 'y',
+						measurement: fc.measurement,
+						field: fc.field,
+					},
+				});
+			}
+
 			if (!this.forecastSourceMap[fc.sourceState]) {
 				this.forecastSourceMap[fc.sourceState] = [];
 			}
@@ -744,10 +797,13 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 
 		let totalPoints = 0;
+		const now = Date.now();
 
 		for (const fc of mappings) {
 			const tsField = fc.tsField || 't';
 			const valField = fc.valField || 'y';
+			let closestValue = undefined;
+			let closestDist = Infinity;
 
 			for (const entry of data) {
 				if (!entry || typeof entry !== 'object') {
@@ -794,6 +850,19 @@ class SolectrusInfluxdb extends utils.Adapter {
 					ts,
 				});
 				totalPoints++;
+
+				// Track the value closest to now for the state display
+				const dist = Math.abs(ts - now);
+				if (dist < closestDist) {
+					closestDist = dist;
+					closestValue = value;
+				}
+			}
+
+			// Update ioBroker state with the value closest to current time
+			if (closestValue !== undefined) {
+				const stateId = this.getForecastStateId(fc);
+				this.setState(stateId, closestValue, true);
 			}
 		}
 
