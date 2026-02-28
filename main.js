@@ -756,7 +756,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
 	}
 
-	async processForecastJson(sourceState, jsonVal) {
+	processForecastJson(sourceState, jsonVal) {
 		const mappings = this.forecastSourceMap[sourceState];
 		if (!mappings || mappings.length === 0) {
 			return;
@@ -777,6 +777,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		let totalPoints = 0;
 		const typeMapping = { int: 'number', float: 'number' };
+		const stateUpdates = [];
 
 		for (const fc of mappings) {
 			const tsField = fc.tsField || 't';
@@ -830,23 +831,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 				});
 				totalPoints++;
 
-				// Create/update ioBroker state for this timestamp
+				// Collect state update (created non-blocking below)
 				const tsName = this.formatForecastTimestamp(ts);
-				const stateId = `${channelId}.${tsName}`;
-				const tsLabel = new Date(ts).toLocaleString();
-
-				await this.setObjectNotExistsAsync(stateId, {
-					type: 'state',
-					common: {
-						name: `${fc.name || 'Forecast'} ${tsLabel}`,
-						type: iobType,
-						role: 'value',
-						read: true,
-						write: false,
-					},
-					native: {},
+				stateUpdates.push({
+					stateId: `${channelId}.${tsName}`,
+					name: `${fc.name || 'Forecast'} ${new Date(ts).toLocaleString()}`,
+					iobType,
+					value,
 				});
-				await this.setStateAsync(stateId, value, true);
 			}
 		}
 
@@ -864,6 +856,32 @@ class SolectrusInfluxdb extends utils.Adapter {
 			// Trigger immediate flush
 			if (!this.isFlushing) {
 				this.scheduleNextFlush(0);
+			}
+		}
+
+		// Create/update ioBroker states non-blocking – never stalls ds tick
+		if (stateUpdates.length > 0) {
+			this.updateForecastStates(stateUpdates);
+		}
+	}
+
+	async updateForecastStates(stateUpdates) {
+		for (const upd of stateUpdates) {
+			try {
+				await this.setObjectNotExistsAsync(upd.stateId, {
+					type: 'state',
+					common: {
+						name: upd.name,
+						type: upd.iobType,
+						role: 'value',
+						read: true,
+						write: false,
+					},
+					native: {},
+				});
+				this.setState(upd.stateId, upd.value, true);
+			} catch (err) {
+				this.log.debug(`Forecast state update failed for ${upd.stateId}: ${err.message}`);
 			}
 		}
 	}
@@ -934,9 +952,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		// Forecast JSON source updates
 		if (this.forecastSourceMap[id]) {
-			this.processForecastJson(id, state.val).catch(err => {
-				this.log.error(`Forecast processing error: ${err.message}`);
-			});
+			this.processForecastJson(id, state.val);
 		}
 
 		// Forward to Data-SOLECTRUS cache (if enabled)
