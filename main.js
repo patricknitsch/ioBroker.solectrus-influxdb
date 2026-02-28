@@ -756,7 +756,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
 	}
 
-	processForecastJson(sourceState, jsonVal) {
+	async processForecastJson(sourceState, jsonVal) {
 		const mappings = this.forecastSourceMap[sourceState];
 		if (!mappings || mappings.length === 0) {
 			return;
@@ -835,7 +835,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 				const stateId = `${channelId}.${tsName}`;
 				const tsLabel = new Date(ts).toLocaleString();
 
-				this.setObjectNotExists(stateId, {
+				await this.setObjectNotExistsAsync(stateId, {
 					type: 'state',
 					common: {
 						name: `${fc.name || 'Forecast'} ${tsLabel}`,
@@ -846,7 +846,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 					},
 					native: {},
 				});
-				this.setState(stateId, value, true);
+				await this.setStateAsync(stateId, value, true);
 			}
 		}
 
@@ -934,7 +934,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		// Forecast JSON source updates
 		if (this.forecastSourceMap[id]) {
-			this.processForecastJson(id, state.val);
+			this.processForecastJson(id, state.val).catch(err => {
+				this.log.error(`Forecast processing error: ${err.message}`);
+			});
 		}
 
 		// Forward to Data-SOLECTRUS cache (if enabled)
