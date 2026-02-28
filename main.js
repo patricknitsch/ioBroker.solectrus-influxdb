@@ -718,47 +718,20 @@ class SolectrusInfluxdb extends utils.Adapter {
 				continue;
 			}
 
-			// Create ioBroker state for this forecast entry
-			const id = this.getForecastStateId(fc);
-			const typeMapping = { int: 'number', float: 'number' };
-			const iobType = typeMapping[fc.type] || 'number';
-			const obj = await this.getObjectAsync(id);
-
-			if (!obj) {
-				this.setObject(id, {
-					type: 'state',
-					common: {
-						name: fc.name || 'Forecast',
-						type: iobType,
-						role: 'value',
-						read: true,
-						write: false,
-					},
-					native: {
-						sourceState: fc.sourceState,
-						valField: fc.valField || 'y',
-						measurement: fc.measurement,
-						field: fc.field,
-					},
-				});
-			} else {
-				this.extendObject(id, {
-					type: 'state',
-					common: {
-						name: fc.name || 'Forecast',
-						type: iobType,
-						role: 'value',
-						read: true,
-						write: false,
-					},
-					native: {
-						sourceState: fc.sourceState,
-						valField: fc.valField || 'y',
-						measurement: fc.measurement,
-						field: fc.field,
-					},
-				});
-			}
+			// Create ioBroker channel for this forecast entry
+			const channelId = this.getForecastStateId(fc);
+			await this.setObjectNotExistsAsync(channelId, {
+				type: 'channel',
+				common: {
+					name: fc.name || 'Forecast',
+				},
+				native: {
+					sourceState: fc.sourceState,
+					valField: fc.valField || 'y',
+					measurement: fc.measurement,
+					field: fc.field,
+				},
+			});
 
 			if (!this.forecastSourceMap[fc.sourceState]) {
 				this.forecastSourceMap[fc.sourceState] = [];
@@ -775,6 +748,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 		for (const stateId of sourceStates) {
 			this.subscribeForeignStates(stateId);
 		}
+	}
+
+	formatForecastTimestamp(tsMs) {
+		const d = new Date(tsMs);
+		const pad = (n, len) => String(n).padStart(len || 2, '0');
+		return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
 	}
 
 	processForecastJson(sourceState, jsonVal) {
@@ -797,13 +776,13 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 
 		let totalPoints = 0;
-		const now = Date.now();
+		const typeMapping = { int: 'number', float: 'number' };
 
 		for (const fc of mappings) {
 			const tsField = fc.tsField || 't';
 			const valField = fc.valField || 'y';
-			let closestValue = undefined;
-			let closestDist = Infinity;
+			const channelId = this.getForecastStateId(fc);
+			const iobType = typeMapping[fc.type] || 'number';
 
 			for (const entry of data) {
 				if (!entry || typeof entry !== 'object') {
@@ -851,18 +830,23 @@ class SolectrusInfluxdb extends utils.Adapter {
 				});
 				totalPoints++;
 
-				// Track the value closest to now for the state display
-				const dist = Math.abs(ts - now);
-				if (dist < closestDist) {
-					closestDist = dist;
-					closestValue = value;
-				}
-			}
+				// Create/update ioBroker state for this timestamp
+				const tsName = this.formatForecastTimestamp(ts);
+				const stateId = `${channelId}.${tsName}`;
+				const tsLabel = new Date(ts).toLocaleString();
 
-			// Update ioBroker state with the value closest to current time
-			if (closestValue !== undefined) {
-				const stateId = this.getForecastStateId(fc);
-				this.setState(stateId, closestValue, true);
+				this.setObjectNotExists(stateId, {
+					type: 'state',
+					common: {
+						name: `${fc.name || 'Forecast'} ${tsLabel}`,
+						type: iobType,
+						role: 'value',
+						read: true,
+						write: false,
+					},
+					native: {},
+				});
+				this.setState(stateId, value, true);
 			}
 		}
 
