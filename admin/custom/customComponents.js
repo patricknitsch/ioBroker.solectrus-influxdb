@@ -90,6 +90,11 @@
         return ensureTitle(sensor);
     }
 
+    // Module-scoped draft cache: survives component unmount/remount cycles
+    // that Admin may trigger on every props.onChange / forceUpdate call.
+    // Keyed by "attr_selectedIndex" so each sensor slot has its own draft.
+    const _draftCache = {};
+
     function createSolectrusSensorsEditor(React, AdapterReact) {
         return function SolectrusSensorsEditor(props) {
             const attr = (props && typeof props.attr === 'string' && props.attr) ? props.attr : 'sensors';
@@ -204,7 +209,25 @@
 
             // Draft copy of the selected sensor to avoid pushing changes to Admin on every keystroke.
             // Admin may re-render/remount custom controls on each props.onChange, which resets cursor.
-            const [selectedDraft, setSelectedDraft] = React.useState(null);
+            // We use a module-scoped _draftCache so drafts survive remounts.
+            const draftCacheKey = attr + '_' + selectedIndex;
+
+            const [selectedDraft, _setSelectedDraft] = React.useState(() => {
+                return _draftCache[draftCacheKey] || null;
+            });
+
+            // Wrapped setter that mirrors writes into the module-scoped cache
+            const setSelectedDraft = valOrFn => {
+                _setSelectedDraft(prev => {
+                    const next = typeof valOrFn === 'function' ? valOrFn(prev) : valOrFn;
+                    if (next && typeof next === 'object') {
+                        _draftCache[draftCacheKey] = next;
+                    } else {
+                        delete _draftCache[draftCacheKey];
+                    }
+                    return next;
+                });
+            };
 
             React.useEffect(() => {
                 if (selectedIndex > sensors.length - 1) {
@@ -215,7 +238,11 @@
             const selectedSensor = sensors[selectedIndex] || null;
 
             React.useEffect(() => {
-                setSelectedDraft(cloneForDraft(selectedSensor));
+                // On index change, only reset draft if there is no cached draft for this slot
+                const cached = _draftCache[draftCacheKey];
+                if (!cached) {
+                    setSelectedDraft(cloneForDraft(selectedSensor));
+                }
             }, [selectedIndex]);
 
             React.useEffect(() => {
@@ -699,22 +726,32 @@
                                       value: editSensor.type || '',
                                       onChange: e => {
                                           var newType = e.target.value;
-                                          // Update draft first so the UI reflects the change immediately
+                                          // 1) Update draft FIRST so the UI reflects the change immediately
                                           setDraftField('type', newType);
                                           if (newType === 'json') {
                                               var p = JSON_PRESETS['forecast'];
                                               setDraftField('jsonPreset', 'forecast');
                                               setDraftField('measurement', p.measurement);
                                               setDraftField('field', p.field);
-                                              updateSelectedMulti({
-                                                  type: 'json',
-                                                  jsonPreset: 'forecast',
-                                                  measurement: p.measurement,
-                                                  field: p.field,
-                                              });
-                                          } else {
-                                              updateSelected('type', newType);
                                           }
+                                          // 2) Defer persistence: Admin's onChange/forceUpdate can remount
+                                          //    the component synchronously, destroying React state before
+                                          //    the draft update is processed.  setTimeout lets React flush
+                                          //    the draft first; the module-scoped cache ensures the draft
+                                          //    survives even if a remount happens.
+                                          setTimeout(function () {
+                                              if (newType === 'json') {
+                                                  var pr = JSON_PRESETS['forecast'];
+                                                  updateSelectedMulti({
+                                                      type: 'json',
+                                                      jsonPreset: 'forecast',
+                                                      measurement: pr.measurement,
+                                                      field: pr.field,
+                                                  });
+                                              } else {
+                                                  updateSelected('type', newType);
+                                              }
+                                          }, 0);
                                       },
                                   },
                                   React.createElement('option', { value: '' }, t('Standard')),
@@ -743,14 +780,18 @@
                                                     if (p) {
                                                         setDraftField('measurement', p.measurement);
                                                         setDraftField('field', p.field);
-                                                        updateSelectedMulti({
-                                                            jsonPreset: preset,
-                                                            measurement: p.measurement,
-                                                            field: p.field,
-                                                        });
-                                                    } else {
-                                                        updateSelected('jsonPreset', preset);
                                                     }
+                                                    setTimeout(function () {
+                                                        if (p) {
+                                                            updateSelectedMulti({
+                                                                jsonPreset: preset,
+                                                                measurement: p.measurement,
+                                                                field: p.field,
+                                                            });
+                                                        } else {
+                                                            updateSelected('jsonPreset', preset);
+                                                        }
+                                                    }, 0);
                                                 },
                                             },
                                             React.createElement('option', { value: 'forecast' }, t('Forecast (y)')),
@@ -829,8 +870,9 @@
                                                           style: Object.assign({}, inputStyle, { maxWidth: 200 }),
                                                           value: editSensor.jsonInfluxType || 'float',
                                                           onChange: e => {
-                                                              setDraftField('jsonInfluxType', e.target.value);
-                                                              updateSelected('jsonInfluxType', e.target.value);
+                                                              var val = e.target.value;
+                                                              setDraftField('jsonInfluxType', val);
+                                                              setTimeout(function () { updateSelected('jsonInfluxType', val); }, 0);
                                                           },
                                                       },
                                                       React.createElement('option', { value: 'int' }, t('Integer')),

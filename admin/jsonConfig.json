@@ -199,7 +199,7 @@
 				"sensors": {
 					"type": "custom",
 					"name": "SolectrusSensors/Components/SolectrusSensorsEditor",
-					"url": "custom/customComponents.js?v=20260301-1",
+					"url": "custom/customComponents.js?v=20260301-2",
 					"newLine": true,
 					"sm": 12
 				}
