@@ -676,15 +676,19 @@ class SolectrusInfluxdb extends utils.Adapter {
 				this.extendObject(id, stateObj);
 			}
 
-			// JSON sensors: read initial value, map sourceState, but skip
-			// the foreignObj check and subscribeForeignStates (done in prepareJsonSensors)
+			// JSON sensors: read initial value (filtered to relevant fields only),
+			// map sourceState, but skip foreignObj check and subscribeForeignStates
+			// (done in prepareJsonSensors)
 			if (sensor.type === 'json') {
 				if (sensor.sourceState) {
 					this.sourceToSensorId[sensor.sourceState] = id;
+					const cfg = this.getJsonSensorConfig(sensor);
 					const state = await this.getForeignStateAsync(sensor.sourceState);
 					if (state && state.val != null) {
-						const strVal = typeof state.val === 'string' ? state.val : JSON.stringify(state.val);
-						this.setState(id, strVal, true);
+						const filtered = this.extractJsonSensorValues(state.val, cfg.tsField, cfg.valField);
+						if (filtered) {
+							this.setState(id, filtered, true);
+						}
 					}
 				}
 				continue;
@@ -740,6 +744,35 @@ class SolectrusInfluxdb extends utils.Adapter {
 			field: sensor.field || 'value',
 			influxType: sensor.jsonInfluxType || 'float',
 		};
+	}
+
+	/**
+	 * Extract only the relevant {tsField, valField} entries from raw JSON
+	 * for a specific sensor mapping, and return as JSON string.
+	 */
+	extractJsonSensorValues(jsonVal, tsField, valField) {
+		let data;
+		try {
+			data = typeof jsonVal === 'string' ? JSON.parse(jsonVal) : jsonVal;
+		} catch {
+			return null;
+		}
+		if (!Array.isArray(data)) {
+			return null;
+		}
+		const filtered = [];
+		for (const entry of data) {
+			if (!entry || typeof entry !== 'object') {
+				continue;
+			}
+			if (entry[tsField] != null && entry[valField] != null) {
+				const obj = {};
+				obj[tsField] = entry[tsField];
+				obj[valField] = entry[valField];
+				filtered.push(obj);
+			}
+		}
+		return JSON.stringify(filtered);
 	}
 
 	async prepareJsonSensors() {
@@ -1107,10 +1140,16 @@ class SolectrusInfluxdb extends utils.Adapter {
 		// Foreign sensor updates
 		const sensorId = this.sourceToSensorId[id];
 		if (sensorId) {
-			// JSON sensors: write the raw JSON string to the sensor state (no cache needed)
 			if (this.jsonSourceMap[id]) {
-				const strVal = typeof state.val === 'string' ? state.val : JSON.stringify(state.val);
-				this.setState(sensorId, strVal, true);
+				// JSON sensors: extract only the relevant fields for each mapping
+				const mappings = this.jsonSourceMap[id];
+				for (const mapping of mappings) {
+					const mId = this.getSensorStateId({ SensorName: mapping.sensorName });
+					const filtered = this.extractJsonSensorValues(state.val, mapping.tsField, mapping.valField);
+					if (filtered) {
+						this.setState(mId, filtered, true);
+					}
+				}
 			} else {
 				this.cache[sensorId] = state.val;
 				this.setState(sensorId, state.val, true);
