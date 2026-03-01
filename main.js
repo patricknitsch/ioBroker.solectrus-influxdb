@@ -676,8 +676,17 @@ class SolectrusInfluxdb extends utils.Adapter {
 				this.extendObject(id, stateObj);
 			}
 
-			// JSON sensors are subscribed and processed via prepareJsonSensors()
+			// JSON sensors: read initial value, map sourceState, but skip
+			// the foreignObj check and subscribeForeignStates (done in prepareJsonSensors)
 			if (sensor.type === 'json') {
+				if (sensor.sourceState) {
+					this.sourceToSensorId[sensor.sourceState] = id;
+					const state = await this.getForeignStateAsync(sensor.sourceState);
+					if (state && state.val != null) {
+						const strVal = typeof state.val === 'string' ? state.val : JSON.stringify(state.val);
+						this.setState(id, strVal, true);
+					}
+				}
 				continue;
 			}
 
@@ -1098,8 +1107,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 		// Foreign sensor updates
 		const sensorId = this.sourceToSensorId[id];
 		if (sensorId) {
-			this.cache[sensorId] = state.val;
-			this.setState(sensorId, state.val, true);
+			// JSON sensors: write the raw JSON string to the sensor state (no cache needed)
+			if (this.jsonSourceMap[id]) {
+				const strVal = typeof state.val === 'string' ? state.val : JSON.stringify(state.val);
+				this.setState(sensorId, strVal, true);
+			} else {
+				this.cache[sensorId] = state.val;
+				this.setState(sensorId, state.val, true);
+			}
 		}
 
 		// Forecast JSON source updates (legacy)
