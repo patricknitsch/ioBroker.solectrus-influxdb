@@ -238,11 +238,10 @@
             const selectedSensor = sensors[selectedIndex] || null;
 
             React.useEffect(() => {
-                // On index change, only reset draft if there is no cached draft for this slot
-                const cached = _draftCache[draftCacheKey];
-                if (!cached) {
-                    setSelectedDraft(cloneForDraft(selectedSensor));
-                }
+                // Always reset draft when switching sensors.
+                // Use cached draft if available, otherwise clone from props.
+                var cached = _draftCache[draftCacheKey];
+                setSelectedDraft(cached || cloneForDraft(selectedSensor));
             }, [selectedIndex]);
 
             React.useEffect(() => {
@@ -877,36 +876,6 @@
                                                       },
                                                       React.createElement('option', { value: 'int' }, t('Integer')),
                                                       React.createElement('option', { value: 'float' }, t('Float'))
-                                                  ),
-                                                  React.createElement(
-                                                      'div',
-                                                      { style: rowStyle },
-                                                      React.createElement(
-                                                          'div',
-                                                          null,
-                                                          React.createElement('label', { style: labelStyle }, t('Influx Measurement')),
-                                                          React.createElement('input', {
-                                                              style: inputStyle,
-                                                              type: 'text',
-                                                              value: editSensor.measurement || '',
-                                                              placeholder: t('e.g. inverter_forecast'),
-                                                              onChange: e => setDraftField('measurement', e.target.value),
-                                                              onBlur: e => updateSelected('measurement', e.target.value),
-                                                          })
-                                                      ),
-                                                      React.createElement(
-                                                          'div',
-                                                          null,
-                                                          React.createElement('label', { style: labelStyle }, t('Influx Field')),
-                                                          React.createElement('input', {
-                                                              style: inputStyle,
-                                                              type: 'text',
-                                                              value: editSensor.field || '',
-                                                              placeholder: t('e.g. power'),
-                                                              onChange: e => setDraftField('field', e.target.value),
-                                                              onBlur: e => updateSelected('field', e.target.value),
-                                                          })
-                                                      )
                                                   )
                                               )
                                             : null,
@@ -928,41 +897,35 @@
                                         )
                                     )
                                   : null,
-                              // Standard sensor fields (measurement + field) - only when NOT json type
-                              (editSensor.type || '') !== 'json'
-                                  ? React.createElement(
-                                        React.Fragment,
-                                        null,
-                                        React.createElement(
-                                            'div',
-                                            { style: rowStyle },
-                                            React.createElement(
-                                                'div',
-                                                null,
-                                                React.createElement('label', { style: labelStyle }, t('Influx Measurement')),
-                                                React.createElement('input', {
-                                                    style: inputStyle,
-                                                    type: 'text',
-                                                    value: editSensor.measurement || '',
-                                                    onChange: e => setDraftField('measurement', e.target.value),
-                                                    onBlur: e => updateSelected('measurement', e.target.value),
-                                                })
-                                            ),
-                                            React.createElement(
-                                                'div',
-                                                null,
-                                                React.createElement('label', { style: labelStyle }, t('Influx Field')),
-                                                React.createElement('input', {
-                                                    style: inputStyle,
-                                                    type: 'text',
-                                                    value: editSensor.field || '',
-                                                    onChange: e => setDraftField('field', e.target.value),
-                                                    onBlur: e => updateSelected('field', e.target.value),
-                                                })
-                                            )
-                                        )
-                                    )
-                                  : null,
+                              // Measurement + Field inputs: always visible, regardless of type
+                              React.createElement(
+                                  'div',
+                                  { style: rowStyle },
+                                  React.createElement(
+                                      'div',
+                                      null,
+                                      React.createElement('label', { style: labelStyle }, t('Influx Measurement')),
+                                      React.createElement('input', {
+                                          style: inputStyle,
+                                          type: 'text',
+                                          value: editSensor.measurement || '',
+                                          onChange: e => setDraftField('measurement', e.target.value),
+                                          onBlur: e => updateSelected('measurement', e.target.value),
+                                      })
+                                  ),
+                                  React.createElement(
+                                      'div',
+                                      null,
+                                      React.createElement('label', { style: labelStyle }, t('Influx Field')),
+                                      React.createElement('input', {
+                                          style: inputStyle,
+                                          type: 'text',
+                                          value: editSensor.field || '',
+                                          onChange: e => setDraftField('field', e.target.value),
+                                          onBlur: e => updateSelected('field', e.target.value),
+                                      })
+                                  )
+                              ),
                               showSelectStateId && DialogSelectID && socket && theme
                                   ? React.createElement(DialogSelectID, {
                                         key: 'selectStateId',
