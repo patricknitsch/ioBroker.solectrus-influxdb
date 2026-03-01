@@ -223,6 +223,9 @@
 	"Forecast Sources": "Fonti di previsione",
 	"Timestamp Field": "Campo timestamp",
 	"Value Field": "Campo valore",
+	"Timestamp": "Timestamp",
+	"Forecast Clearsky": "Previsione Clearsky",
+	"Temperature": "Temperatura",
 	"e.g. INVERTER_POWER_FORECAST": "es. INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "es. pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "es. inverter_forecast",
@@ -241,6 +244,6 @@
 	"JSON Timestamp Field": "Campo timestamp JSON",
 	"JSON Value Field": "Campo valore JSON",
 	"Influx Type": "Tipo Influx",
-	"jsonSensorDetailHint": "Lo stato sorgente deve contenere un array JSON (es. da pvforecast). Ogni voce dell'array viene analizzata e scritta direttamente in InfluxDB con il timestamp originale. Non vengono creati stati intermedi – l'elaborazione avviene interamente in memoria. Per i modelli predefiniti, la mappatura dei campi viene impostata automaticamente. Per i tipi personalizzati, specifica la chiave JSON per timestamp e valore.",
+	"jsonSensorDetailHint": "Lo stato sorgente deve contenere un array JSON (es. da pvforecast). Ogni voce dell'array viene analizzata e scritta direttamente in InfluxDB con il timestamp originale. Per i modelli predefiniti, la mappatura dei campi viene impostata automaticamente. Per i tipi personalizzati, specifica la chiave JSON per timestamp e valore.",
 	"jsonSensorHint": "I dati di previsione/meteo possono essere configurati come sensori JSON nella scheda Sensori (tipo di dati: Array JSON)."
 }

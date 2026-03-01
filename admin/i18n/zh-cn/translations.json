@@ -224,6 +224,9 @@
 	"Forecast Sources": "预报数据源",
 	"Timestamp Field": "时间戳字段",
 	"Value Field": "值字段",
+	"Timestamp": "时间戳",
+	"Forecast Clearsky": "晴空预报",
+	"Temperature": "温度",
 	"e.g. INVERTER_POWER_FORECAST": "例如 INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "例如 pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "例如 inverter_forecast",
@@ -242,6 +245,6 @@
 	"JSON Timestamp Field": "JSON 时间戳字段",
 	"JSON Value Field": "JSON 值字段",
 	"Influx Type": "Influx 类型",
-	"jsonSensorDetailHint": "源状态必须包含一个 JSON 数组（例如来自 pvforecast）。每个数组条目被解析并直接写入 InfluxDB，使用原始时间戳。不会创建中间状态——处理完全在内存中运行。对于预定义预设，字段映射会自动设置。对于自定义类型，请指定时间戳和值的 JSON 键。",
+	"jsonSensorDetailHint": "源状态必须包含一个 JSON 数组（例如来自 pvforecast）。每个数组条目被解析并直接写入 InfluxDB，使用原始时间戳。对于预定义预设，字段映射会自动设置。对于自定义类型，请指定时间戳和值的 JSON 键。",
 	"jsonSensorHint": "预报/天气数据可以在传感器选项卡中配置为 JSON 传感器（数据类型：JSON 数组）。"
 }

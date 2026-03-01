@@ -224,6 +224,9 @@
 	"Forecast Sources": "Forecast Sources",
 	"Timestamp Field": "Timestamp Field",
 	"Value Field": "Value Field",
+	"Timestamp": "Timestamp",
+	"Forecast Clearsky": "Forecast Clearsky",
+	"Temperature": "Temperature",
 	"e.g. INVERTER_POWER_FORECAST": "e.g. INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "e.g. pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "e.g. inverter_forecast",
@@ -242,6 +245,6 @@
 	"JSON Timestamp Field": "JSON Timestamp Field",
 	"JSON Value Field": "JSON Value Field",
 	"Influx Type": "Influx Type",
-	"jsonSensorDetailHint": "The source state must contain a JSON array (e.g. from pvforecast). Each array entry is parsed and written directly to InfluxDB with the original timestamp. No intermediate states are created – processing runs entirely in memory. For predefined presets, the field mapping is set automatically. For custom types, specify the JSON key for timestamp and value.",
+	"jsonSensorDetailHint": "The source state must contain a JSON array (e.g. from pvforecast). Each array entry is parsed and written directly to InfluxDB with the original timestamp. For predefined presets, the field mapping is set automatically. For custom types, specify the JSON key for timestamp and value.",
 	"jsonSensorHint": "Forecast/weather data can be configured as JSON sensors in the Sensors tab (datatype: JSON Array)."
 }

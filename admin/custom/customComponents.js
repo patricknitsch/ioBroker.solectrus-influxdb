@@ -72,10 +72,10 @@
     }
 
     const JSON_PRESETS = {
-        forecast:     { tsField: 't', valField: 'y',            measurement: 'inverter_forecast',          field: 'power',       influxType: 'int' },
-        clearsky:     { tsField: 't', valField: 'clearsky',     measurement: 'inverter_forecast_clearsky', field: 'power',       influxType: 'int' },
-        temperature:  { tsField: 't', valField: 'temp',         measurement: 'outdoor_forecast',           field: 'temperature', influxType: 'float' },
-        weather_code: { tsField: 't', valField: 'weather_code', measurement: 'weather_code',               field: 'code',        influxType: 'int' },
+        forecast:     { tsField: 't', valField: 'y',            valDesc: 'Forecast',          measurement: 'inverter_forecast',          field: 'power',       influxType: 'int' },
+        clearsky:     { tsField: 't', valField: 'clearsky',     valDesc: 'Forecast Clearsky', measurement: 'inverter_forecast_clearsky', field: 'power',       influxType: 'int' },
+        temperature:  { tsField: 't', valField: 'temp',         valDesc: 'Temperature',       measurement: 'outdoor_forecast',           field: 'temperature', influxType: 'float' },
+        weather_code: { tsField: 't', valField: 'weather_code', valDesc: 'Weather Code',      measurement: 'weather_code',               field: 'code',        influxType: 'int' },
     };
 
     function makeNewSensor() {
@@ -818,11 +818,8 @@
                                                   (function () {
                                                       var p = JSON_PRESETS[editSensor.jsonPreset || 'forecast'] || JSON_PRESETS.forecast;
                                                       return [
-                                                          t('Timestamp Field') + ': ' + p.tsField,
-                                                          t('Value Field') + ': ' + p.valField,
-                                                          t('Influx Measurement') + ': ' + p.measurement,
-                                                          t('Influx Field') + ': ' + p.field,
-                                                          t('Influx Type') + ': ' + p.influxType,
+                                                          p.tsField + ' \u2192 ' + t('Timestamp'),
+                                                          p.valField + ' \u2192 ' + t(p.valDesc),
                                                       ].join('\n');
                                                   })()
                                               )

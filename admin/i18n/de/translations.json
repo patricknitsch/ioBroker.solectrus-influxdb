@@ -224,6 +224,9 @@
 	"Forecast Sources": "Prognosequellen",
 	"Timestamp Field": "Zeitstempel-Feld",
 	"Value Field": "Wert-Feld",
+	"Timestamp": "Zeitstempel",
+	"Forecast Clearsky": "Prognose Clearsky",
+	"Temperature": "Temperatur",
 	"e.g. INVERTER_POWER_FORECAST": "z.B. INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "z.B. pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "z.B. inverter_forecast",
@@ -242,6 +245,6 @@
 	"JSON Timestamp Field": "JSON-Zeitstempel-Feld",
 	"JSON Value Field": "JSON-Wert-Feld",
 	"Influx Type": "Influx-Typ",
-	"jsonSensorDetailHint": "Der Quell-State muss ein JSON-Array enthalten (z.B. von pvforecast). Jeder Array-Eintrag wird geparst und direkt mit dem Original-Zeitstempel in InfluxDB geschrieben. Es werden keine Zwischen-States angelegt – die Verarbeitung läuft komplett im RAM. Bei vordefinierten Vorlagen wird das Feld-Mapping automatisch gesetzt. Bei benutzerdefinierten Typen gib den JSON-Schlüssel für Zeitstempel und Wert an.",
+	"jsonSensorDetailHint": "Der Quell-State muss ein JSON-Array enthalten (z.B. von pvforecast). Jeder Array-Eintrag wird geparst und direkt mit dem Original-Zeitstempel in InfluxDB geschrieben. Bei vordefinierten Vorlagen wird das Feld-Mapping automatisch gesetzt. Bei benutzerdefinierten Typen gib den JSON-Schlüssel für Zeitstempel und Wert an.",
 	"jsonSensorHint": "Prognose-/Wetterdaten können im Tab Sensoren als JSON-Sensoren konfiguriert werden (Datentyp: JSON-Array)."
 }

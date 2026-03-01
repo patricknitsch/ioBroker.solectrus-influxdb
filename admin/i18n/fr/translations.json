@@ -224,6 +224,9 @@
 	"Forecast Sources": "Sources de prévision",
 	"Timestamp Field": "Champ d'horodatage",
 	"Value Field": "Champ de valeur",
+	"Timestamp": "Horodatage",
+	"Forecast Clearsky": "Prévision Clearsky",
+	"Temperature": "Température",
 	"e.g. INVERTER_POWER_FORECAST": "p.ex. INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "p.ex. pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "p.ex. inverter_forecast",
@@ -242,6 +245,6 @@
 	"JSON Timestamp Field": "Champ d'horodatage JSON",
 	"JSON Value Field": "Champ de valeur JSON",
 	"Influx Type": "Type Influx",
-	"jsonSensorDetailHint": "L'état source doit contenir un tableau JSON (p.ex. de pvforecast). Chaque entrée du tableau est analysée et écrite directement dans InfluxDB avec l'horodatage original. Aucun état intermédiaire n'est créé – le traitement s'exécute entièrement en mémoire. Pour les modèles prédéfinis, le mappage des champs est configuré automatiquement. Pour les types personnalisés, spécifiez la clé JSON pour l'horodatage et la valeur.",
+	"jsonSensorDetailHint": "L'état source doit contenir un tableau JSON (p.ex. de pvforecast). Chaque entrée du tableau est analysée et écrite directement dans InfluxDB avec l'horodatage original. Pour les modèles prédéfinis, le mappage des champs est configuré automatiquement. Pour les types personnalisés, spécifiez la clé JSON pour l'horodatage et la valeur.",
 	"jsonSensorHint": "Les données de prévision/météo peuvent être configurées comme capteurs JSON dans l'onglet Capteurs (type de données : Tableau JSON)."
 }

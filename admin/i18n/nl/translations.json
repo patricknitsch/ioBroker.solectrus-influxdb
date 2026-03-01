@@ -224,6 +224,9 @@
 	"Forecast Sources": "Prognosebronnen",
 	"Timestamp Field": "Tijdstempelveld",
 	"Value Field": "Waardeveld",
+	"Timestamp": "Tijdstempel",
+	"Forecast Clearsky": "Prognose Clearsky",
+	"Temperature": "Temperatuur",
 	"e.g. INVERTER_POWER_FORECAST": "bijv. INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "bijv. pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "bijv. inverter_forecast",
@@ -242,6 +245,6 @@
 	"JSON Timestamp Field": "JSON-tijdstempelveld",
 	"JSON Value Field": "JSON-waardeveld",
 	"Influx Type": "Influx-type",
-	"jsonSensorDetailHint": "De bronstatus moet een JSON-array bevatten (bijv. van pvforecast). Elke array-entry wordt geparsed en direct naar InfluxDB geschreven met de originele tijdstempel. Er worden geen tussenstates aangemaakt – de verwerking draait volledig in het geheugen. Voor voorgedefinieerde sjablonen wordt de veldtoewijzing automatisch ingesteld. Voor aangepaste typen, geef de JSON-sleutel op voor tijdstempel en waarde.",
+	"jsonSensorDetailHint": "De bronstatus moet een JSON-array bevatten (bijv. van pvforecast). Elke array-entry wordt geparsed en direct naar InfluxDB geschreven met de originele tijdstempel. Voor voorgedefinieerde sjablonen wordt de veldtoewijzing automatisch ingesteld. Voor aangepaste typen, geef de JSON-sleutel op voor tijdstempel en waarde.",
 	"jsonSensorHint": "Prognose-/weergegevens kunnen als JSON-sensoren worden geconfigureerd in het tabblad Sensoren (gegevenstype: JSON-array)."
 }

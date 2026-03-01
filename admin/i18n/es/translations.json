@@ -224,6 +224,9 @@
 	"Forecast Sources": "Fuentes de pronóstico",
 	"Timestamp Field": "Campo de marca de tiempo",
 	"Value Field": "Campo de valor",
+	"Timestamp": "Marca de tiempo",
+	"Forecast Clearsky": "Pronóstico Clearsky",
+	"Temperature": "Temperatura",
 	"e.g. INVERTER_POWER_FORECAST": "p.ej. INVERTER_POWER_FORECAST",
 	"e.g. pvforecast.0.summary.JSONData": "p.ej. pvforecast.0.summary.JSONData",
 	"e.g. inverter_forecast": "p.ej. inverter_forecast",
@@ -242,6 +245,6 @@
 	"JSON Timestamp Field": "Campo de marca de tiempo JSON",
 	"JSON Value Field": "Campo de valor JSON",
 	"Influx Type": "Tipo Influx",
-	"jsonSensorDetailHint": "El estado de origen debe contener un array JSON (p.ej. de pvforecast). Cada entrada del array se analiza y se escribe directamente en InfluxDB con la marca de tiempo original. No se crean estados intermedios – el procesamiento se ejecuta completamente en memoria. Para plantillas predefinidas, el mapeo de campos se configura automáticamente. Para tipos personalizados, especifica la clave JSON para marca de tiempo y valor.",
+	"jsonSensorDetailHint": "El estado de origen debe contener un array JSON (p.ej. de pvforecast). Cada entrada del array se analiza y se escribe directamente en InfluxDB con la marca de tiempo original. Para plantillas predefinidas, el mapeo de campos se configura automáticamente. Para tipos personalizados, especifica la clave JSON para marca de tiempo y valor.",
 	"jsonSensorHint": "Los datos de pronóstico/meteorología se pueden configurar como sensores JSON en la pestaña Sensores (tipo de datos: Array JSON)."
 }
