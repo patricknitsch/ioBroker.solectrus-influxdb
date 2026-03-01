@@ -688,17 +688,24 @@
                                   )
                               ),
                               // Datatype selector
+                              // NOTE: All select values and conditionals use editSensor (draft)
+                              // instead of selectedSensor (props) to avoid the value snapping back
+                              // when Admin re-renders with stale props before the update propagates.
                               React.createElement('label', { style: labelStyle }, t('Datatype')),
                               React.createElement(
                                   'select',
                                   {
                                       style: Object.assign({}, inputStyle, { maxWidth: 300 }),
-                                      value: selectedSensor.type || '',
+                                      value: editSensor.type || '',
                                       onChange: e => {
                                           var newType = e.target.value;
-                                          // When switching to json, set default preset in one batch
-                                          if (newType === 'json' && !selectedSensor.jsonPreset) {
+                                          // Update draft first so the UI reflects the change immediately
+                                          setDraftField('type', newType);
+                                          if (newType === 'json') {
                                               var p = JSON_PRESETS['forecast'];
+                                              setDraftField('jsonPreset', 'forecast');
+                                              setDraftField('measurement', p.measurement);
+                                              setDraftField('field', p.field);
                                               updateSelectedMulti({
                                                   type: 'json',
                                                   jsonPreset: 'forecast',
@@ -718,7 +725,7 @@
                                   React.createElement('option', { value: 'json' }, t('JSON Array'))
                               ),
                               // JSON-specific fields (only when type === 'json')
-                              selectedSensor.type === 'json'
+                              (editSensor.type || '') === 'json'
                                   ? React.createElement(
                                         React.Fragment,
                                         null,
@@ -728,18 +735,19 @@
                                             'select',
                                             {
                                                 style: Object.assign({}, inputStyle, { maxWidth: 300 }),
-                                                value: selectedSensor.jsonPreset || 'forecast',
+                                                value: editSensor.jsonPreset || 'forecast',
                                                 onChange: e => {
                                                     var preset = e.target.value;
                                                     var p = JSON_PRESETS[preset];
+                                                    setDraftField('jsonPreset', preset);
                                                     if (p) {
+                                                        setDraftField('measurement', p.measurement);
+                                                        setDraftField('field', p.field);
                                                         updateSelectedMulti({
                                                             jsonPreset: preset,
                                                             measurement: p.measurement,
                                                             field: p.field,
                                                         });
-                                                        setDraftField('measurement', p.measurement);
-                                                        setDraftField('field', p.field);
                                                     } else {
                                                         updateSelected('jsonPreset', preset);
                                                     }
@@ -752,7 +760,7 @@
                                             React.createElement('option', { value: 'custom' }, t('Custom'))
                                         ),
                                         // Info box for presets
-                                        (selectedSensor.jsonPreset || 'forecast') !== 'custom'
+                                        (editSensor.jsonPreset || 'forecast') !== 'custom'
                                             ? React.createElement(
                                                   'div',
                                                   {
@@ -768,7 +776,7 @@
                                                       },
                                                   },
                                                   (function () {
-                                                      var p = JSON_PRESETS[selectedSensor.jsonPreset || 'forecast'] || JSON_PRESETS.forecast;
+                                                      var p = JSON_PRESETS[editSensor.jsonPreset || 'forecast'] || JSON_PRESETS.forecast;
                                                       return [
                                                           t('Timestamp Field') + ': ' + p.tsField,
                                                           t('Value Field') + ': ' + p.valField,
@@ -780,7 +788,7 @@
                                               )
                                             : null,
                                         // Custom JSON fields
-                                        (selectedSensor.jsonPreset || 'forecast') === 'custom'
+                                        (editSensor.jsonPreset || 'forecast') === 'custom'
                                             ? React.createElement(
                                                   React.Fragment,
                                                   null,
@@ -819,8 +827,11 @@
                                                       'select',
                                                       {
                                                           style: Object.assign({}, inputStyle, { maxWidth: 200 }),
-                                                          value: selectedSensor.jsonInfluxType || 'float',
-                                                          onChange: e => updateSelected('jsonInfluxType', e.target.value),
+                                                          value: editSensor.jsonInfluxType || 'float',
+                                                          onChange: e => {
+                                                              setDraftField('jsonInfluxType', e.target.value);
+                                                              updateSelected('jsonInfluxType', e.target.value);
+                                                          },
                                                       },
                                                       React.createElement('option', { value: 'int' }, t('Integer')),
                                                       React.createElement('option', { value: 'float' }, t('Float'))
@@ -876,7 +887,7 @@
                                     )
                                   : null,
                               // Standard sensor fields (measurement + field) - only when NOT json type
-                              selectedSensor.type !== 'json'
+                              (editSensor.type || '') !== 'json'
                                   ? React.createElement(
                                         React.Fragment,
                                         null,
