@@ -381,6 +381,23 @@
                 updateSensors(nextSensors);
             };
 
+            // Batch multiple field updates into a single sensors update
+            // (avoids state overwrites when calling updateSelected() multiple times)
+            const updateSelectedMulti = (updates) => {
+                const titleAffectingFields = ['enabled', 'SensorName'];
+                var shouldUpdateTitle = false;
+                for (var k in updates) {
+                    if (titleAffectingFields.indexOf(k) !== -1) { shouldUpdateTitle = true; break; }
+                }
+
+                const nextSensors = sensors.map((s, i) => {
+                    if (i !== selectedIndex) return s;
+                    const next = Object.assign({}, s || {}, updates);
+                    return shouldUpdateTitle ? ensureTitle(next) : next;
+                });
+                updateSensors(nextSensors);
+            };
+
             const moveSelected = direction => {
                 const from = selectedIndex;
                 const to = from + direction;
@@ -678,15 +695,18 @@
                                       style: Object.assign({}, inputStyle, { maxWidth: 300 }),
                                       value: selectedSensor.type || '',
                                       onChange: e => {
-                                          updateSelected('type', e.target.value);
-                                          // When switching to json, set default preset
-                                          if (e.target.value === 'json' && !selectedSensor.jsonPreset) {
-                                              updateSelected('jsonPreset', 'forecast');
-                                              const p = JSON_PRESETS['forecast'];
-                                              if (p) {
-                                                  updateSelected('measurement', p.measurement);
-                                                  updateSelected('field', p.field);
-                                              }
+                                          var newType = e.target.value;
+                                          // When switching to json, set default preset in one batch
+                                          if (newType === 'json' && !selectedSensor.jsonPreset) {
+                                              var p = JSON_PRESETS['forecast'];
+                                              updateSelectedMulti({
+                                                  type: 'json',
+                                                  jsonPreset: 'forecast',
+                                                  measurement: p.measurement,
+                                                  field: p.field,
+                                              });
+                                          } else {
+                                              updateSelected('type', newType);
                                           }
                                       },
                                   },
@@ -710,14 +730,18 @@
                                                 style: Object.assign({}, inputStyle, { maxWidth: 300 }),
                                                 value: selectedSensor.jsonPreset || 'forecast',
                                                 onChange: e => {
-                                                    const preset = e.target.value;
-                                                    updateSelected('jsonPreset', preset);
-                                                    const p = JSON_PRESETS[preset];
+                                                    var preset = e.target.value;
+                                                    var p = JSON_PRESETS[preset];
                                                     if (p) {
-                                                        updateSelected('measurement', p.measurement);
-                                                        updateSelected('field', p.field);
+                                                        updateSelectedMulti({
+                                                            jsonPreset: preset,
+                                                            measurement: p.measurement,
+                                                            field: p.field,
+                                                        });
                                                         setDraftField('measurement', p.measurement);
                                                         setDraftField('field', p.field);
+                                                    } else {
+                                                        updateSelected('jsonPreset', preset);
                                                     }
                                                 },
                                             },
