@@ -345,13 +345,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 			common: { name: 'Sensors' },
 			native: {},
 		});
-
-		// forecasts channel
-		await this.setObjectNotExistsAsync('forecasts', {
-			type: 'channel',
-			common: { name: 'Forecasts' },
-			native: {},
-		});
 	}
 
 	/* =====================================================
@@ -650,11 +643,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 				continue;
 			}
 
-			// JSON sensors are handled separately via prepareJsonSensors()
-			if (sensor.type === 'json') {
-				continue;
-			}
-
 			const id = this.getSensorStateId(sensor);
 
 			const typeMapping = {
@@ -662,39 +650,35 @@ class SolectrusInfluxdb extends utils.Adapter {
 				float: 'number',
 				bool: 'boolean',
 				string: 'string',
+				json: 'string',
 			};
 
 			const iobType = typeMapping[sensor.type] || 'mixed';
 			const obj = await this.getObjectAsync(id);
 
+			const stateObj = {
+				type: 'state',
+				common: {
+					name: sensor.SensorName,
+					type: iobType,
+					role: 'value',
+					read: true,
+					write: false,
+				},
+				native: {
+					sourceState: sensor.sourceState,
+				},
+			};
+
 			if (!obj) {
-				this.setObject(id, {
-					type: 'state',
-					common: {
-						name: sensor.SensorName,
-						type: iobType,
-						role: 'value',
-						read: true,
-						write: false,
-					},
-					native: {
-						sourceState: sensor.sourceState,
-					},
-				});
+				this.setObject(id, stateObj);
 			} else {
-				this.extendObject(id, {
-					type: 'state',
-					common: {
-						name: sensor.SensorName,
-						type: iobType,
-						role: 'value',
-						read: true,
-						write: false,
-					},
-					native: {
-						sourceState: sensor.sourceState,
-					},
-				});
+				this.extendObject(id, stateObj);
+			}
+
+			// JSON sensors are subscribed and processed via prepareJsonSensors()
+			if (sensor.type === 'json') {
+				continue;
 			}
 
 			if (!sensor.sourceState) {
