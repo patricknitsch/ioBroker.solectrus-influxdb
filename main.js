@@ -728,11 +728,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 	getJsonSensorConfig(sensor) {
 		const preset = JSON_PRESETS[sensor.jsonPreset];
 		if (preset) {
+			// Preset provides defaults, but user-defined measurement/field take priority
 			return {
 				tsField: preset.tsField,
 				valField: preset.valField,
-				measurement: preset.measurement,
-				field: preset.field,
+				measurement: sensor.measurement || preset.measurement,
+				field: sensor.field || preset.field,
 				influxType: preset.influxType,
 			};
 		}
