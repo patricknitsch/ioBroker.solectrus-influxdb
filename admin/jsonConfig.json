@@ -81,10 +81,15 @@
 							"lg": 12,
 							"xl": 12
 						},
-						"enableForecast": {
-							"type": "checkbox",
-							"label": "Enable Forecast Sources",
+						"_legacyForecastNote": {
+							"type": "staticText",
+							"text": "jsonSensorHint",
 							"newLine": true,
+							"style": {
+								"fontSize": "0.85em",
+								"color": "#888",
+								"marginTop": 4
+							},
 							"xs": 12,
 							"sm": 12,
 							"md": 12,
@@ -194,7 +199,7 @@
 				"sensors": {
 					"type": "custom",
 					"name": "SolectrusSensors/Components/SolectrusSensorsEditor",
-					"url": "custom/customComponents.js?v=20260207-1",
+					"url": "custom/customComponents.js?v=20260301-1",
 					"newLine": true,
 					"sm": 12
 				}
@@ -224,30 +229,6 @@
 					"md": 12,
 					"lg": 12,
 					"xl": 12
-				}
-			}
-		},
-		"forecast": {
-			"type": "panel",
-			"label": "Forecast",
-			"hidden": "!data.enableForecast",
-			"items": {
-				"_forecastHint": {
-					"type": "staticText",
-					"text": "forecastHint",
-					"newLine": true,
-					"xs": 12,
-					"sm": 12,
-					"md": 12,
-					"lg": 12,
-					"xl": 12
-				},
-				"forecasts": {
-					"type": "custom",
-					"name": "SolectrusForecast/Components/SolectrusForecastEditor",
-					"url": "custom/customComponentsForecast.js?v=20260227-1",
-					"newLine": true,
-					"sm": 12
 				}
 			}
 		},

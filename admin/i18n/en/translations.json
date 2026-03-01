@@ -231,5 +231,17 @@
 	"No forecasts configured.": "No forecasts configured.",
 	"Select a forecast on the left or add a new one.": "Select a forecast on the left or add a new one.",
 	"forecastEntryHint": "The adapter subscribes to the JSON source state and writes each array entry to InfluxDB using the timestamp from the JSON data. Multiple entries can point to the same source but extract different value fields (e.g. y, clearsky, temp).",
-	"Enable Forecast Sources": "Enable Forecast Sources"
+	"Enable Forecast Sources": "Enable Forecast Sources",
+	"JSON Array": "JSON Array",
+	"JSON Preset": "JSON Preset",
+	"Forecast (y)": "Forecast (y)",
+	"Clearsky": "Clearsky",
+	"Temperature (temp)": "Temperature (temp)",
+	"Weather Code": "Weather Code",
+	"Custom": "Custom",
+	"JSON Timestamp Field": "JSON Timestamp Field",
+	"JSON Value Field": "JSON Value Field",
+	"Influx Type": "Influx Type",
+	"jsonSensorDetailHint": "The source state must contain a JSON array (e.g. from pvforecast). Each array entry is parsed and written directly to InfluxDB with the original timestamp. No intermediate states are created – processing runs entirely in memory. For predefined presets, the field mapping is set automatically. For custom types, specify the JSON key for timestamp and value.",
+	"jsonSensorHint": "Forecast/weather data can be configured as JSON sensors in the Sensors tab (datatype: JSON Array)."
 }

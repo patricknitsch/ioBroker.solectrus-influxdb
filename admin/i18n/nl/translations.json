@@ -231,5 +231,17 @@
 	"No forecasts configured.": "Geen prognoses geconfigureerd.",
 	"Select a forecast on the left or add a new one.": "Selecteer links een prognose of maak een nieuwe aan.",
 	"forecastEntryHint": "De adapter abonneert op de JSON-bronstatus en schrijft elke array-entry naar InfluxDB met de tijdstempel uit de JSON-gegevens. Meerdere entries kunnen naar dezelfde bron wijzen maar verschillende waardevelden extraheren (bijv. y, clearsky, temp).",
-	"Enable Forecast Sources": "Prognosebronnen activeren"
+	"Enable Forecast Sources": "Prognosebronnen activeren",
+	"JSON Array": "JSON-array",
+	"JSON Preset": "JSON-sjabloon",
+	"Forecast (y)": "Prognose (y)",
+	"Clearsky": "Clearsky",
+	"Temperature (temp)": "Temperatuur (temp)",
+	"Weather Code": "Weercode",
+	"Custom": "Aangepast",
+	"JSON Timestamp Field": "JSON-tijdstempelveld",
+	"JSON Value Field": "JSON-waardeveld",
+	"Influx Type": "Influx-type",
+	"jsonSensorDetailHint": "De bronstatus moet een JSON-array bevatten (bijv. van pvforecast). Elke array-entry wordt geparsed en direct naar InfluxDB geschreven met de originele tijdstempel. Er worden geen tussenstates aangemaakt – de verwerking draait volledig in het geheugen. Voor voorgedefinieerde sjablonen wordt de veldtoewijzing automatisch ingesteld. Voor aangepaste typen, geef de JSON-sleutel op voor tijdstempel en waarde.",
+	"jsonSensorHint": "Prognose-/weergegevens kunnen als JSON-sensoren worden geconfigureerd in het tabblad Sensoren (gegevenstype: JSON-array)."
 }

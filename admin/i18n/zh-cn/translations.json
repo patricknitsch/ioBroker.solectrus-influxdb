@@ -231,5 +231,17 @@
 	"No forecasts configured.": "未配置预报。",
 	"Select a forecast on the left or add a new one.": "在左侧选择一个预报或创建一个新的。",
 	"forecastEntryHint": "适配器订阅 JSON 源状态，并使用 JSON 数据中的时间戳将每个数组条目写入 InfluxDB。多个条目可以指向同一个源，但提取不同的值字段（例如 y、clearsky、temp）。",
-	"Enable Forecast Sources": "启用预报数据源"
+	"Enable Forecast Sources": "启用预报数据源",
+	"JSON Array": "JSON 数组",
+	"JSON Preset": "JSON 预设",
+	"Forecast (y)": "预报 (y)",
+	"Clearsky": "Clearsky",
+	"Temperature (temp)": "温度 (temp)",
+	"Weather Code": "天气代码",
+	"Custom": "自定义",
+	"JSON Timestamp Field": "JSON 时间戳字段",
+	"JSON Value Field": "JSON 值字段",
+	"Influx Type": "Influx 类型",
+	"jsonSensorDetailHint": "源状态必须包含一个 JSON 数组（例如来自 pvforecast）。每个数组条目被解析并直接写入 InfluxDB，使用原始时间戳。不会创建中间状态——处理完全在内存中运行。对于预定义预设，字段映射会自动设置。对于自定义类型，请指定时间戳和值的 JSON 键。",
+	"jsonSensorHint": "预报/天气数据可以在传感器选项卡中配置为 JSON 传感器（数据类型：JSON 数组）。"
 }

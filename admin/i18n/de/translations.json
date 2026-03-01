@@ -231,5 +231,17 @@
 	"No forecasts configured.": "Keine Prognosen konfiguriert.",
 	"Select a forecast on the left or add a new one.": "Wähle links eine Prognose aus oder erstelle eine neue.",
 	"forecastEntryHint": "Der Adapter abonniert den JSON-Quell-State und schreibt jeden Array-Eintrag mit dem Zeitstempel aus den JSON-Daten in InfluxDB. Mehrere Einträge können auf denselben Quell-State zeigen, aber verschiedene Wert-Felder extrahieren (z.B. y, clearsky, temp).",
-	"Enable Forecast Sources": "Prognosequellen aktivieren"
+	"Enable Forecast Sources": "Prognosequellen aktivieren",
+	"JSON Array": "JSON-Array",
+	"JSON Preset": "JSON-Vorlage",
+	"Forecast (y)": "Prognose (y)",
+	"Clearsky": "Clearsky",
+	"Temperature (temp)": "Temperatur (temp)",
+	"Weather Code": "Wettercode",
+	"Custom": "Benutzerdefiniert",
+	"JSON Timestamp Field": "JSON-Zeitstempel-Feld",
+	"JSON Value Field": "JSON-Wert-Feld",
+	"Influx Type": "Influx-Typ",
+	"jsonSensorDetailHint": "Der Quell-State muss ein JSON-Array enthalten (z.B. von pvforecast). Jeder Array-Eintrag wird geparst und direkt mit dem Original-Zeitstempel in InfluxDB geschrieben. Es werden keine Zwischen-States angelegt – die Verarbeitung läuft komplett im RAM. Bei vordefinierten Vorlagen wird das Feld-Mapping automatisch gesetzt. Bei benutzerdefinierten Typen gib den JSON-Schlüssel für Zeitstempel und Wert an.",
+	"jsonSensorHint": "Prognose-/Wetterdaten können im Tab Sensoren als JSON-Sensoren konfiguriert werden (Datentyp: JSON-Array)."
 }

@@ -71,6 +71,13 @@
         return Object.assign({}, sensor || {}, { _title: calcTitle(sensor || {}) });
     }
 
+    const JSON_PRESETS = {
+        forecast:     { tsField: 't', valField: 'y',            measurement: 'inverter_forecast',          field: 'power',       influxType: 'int' },
+        clearsky:     { tsField: 't', valField: 'clearsky',     measurement: 'inverter_forecast_clearsky', field: 'power',       influxType: 'int' },
+        temperature:  { tsField: 't', valField: 'temp',         measurement: 'outdoor_forecast',           field: 'temperature', influxType: 'float' },
+        weather_code: { tsField: 't', valField: 'weather_code', measurement: 'weather_code',               field: 'code',        influxType: 'int' },
+    };
+
     function makeNewSensor() {
         const sensor = {
             enabled: false,
@@ -663,48 +670,222 @@
                                       t('Select')
                                   )
                               ),
+                              // Datatype selector
+                              React.createElement('label', { style: labelStyle }, t('Datatype')),
                               React.createElement(
-                                  'div',
-                                  { style: rowStyle },
-                                  React.createElement(
-                                      'div',
-                                      null,
-                                      React.createElement('label', { style: labelStyle }, t('Datatype')),
-                                      React.createElement(
-                                          'select',
-                                          {
-                                              style: inputStyle,
-                                              value: selectedSensor.type || '',
-                                              onChange: e => updateSelected('type', e.target.value),
-                                          },
-                                          React.createElement('option', { value: '' }, t('Standard')),
-                                          React.createElement('option', { value: 'int' }, t('Integer')),
-                                          React.createElement('option', { value: 'float' }, t('Float')),
-                                          React.createElement('option', { value: 'bool' }, t('Boolean')),
-                                          React.createElement('option', { value: 'string' }, t('String'))
-                                      )
-                                  ),
-                                  React.createElement(
-                                      'div',
-                                      null,
-                                      React.createElement('label', { style: labelStyle }, t('Influx Measurement')),
-                                      React.createElement('input', {
-                                          style: inputStyle,
-                                          type: 'text',
-                                          value: editSensor.measurement || '',
-                                          onChange: e => setDraftField('measurement', e.target.value),
-                                          onBlur: e => updateSelected('measurement', e.target.value),
-                                      })
-                                  )
+                                  'select',
+                                  {
+                                      style: Object.assign({}, inputStyle, { maxWidth: 300 }),
+                                      value: selectedSensor.type || '',
+                                      onChange: e => {
+                                          updateSelected('type', e.target.value);
+                                          // When switching to json, set default preset
+                                          if (e.target.value === 'json' && !selectedSensor.jsonPreset) {
+                                              updateSelected('jsonPreset', 'forecast');
+                                              const p = JSON_PRESETS['forecast'];
+                                              if (p) {
+                                                  updateSelected('measurement', p.measurement);
+                                                  updateSelected('field', p.field);
+                                              }
+                                          }
+                                      },
+                                  },
+                                  React.createElement('option', { value: '' }, t('Standard')),
+                                  React.createElement('option', { value: 'int' }, t('Integer')),
+                                  React.createElement('option', { value: 'float' }, t('Float')),
+                                  React.createElement('option', { value: 'bool' }, t('Boolean')),
+                                  React.createElement('option', { value: 'string' }, t('String')),
+                                  React.createElement('option', { value: 'json' }, t('JSON Array'))
                               ),
-                              React.createElement('label', { style: labelStyle }, t('Influx Field')),
-                              React.createElement('input', {
-                                  style: inputStyle,
-                                  type: 'text',
-                                  value: editSensor.field || '',
-                                  onChange: e => setDraftField('field', e.target.value),
-                                  onBlur: e => updateSelected('field', e.target.value),
-                              }),
+                              // JSON-specific fields (only when type === 'json')
+                              selectedSensor.type === 'json'
+                                  ? React.createElement(
+                                        React.Fragment,
+                                        null,
+                                        // Preset selector
+                                        React.createElement('label', { style: labelStyle }, t('JSON Preset')),
+                                        React.createElement(
+                                            'select',
+                                            {
+                                                style: Object.assign({}, inputStyle, { maxWidth: 300 }),
+                                                value: selectedSensor.jsonPreset || 'forecast',
+                                                onChange: e => {
+                                                    const preset = e.target.value;
+                                                    updateSelected('jsonPreset', preset);
+                                                    const p = JSON_PRESETS[preset];
+                                                    if (p) {
+                                                        updateSelected('measurement', p.measurement);
+                                                        updateSelected('field', p.field);
+                                                        setDraftField('measurement', p.measurement);
+                                                        setDraftField('field', p.field);
+                                                    }
+                                                },
+                                            },
+                                            React.createElement('option', { value: 'forecast' }, t('Forecast (y)')),
+                                            React.createElement('option', { value: 'clearsky' }, t('Clearsky')),
+                                            React.createElement('option', { value: 'temperature' }, t('Temperature (temp)')),
+                                            React.createElement('option', { value: 'weather_code' }, t('Weather Code')),
+                                            React.createElement('option', { value: 'custom' }, t('Custom'))
+                                        ),
+                                        // Info box for presets
+                                        (selectedSensor.jsonPreset || 'forecast') !== 'custom'
+                                            ? React.createElement(
+                                                  'div',
+                                                  {
+                                                      style: {
+                                                          marginTop: 8,
+                                                          padding: 10,
+                                                          borderRadius: 6,
+                                                          background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+                                                          fontSize: 13,
+                                                          color: colors.textMuted,
+                                                          lineHeight: 1.6,
+                                                          fontFamily: 'monospace',
+                                                      },
+                                                  },
+                                                  (function () {
+                                                      var p = JSON_PRESETS[selectedSensor.jsonPreset || 'forecast'] || JSON_PRESETS.forecast;
+                                                      return [
+                                                          t('Timestamp Field') + ': ' + p.tsField,
+                                                          t('Value Field') + ': ' + p.valField,
+                                                          t('Influx Measurement') + ': ' + p.measurement,
+                                                          t('Influx Field') + ': ' + p.field,
+                                                          t('Influx Type') + ': ' + p.influxType,
+                                                      ].join('\n');
+                                                  })()
+                                              )
+                                            : null,
+                                        // Custom JSON fields
+                                        (selectedSensor.jsonPreset || 'forecast') === 'custom'
+                                            ? React.createElement(
+                                                  React.Fragment,
+                                                  null,
+                                                  React.createElement(
+                                                      'div',
+                                                      { style: rowStyle },
+                                                      React.createElement(
+                                                          'div',
+                                                          null,
+                                                          React.createElement('label', { style: labelStyle }, t('JSON Timestamp Field')),
+                                                          React.createElement('input', {
+                                                              style: inputStyle,
+                                                              type: 'text',
+                                                              value: editSensor.jsonTsField || 't',
+                                                              placeholder: 't',
+                                                              onChange: e => setDraftField('jsonTsField', e.target.value),
+                                                              onBlur: e => updateSelected('jsonTsField', e.target.value),
+                                                          })
+                                                      ),
+                                                      React.createElement(
+                                                          'div',
+                                                          null,
+                                                          React.createElement('label', { style: labelStyle }, t('JSON Value Field')),
+                                                          React.createElement('input', {
+                                                              style: inputStyle,
+                                                              type: 'text',
+                                                              value: editSensor.jsonValField || 'y',
+                                                              placeholder: 'y',
+                                                              onChange: e => setDraftField('jsonValField', e.target.value),
+                                                              onBlur: e => updateSelected('jsonValField', e.target.value),
+                                                          })
+                                                      )
+                                                  ),
+                                                  React.createElement('label', { style: labelStyle }, t('Influx Type')),
+                                                  React.createElement(
+                                                      'select',
+                                                      {
+                                                          style: Object.assign({}, inputStyle, { maxWidth: 200 }),
+                                                          value: selectedSensor.jsonInfluxType || 'float',
+                                                          onChange: e => updateSelected('jsonInfluxType', e.target.value),
+                                                      },
+                                                      React.createElement('option', { value: 'int' }, t('Integer')),
+                                                      React.createElement('option', { value: 'float' }, t('Float'))
+                                                  ),
+                                                  React.createElement(
+                                                      'div',
+                                                      { style: rowStyle },
+                                                      React.createElement(
+                                                          'div',
+                                                          null,
+                                                          React.createElement('label', { style: labelStyle }, t('Influx Measurement')),
+                                                          React.createElement('input', {
+                                                              style: inputStyle,
+                                                              type: 'text',
+                                                              value: editSensor.measurement || '',
+                                                              placeholder: t('e.g. inverter_forecast'),
+                                                              onChange: e => setDraftField('measurement', e.target.value),
+                                                              onBlur: e => updateSelected('measurement', e.target.value),
+                                                          })
+                                                      ),
+                                                      React.createElement(
+                                                          'div',
+                                                          null,
+                                                          React.createElement('label', { style: labelStyle }, t('Influx Field')),
+                                                          React.createElement('input', {
+                                                              style: inputStyle,
+                                                              type: 'text',
+                                                              value: editSensor.field || '',
+                                                              placeholder: t('e.g. power'),
+                                                              onChange: e => setDraftField('field', e.target.value),
+                                                              onBlur: e => updateSelected('field', e.target.value),
+                                                          })
+                                                      )
+                                                  )
+                                              )
+                                            : null,
+                                        // JSON hint
+                                        React.createElement(
+                                            'div',
+                                            {
+                                                style: {
+                                                    marginTop: 12,
+                                                    padding: 12,
+                                                    borderRadius: 6,
+                                                    background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+                                                    fontSize: 13,
+                                                    color: colors.textMuted,
+                                                    lineHeight: 1.5,
+                                                },
+                                            },
+                                            t('jsonSensorDetailHint')
+                                        )
+                                    )
+                                  : null,
+                              // Standard sensor fields (measurement + field) - only when NOT json type
+                              selectedSensor.type !== 'json'
+                                  ? React.createElement(
+                                        React.Fragment,
+                                        null,
+                                        React.createElement(
+                                            'div',
+                                            { style: rowStyle },
+                                            React.createElement(
+                                                'div',
+                                                null,
+                                                React.createElement('label', { style: labelStyle }, t('Influx Measurement')),
+                                                React.createElement('input', {
+                                                    style: inputStyle,
+                                                    type: 'text',
+                                                    value: editSensor.measurement || '',
+                                                    onChange: e => setDraftField('measurement', e.target.value),
+                                                    onBlur: e => updateSelected('measurement', e.target.value),
+                                                })
+                                            ),
+                                            React.createElement(
+                                                'div',
+                                                null,
+                                                React.createElement('label', { style: labelStyle }, t('Influx Field')),
+                                                React.createElement('input', {
+                                                    style: inputStyle,
+                                                    type: 'text',
+                                                    value: editSensor.field || '',
+                                                    onChange: e => setDraftField('field', e.target.value),
+                                                    onBlur: e => updateSelected('field', e.target.value),
+                                                })
+                                            )
+                                        )
+                                    )
+                                  : null,
                               showSelectStateId && DialogSelectID && socket && theme
                                   ? React.createElement(DialogSelectID, {
                                         key: 'selectStateId',

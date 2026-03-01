@@ -231,5 +231,17 @@
 	"No forecasts configured.": "Nenhuma previsão configurada.",
 	"Select a forecast on the left or add a new one.": "Selecione uma previsão à esquerda ou crie uma nova.",
 	"forecastEntryHint": "O adaptador assina o estado JSON de origem e escreve cada entrada do array no InfluxDB usando o timestamp dos dados JSON. Várias entradas podem apontar para a mesma fonte mas extrair diferentes campos de valor (ex. y, clearsky, temp).",
-	"Enable Forecast Sources": "Ativar fontes de previsão"
+	"Enable Forecast Sources": "Ativar fontes de previsão",
+	"JSON Array": "Array JSON",
+	"JSON Preset": "Modelo JSON",
+	"Forecast (y)": "Previsão (y)",
+	"Clearsky": "Clearsky",
+	"Temperature (temp)": "Temperatura (temp)",
+	"Weather Code": "Código meteorológico",
+	"Custom": "Personalizado",
+	"JSON Timestamp Field": "Campo de carimbo de data/hora JSON",
+	"JSON Value Field": "Campo de valor JSON",
+	"Influx Type": "Tipo Influx",
+	"jsonSensorDetailHint": "O estado de origem deve conter um array JSON (ex. de pvforecast). Cada entrada do array é analisada e escrita diretamente no InfluxDB com o carimbo de data/hora original. Não são criados estados intermediários – o processamento ocorre inteiramente na memória. Para modelos predefinidos, o mapeamento de campos é configurado automaticamente. Para tipos personalizados, especifique a chave JSON para carimbo de data/hora e valor.",
+	"jsonSensorHint": "Os dados de previsão/meteorologia podem ser configurados como sensores JSON na aba Sensores (tipo de dados: Array JSON)."
 }

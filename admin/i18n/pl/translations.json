@@ -231,5 +231,17 @@
 	"No forecasts configured.": "Brak skonfigurowanych prognoz.",
 	"Select a forecast on the left or add a new one.": "Wybierz prognozę po lewej stronie lub utwórz nową.",
 	"forecastEntryHint": "Adapter subskrybuje stan JSON źródła i zapisuje każdy wpis tablicy do InfluxDB, używając znacznika czasu z danych JSON. Wiele wpisów może wskazywać na to samo źródło, ale wyodrębniać różne pola wartości (np. y, clearsky, temp).",
-	"Enable Forecast Sources": "Włącz źródła prognoz"
+	"Enable Forecast Sources": "Włącz źródła prognoz",
+	"JSON Array": "Tablica JSON",
+	"JSON Preset": "Szablon JSON",
+	"Forecast (y)": "Prognoza (y)",
+	"Clearsky": "Clearsky",
+	"Temperature (temp)": "Temperatura (temp)",
+	"Weather Code": "Kod pogodowy",
+	"Custom": "Niestandardowy",
+	"JSON Timestamp Field": "Pole znacznika czasu JSON",
+	"JSON Value Field": "Pole wartości JSON",
+	"Influx Type": "Typ Influx",
+	"jsonSensorDetailHint": "Stan źródłowy musi zawierać tablicę JSON (np. z pvforecast). Każdy wpis tablicy jest parsowany i zapisywany bezpośrednio do InfluxDB z oryginalnym znacznikiem czasu. Nie są tworzone stany pośrednie – przetwarzanie odbywa się całkowicie w pamięci. Dla predefiniowanych szablonów mapowanie pól jest ustawiane automatycznie. Dla typów niestandardowych podaj klucz JSON dla znacznika czasu i wartości.",
+	"jsonSensorHint": "Dane prognozy/pogody można skonfigurować jako czujniki JSON w zakładce Czujniki (typ danych: Tablica JSON)."
 }

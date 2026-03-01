@@ -28,6 +28,14 @@ const dsEvaluator = require('./lib/data-solectrus/services/evaluator');
 
 const MAX_DELAY_MS = 2_147_483_647; // Node.js timer limit
 
+/* ---------- JSON sensor presets ---------- */
+const JSON_PRESETS = {
+	forecast: { tsField: 't', valField: 'y', measurement: 'inverter_forecast', field: 'power', influxType: 'int' },
+	clearsky: { tsField: 't', valField: 'clearsky', measurement: 'inverter_forecast_clearsky', field: 'power', influxType: 'int' },
+	temperature: { tsField: 't', valField: 'temp', measurement: 'outdoor_forecast', field: 'temperature', influxType: 'float' },
+	weather_code: { tsField: 't', valField: 'weather_code', measurement: 'weather_code', field: 'code', influxType: 'int' },
+};
+
 /* =====================================================
  * Data-SOLECTRUS Adapter Proxy
  *
@@ -213,6 +221,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 		/* ---------- Forecast ---------- */
 		// Maps sourceState → array of forecast config entries that use it
 		this.forecastSourceMap = {};
+
+		/* ---------- JSON sensors ---------- */
+		// Maps sourceState → array of JSON sensor configs (type === 'json')
+		this.jsonSourceMap = {};
 
 		/* ---------- Data-SOLECTRUS proxy ---------- */
 		this.dsProxy = null; // initialized in onReady if enabled
@@ -638,6 +650,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 				continue;
 			}
 
+			// JSON sensors are handled separately via prepareJsonSensors()
+			if (sensor.type === 'json') {
+				continue;
+			}
+
 			const id = this.getSensorStateId(sensor);
 
 			const typeMapping = {
@@ -701,6 +718,157 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 
 			this.subscribeForeignStates(sensor.sourceState);
+		}
+
+		// Prepare JSON-type sensors (forecast/weather data)
+		await this.prepareJsonSensors();
+	}
+
+	/* =====================================================
+	 * JSON SENSORS (forecast / weather data via json type)
+	 * ===================================================== */
+
+	getJsonSensorConfig(sensor) {
+		const preset = JSON_PRESETS[sensor.jsonPreset];
+		if (preset) {
+			return {
+				tsField: preset.tsField,
+				valField: preset.valField,
+				measurement: preset.measurement,
+				field: preset.field,
+				influxType: preset.influxType,
+			};
+		}
+		// Custom preset: user-defined fields
+		return {
+			tsField: sensor.jsonTsField || 't',
+			valField: sensor.jsonValField || 'y',
+			measurement: sensor.measurement || 'custom_json',
+			field: sensor.field || 'value',
+			influxType: sensor.jsonInfluxType || 'float',
+		};
+	}
+
+	async prepareJsonSensors() {
+		this.jsonSourceMap = {};
+
+		for (const sensor of this.config.sensors) {
+			if (!sensor || !sensor.enabled || sensor.type !== 'json') {
+				continue;
+			}
+
+			if (!sensor.sourceState) {
+				this.log.warn(`JSON sensor "${sensor.SensorName}" has no source state`);
+				continue;
+			}
+
+			const cfg = this.getJsonSensorConfig(sensor);
+
+			if (!this.jsonSourceMap[sensor.sourceState]) {
+				this.jsonSourceMap[sensor.sourceState] = [];
+			}
+			this.jsonSourceMap[sensor.sourceState].push({
+				sensorName: sensor.SensorName,
+				...cfg,
+			});
+		}
+
+		const sourceStates = Object.keys(this.jsonSourceMap);
+		if (sourceStates.length === 0) {
+			return;
+		}
+
+		this.log.info(`JSON sensors: subscribing to ${sourceStates.length} JSON source(s)`);
+		for (const stateId of sourceStates) {
+			this.subscribeForeignStates(stateId);
+		}
+	}
+
+	processJsonSensorData(sourceState, jsonVal) {
+		const mappings = this.jsonSourceMap[sourceState];
+		if (!mappings || mappings.length === 0) {
+			return;
+		}
+
+		let data;
+		try {
+			data = typeof jsonVal === 'string' ? JSON.parse(jsonVal) : jsonVal;
+		} catch (err) {
+			this.log.warn(`JSON sensor: failed to parse JSON from ${sourceState}: ${err.message}`);
+			return;
+		}
+
+		if (!Array.isArray(data)) {
+			this.log.warn(`JSON sensor: expected JSON array from ${sourceState}, got ${typeof data}`);
+			return;
+		}
+
+		let totalPoints = 0;
+
+		for (const mapping of mappings) {
+			for (const entry of data) {
+				if (!entry || typeof entry !== 'object') {
+					continue;
+				}
+
+				const rawTs = entry[mapping.tsField];
+				const rawVal = entry[mapping.valField];
+
+				if (rawTs === undefined || rawTs === null || rawVal === undefined || rawVal === null) {
+					continue;
+				}
+
+				// Parse timestamp: number (ms or s) or string (ISO)
+				let ts;
+				if (typeof rawTs === 'number') {
+					ts = rawTs < 1e12 ? rawTs * 1000 : rawTs;
+				} else {
+					ts = new Date(rawTs).getTime();
+				}
+
+				if (!Number.isFinite(ts)) {
+					this.log.debug(`JSON sensor: invalid timestamp ${rawTs} in ${sourceState}`);
+					continue;
+				}
+
+				let value;
+				if (mapping.influxType === 'int') {
+					value = parseInt(rawVal, 10);
+				} else {
+					value = parseFloat(rawVal);
+				}
+
+				if (Number.isNaN(value)) {
+					continue;
+				}
+
+				this.buffer.push({
+					id: mapping.sensorName,
+					measurement: mapping.measurement,
+					field: mapping.field,
+					type: mapping.influxType,
+					value,
+					ts,
+				});
+				totalPoints++;
+			}
+		}
+
+		if (totalPoints > 0) {
+			this.log.info(`JSON sensor: buffered ${totalPoints} points from ${sourceState}`);
+
+			if (this.buffer.length > this.maxBufferSize) {
+				this.log.warn('Buffer limit reached – dropping oldest entries');
+				this.buffer.splice(0, this.buffer.length - this.maxBufferSize);
+			}
+
+			this.saveBuffer();
+			this.updateBufferStates();
+
+			// Trigger immediate flush
+			if (!this.isFlushing) {
+				this.scheduleNextFlush(0);
+			}
 		}
 	}
 
@@ -950,9 +1118,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.setState(sensorId, state.val, true);
 		}
 
-		// Forecast JSON source updates
+		// Forecast JSON source updates (legacy)
 		if (this.forecastSourceMap[id]) {
 			this.processForecastJson(id, state.val);
+		}
+
+		// JSON sensor source updates
+		if (this.jsonSourceMap[id]) {
+			this.processJsonSensorData(id, state.val);
 		}
 
 		// Forward to Data-SOLECTRUS cache (if enabled)
@@ -1049,6 +1222,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		for (const sensor of this.config.sensors) {
 			if (!sensor || !sensor.enabled) {
+				continue;
+			}
+
+			// JSON sensors are event-driven (written on source state change), not polled
+			if (sensor.type === 'json') {
 				continue;
 			}
 
