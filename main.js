@@ -531,14 +531,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 	/**
 	 * Ensures all default sensors from io-package.json exist in the instance config
 	 * and that sensor titles are up-to-date.
-	 *
-	 * Default-sensor creation is tracked via native._defaultSensorsVersion so it
-	 * runs only once per version. Bump DEFAULTS_VERSION when adding new defaults.
-	 * Sensor titles are refreshed on every startup (cheap string comparison).
 	 */
 	async ensureDefaultSensorsAndTitles() {
-		const DEFAULTS_VERSION = 1; // bump when new default sensors are added
-
 		try {
 			const objId = `system.adapter.${this.namespace}`;
 			const obj = await this.getForeignObjectAsync(objId);
@@ -548,33 +542,27 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 			let changed = false;
 
-			// --- Default sensor migration (version-gated) ---
-			const currentVersion = obj.native._defaultSensorsVersion || 0;
-			if (currentVersion < DEFAULTS_VERSION) {
-				const ioPackage = JSON.parse(
-					fs.readFileSync(path.join(this.adapterDir, 'io-package.json'), 'utf8'),
-				);
-				const defaultSensors = (ioPackage.native && ioPackage.native.sensors) || [];
-				const existingNames = new Set(
-					obj.native.sensors.map(s => s && s.SensorName).filter(Boolean),
-				);
+			// --- Add missing default sensors ---
+			const ioPackage = JSON.parse(
+				fs.readFileSync(path.join(this.adapterDir, 'io-package.json'), 'utf8'),
+			);
+			const defaultSensors = (ioPackage.native && ioPackage.native.sensors) || [];
+			const existingNames = new Set(
+				obj.native.sensors.map(s => s && s.SensorName).filter(Boolean),
+			);
 
-				for (const dflt of defaultSensors) {
-					if (!dflt || !dflt.SensorName) {
-						continue;
-					}
-					if (!existingNames.has(dflt.SensorName)) {
-						this.log.info(`Adding missing default sensor: ${dflt.SensorName}`);
-						obj.native.sensors.push(Object.assign({}, dflt));
-						changed = true;
-					}
+			for (const dflt of defaultSensors) {
+				if (!dflt || !dflt.SensorName) {
+					continue;
 				}
-
-				obj.native._defaultSensorsVersion = DEFAULTS_VERSION;
-				changed = true;
+				if (!existingNames.has(dflt.SensorName)) {
+					this.log.info(`Adding missing default sensor: ${dflt.SensorName}`);
+					obj.native.sensors.push(Object.assign({}, dflt));
+					changed = true;
+				}
 			}
 
-			// --- Sensor titles (every startup) ---
+			// --- Sensor titles ---
 			for (const sensor of obj.native.sensors) {
 				if (!sensor || typeof sensor !== 'object') {
 					continue;
