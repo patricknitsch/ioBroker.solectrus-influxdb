@@ -425,6 +425,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.config.sensors = [];
 		}
 
+		await this.ensureDefaultSensorsExist();
 		await this.ensureSensorTitlesInInstanceConfig();
 
 		if (!this.hasEnabledSensors()) {
@@ -483,6 +484,55 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		this.log.info('Data-SOLECTRUS formula engine started');
 		dsTickRunner.scheduleNextTick(ds);
+	}
+
+	/**
+	 * Ensures that all default sensors exist in the instance config.
+	 * This handles upgrades where new default sensors were added after initial installation.
+	 */
+	async ensureDefaultSensorsExist() {
+		const requiredSensors = [
+			{
+				SensorName: 'WEATHER_CODE_FORECAST',
+				defaults: {
+					enabled: false,
+					SensorName: 'WEATHER_CODE_FORECAST',
+					sourceState: '',
+					type: 'json',
+					jsonPreset: 'auto',
+					measurement: 'forecast',
+					field: 'weather_code',
+				},
+			},
+		];
+
+		try {
+			const objId = `system.adapter.${this.namespace}`;
+			const obj = await this.getForeignObjectAsync(objId);
+			if (!obj || !obj.native || !Array.isArray(obj.native.sensors)) {
+				return;
+			}
+
+			let changed = false;
+			for (const req of requiredSensors) {
+				const exists = obj.native.sensors.some(
+					s => s && s.SensorName === req.SensorName,
+				);
+				if (!exists) {
+					this.log.info(`Adding missing default sensor: ${req.SensorName}`);
+					obj.native.sensors.push(req.defaults);
+					changed = true;
+				}
+			}
+
+			if (changed) {
+				await this.setForeignObject(objId, obj);
+				// Reload config so the rest of onReady sees the new sensors
+				this.config.sensors = obj.native.sensors;
+			}
+		} catch (e) {
+			this.log.warn(`Cannot ensure default sensors: ${e}`);
+		}
 	}
 
 	async ensureSensorTitlesInInstanceConfig() {
