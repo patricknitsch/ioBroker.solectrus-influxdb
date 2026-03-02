@@ -664,15 +664,16 @@
                                       React.createElement('span', null, t('Enabled'))
                                   )
                               ),
-                              React.createElement('label', { style: labelStyle }, t('Sensor Name')),
-                              React.createElement('input', {
-                                  style: inputStyle,
-                                  type: 'text',
-                                  value: editSensor.SensorName || '',
-                                  disabled: !expertMode,
-                                  onChange: e => setDraftField('SensorName', e.target.value),
-                                  onBlur: e => updateSelected('SensorName', e.target.value),
-                              }),
+                              expertMode ? React.createElement(React.Fragment, null,
+                                  React.createElement('label', { style: labelStyle }, t('Sensor Name')),
+                                  React.createElement('input', {
+                                      style: inputStyle,
+                                      type: 'text',
+                                      value: editSensor.SensorName || '',
+                                      onChange: e => setDraftField('SensorName', e.target.value),
+                                      onBlur: e => updateSelected('SensorName', e.target.value),
+                                  })
+                              ) : null,
                               React.createElement(
                                   'label',
                                   { style: labelStyle },
@@ -722,38 +723,39 @@
                               // NOTE: All select values and conditionals use editSensor (draft)
                               // instead of selectedSensor (props) to avoid the value snapping back
                               // when Admin re-renders with stale props before the update propagates.
-                              React.createElement('label', { style: labelStyle }, t('Datatype')),
-                              React.createElement(
-                                  'select',
-                                  {
-                                      style: Object.assign({}, inputStyle, { maxWidth: 300 }),
-                                      value: editSensor.type || '',
-                                      disabled: !expertMode,
-                                      onChange: e => {
-                                          var newType = e.target.value;
-                                          setDraftField('type', newType);
-                                          if (newType === 'json') {
-                                              setDraftField('jsonPreset', 'auto');
-                                          }
-                                          setTimeout(function () {
+                              expertMode ? React.createElement(React.Fragment, null,
+                                  React.createElement('label', { style: labelStyle }, t('Datatype')),
+                                  React.createElement(
+                                      'select',
+                                      {
+                                          style: Object.assign({}, inputStyle, { maxWidth: 300 }),
+                                          value: editSensor.type || '',
+                                          onChange: e => {
+                                              var newType = e.target.value;
+                                              setDraftField('type', newType);
                                               if (newType === 'json') {
-                                                  updateSelectedMulti({
-                                                      type: 'json',
-                                                      jsonPreset: 'auto',
-                                                  });
-                                              } else {
-                                                  updateSelected('type', newType);
+                                                  setDraftField('jsonPreset', 'auto');
                                               }
-                                          }, 0);
+                                              setTimeout(function () {
+                                                  if (newType === 'json') {
+                                                      updateSelectedMulti({
+                                                          type: 'json',
+                                                          jsonPreset: 'auto',
+                                                      });
+                                                  } else {
+                                                      updateSelected('type', newType);
+                                                  }
+                                              }, 0);
+                                          },
                                       },
-                                  },
-                                  React.createElement('option', { value: '' }, t('Standard')),
-                                  React.createElement('option', { value: 'int' }, t('Integer')),
-                                  React.createElement('option', { value: 'float' }, t('Float')),
-                                  React.createElement('option', { value: 'bool' }, t('Boolean')),
-                                  React.createElement('option', { value: 'string' }, t('String')),
-                                  React.createElement('option', { value: 'json' }, t('JSON Array'))
-                              ),
+                                      React.createElement('option', { value: '' }, t('Standard')),
+                                      React.createElement('option', { value: 'int' }, t('Integer')),
+                                      React.createElement('option', { value: 'float' }, t('Float')),
+                                      React.createElement('option', { value: 'bool' }, t('Boolean')),
+                                      React.createElement('option', { value: 'string' }, t('String')),
+                                      React.createElement('option', { value: 'json' }, t('JSON Array'))
+                                  )
+                              ) : null,
                               // JSON-specific fields (only when type === 'json')
                               (editSensor.type || '') === 'json'
                                   ? React.createElement(
@@ -766,7 +768,6 @@
                                             {
                                                 style: Object.assign({}, inputStyle, { maxWidth: 300 }),
                                                 value: editSensor.jsonPreset || 'auto',
-                                                disabled: !expertMode,
                                                 onChange: e => {
                                                     var preset = e.target.value;
                                                     setDraftField('jsonPreset', preset);
@@ -868,8 +869,8 @@
                                         )
                                     )
                                   : null,
-                              // Measurement + Field inputs: always visible, regardless of type
-                              React.createElement(
+                              // Measurement + Field inputs: only visible in expert mode
+                              expertMode ? React.createElement(
                                   'div',
                                   { style: rowStyle },
                                   React.createElement(
@@ -880,7 +881,6 @@
                                           style: inputStyle,
                                           type: 'text',
                                           value: editSensor.measurement || '',
-                                          disabled: !expertMode,
                                           onChange: e => setDraftField('measurement', e.target.value),
                                           onBlur: e => updateSelected('measurement', e.target.value),
                                       })
@@ -893,12 +893,11 @@
                                           style: inputStyle,
                                           type: 'text',
                                           value: editSensor.field || '',
-                                          disabled: !expertMode,
                                           onChange: e => setDraftField('field', e.target.value),
                                           onBlur: e => updateSelected('field', e.target.value),
                                       })
                                   )
-                              ),
+                              ) : null,
                               showSelectStateId && DialogSelectID && socket && theme
                                   ? React.createElement(DialogSelectID, {
                                         key: 'selectStateId',
