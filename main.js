@@ -542,24 +542,22 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 			let changed = false;
 
-			// --- Add missing default sensors ---
-			const ioPackage = JSON.parse(
-				fs.readFileSync(path.join(this.adapterDir, 'io-package.json'), 'utf8'),
-			);
-			const defaultSensors = (ioPackage.native && ioPackage.native.sensors) || [];
-			const existingNames = new Set(
-				obj.native.sensors.map(s => s && s.SensorName).filter(Boolean),
-			);
+			// --- Create default sensors (only on first install) ---
+			if (!obj.native._defaultSensorsCreated) {
+				const ioPackage = JSON.parse(
+					fs.readFileSync(path.join(this.adapterDir, 'io-package.json'), 'utf8'),
+				);
+				const defaultSensors = (ioPackage.native && ioPackage.native.sensors) || [];
 
-			for (const dflt of defaultSensors) {
-				if (!dflt || !dflt.SensorName) {
-					continue;
+				for (const dflt of defaultSensors) {
+					if (dflt && dflt.SensorName) {
+						this.log.info(`Creating default sensor: ${dflt.SensorName}`);
+						obj.native.sensors.push(Object.assign({}, dflt));
+					}
 				}
-				if (!existingNames.has(dflt.SensorName)) {
-					this.log.info(`Adding missing default sensor: ${dflt.SensorName}`);
-					obj.native.sensors.push(Object.assign({}, dflt));
-					changed = true;
-				}
+
+				obj.native._defaultSensorsCreated = true;
+				changed = true;
 			}
 
 			// --- Sensor titles ---
