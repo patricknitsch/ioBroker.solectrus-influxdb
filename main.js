@@ -268,6 +268,49 @@ class SolectrusInfluxdb extends utils.Adapter {
 		return v;
 	}
 
+	/**
+	 * Parse a raw JSON value (string or object) into a JS array.
+	 * Returns null if parsing fails or the result is not an array.
+	 * Set silent=true to suppress log warnings (e.g. for display-only extraction).
+	 */
+	parseJsonArray(jsonVal, sourceLabel, silent) {
+		let data;
+		try {
+			data = typeof jsonVal === 'string' ? JSON.parse(jsonVal) : jsonVal;
+		} catch (err) {
+			if (!silent) {
+				this.log.warn(`Failed to parse JSON from ${sourceLabel}: ${err.message}`);
+			}
+			return null;
+		}
+		if (!Array.isArray(data)) {
+			if (!silent) {
+				this.log.warn(`Expected JSON array from ${sourceLabel}, got ${typeof data}`);
+			}
+			return null;
+		}
+		return data;
+	}
+
+	/**
+	 * Parse a raw timestamp (number in ms or s, or ISO string) into epoch-ms.
+	 * Returns NaN on failure.
+	 */
+	parseTimestamp(rawTs) {
+		if (typeof rawTs === 'number') {
+			return rawTs < 1e12 ? rawTs * 1000 : rawTs;
+		}
+		return new Date(rawTs).getTime();
+	}
+
+	/**
+	 * Parse a raw value according to an influx type ('int' or 'float').
+	 * Returns NaN on failure.
+	 */
+	parseInfluxValue(rawVal, influxType) {
+		return influxType === 'int' ? parseInt(rawVal, 10) : parseFloat(rawVal);
+	}
+
 	parseFieldTypeConflictError(err) {
 		if (!err || !err.message) {
 			return null;
@@ -425,8 +468,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.config.sensors = [];
 		}
 
-		await this.ensureDefaultSensorsExist();
-		await this.ensureSensorTitlesInInstanceConfig();
+		await this.ensureDefaultSensorsAndTitles();
 
 		if (!this.hasEnabledSensors()) {
 			const msg = 'No sensor is enabled. Please activate at least one sensor in the adapter configuration.';
@@ -487,57 +529,16 @@ class SolectrusInfluxdb extends utils.Adapter {
 	}
 
 	/**
-	 * Ensures that all default sensors exist in the instance config.
-	 * Runs only once (after install/upgrade) – tracked via native._defaultSensorsCreated flag.
+	 * Ensures all default sensors from io-package.json exist in the instance config
+	 * and that sensor titles are up-to-date.
+	 *
+	 * Default-sensor creation is tracked via native._defaultSensorsVersion so it
+	 * runs only once per version. Bump DEFAULTS_VERSION when adding new defaults.
+	 * Sensor titles are refreshed on every startup (cheap string comparison).
 	 */
-	async ensureDefaultSensorsExist() {
-		try {
-			const objId = `system.adapter.${this.namespace}`;
-			const obj = await this.getForeignObjectAsync(objId);
-			if (!obj || !obj.native || !Array.isArray(obj.native.sensors)) {
-				return;
-			}
+	async ensureDefaultSensorsAndTitles() {
+		const DEFAULTS_VERSION = 1; // bump when new default sensors are added
 
-			// Already ran once – skip
-			if (obj.native._defaultSensorsCreated) {
-				return;
-			}
-
-			const requiredSensors = [
-				{
-					SensorName: 'WEATHER_CODE_FORECAST',
-					defaults: {
-						enabled: false,
-						SensorName: 'WEATHER_CODE_FORECAST',
-						sourceState: '',
-						type: 'json',
-						jsonPreset: 'auto',
-						measurement: 'forecast',
-						field: 'weather_code',
-					},
-				},
-			];
-
-			for (const req of requiredSensors) {
-				const exists = obj.native.sensors.some(
-					s => s && s.SensorName === req.SensorName,
-				);
-				if (!exists) {
-					this.log.info(`Adding missing default sensor: ${req.SensorName}`);
-					obj.native.sensors.push(req.defaults);
-				}
-			}
-
-			// Mark migration as done so it never runs again
-			obj.native._defaultSensorsCreated = true;
-			await this.setForeignObject(objId, obj);
-			this.config.sensors = obj.native.sensors;
-		} catch (e) {
-			this.log.warn(`Cannot ensure default sensors: ${e}`);
-		}
-	}
-
-	async ensureSensorTitlesInInstanceConfig() {
 		try {
 			const objId = `system.adapter.${this.namespace}`;
 			const obj = await this.getForeignObjectAsync(objId);
@@ -546,9 +547,37 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 
 			let changed = false;
-			obj.native.sensors.forEach(sensor => {
+
+			// --- Default sensor migration (version-gated) ---
+			const currentVersion = obj.native._defaultSensorsVersion || 0;
+			if (currentVersion < DEFAULTS_VERSION) {
+				const ioPackage = JSON.parse(
+					fs.readFileSync(path.join(this.adapterDir, 'io-package.json'), 'utf8'),
+				);
+				const defaultSensors = (ioPackage.native && ioPackage.native.sensors) || [];
+				const existingNames = new Set(
+					obj.native.sensors.map(s => s && s.SensorName).filter(Boolean),
+				);
+
+				for (const dflt of defaultSensors) {
+					if (!dflt || !dflt.SensorName) {
+						continue;
+					}
+					if (!existingNames.has(dflt.SensorName)) {
+						this.log.info(`Adding missing default sensor: ${dflt.SensorName}`);
+						obj.native.sensors.push(Object.assign({}, dflt));
+						changed = true;
+					}
+				}
+
+				obj.native._defaultSensorsVersion = DEFAULTS_VERSION;
+				changed = true;
+			}
+
+			// --- Sensor titles (every startup) ---
+			for (const sensor of obj.native.sensors) {
 				if (!sensor || typeof sensor !== 'object') {
-					return;
+					continue;
 				}
 				const sensorName = sensor.SensorName || 'Sensor';
 				const expectedTitle = `${sensor.enabled ? '🟢 ' : '⚪ '}${sensorName}`;
@@ -556,13 +585,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 					sensor._title = expectedTitle;
 					changed = true;
 				}
-			});
+			}
 
 			if (changed) {
 				await this.setForeignObject(objId, obj);
+				this.config.sensors = obj.native.sensors;
 			}
 		} catch (e) {
-			this.log.debug(`Cannot migrate sensor titles: ${e}`);
+			this.log.warn(`Cannot ensure default sensors / titles: ${e}`);
 		}
 	}
 
@@ -814,13 +844,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * for a specific sensor mapping, and return as JSON string.
 	 */
 	extractJsonSensorValues(jsonVal, tsField, valField) {
-		let data;
-		try {
-			data = typeof jsonVal === 'string' ? JSON.parse(jsonVal) : jsonVal;
-		} catch {
-			return null;
-		}
-		if (!Array.isArray(data)) {
+		const data = this.parseJsonArray(jsonVal, 'extractJsonSensorValues', true);
+		if (!data) {
 			return null;
 		}
 		const filtered = [];
@@ -829,10 +854,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 				continue;
 			}
 			if (entry[tsField] != null && entry[valField] != null) {
-				const obj = {};
-				obj[tsField] = entry[tsField];
-				obj[valField] = entry[valField];
-				filtered.push(obj);
+				filtered.push({ [tsField]: entry[tsField], [valField]: entry[valField] });
 			}
 		}
 		return JSON.stringify(filtered);
@@ -842,13 +864,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * Extract all known preset value fields from raw JSON for auto-detection mode.
 	 */
 	extractJsonSensorValuesAuto(jsonVal, tsField) {
-		let data;
-		try {
-			data = typeof jsonVal === 'string' ? JSON.parse(jsonVal) : jsonVal;
-		} catch {
-			return null;
-		}
-		if (!Array.isArray(data)) {
+		const data = this.parseJsonArray(jsonVal, 'extractJsonSensorValuesAuto', true);
+		if (!data) {
 			return null;
 		}
 		const knownFields = Object.values(JSON_PRESETS).map(p => p.valField);
@@ -857,8 +874,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 			if (!entry || typeof entry !== 'object' || entry[tsField] == null) {
 				continue;
 			}
-			const obj = {};
-			obj[tsField] = entry[tsField];
+			const obj = { [tsField]: entry[tsField] };
 			let hasField = false;
 			for (const vf of knownFields) {
 				if (entry[vf] != null) {
@@ -914,16 +930,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 			return;
 		}
 
-		let data;
-		try {
-			data = typeof jsonVal === 'string' ? JSON.parse(jsonVal) : jsonVal;
-		} catch (err) {
-			this.log.warn(`JSON sensor: failed to parse JSON from ${sourceState}: ${err.message}`);
-			return;
-		}
-
-		if (!Array.isArray(data)) {
-			this.log.warn(`JSON sensor: expected JSON array from ${sourceState}, got ${typeof data}`);
+		const data = this.parseJsonArray(jsonVal, sourceState);
+		if (!data) {
 			return;
 		}
 
@@ -939,17 +947,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 					}
 
 					const rawTs = entry[mapping.tsField];
-					if (rawTs === undefined || rawTs === null) {
+					if (rawTs == null) {
 						continue;
 					}
 
-					let ts;
-					if (typeof rawTs === 'number') {
-						ts = rawTs < 1e12 ? rawTs * 1000 : rawTs;
-					} else {
-						ts = new Date(rawTs).getTime();
-					}
-
+					const ts = this.parseTimestamp(rawTs);
 					if (!Number.isFinite(ts)) {
 						this.log.debug(`JSON sensor: invalid timestamp ${rawTs} in ${sourceState}`);
 						continue;
@@ -957,17 +959,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 					for (const preset of presetValues) {
 						const rawVal = entry[preset.valField];
-						if (rawVal === undefined || rawVal === null) {
+						if (rawVal == null) {
 							continue;
 						}
 
-						let value;
-						if (preset.influxType === 'int') {
-							value = parseInt(rawVal, 10);
-						} else {
-							value = parseFloat(rawVal);
-						}
-
+						const value = this.parseInfluxValue(rawVal, preset.influxType);
 						if (Number.isNaN(value)) {
 							continue;
 						}
@@ -994,31 +990,17 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 				const rawTs = entry[mapping.tsField];
 				const rawVal = entry[mapping.valField];
-
-				if (rawTs === undefined || rawTs === null || rawVal === undefined || rawVal === null) {
+				if (rawTs == null || rawVal == null) {
 					continue;
 				}
 
-				// Parse timestamp: number (ms or s) or string (ISO)
-				let ts;
-				if (typeof rawTs === 'number') {
-					ts = rawTs < 1e12 ? rawTs * 1000 : rawTs;
-				} else {
-					ts = new Date(rawTs).getTime();
-				}
-
+				const ts = this.parseTimestamp(rawTs);
 				if (!Number.isFinite(ts)) {
 					this.log.debug(`JSON sensor: invalid timestamp ${rawTs} in ${sourceState}`);
 					continue;
 				}
 
-				let value;
-				if (mapping.influxType === 'int') {
-					value = parseInt(rawVal, 10);
-				} else {
-					value = parseFloat(rawVal);
-				}
-
+				const value = this.parseInfluxValue(rawVal, mapping.influxType);
 				if (Number.isNaN(value)) {
 					continue;
 				}
@@ -1111,16 +1093,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 			return;
 		}
 
-		let data;
-		try {
-			data = typeof jsonVal === 'string' ? JSON.parse(jsonVal) : jsonVal;
-		} catch (err) {
-			this.log.warn(`Forecast: failed to parse JSON from ${sourceState}: ${err.message}`);
-			return;
-		}
-
-		if (!Array.isArray(data)) {
-			this.log.warn(`Forecast: expected JSON array from ${sourceState}, got ${typeof data}`);
+		const data = this.parseJsonArray(jsonVal, sourceState);
+		if (!data) {
 			return;
 		}
 
@@ -1141,31 +1115,17 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 				const rawTs = entry[tsField];
 				const rawVal = entry[valField];
-
-				if (rawTs === undefined || rawTs === null || rawVal === undefined || rawVal === null) {
+				if (rawTs == null || rawVal == null) {
 					continue;
 				}
 
-				// Parse timestamp: number (ms or s) or string (ISO)
-				let ts;
-				if (typeof rawTs === 'number') {
-					ts = rawTs < 1e12 ? rawTs * 1000 : rawTs;
-				} else {
-					ts = new Date(rawTs).getTime();
-				}
-
+				const ts = this.parseTimestamp(rawTs);
 				if (!Number.isFinite(ts)) {
 					this.log.debug(`Forecast: invalid timestamp ${rawTs} in ${sourceState}`);
 					continue;
 				}
 
-				let value;
-				if (fc.type === 'int') {
-					value = parseInt(rawVal, 10);
-				} else {
-					value = parseFloat(rawVal);
-				}
-
+				const value = this.parseInfluxValue(rawVal, fc.type);
 				if (Number.isNaN(value)) {
 					continue;
 				}
