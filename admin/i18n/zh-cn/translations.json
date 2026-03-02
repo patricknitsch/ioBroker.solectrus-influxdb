@@ -237,14 +237,14 @@
 	"Enable Forecast Sources": "启用预报数据源",
 	"JSON Array": "JSON 数组",
 	"JSON Preset": "JSON 预设",
-	"Forecast (y)": "预报 (y)",
-	"Clearsky": "Clearsky",
-	"Temperature (temp)": "温度 (temp)",
-	"Weather Code": "天气代码",
+	"Automatic": "自动",
 	"Custom": "自定义",
 	"JSON Timestamp Field": "JSON 时间戳字段",
 	"JSON Value Field": "JSON 值字段",
 	"Influx Type": "Influx 类型",
-	"jsonSensorDetailHint": "源状态必须包含一个 JSON 数组（例如来自 pvforecast）。每个数组条目被解析并直接写入 InfluxDB，使用原始时间戳。对于预定义预设，字段映射会自动设置。对于自定义类型，请指定时间戳和值的 JSON 键。",
-	"jsonSensorHint": "预报/天气数据可以在传感器选项卡中配置为 JSON 传感器（数据类型：JSON 数组）。"
+	"jsonSensorDetailHint": "源状态必须包含一个 JSON 数组（例如来自 pvforecast）。每个数组条目被解析并直接写入 InfluxDB，使用原始时间戳。在自动模式下，适配器检测已知字段（y、clearsky、temp、weather_code）并将其写入正确的 measurements。对于自定义类型，请指定时间戳和值的 JSON 键。",
+	"jsonSensorHint": "预报/天气数据可以在传感器选项卡中配置为 JSON 传感器（数据类型：JSON 数组）。",
+	"enableExpertModeLabel": "专家模式（高级传感器配置）",
+	"WEATHER_CODE_FORECAST": "WEATHER_CODE_FORECAST",
+	"jsonAutoDetectInfo": "y \u2192 forecast.watt（预报）\nclearsky \u2192 forecast.watt_clearsky（Clearsky）\ntemp \u2192 forecast.temp（温度）\nweather_code \u2192 forecast.weather_code（天气代码）\n\nJSON 中不存在的字段将自动跳过。"
 }

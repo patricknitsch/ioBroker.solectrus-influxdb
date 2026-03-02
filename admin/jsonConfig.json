@@ -81,6 +81,17 @@
 							"lg": 12,
 							"xl": 12
 						},
+						"enableExpertMode": {
+							"type": "checkbox",
+							"label": "enableExpertModeLabel",
+							"default": false,
+							"newLine": true,
+							"xs": 12,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
+						},
 						"_legacyForecastNote": {
 							"type": "staticText",
 							"text": "jsonSensorHint",
@@ -199,7 +210,7 @@
 				"sensors": {
 					"type": "custom",
 					"name": "SolectrusSensors/Components/SolectrusSensorsEditor",
-					"url": "custom/customComponents.js?v=20260301-3",
+					"url": "custom/customComponents.js?v=20260302-1",
 					"newLine": true,
 					"sm": 12
 				}

@@ -160,6 +160,7 @@
 		"influxBucket": "solectrus",
 		"influxInterval": 5,
 		"influxToken": "",
+		"enableExpertMode": false,
 		"enableDataSolectrus": false,
 		"enableForecast": false,
 		"dsPollIntervalSeconds": 5,
@@ -524,25 +525,37 @@
 				"enabled": false,
 				"SensorName": "INVERTER_POWER_FORECAST",
 				"sourceState": "",
-				"type": "int",
-				"measurement": "inverter_forecast",
-				"field": "power"
+				"type": "json",
+				"jsonPreset": "auto",
+				"measurement": "forecast",
+				"field": "watt"
 			},
 			{
 				"enabled": false,
 				"SensorName": "INVERTER_POWER_FORECAST_CLEARSKY",
 				"sourceState": "",
-				"type": "int",
-				"measurement": "inverter_forecast_clearsky",
-				"field": "power"
+				"type": "json",
+				"jsonPreset": "auto",
+				"measurement": "forecast",
+				"field": "watt_clearsky"
 			},
 			{
 				"enabled": false,
 				"SensorName": "OUTDOOR_TEMP_FORECAST",
 				"sourceState": "",
-				"type": "float",
-				"measurement": "outdoor_forecast",
-				"field": "temperature"
+				"type": "json",
+				"jsonPreset": "auto",
+				"measurement": "forecast",
+				"field": "temp"
+			},
+			{
+				"enabled": false,
+				"SensorName": "WEATHER_CODE_FORECAST",
+				"sourceState": "",
+				"type": "json",
+				"jsonPreset": "auto",
+				"measurement": "forecast",
+				"field": "weather_code"
 			}
 		]
 	},

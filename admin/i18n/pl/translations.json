@@ -237,14 +237,14 @@
 	"Enable Forecast Sources": "Włącz źródła prognoz",
 	"JSON Array": "Tablica JSON",
 	"JSON Preset": "Szablon JSON",
-	"Forecast (y)": "Prognoza (y)",
-	"Clearsky": "Clearsky",
-	"Temperature (temp)": "Temperatura (temp)",
-	"Weather Code": "Kod pogodowy",
+	"Automatic": "Automatyczny",
 	"Custom": "Niestandardowy",
 	"JSON Timestamp Field": "Pole znacznika czasu JSON",
 	"JSON Value Field": "Pole wartości JSON",
 	"Influx Type": "Typ Influx",
-	"jsonSensorDetailHint": "Stan źródłowy musi zawierać tablicę JSON (np. z pvforecast). Każdy wpis tablicy jest parsowany i zapisywany bezpośrednio do InfluxDB z oryginalnym znacznikiem czasu. Dla predefiniowanych szablonów mapowanie pól jest ustawiane automatycznie. Dla typów niestandardowych podaj klucz JSON dla znacznika czasu i wartości.",
-	"jsonSensorHint": "Dane prognozy/pogody można skonfigurować jako czujniki JSON w zakładce Czujniki (typ danych: Tablica JSON)."
+	"jsonSensorDetailHint": "Stan źródłowy musi zawierać tablicę JSON (np. z pvforecast). Każdy wpis tablicy jest parsowany i zapisywany bezpośrednio do InfluxDB z oryginalnym znacznikiem czasu. W trybie automatycznym adapter wykrywa znane pola (y, clearsky, temp, weather_code) i zapisuje je do odpowiednich measurements. Dla typów niestandardowych podaj klucz JSON dla znacznika czasu i wartości.",
+	"jsonSensorHint": "Dane prognozy/pogody można skonfigurować jako czujniki JSON w zakładce Czujniki (typ danych: Tablica JSON).",
+	"enableExpertModeLabel": "Tryb eksperta (zaawansowana konfiguracja czujników)",
+	"WEATHER_CODE_FORECAST": "WEATHER_CODE_FORECAST",
+	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Prognoza)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Temperatura)\nweather_code \u2192 forecast.weather_code (Kod pogodowy)\n\nPola nieobecne w JSON są automatycznie pomijane."
 }

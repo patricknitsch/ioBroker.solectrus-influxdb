@@ -8,7 +8,7 @@
     'use strict';
 
     const REMOTE_NAME = 'SolectrusSensors';
-    const UI_VERSION = '2026-01-18 20260118-1';
+    const UI_VERSION = '2026-03-02 20260302-1';
     const DEBUG = false;
     let shareScope;
 
@@ -72,10 +72,10 @@
     }
 
     const JSON_PRESETS = {
-        forecast:     { tsField: 't', valField: 'y',            valDesc: 'Forecast',          measurement: 'inverter_forecast',          field: 'power',       influxType: 'int' },
-        clearsky:     { tsField: 't', valField: 'clearsky',     valDesc: 'Forecast Clearsky', measurement: 'inverter_forecast_clearsky', field: 'power',       influxType: 'int' },
-        temperature:  { tsField: 't', valField: 'temp',         valDesc: 'Temperature',       measurement: 'outdoor_forecast',           field: 'temperature', influxType: 'float' },
-        weather_code: { tsField: 't', valField: 'weather_code', valDesc: 'Weather Code',      measurement: 'weather_code',               field: 'code',        influxType: 'int' },
+        forecast:     { tsField: 't', valField: 'y',            valDesc: 'Forecast',          measurement: 'forecast', field: 'watt',          influxType: 'int' },
+        clearsky:     { tsField: 't', valField: 'clearsky',     valDesc: 'Forecast Clearsky', measurement: 'forecast', field: 'watt_clearsky', influxType: 'int' },
+        temperature:  { tsField: 't', valField: 'temp',         valDesc: 'Temperature',       measurement: 'forecast', field: 'temp',          influxType: 'float' },
+        weather_code: { tsField: 't', valField: 'weather_code', valDesc: 'Weather Code',      measurement: 'forecast', field: 'weather_code',  influxType: 'int' },
     };
 
     function makeNewSensor() {
@@ -154,6 +154,8 @@
                       hover: 'rgba(0,0,0,0.05)',
                       active: 'rgba(0,0,0,0.08)',
                   };
+
+            const expertMode = !!(dataIsObject && props.data && props.data.enableExpertMode);
 
             const DialogSelectID = AdapterReact && (AdapterReact.DialogSelectID || AdapterReact.SelectID);
 
@@ -571,31 +573,33 @@
                 React.createElement(
                     'div',
                     { style: leftStyle },
-                    React.createElement(
-                        'div',
-                        { style: toolbarStyle },
-                        React.createElement('button', { type: 'button', style: btnStyle, onClick: addSensor }, t('Add')),
-                        React.createElement(
-                            'button',
-                            { type: 'button', style: btnStyle, onClick: cloneSelected, disabled: !selectedSensor },
-                            t('Duplicate')
-                        ),
-                        React.createElement(
-                            'button',
-                            { type: 'button', style: btnStyle, onClick: deleteSelected, disabled: !selectedSensor },
-                            t('Delete')
-                        ),
-                        React.createElement(
-                            'button',
-                            { type: 'button', style: btnStyle, onClick: () => moveSelected(-1), disabled: selectedIndex <= 0 },
-                            t('Up')
-                        ),
-                        React.createElement(
-                            'button',
-                            { type: 'button', style: btnStyle, onClick: () => moveSelected(1), disabled: selectedIndex >= sensors.length - 1 },
-                            t('Down')
+                    expertMode
+                        ? React.createElement(
+                            'div',
+                            { style: toolbarStyle },
+                            React.createElement('button', { type: 'button', style: btnStyle, onClick: addSensor }, t('Add')),
+                            React.createElement(
+                                'button',
+                                { type: 'button', style: btnStyle, onClick: cloneSelected, disabled: !selectedSensor },
+                                t('Duplicate')
+                            ),
+                            React.createElement(
+                                'button',
+                                { type: 'button', style: btnStyle, onClick: deleteSelected, disabled: !selectedSensor },
+                                t('Delete')
+                            ),
+                            React.createElement(
+                                'button',
+                                { type: 'button', style: btnStyle, onClick: () => moveSelected(-1), disabled: selectedIndex <= 0 },
+                                t('Up')
+                            ),
+                            React.createElement(
+                                'button',
+                                { type: 'button', style: btnStyle, onClick: () => moveSelected(1), disabled: selectedIndex >= sensors.length - 1 },
+                                t('Down')
+                            )
                         )
-                    ),
+                        : null,
                     React.createElement(
                         'div',
                         { style: listStyle },
@@ -665,6 +669,7 @@
                                   style: inputStyle,
                                   type: 'text',
                                   value: editSensor.SensorName || '',
+                                  disabled: !expertMode,
                                   onChange: e => setDraftField('SensorName', e.target.value),
                                   onBlur: e => updateSelected('SensorName', e.target.value),
                               }),
@@ -723,29 +728,18 @@
                                   {
                                       style: Object.assign({}, inputStyle, { maxWidth: 300 }),
                                       value: editSensor.type || '',
+                                      disabled: !expertMode,
                                       onChange: e => {
                                           var newType = e.target.value;
-                                          // 1) Update draft FIRST so the UI reflects the change immediately
                                           setDraftField('type', newType);
                                           if (newType === 'json') {
-                                              var p = JSON_PRESETS['forecast'];
-                                              setDraftField('jsonPreset', 'forecast');
-                                              setDraftField('measurement', p.measurement);
-                                              setDraftField('field', p.field);
+                                              setDraftField('jsonPreset', 'auto');
                                           }
-                                          // 2) Defer persistence: Admin's onChange/forceUpdate can remount
-                                          //    the component synchronously, destroying React state before
-                                          //    the draft update is processed.  setTimeout lets React flush
-                                          //    the draft first; the module-scoped cache ensures the draft
-                                          //    survives even if a remount happens.
                                           setTimeout(function () {
                                               if (newType === 'json') {
-                                                  var pr = JSON_PRESETS['forecast'];
                                                   updateSelectedMulti({
                                                       type: 'json',
-                                                      jsonPreset: 'forecast',
-                                                      measurement: pr.measurement,
-                                                      field: pr.field,
+                                                      jsonPreset: 'auto',
                                                   });
                                               } else {
                                                   updateSelected('type', newType);
@@ -771,36 +765,21 @@
                                             'select',
                                             {
                                                 style: Object.assign({}, inputStyle, { maxWidth: 300 }),
-                                                value: editSensor.jsonPreset || 'forecast',
+                                                value: editSensor.jsonPreset || 'auto',
+                                                disabled: !expertMode,
                                                 onChange: e => {
                                                     var preset = e.target.value;
-                                                    var p = JSON_PRESETS[preset];
                                                     setDraftField('jsonPreset', preset);
-                                                    if (p) {
-                                                        setDraftField('measurement', p.measurement);
-                                                        setDraftField('field', p.field);
-                                                    }
                                                     setTimeout(function () {
-                                                        if (p) {
-                                                            updateSelectedMulti({
-                                                                jsonPreset: preset,
-                                                                measurement: p.measurement,
-                                                                field: p.field,
-                                                            });
-                                                        } else {
-                                                            updateSelected('jsonPreset', preset);
-                                                        }
+                                                        updateSelected('jsonPreset', preset);
                                                     }, 0);
                                                 },
                                             },
-                                            React.createElement('option', { value: 'forecast' }, t('Forecast (y)')),
-                                            React.createElement('option', { value: 'clearsky' }, t('Clearsky')),
-                                            React.createElement('option', { value: 'temperature' }, t('Temperature (temp)')),
-                                            React.createElement('option', { value: 'weather_code' }, t('Weather Code')),
+                                            React.createElement('option', { value: 'auto' }, t('Automatic')),
                                             React.createElement('option', { value: 'custom' }, t('Custom'))
                                         ),
-                                        // Info box for presets
-                                        (editSensor.jsonPreset || 'forecast') !== 'custom'
+                                        // Info box for auto mode
+                                        (editSensor.jsonPreset || 'auto') === 'auto'
                                             ? React.createElement(
                                                   'div',
                                                   {
@@ -813,19 +792,14 @@
                                                           color: colors.textMuted,
                                                           lineHeight: 1.6,
                                                           fontFamily: 'monospace',
+                                                          whiteSpace: 'pre-line',
                                                       },
                                                   },
-                                                  (function () {
-                                                      var p = JSON_PRESETS[editSensor.jsonPreset || 'forecast'] || JSON_PRESETS.forecast;
-                                                      return [
-                                                          p.tsField + ' \u2192 ' + t('Timestamp'),
-                                                          p.valField + ' \u2192 ' + t(p.valDesc),
-                                                      ].join('\n');
-                                                  })()
+                                                  t('jsonAutoDetectInfo')
                                               )
                                             : null,
-                                        // Custom JSON fields
-                                        (editSensor.jsonPreset || 'forecast') === 'custom'
+                                        // Custom JSON fields (only in expert mode with custom preset)
+                                        (editSensor.jsonPreset || 'auto') === 'custom'
                                             ? React.createElement(
                                                   React.Fragment,
                                                   null,
@@ -906,6 +880,7 @@
                                           style: inputStyle,
                                           type: 'text',
                                           value: editSensor.measurement || '',
+                                          disabled: !expertMode,
                                           onChange: e => setDraftField('measurement', e.target.value),
                                           onBlur: e => updateSelected('measurement', e.target.value),
                                       })
@@ -918,6 +893,7 @@
                                           style: inputStyle,
                                           type: 'text',
                                           value: editSensor.field || '',
+                                          disabled: !expertMode,
                                           onChange: e => setDraftField('field', e.target.value),
                                           onBlur: e => updateSelected('field', e.target.value),
                                       })

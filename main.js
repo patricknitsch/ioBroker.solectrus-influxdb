@@ -30,10 +30,10 @@ const MAX_DELAY_MS = 2_147_483_647; // Node.js timer limit
 
 /* ---------- JSON sensor presets ---------- */
 const JSON_PRESETS = {
-	forecast: { tsField: 't', valField: 'y', measurement: 'inverter_forecast', field: 'power', influxType: 'int' },
-	clearsky: { tsField: 't', valField: 'clearsky', measurement: 'inverter_forecast_clearsky', field: 'power', influxType: 'int' },
-	temperature: { tsField: 't', valField: 'temp', measurement: 'outdoor_forecast', field: 'temperature', influxType: 'float' },
-	weather_code: { tsField: 't', valField: 'weather_code', measurement: 'weather_code', field: 'code', influxType: 'int' },
+	forecast: { tsField: 't', valField: 'y', measurement: 'forecast', field: 'watt', influxType: 'int' },
+	clearsky: { tsField: 't', valField: 'clearsky', measurement: 'forecast', field: 'watt_clearsky', influxType: 'int' },
+	temperature: { tsField: 't', valField: 'temp', measurement: 'forecast', field: 'temp', influxType: 'float' },
+	weather_code: { tsField: 't', valField: 'weather_code', measurement: 'forecast', field: 'weather_code', influxType: 'int' },
 };
 
 /* =====================================================
@@ -685,7 +685,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 					const cfg = this.getJsonSensorConfig(sensor);
 					const state = await this.getForeignStateAsync(sensor.sourceState);
 					if (state && state.val != null) {
-						const filtered = this.extractJsonSensorValues(state.val, cfg.tsField, cfg.valField);
+						let filtered;
+						if (cfg.autoDetect) {
+							filtered = this.extractJsonSensorValuesAuto(state.val, cfg.tsField);
+						} else {
+							filtered = this.extractJsonSensorValues(state.val, cfg.tsField, cfg.valField);
+						}
 						if (filtered) {
 							this.setState(id, filtered, true);
 						}
@@ -726,6 +731,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * ===================================================== */
 
 	getJsonSensorConfig(sensor) {
+		// Auto-detection: scan JSON data for all known value fields
+		if (sensor.jsonPreset === 'auto') {
+			return { autoDetect: true, tsField: 't' };
+		}
+
 		const preset = JSON_PRESETS[sensor.jsonPreset];
 		if (preset) {
 			// Preset provides defaults, but user-defined measurement/field take priority
@@ -770,6 +780,41 @@ class SolectrusInfluxdb extends utils.Adapter {
 				const obj = {};
 				obj[tsField] = entry[tsField];
 				obj[valField] = entry[valField];
+				filtered.push(obj);
+			}
+		}
+		return JSON.stringify(filtered);
+	}
+
+	/**
+	 * Extract all known preset value fields from raw JSON for auto-detection mode.
+	 */
+	extractJsonSensorValuesAuto(jsonVal, tsField) {
+		let data;
+		try {
+			data = typeof jsonVal === 'string' ? JSON.parse(jsonVal) : jsonVal;
+		} catch {
+			return null;
+		}
+		if (!Array.isArray(data)) {
+			return null;
+		}
+		const knownFields = Object.values(JSON_PRESETS).map(p => p.valField);
+		const filtered = [];
+		for (const entry of data) {
+			if (!entry || typeof entry !== 'object' || entry[tsField] == null) {
+				continue;
+			}
+			const obj = {};
+			obj[tsField] = entry[tsField];
+			let hasField = false;
+			for (const vf of knownFields) {
+				if (entry[vf] != null) {
+					obj[vf] = entry[vf];
+					hasField = true;
+				}
+			}
+			if (hasField) {
 				filtered.push(obj);
 			}
 		}
@@ -831,8 +876,65 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 
 		let totalPoints = 0;
+		const presetValues = Object.values(JSON_PRESETS);
 
 		for (const mapping of mappings) {
+			// Auto-detection: scan for all known value fields in each entry
+			if (mapping.autoDetect) {
+				for (const entry of data) {
+					if (!entry || typeof entry !== 'object') {
+						continue;
+					}
+
+					const rawTs = entry[mapping.tsField];
+					if (rawTs === undefined || rawTs === null) {
+						continue;
+					}
+
+					let ts;
+					if (typeof rawTs === 'number') {
+						ts = rawTs < 1e12 ? rawTs * 1000 : rawTs;
+					} else {
+						ts = new Date(rawTs).getTime();
+					}
+
+					if (!Number.isFinite(ts)) {
+						this.log.debug(`JSON sensor: invalid timestamp ${rawTs} in ${sourceState}`);
+						continue;
+					}
+
+					for (const preset of presetValues) {
+						const rawVal = entry[preset.valField];
+						if (rawVal === undefined || rawVal === null) {
+							continue;
+						}
+
+						let value;
+						if (preset.influxType === 'int') {
+							value = parseInt(rawVal, 10);
+						} else {
+							value = parseFloat(rawVal);
+						}
+
+						if (Number.isNaN(value)) {
+							continue;
+						}
+
+						this.buffer.push({
+							id: `${mapping.sensorName}_${preset.valField}`,
+							measurement: preset.measurement,
+							field: preset.field,
+							type: preset.influxType,
+							value,
+							ts,
+						});
+						totalPoints++;
+					}
+				}
+				continue;
+			}
+
+			// Standard mapping (specific preset or custom)
 			for (const entry of data) {
 				if (!entry || typeof entry !== 'object') {
 					continue;
@@ -1146,7 +1248,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 				const mappings = this.jsonSourceMap[id];
 				for (const mapping of mappings) {
 					const mId = this.getSensorStateId({ SensorName: mapping.sensorName });
-					const filtered = this.extractJsonSensorValues(state.val, mapping.tsField, mapping.valField);
+					let filtered;
+					if (mapping.autoDetect) {
+						filtered = this.extractJsonSensorValuesAuto(state.val, mapping.tsField);
+					} else {
+						filtered = this.extractJsonSensorValues(state.val, mapping.tsField, mapping.valField);
+					}
 					if (filtered) {
 						this.setState(mId, filtered, true);
 					}

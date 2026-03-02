@@ -237,14 +237,14 @@
 	"Enable Forecast Sources": "Activer les sources de prévision",
 	"JSON Array": "Tableau JSON",
 	"JSON Preset": "Modèle JSON",
-	"Forecast (y)": "Prévision (y)",
-	"Clearsky": "Clearsky",
-	"Temperature (temp)": "Température (temp)",
-	"Weather Code": "Code météo",
+	"Automatic": "Automatique",
 	"Custom": "Personnalisé",
 	"JSON Timestamp Field": "Champ d'horodatage JSON",
 	"JSON Value Field": "Champ de valeur JSON",
 	"Influx Type": "Type Influx",
-	"jsonSensorDetailHint": "L'état source doit contenir un tableau JSON (p.ex. de pvforecast). Chaque entrée du tableau est analysée et écrite directement dans InfluxDB avec l'horodatage original. Pour les modèles prédéfinis, le mappage des champs est configuré automatiquement. Pour les types personnalisés, spécifiez la clé JSON pour l'horodatage et la valeur.",
-	"jsonSensorHint": "Les données de prévision/météo peuvent être configurées comme capteurs JSON dans l'onglet Capteurs (type de données : Tableau JSON)."
+	"jsonSensorDetailHint": "L'état source doit contenir un tableau JSON (p.ex. de pvforecast). Chaque entrée du tableau est analysée et écrite directement dans InfluxDB avec l'horodatage original. En mode automatique, l'adaptateur détecte les champs connus (y, clearsky, temp, weather_code) et les écrit dans les measurements appropriés. Pour les types personnalisés, spécifiez la clé JSON pour l'horodatage et la valeur.",
+	"jsonSensorHint": "Les données de prévision/météo peuvent être configurées comme capteurs JSON dans l'onglet Capteurs (type de données : Tableau JSON).",
+	"enableExpertModeLabel": "Mode expert (configuration avancée des capteurs)",
+	"WEATHER_CODE_FORECAST": "WEATHER_CODE_FORECAST",
+	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Prévision)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Température)\nweather_code \u2192 forecast.weather_code (Code météo)\n\nLes champs absents du JSON sont ignorés automatiquement."
 }

@@ -5,14 +5,15 @@
 1. [InfluxDB-Konfiguration](#1-influxdb-konfiguration)
 2. [Sensoren](#2-sensoren)
 3. [Prognosequellen](#3-prognosequellen)
-4. [Data-SOLECTRUS Formel-Engine](#4-data-solectrus-formel-engine)
-5. [Item-Modi](#5-item-modi)
-6. [Formel-Builder](#6-formel-builder)
-7. [State Machine Modus](#7-state-machine-modus)
-8. [Data Runtime Einstellungen](#8-data-runtime-einstellungen)
-9. [Monitoring & Buffer](#9-monitoring--buffer)
-10. [Berechnete Werte als Sensor-Quellen verwenden](#10-berechnete-werte-als-sensor-quellen-verwenden)
-11. [Debugging](#11-debugging)
+4. [How-To: pvForecast mit pvnode](#4-how-to-pvforecast-mit-pvnode)
+5. [Data-SOLECTRUS Formel-Engine](#5-data-solectrus-formel-engine)
+6. [Item-Modi](#6-item-modi)
+7. [Formel-Builder](#7-formel-builder)
+8. [State Machine Modus](#8-state-machine-modus)
+9. [Data Runtime Einstellungen](#9-data-runtime-einstellungen)
+10. [Monitoring & Buffer](#10-monitoring--buffer)
+11. [Berechnete Werte als Sensor-Quellen verwenden](#11-berechnete-werte-als-sensor-quellen-verwenden)
+12. [Debugging](#12-debugging)
 
 ---
 
@@ -30,7 +31,10 @@ Adapter-Einstellungen öffnen und zum Tab **InfluxDB** wechseln.
 
 Der Adapter prüft die Verbindung beim Start durch Schreiben eines Test-Punktes. Der Verbindungsstatus wird in `info.connection` angezeigt.
 
-Am Ende dieses Tabs befindet sich eine Checkbox zum Aktivieren der **Data-SOLECTRUS** Formel-Engine (siehe Abschnitt 3).
+Am Ende dieses Tabs befinden sich:
+
+- Eine Checkbox zum Aktivieren der **Data-SOLECTRUS** Formel-Engine (siehe Abschnitt 5)
+- Eine Checkbox zum Aktivieren des **Expertenmodus** (siehe Abschnitt 2 -- Sensoren)
 
 ---
 
@@ -38,7 +42,23 @@ Am Ende dieses Tabs befindet sich eine Checkbox zum Aktivieren der **Data-SOLECT
 
 Zum Tab **Sensors** wechseln. Der Master/Detail-Editor zeigt alle konfigurierten Sensoren mit ihrem Live-Status.
 
-### Sensor hinzufügen
+### Standardmodus vs. Expertenmodus
+
+Standardmäßig läuft der Adapter im **Standardmodus**. Die Sensorliste zeigt alle vorkonfigurierten Sensoren (INVERTER_POWER, BATTERY_SOC, HOUSE_POWER, Prognosesensoren usw.). Im Standardmodus:
+
+- **Editierbar**: Source State (ioBroker-Datenpunkt) und Aktiviert-Checkbox
+- **Nur lesen**: Sensorname, Datentyp, Measurement, Field, JSON-Vorlage
+- **Ausgeblendet**: Hinzufügen-, Löschen-, Duplizieren-Buttons
+
+So wird sichergestellt, dass Anfänger einfach Sensoren aktivieren und Quell-States zuweisen können, ohne versehentlich das InfluxDB-Mapping zu ändern.
+
+Für volle Kontrolle den **Expertenmodus** auf der InfluxDB-Einstellungsseite aktivieren. Im Expertenmodus:
+
+- Alle Felder sind editierbar
+- Sensoren können hinzugefügt, gelöscht, dupliziert und umsortiert werden
+- JSON-Vorlagen können auf Benutzerdefiniert umgestellt werden
+
+### Sensor hinzufügen (Expertenmodus)
 
 Auf **Add** klicken und konfigurieren:
 
@@ -47,11 +67,31 @@ Auf **Add** klicken und konfigurieren:
 | Enabled | Sensor aktivieren/deaktivieren |
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. |
-| Datatype | `int`, `float`, `bool` oder `string` |
-| Influx Measurement | InfluxDB Measurement-Name (z.B. `INVERTER_POWER`) |
-| Influx Field | InfluxDB Feldname (z.B. `value`) |
+| Datatype | `int`, `float`, `bool`, `string` oder `json` (JSON-Array) |
+| Influx Measurement | InfluxDB Measurement-Name (z.B. `inverter`) |
+| Influx Field | InfluxDB Feldname (z.B. `power`) |
 
 Mindestens ein Sensor muss aktiviert sein, damit Daten geschrieben werden.
+
+### JSON-Sensoren (Prognosedaten)
+
+Für Prognose-/Wetterdaten den Datentyp auf **JSON-Array** setzen. Zwei Vorlage-Modi sind verfügbar:
+
+| Modus | Beschreibung |
+|-------|--------------|
+| **Automatisch** | Erkennt bekannte Felder in den JSON-Daten (`y`, `clearsky`, `temp`, `weather_code`) automatisch und schreibt jedes in das korrekte InfluxDB-Measurement/Field. Ein Sensor verarbeitet alle erkannten Prognosetypen. |
+| **Benutzerdefiniert** | Zeitstempel-Feld, Wert-Feld und InfluxDB-Typ manuell festlegen. Für nicht-standardmäßige JSON-Quellen verwenden. |
+
+**Automatische Erkennung:**
+
+| JSON-Feld | InfluxDB Measurement | InfluxDB Field | Typ |
+|-----------|---------------------|----------------|-----|
+| `y` | `forecast` | `watt` | int |
+| `clearsky` | `forecast` | `watt_clearsky` | int |
+| `temp` | `forecast` | `temp` | float |
+| `weather_code` | `forecast` | `weather_code` | int |
+
+Felder, die im JSON nicht vorhanden sind, werden automatisch übersprungen.
 
 ### Funktionsweise
 
@@ -86,19 +126,19 @@ Meldet InfluxDB einen Field-Type-Konflikt (z.B. Float in ein bestehendes Int-Fel
 
 ## 3. Prognosequellen
 
-Der Tab **Prognose** ermöglicht es, JSON-basierte Prognosedaten (z.B. vom pvforecast-Adapter) zu sammeln und mit den korrekten Zeitstempeln aus den JSON-Daten in InfluxDB zu schreiben.
+Prognose- und Wetterdaten von pvforecast oder ähnlichen Adaptern können mit **JSON-Sensoren** im Tab Sensoren nach InfluxDB geschrieben werden. Einfach den Datentyp auf **JSON-Array** setzen und die Vorlage **Automatisch** verwenden.
 
 ### Funktionsweise
 
 1. Der Adapter abonniert einen oder mehrere JSON-States (z.B. `pvforecast.0.summary.JSONData`)
 2. Wenn sich der JSON-State ändert, parst der Adapter das JSON-Array
-3. Jeder Eintrag im Array enthält einen Zeitstempel und ein oder mehrere Wert-Felder
-4. Der Adapter schreibt jeden Wert in das konfigurierte InfluxDB-Measurement und -Field mit dem Zeitstempel aus den JSON-Daten
+3. Im **Automatik**-Modus durchsucht der Adapter jeden Eintrag nach bekannten Wert-Feldern (`y`, `clearsky`, `temp`, `weather_code`)
+4. Für jedes erkannte Feld wird ein Datenpunkt mit dem korrekten Measurement, Field und Typ in InfluxDB geschrieben
 5. Da InfluxDB Punkte mit gleichem Measurement, Tags und Zeitstempel überschreibt, werden **bestehende Prognosepunkte automatisch aktualisiert**, wenn sich die Quelldaten ändern
 
 ### JSON-Format
 
-Der Quell-State muss ein JSON-Array von Objekten enthalten. Jedes Objekt muss mindestens ein Zeitstempel-Feld und ein Wert-Feld haben:
+Der Quell-State muss ein JSON-Array von Objekten enthalten. Jedes Objekt muss ein Zeitstempel-Feld (`t`) und ein oder mehrere Wert-Felder haben:
 
 ```json
 [
@@ -107,42 +147,85 @@ Der Quell-State muss ein JSON-Array von Objekten enthalten. Jedes Objekt muss mi
 ]
 ```
 
-### Konfiguration
+### Vorkonfigurierte Prognosesensoren
 
-Wechsle zum Tab **Prognose** und füge pro JSON-Feld, das nach InfluxDB geschrieben werden soll, eine Zeile hinzu:
+Der Adapter enthält vier vorkonfigurierte Prognosesensoren:
 
-| Einstellung | Beschreibung |
-|-------------|-------------|
-| Aktiviert | Prognoseeintrag aktivieren/deaktivieren |
-| Name | Anzeigename (z.B. `INVERTER_POWER_FORECAST`) |
-| ioBroker Source State | Der JSON-Quell-State (z.B. `pvforecast.0.summary.JSONData`) |
-| Zeitstempel-Feld | Name des Zeitstempel-Feldes im JSON (Standard: `t`) |
-| Wert-Feld | Name des Wert-Feldes zum Extrahieren (z.B. `y`, `clearsky`, `temp`) |
-| Influx Measurement | Der InfluxDB-Measurement-Name |
-| Influx Field | Der InfluxDB-Feldname |
-| Datentyp | `int` oder `float` |
+| Sensor | Measurement | Field | Typ | JSON-Feld |
+|--------|-------------|-------|-----|-----------|
+| INVERTER_POWER_FORECAST | `forecast` | `watt` | int | `y` |
+| INVERTER_POWER_FORECAST_CLEARSKY | `forecast` | `watt_clearsky` | int | `clearsky` |
+| OUTDOOR_TEMP_FORECAST | `forecast` | `temp` | float | `temp` |
+| WEATHER_CODE_FORECAST | `forecast` | `weather_code` | int | `weather_code` |
 
-### Beispiel-Konfiguration
-
-Um Leistung, Clearsky-Leistung und Temperatur von pvforecast nach InfluxDB zu schreiben, füge drei Zeilen hinzu, die auf den gleichen Source-State zeigen, aber verschiedene Wert-Felder verwenden:
-
-| Name | Source State | Wert-Feld | Measurement | Field |
-|------|-------------|-----------|-------------|-------|
-| INVERTER_POWER_FORECAST | pvforecast.0.summary.JSONData | y | inverter_forecast | power |
-| INVERTER_POWER_FORECAST_CLEARSKY | pvforecast.0.summary.JSONData | clearsky | inverter_forecast_clearsky | power |
-| OUTDOOR_TEMP_FORECAST | pvforecast.0.summary.JSONData | temp | outdoor_forecast | temperature |
+Im **Automatik**-Modus erkennt ein einzelner JSON-Sensor alle vorhandenen Felder und schreibt sie automatisch. Du musst nur einen Sensor aktivieren und auf den JSON-Quell-State zeigen.
 
 ### Zeitstempel-Behandlung
 
-- **Millisekunden** (Zahl ≥ 10¹²): Direkt verwendet
-- **Sekunden** (Zahl < 10¹²): Automatisch in Millisekunden umgerechnet
+- **Millisekunden** (Zahl >= 10^12): Direkt verwendet
+- **Sekunden** (Zahl < 10^12): Automatisch in Millisekunden umgerechnet
 - **ISO-String**: Geparst über `Date`-Konstruktor
 
 ---
 
-## 4. Data-SOLECTRUS Formel-Engine
+## 4. How-To: pvForecast mit pvnode
 
-Die Formel-Engine ist ein optionales Feature zur Berechnung abgeleiteter Werte aus beliebigen ioBroker-States. Aktivierung über die Checkbox **Enable Data-SOLECTRUS (formula engine)** im InfluxDB-Tab.
+Dieser Abschnitt erklärt, wie der **pvforecast**-Adapter mit SOLECTRUS InfluxDB für Prognosedaten verbunden wird.
+
+### Voraussetzungen
+
+- ioBroker mit installiertem pvforecast-Adapter
+- SOLECTRUS InfluxDB-Adapter installiert und mit InfluxDB verbunden
+
+### Schritt 1: pvforecast-Backend wählen
+
+Der pvforecast-Adapter unterstützt zwei Backends:
+
+| Backend | Verfügbare Felder | Beschreibung |
+|---------|-------------------|--------------|
+| **Standard** | `y` (Prognoseleistung) | Nur einfache PV-Leistungsprognose |
+| **pvnode** | `y`, `clearsky`, `temp`, `weather_code` | Vollständige Prognose mit Clearsky-Einstrahlung, Temperatur und Wettercodes |
+
+> **Wichtig:** Die Felder `clearsky` (watt_clearsky), `temp` und `weather_code` sind **nur mit pvnode** als Backend verfügbar. Das Standard-pvForecast-Backend liefert nur das Feld `y` (Prognoseleistung).
+
+### Schritt 2: pvforecast konfigurieren
+
+1. pvforecast-Adapter in ioBroker installieren
+2. PV-Anlagenparameter konfigurieren (Standort, Module, Ausrichtung usw.)
+3. Wenn Clearsky-, Temperatur- und Wettercode-Daten gewünscht sind, **pvnode** als Backend konfigurieren
+4. Prüfen, dass `pvforecast.0.summary.JSONData` ein JSON-Array mit Prognosedaten enthält
+
+### Schritt 3: JSON-Sensor in SOLECTRUS InfluxDB aktivieren
+
+1. SOLECTRUS InfluxDB Adapter-Einstellungen öffnen
+2. Zum Tab **Sensoren** wechseln
+3. Den Sensor **INVERTER_POWER_FORECAST** (oder einen anderen Prognosesensor) finden
+4. Den **ioBroker Source State** auf `pvforecast.0.summary.JSONData` setzen
+5. Den Sensor aktivieren (Checkbox)
+6. Konfiguration speichern
+
+Der Adapter erkennt automatisch alle verfügbaren Felder in den JSON-Daten und schreibt sie nach InfluxDB:
+
+- `y` -> `forecast.watt` (immer verfügbar)
+- `clearsky` -> `forecast.watt_clearsky` (nur pvnode)
+- `temp` -> `forecast.temp` (nur pvnode)
+- `weather_code` -> `forecast.weather_code` (nur pvnode)
+
+### Schritt 4: In InfluxDB prüfen
+
+Nach dem nächsten pvforecast-Update den InfluxDB-Bucket auf das Measurement `forecast` prüfen. Die Felder `watt` und, bei Verwendung von pvnode, auch `watt_clearsky`, `temp` und `weather_code` sollten sichtbar sein.
+
+### Fehlerbehebung
+
+- **Keine Daten geschrieben**: Sicherstellen, dass der Sensor aktiviert ist und der Source-State ein gültiges JSON-Array enthält
+- **Nur Feld `watt`**: Das pvforecast-Backend ist nicht pvnode. Auf pvnode wechseln für zusätzliche Felder
+- **Zeitstempel falsch**: Prüfen, dass die JSON-Daten Unix-Zeitstempel (Sekunden oder Millisekunden) oder ISO-Strings verwenden
+
+---
+
+## 5. Data-SOLECTRUS Formel-Engine
+
+Die Formel-Engine ist ein optionales Feature zur Berechnung abgeleiteter Werte aus beliebigen ioBroker-States. Aktivierung über die Checkbox **Data-SOLECTRUS aktivieren (Formel-Engine)** im InfluxDB-Tab.
 
 Bei Aktivierung erscheinen zwei zusätzliche Tabs:
 
@@ -158,7 +241,7 @@ Bei Aktivierung erscheinen zwei zusätzliche Tabs:
 
 ---
 
-## 5. Item-Modi
+## 6. Item-Modi
 
 ### Source-Modus
 
@@ -222,7 +305,7 @@ Diese Funktionen lesen ioBroker-States direkt in einer Formel, ohne benannte Inp
 
 ---
 
-## 6. Formel-Builder
+## 7. Formel-Builder
 
 Neben dem Formel-Eingabefeld auf **Builder...** klicken um den visuellen Formel-Builder zu öffnen.
 
@@ -239,7 +322,7 @@ Die Formel ist jederzeit als Klartext editierbar. Der Builder fügt Bausteine nu
 
 ---
 
-## 7. State Machine Modus
+## 8. State Machine Modus
 
 Der State Machine Modus erzeugt String- oder Boolean-States basierend auf Regeln. Regeln werden von oben nach unten ausgewertet; die **erste passende Regel gewinnt**.
 
@@ -284,7 +367,7 @@ Ergebnis: Der Ausgabe-State enthält `Akku-Leer`, `Akku-Niedrig`, `Voll-Export` 
 
 ---
 
-## 8. Data Runtime Einstellungen
+## 9. Data Runtime Einstellungen
 
 Im Tab **Data Runtime**:
 
@@ -296,7 +379,7 @@ Im Tab **Data Runtime**:
 
 ---
 
-## 9. Monitoring & Buffer
+## 10. Monitoring & Buffer
 
 ### Adapter-States
 
@@ -324,7 +407,7 @@ Berechnete Werte erscheinen unter `solectrus-influxdb.X.ds.*` mit Diagnose-State
 
 ---
 
-## 10. Berechnete Werte als Sensor-Quellen verwenden
+## 11. Berechnete Werte als Sensor-Quellen verwenden
 
 Data-SOLECTRUS berechnete Werte können als Sensor-Input für die InfluxDB-Speicherung genutzt werden:
 
@@ -337,7 +420,7 @@ Der Adapter regelt die Initialisierungsreihenfolge automatisch -- Sensor-Abonnem
 
 ---
 
-## 11. Debugging
+## 12. Debugging
 
 Loglevel des Adapters auf **Debug** setzen für detaillierte Ausgaben zu:
 
