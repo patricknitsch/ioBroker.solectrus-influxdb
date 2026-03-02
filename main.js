@@ -488,24 +488,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 	/**
 	 * Ensures that all default sensors exist in the instance config.
-	 * This handles upgrades where new default sensors were added after initial installation.
+	 * Runs only once (after install/upgrade) – tracked via native._defaultSensorsCreated flag.
 	 */
 	async ensureDefaultSensorsExist() {
-		const requiredSensors = [
-			{
-				SensorName: 'WEATHER_CODE_FORECAST',
-				defaults: {
-					enabled: false,
-					SensorName: 'WEATHER_CODE_FORECAST',
-					sourceState: '',
-					type: 'json',
-					jsonPreset: 'auto',
-					measurement: 'forecast',
-					field: 'weather_code',
-				},
-			},
-		];
-
 		try {
 			const objId = `system.adapter.${this.namespace}`;
 			const obj = await this.getForeignObjectAsync(objId);
@@ -513,7 +498,26 @@ class SolectrusInfluxdb extends utils.Adapter {
 				return;
 			}
 
-			let changed = false;
+			// Already ran once – skip
+			if (obj.native._defaultSensorsCreated) {
+				return;
+			}
+
+			const requiredSensors = [
+				{
+					SensorName: 'WEATHER_CODE_FORECAST',
+					defaults: {
+						enabled: false,
+						SensorName: 'WEATHER_CODE_FORECAST',
+						sourceState: '',
+						type: 'json',
+						jsonPreset: 'auto',
+						measurement: 'forecast',
+						field: 'weather_code',
+					},
+				},
+			];
+
 			for (const req of requiredSensors) {
 				const exists = obj.native.sensors.some(
 					s => s && s.SensorName === req.SensorName,
@@ -521,15 +525,13 @@ class SolectrusInfluxdb extends utils.Adapter {
 				if (!exists) {
 					this.log.info(`Adding missing default sensor: ${req.SensorName}`);
 					obj.native.sensors.push(req.defaults);
-					changed = true;
 				}
 			}
 
-			if (changed) {
-				await this.setForeignObject(objId, obj);
-				// Reload config so the rest of onReady sees the new sensors
-				this.config.sensors = obj.native.sensors;
-			}
+			// Mark migration as done so it never runs again
+			obj.native._defaultSensorsCreated = true;
+			await this.setForeignObject(objId, obj);
+			this.config.sensors = obj.native.sensors;
 		} catch (e) {
 			this.log.warn(`Cannot ensure default sensors: ${e}`);
 		}
