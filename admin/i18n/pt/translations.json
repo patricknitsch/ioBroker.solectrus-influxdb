@@ -242,9 +242,8 @@
 	"JSON Timestamp Field": "Campo de carimbo de data/hora JSON",
 	"JSON Value Field": "Campo de valor JSON",
 	"Influx Type": "Tipo Influx",
-	"jsonSensorDetailHint": "O estado de origem deve conter um array JSON (ex. de pvforecast). Cada entrada do array é analisada e escrita diretamente no InfluxDB com o carimbo de data/hora original. No modo automático, o adaptador detecta campos conhecidos (y, clearsky, temp, weather_code) e os escreve nos measurements corretos. Para tipos personalizados, especifique a chave JSON para carimbo de data/hora e valor.",
+	"jsonSensorDetailHint": "O estado de origem deve conter um array JSON (ex. de pvforecast). Cada entrada do array é analisada e escrita diretamente no InfluxDB com o carimbo de data/hora original. No modo automático, o adaptador detecta campos conhecidos (y, clearsky, temp) e os escreve nos measurements corretos. Para tipos personalizados, especifique a chave JSON para carimbo de data/hora e valor.",
 	"jsonSensorHint": "Os dados de previsão/meteorologia podem ser configurados como sensores JSON na aba Sensores (tipo de dados: Array JSON).",
 	"enableExpertModeLabel": "Modo especialista (configuração avançada de sensores)",
-	"WEATHER_CODE_FORECAST": "WEATHER_CODE_FORECAST",
-	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Previsão)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Temperatura)\nweather_code \u2192 forecast.weather_code (Código meteorológico)\n\nCampos não presentes no JSON são ignorados automaticamente."
+	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Previsão)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Temperatura)\n\nCampos não presentes no JSON são ignorados automaticamente."
 }

@@ -75,7 +75,6 @@
         forecast:     { tsField: 't', valField: 'y',            valDesc: 'Forecast',          measurement: 'forecast', field: 'watt',          influxType: 'int' },
         clearsky:     { tsField: 't', valField: 'clearsky',     valDesc: 'Forecast Clearsky', measurement: 'forecast', field: 'watt_clearsky', influxType: 'int' },
         temperature:  { tsField: 't', valField: 'temp',         valDesc: 'Temperature',       measurement: 'forecast', field: 'temp',          influxType: 'float' },
-        weather_code: { tsField: 't', valField: 'weather_code', valDesc: 'Weather Code',      measurement: 'forecast', field: 'weather_code',  influxType: 'int' },
     };
 
     function makeNewSensor() {

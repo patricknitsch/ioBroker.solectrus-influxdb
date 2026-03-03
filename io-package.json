@@ -547,15 +547,6 @@
 				"jsonPreset": "auto",
 				"measurement": "forecast",
 				"field": "temp"
-			},
-			{
-				"enabled": false,
-				"SensorName": "WEATHER_CODE_FORECAST",
-				"sourceState": "",
-				"type": "json",
-				"jsonPreset": "auto",
-				"measurement": "forecast",
-				"field": "weather_code"
 			}
 		]
 	},

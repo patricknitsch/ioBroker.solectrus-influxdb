@@ -242,9 +242,8 @@
 	"JSON Timestamp Field": "JSON-tijdstempelveld",
 	"JSON Value Field": "JSON-waardeveld",
 	"Influx Type": "Influx-type",
-	"jsonSensorDetailHint": "De bronstatus moet een JSON-array bevatten (bijv. van pvforecast). Elke array-entry wordt geparsed en direct naar InfluxDB geschreven met de originele tijdstempel. In automatische modus detecteert de adapter bekende velden (y, clearsky, temp, weather_code) en schrijft deze naar de juiste measurements. Voor aangepaste typen, geef de JSON-sleutel op voor tijdstempel en waarde.",
+	"jsonSensorDetailHint": "De bronstatus moet een JSON-array bevatten (bijv. van pvforecast). Elke array-entry wordt geparsed en direct naar InfluxDB geschreven met de originele tijdstempel. In automatische modus detecteert de adapter bekende velden (y, clearsky, temp) en schrijft deze naar de juiste measurements. Voor aangepaste typen, geef de JSON-sleutel op voor tijdstempel en waarde.",
 	"jsonSensorHint": "Prognose-/weergegevens kunnen als JSON-sensoren worden geconfigureerd in het tabblad Sensoren (gegevenstype: JSON-array).",
 	"enableExpertModeLabel": "Expertmodus (geavanceerde sensorconfiguratie)",
-	"WEATHER_CODE_FORECAST": "WEATHER_CODE_FORECAST",
-	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Prognose)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Temperatuur)\nweather_code \u2192 forecast.weather_code (Weercode)\n\nVelden die niet in de JSON aanwezig zijn, worden automatisch overgeslagen."
+	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Prognose)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Temperatuur)\n\nVelden die niet in de JSON aanwezig zijn, worden automatisch overgeslagen."
 }

@@ -79,7 +79,7 @@ Für Prognose-/Wetterdaten den Datentyp auf **JSON-Array** setzen. Zwei Vorlage-
 
 | Modus | Beschreibung |
 |-------|--------------|
-| **Automatisch** | Erkennt bekannte Felder in den JSON-Daten (`y`, `clearsky`, `temp`, `weather_code`) automatisch und schreibt jedes in das korrekte InfluxDB-Measurement/Field. Ein Sensor verarbeitet alle erkannten Prognosetypen. |
+| **Automatisch** | Erkennt bekannte Felder in den JSON-Daten (`y`, `clearsky`, `temp`) automatisch und schreibt jedes in das korrekte InfluxDB-Measurement/Field. Ein Sensor verarbeitet alle erkannten Prognosetypen. |
 | **Benutzerdefiniert** | Zeitstempel-Feld, Wert-Feld und InfluxDB-Typ manuell festlegen. Für nicht-standardmäßige JSON-Quellen verwenden. |
 
 **Automatische Erkennung:**
@@ -89,7 +89,6 @@ Für Prognose-/Wetterdaten den Datentyp auf **JSON-Array** setzen. Zwei Vorlage-
 | `y` | `forecast` | `watt` | int |
 | `clearsky` | `forecast` | `watt_clearsky` | int |
 | `temp` | `forecast` | `temp` | float |
-| `weather_code` | `forecast` | `weather_code` | int |
 
 Felder, die im JSON nicht vorhanden sind, werden automatisch übersprungen.
 
@@ -132,7 +131,7 @@ Prognose- und Wetterdaten von pvforecast oder ähnlichen Adaptern können mit **
 
 1. Der Adapter abonniert einen oder mehrere JSON-States (z.B. `pvforecast.0.summary.JSONData`)
 2. Wenn sich der JSON-State ändert, parst der Adapter das JSON-Array
-3. Im **Automatik**-Modus durchsucht der Adapter jeden Eintrag nach bekannten Wert-Feldern (`y`, `clearsky`, `temp`, `weather_code`)
+3. Im **Automatik**-Modus durchsucht der Adapter jeden Eintrag nach bekannten Wert-Feldern (`y`, `clearsky`, `temp`)
 4. Für jedes erkannte Feld wird ein Datenpunkt mit dem korrekten Measurement, Field und Typ in InfluxDB geschrieben
 5. Da InfluxDB Punkte mit gleichem Measurement, Tags und Zeitstempel überschreibt, werden **bestehende Prognosepunkte automatisch aktualisiert**, wenn sich die Quelldaten ändern
 
@@ -142,21 +141,20 @@ Der Quell-State muss ein JSON-Array von Objekten enthalten. Jedes Objekt muss ei
 
 ```json
 [
-  { "t": 1709035200000, "y": 1500, "clearsky": 2000, "temp": 12.5, "weather_code": 1 },
-  { "t": 1709038800000, "y": 2200, "clearsky": 2800, "temp": 14.0, "weather_code": 2 }
+  { "t": 1709035200000, "y": 1500, "clearsky": 2000, "temp": 12.5 },
+  { "t": 1709038800000, "y": 2200, "clearsky": 2800, "temp": 14.0 }
 ]
 ```
 
 ### Vorkonfigurierte Prognosesensoren
 
-Der Adapter enthält vier vorkonfigurierte Prognosesensoren:
+Der Adapter enthält drei vorkonfigurierte Prognosesensoren:
 
 | Sensor | Measurement | Field | Typ | JSON-Feld |
 |--------|-------------|-------|-----|-----------|
 | INVERTER_POWER_FORECAST | `forecast` | `watt` | int | `y` |
 | INVERTER_POWER_FORECAST_CLEARSKY | `forecast` | `watt_clearsky` | int | `clearsky` |
 | OUTDOOR_TEMP_FORECAST | `forecast` | `temp` | float | `temp` |
-| WEATHER_CODE_FORECAST | `forecast` | `weather_code` | int | `weather_code` |
 
 Im **Automatik**-Modus erkennt ein einzelner JSON-Sensor alle vorhandenen Felder und schreibt sie automatisch. Du musst nur einen Sensor aktivieren und auf den JSON-Quell-State zeigen.
 
@@ -184,15 +182,15 @@ Der pvforecast-Adapter unterstützt zwei Backends:
 | Backend | Verfügbare Felder | Beschreibung |
 |---------|-------------------|--------------|
 | **Standard** | `y` (Prognoseleistung) | Nur einfache PV-Leistungsprognose |
-| **pvnode** | `y`, `clearsky`, `temp`, `weather_code` | Vollständige Prognose mit Clearsky-Einstrahlung, Temperatur und Wettercodes |
+| **pvnode** | `y`, `clearsky`, `temp` | Vollständige Prognose mit Clearsky-Einstrahlung und Temperatur |
 
-> **Wichtig:** Die Felder `clearsky` (watt_clearsky), `temp` und `weather_code` sind **nur mit pvnode** als Backend verfügbar. Das Standard-pvForecast-Backend liefert nur das Feld `y` (Prognoseleistung).
+> **Wichtig:** Die Felder `clearsky` (watt_clearsky) und `temp` sind **nur mit pvnode** als Backend verfügbar. Das Standard-pvForecast-Backend liefert nur das Feld `y` (Prognoseleistung).
 
 ### Schritt 2: pvforecast konfigurieren
 
 1. pvforecast-Adapter in ioBroker installieren
 2. PV-Anlagenparameter konfigurieren (Standort, Module, Ausrichtung usw.)
-3. Wenn Clearsky-, Temperatur- und Wettercode-Daten gewünscht sind, **pvnode** als Backend konfigurieren
+3. Wenn Clearsky- und Temperatur-Daten gewünscht sind, **pvnode** als Backend konfigurieren
 4. Prüfen, dass `pvforecast.0.summary.JSONData` ein JSON-Array mit Prognosedaten enthält
 
 ### Schritt 3: JSON-Sensor in SOLECTRUS InfluxDB aktivieren
@@ -209,11 +207,10 @@ Der Adapter erkennt automatisch alle verfügbaren Felder in den JSON-Daten und s
 - `y` -> `forecast.watt` (immer verfügbar)
 - `clearsky` -> `forecast.watt_clearsky` (nur pvnode)
 - `temp` -> `forecast.temp` (nur pvnode)
-- `weather_code` -> `forecast.weather_code` (nur pvnode)
 
 ### Schritt 4: In InfluxDB prüfen
 
-Nach dem nächsten pvforecast-Update den InfluxDB-Bucket auf das Measurement `forecast` prüfen. Die Felder `watt` und, bei Verwendung von pvnode, auch `watt_clearsky`, `temp` und `weather_code` sollten sichtbar sein.
+Nach dem nächsten pvforecast-Update den InfluxDB-Bucket auf das Measurement `forecast` prüfen. Die Felder `watt` und, bei Verwendung von pvnode, auch `watt_clearsky` und `temp` sollten sichtbar sein.
 
 ### Fehlerbehebung
 

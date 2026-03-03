@@ -242,9 +242,8 @@
 	"JSON Timestamp Field": "JSON Timestamp Field",
 	"JSON Value Field": "JSON Value Field",
 	"Influx Type": "Influx Type",
-	"jsonSensorDetailHint": "The source state must contain a JSON array (e.g. from pvforecast). Each array entry is parsed and written directly to InfluxDB with the original timestamp. In automatic mode, the adapter detects known fields (y, clearsky, temp, weather_code) and writes them to the correct measurements. For custom types, specify the JSON key for timestamp and value.",
+	"jsonSensorDetailHint": "The source state must contain a JSON array (e.g. from pvforecast). Each array entry is parsed and written directly to InfluxDB with the original timestamp. In automatic mode, the adapter detects known fields (y, clearsky, temp) and writes them to the correct measurements. For custom types, specify the JSON key for timestamp and value.",
 	"jsonSensorHint": "Forecast/weather data can be configured as JSON sensors in the Sensors tab (datatype: JSON Array).",
 	"enableExpertModeLabel": "Expert Mode (advanced sensor configuration)",
-	"WEATHER_CODE_FORECAST": "WEATHER_CODE_FORECAST",
-	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Forecast)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Temperature)\nweather_code \u2192 forecast.weather_code (Weather Code)\n\nFields not present in the JSON are skipped automatically."
+	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Forecast)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Temperature)\n\nFields not present in the JSON are skipped automatically."
 }

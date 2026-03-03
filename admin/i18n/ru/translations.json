@@ -242,9 +242,8 @@
 	"JSON Timestamp Field": "JSON-поле метки времени",
 	"JSON Value Field": "JSON-поле значения",
 	"Influx Type": "Тип Influx",
-	"jsonSensorDetailHint": "Состояние-источник должно содержать JSON-массив (напр. от pvforecast). Каждая запись массива разбирается и записывается напрямую в InfluxDB с исходной меткой времени. В автоматическом режиме адаптер определяет известные поля (y, clearsky, temp, weather_code) и записывает их в соответствующие measurements. Для пользовательских типов укажите ключ JSON для метки времени и значения.",
+	"jsonSensorDetailHint": "Состояние-источник должно содержать JSON-массив (напр. от pvforecast). Каждая запись массива разбирается и записывается напрямую в InfluxDB с исходной меткой времени. В автоматическом режиме адаптер определяет известные поля (y, clearsky, temp) и записывает их в соответствующие measurements. Для пользовательских типов укажите ключ JSON для метки времени и значения.",
 	"jsonSensorHint": "Данные прогноза/погоды можно настроить как JSON-датчики на вкладке «Датчики» (тип данных: JSON-массив).",
 	"enableExpertModeLabel": "Режим эксперта (расширенная настройка датчиков)",
-	"WEATHER_CODE_FORECAST": "WEATHER_CODE_FORECAST",
-	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Прогноз)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Температура)\nweather_code \u2192 forecast.weather_code (Код погоды)\n\nПоля, отсутствующие в JSON, автоматически пропускаются."
+	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Прогноз)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Температура)\n\nПоля, отсутствующие в JSON, автоматически пропускаются."
 }

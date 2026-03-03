@@ -33,7 +33,6 @@ const JSON_PRESETS = {
 	forecast: { tsField: 't', valField: 'y', measurement: 'forecast', field: 'watt', influxType: 'int' },
 	clearsky: { tsField: 't', valField: 'clearsky', measurement: 'forecast', field: 'watt_clearsky', influxType: 'int' },
 	temperature: { tsField: 't', valField: 'temp', measurement: 'forecast', field: 'temp', influxType: 'float' },
-	weather_code: { tsField: 't', valField: 'weather_code', measurement: 'forecast', field: 'weather_code', influxType: 'int' },
 };
 
 /* =====================================================
