@@ -31,7 +31,13 @@ const MAX_DELAY_MS = 2_147_483_647; // Node.js timer limit
 /* ---------- JSON sensor presets ---------- */
 const JSON_PRESETS = {
 	forecast: { tsField: 't', valField: 'y', measurement: 'forecast', field: 'watt', influxType: 'int' },
-	clearsky: { tsField: 't', valField: 'clearsky', measurement: 'forecast', field: 'watt_clearsky', influxType: 'int' },
+	clearsky: {
+		tsField: 't',
+		valField: 'clearsky',
+		measurement: 'forecast',
+		field: 'watt_clearsky',
+		influxType: 'int',
+	},
 	temperature: { tsField: 't', valField: 'temp', measurement: 'forecast', field: 'temp', influxType: 'float' },
 };
 
@@ -256,6 +262,29 @@ class SolectrusInfluxdb extends utils.Adapter {
 		return { url, token, org, bucket };
 	}
 
+	async retryOnConnectionError(fn, label, maxRetries = 3, delayMs = 3000) {
+		for (let attempt = 1; attempt <= maxRetries; attempt++) {
+			if (this.isUnloading) {
+				return;
+			}
+			try {
+				await fn();
+				return;
+			} catch (err) {
+				const isConnectionError = err && err.message && /connection is closed|db closed/i.test(err.message);
+				if (isConnectionError && attempt < maxRetries && !this.isUnloading) {
+					this.log.warn(
+						`${label} failed (attempt ${attempt}/${maxRetries}): ${err.message} – retrying in ${Math.round(delayMs / 1000)}s`,
+					);
+					await new Promise(resolve => setTimeout(resolve, delayMs));
+				} else {
+					this.log.error(`${label} failed: ${err.message}`);
+					return;
+				}
+			}
+		}
+	}
+
 	clampDelay(ms, fallbackMs) {
 		let v = Number(ms);
 		if (!Number.isFinite(v) || v < 0) {
@@ -271,6 +300,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * Parse a raw JSON value (string or object) into a JS array.
 	 * Returns null if parsing fails or the result is not an array.
 	 * Set silent=true to suppress log warnings (e.g. for display-only extraction).
+	 *
+	 * @param {*} jsonVal - Raw JSON value (string or object)
+	 * @param {string} sourceLabel - Label for log messages
+	 * @param {boolean} [silent] - Suppress log warnings
 	 */
 	parseJsonArray(jsonVal, sourceLabel, silent) {
 		let data;
@@ -294,6 +327,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 	/**
 	 * Parse a raw timestamp (number in ms or s, or ISO string) into epoch-ms.
 	 * Returns NaN on failure.
+	 *
+	 * @param {number|string} rawTs - Raw timestamp value
 	 */
 	parseTimestamp(rawTs) {
 		if (typeof rawTs === 'number') {
@@ -305,6 +340,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 	/**
 	 * Parse a raw value according to an influx type ('int' or 'float').
 	 * Returns NaN on failure.
+	 *
+	 * @param {*} rawVal - Raw value to parse
+	 * @param {string} influxType - Influx field type ('int' or 'float')
 	 */
 	parseInfluxValue(rawVal, influxType) {
 		return influxType === 'int' ? parseInt(rawVal, 10) : parseFloat(rawVal);
@@ -440,8 +478,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * ===================================================== */
 
 	async onReady() {
-		await this.ensureObjectTree();
-		await this.createInfoStates();
+		await this.retryOnConnectionError(async () => {
+			await this.ensureObjectTree();
+			await this.createInfoStates();
+		}, 'Create adapter objects');
 
 		this.setState('info.connection', false, true);
 		this.setState('info.buffer.clear', false, true);
@@ -463,6 +503,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 			// Adapter continues running; flush loop will retry
 		}
 
+		if (this.isUnloading) {
+			return;
+		}
+
 		if (!Array.isArray(this.config.sensors)) {
 			this.config.sensors = [];
 		}
@@ -475,8 +519,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.setState('info.lastError', msg, true);
 		}
 
-		await this.prepareSensors();
-		await this.prepareForecastSources();
+		await this.retryOnConnectionError(() => this.prepareSensors(), 'Prepare sensors');
+		await this.retryOnConnectionError(() => this.prepareForecastSources(), 'Prepare forecast sources');
+
+		if (this.isUnloading) {
+			return;
+		}
 
 		/* Collect loop */
 		const collectMs = this.getCollectIntervalMs();
@@ -501,30 +549,36 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * ===================================================== */
 
 	async initDataSolectrus() {
+		if (this.isUnloading) {
+			return;
+		}
+
 		this.log.info('Initializing Data-SOLECTRUS formula engine…');
 
 		const ds = createDsProxy(this);
 		this.dsProxy = ds;
 
-		// Ensure ds channel hierarchy
-		await this.setObjectNotExistsAsync('ds', {
-			type: 'channel',
-			common: { name: 'Data-SOLECTRUS' },
-			native: {},
-		});
-		await this.setObjectNotExistsAsync('ds.info', {
-			type: 'channel',
-			common: { name: 'DS Info' },
-			native: {},
-		});
+		await this.retryOnConnectionError(async () => {
+			// Ensure ds channel hierarchy
+			await this.setObjectNotExistsAsync('ds', {
+				type: 'channel',
+				common: { name: 'Data-SOLECTRUS' },
+				native: {},
+			});
+			await this.setObjectNotExistsAsync('ds.info', {
+				type: 'channel',
+				common: { name: 'DS Info' },
+				native: {},
+			});
 
-		await dsStateRegistry.createInfoStates(ds);
+			await dsStateRegistry.createInfoStates(ds);
 
-		await dsItemManager.ensureItemTitlesInInstanceConfig(ds);
-		await dsItemManager.prepareItems(ds);
+			await dsItemManager.ensureItemTitlesInInstanceConfig(ds);
+			await dsItemManager.prepareItems(ds);
 
-		this.log.info('Data-SOLECTRUS formula engine started');
-		dsTickRunner.scheduleNextTick(ds);
+			this.log.info('Data-SOLECTRUS formula engine started');
+			dsTickRunner.scheduleNextTick(ds);
+		}, 'Data-SOLECTRUS initialization');
 	}
 
 	/**
@@ -694,6 +748,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 	async prepareSensors() {
 		for (const sensor of this.config.sensors) {
+			if (this.isUnloading) {
+				break;
+			}
 			if (!sensor || !sensor.enabled) {
 				continue;
 			}
@@ -815,6 +872,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 	/**
 	 * Extract only the relevant {tsField, valField} entries from raw JSON
 	 * for a specific sensor mapping, and return as JSON string.
+	 *
+	 * @param {*} jsonVal - Raw JSON value (string or object)
+	 * @param {string} tsField - Timestamp field name
+	 * @param {string} valField - Value field name
 	 */
 	extractJsonSensorValues(jsonVal, tsField, valField) {
 		const data = this.parseJsonArray(jsonVal, 'extractJsonSensorValues', true);
@@ -835,6 +896,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 	/**
 	 * Extract all known preset value fields from raw JSON for auto-detection mode.
+	 *
+	 * @param {*} jsonVal - Raw JSON value (string or object)
+	 * @param {string} tsField - Timestamp field name
 	 */
 	extractJsonSensorValuesAuto(jsonVal, tsField) {
 		const data = this.parseJsonArray(jsonVal, 'extractJsonSensorValuesAuto', true);
@@ -1018,6 +1082,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 
 		for (const fc of this.config.forecasts) {
+			if (this.isUnloading) {
+				break;
+			}
 			if (!fc || !fc.enabled || !fc.sourceState) {
 				continue;
 			}
@@ -1143,12 +1210,17 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		// Create/update ioBroker states non-blocking – never stalls ds tick
 		if (stateUpdates.length > 0) {
-			this.updateForecastStates(stateUpdates);
+			this.updateForecastStates(stateUpdates).catch(err => {
+				this.log.debug(`Forecast state updates failed: ${err.message}`);
+			});
 		}
 	}
 
 	async updateForecastStates(stateUpdates) {
 		for (const upd of stateUpdates) {
+			if (this.isUnloading) {
+				break;
+			}
 			try {
 				await this.setObjectNotExistsAsync(upd.stateId, {
 					type: 'state',
@@ -1163,7 +1235,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 				});
 				this.setState(upd.stateId, upd.value, true);
 			} catch (err) {
-				this.log.debug(`Forecast state update failed for ${upd.stateId}: ${err.message}`);
+				const msg = err && err.message ? err.message : String(err);
+				if (/connection is closed|db closed/i.test(msg)) {
+					this.log.warn(
+						`Forecast state updates aborted (connection lost) after ${upd.stateId}. Remaining updates skipped.`,
+					);
+					break;
+				}
+				this.log.debug(`Forecast state update failed for ${upd.stateId}: ${msg}`);
 			}
 		}
 	}
@@ -1510,6 +1589,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.setState('info.connection', true, true);
 			this.scheduleNextFlush(this.getFlushIntervalMs());
 		} catch (err) {
+			// If adapter is shutting down, just save the batch and bail out
+			if (this.isUnloading) {
+				this.buffer = batch.concat(this.buffer);
+				this.saveBuffer();
+				this.isFlushing = false;
+				return;
+			}
+
 			this.log.error(`Flush failed: ${err.message}`);
 			await this.closeWriteApi();
 
@@ -1563,6 +1650,13 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 			if (this.flushTimer) {
 				this.clearTimeout(this.flushTimer);
+			}
+
+			// Wait for an in-progress flush to finish before closing the writeApi
+			const maxWait = 5000;
+			const waitStart = Date.now();
+			while (this.isFlushing && Date.now() - waitStart < maxWait) {
+				await new Promise(resolve => setTimeout(resolve, 50));
 			}
 
 			this.saveBuffer();
