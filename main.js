@@ -262,6 +262,29 @@ class SolectrusInfluxdb extends utils.Adapter {
 		return { url, token, org, bucket };
 	}
 
+	async retryOnConnectionError(fn, label, maxRetries = 3, delayMs = 3000) {
+		for (let attempt = 1; attempt <= maxRetries; attempt++) {
+			if (this.isUnloading) {
+				return;
+			}
+			try {
+				await fn();
+				return;
+			} catch (err) {
+				const isConnectionError = err && err.message && /connection is closed|db closed/i.test(err.message);
+				if (isConnectionError && attempt < maxRetries && !this.isUnloading) {
+					this.log.warn(
+						`${label} failed (attempt ${attempt}/${maxRetries}): ${err.message} – retrying in ${Math.round(delayMs / 1000)}s`,
+					);
+					await new Promise(resolve => setTimeout(resolve, delayMs));
+				} else {
+					this.log.error(`${label} failed: ${err.message}`);
+					return;
+				}
+			}
+		}
+	}
+
 	clampDelay(ms, fallbackMs) {
 		let v = Number(ms);
 		if (!Number.isFinite(v) || v < 0) {
@@ -455,12 +478,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * ===================================================== */
 
 	async onReady() {
-		try {
+		await this.retryOnConnectionError(async () => {
 			await this.ensureObjectTree();
 			await this.createInfoStates();
-		} catch (err) {
-			this.log.error(`Failed to create adapter objects: ${err.message}`);
-		}
+		}, 'Create adapter objects');
 
 		this.setState('info.connection', false, true);
 		this.setState('info.buffer.clear', false, true);
@@ -498,17 +519,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.setState('info.lastError', msg, true);
 		}
 
-		try {
-			await this.prepareSensors();
-		} catch (err) {
-			this.log.error(`Failed to prepare sensors: ${err.message}`);
-		}
-
-		try {
-			await this.prepareForecastSources();
-		} catch (err) {
-			this.log.error(`Failed to prepare forecast sources: ${err.message}`);
-		}
+		await this.retryOnConnectionError(() => this.prepareSensors(), 'Prepare sensors');
+		await this.retryOnConnectionError(() => this.prepareForecastSources(), 'Prepare forecast sources');
 
 		if (this.isUnloading) {
 			return;
@@ -541,12 +553,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 			return;
 		}
 
-		try {
-			this.log.info('Initializing Data-SOLECTRUS formula engine…');
+		this.log.info('Initializing Data-SOLECTRUS formula engine…');
 
-			const ds = createDsProxy(this);
-			this.dsProxy = ds;
+		const ds = createDsProxy(this);
+		this.dsProxy = ds;
 
+		await this.retryOnConnectionError(async () => {
 			// Ensure ds channel hierarchy
 			await this.setObjectNotExistsAsync('ds', {
 				type: 'channel',
@@ -566,9 +578,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 			this.log.info('Data-SOLECTRUS formula engine started');
 			dsTickRunner.scheduleNextTick(ds);
-		} catch (err) {
-			this.log.error(`Data-SOLECTRUS initialization failed: ${err.message}`);
-		}
+		}, 'Data-SOLECTRUS initialization');
 	}
 
 	/**
