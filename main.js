@@ -1510,6 +1510,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.setState('info.connection', true, true);
 			this.scheduleNextFlush(this.getFlushIntervalMs());
 		} catch (err) {
+			// If adapter is shutting down, just save the batch and bail out
+			if (this.isUnloading) {
+				this.buffer = batch.concat(this.buffer);
+				this.saveBuffer();
+				this.isFlushing = false;
+				return;
+			}
+
 			this.log.error(`Flush failed: ${err.message}`);
 			await this.closeWriteApi();
 
@@ -1563,6 +1571,13 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 			if (this.flushTimer) {
 				this.clearTimeout(this.flushTimer);
+			}
+
+			// Wait for an in-progress flush to finish before closing the writeApi
+			const maxWait = 5000;
+			const waitStart = Date.now();
+			while (this.isFlushing && Date.now() - waitStart < maxWait) {
+				await new Promise(resolve => setTimeout(resolve, 50));
 			}
 
 			this.saveBuffer();
