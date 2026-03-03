@@ -440,8 +440,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * ===================================================== */
 
 	async onReady() {
-		await this.ensureObjectTree();
-		await this.createInfoStates();
+		try {
+			await this.ensureObjectTree();
+			await this.createInfoStates();
+		} catch (err) {
+			this.log.error(`Failed to create adapter objects: ${err.message}`);
+		}
 
 		this.setState('info.connection', false, true);
 		this.setState('info.buffer.clear', false, true);
@@ -475,8 +479,17 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.setState('info.lastError', msg, true);
 		}
 
-		await this.prepareSensors();
-		await this.prepareForecastSources();
+		try {
+			await this.prepareSensors();
+		} catch (err) {
+			this.log.error(`Failed to prepare sensors: ${err.message}`);
+		}
+
+		try {
+			await this.prepareForecastSources();
+		} catch (err) {
+			this.log.error(`Failed to prepare forecast sources: ${err.message}`);
+		}
 
 		/* Collect loop */
 		const collectMs = this.getCollectIntervalMs();
@@ -501,30 +514,34 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * ===================================================== */
 
 	async initDataSolectrus() {
-		this.log.info('Initializing Data-SOLECTRUS formula engine…');
+		try {
+			this.log.info('Initializing Data-SOLECTRUS formula engine…');
 
-		const ds = createDsProxy(this);
-		this.dsProxy = ds;
+			const ds = createDsProxy(this);
+			this.dsProxy = ds;
 
-		// Ensure ds channel hierarchy
-		await this.setObjectNotExistsAsync('ds', {
-			type: 'channel',
-			common: { name: 'Data-SOLECTRUS' },
-			native: {},
-		});
-		await this.setObjectNotExistsAsync('ds.info', {
-			type: 'channel',
-			common: { name: 'DS Info' },
-			native: {},
-		});
+			// Ensure ds channel hierarchy
+			await this.setObjectNotExistsAsync('ds', {
+				type: 'channel',
+				common: { name: 'Data-SOLECTRUS' },
+				native: {},
+			});
+			await this.setObjectNotExistsAsync('ds.info', {
+				type: 'channel',
+				common: { name: 'DS Info' },
+				native: {},
+			});
 
-		await dsStateRegistry.createInfoStates(ds);
+			await dsStateRegistry.createInfoStates(ds);
 
-		await dsItemManager.ensureItemTitlesInInstanceConfig(ds);
-		await dsItemManager.prepareItems(ds);
+			await dsItemManager.ensureItemTitlesInInstanceConfig(ds);
+			await dsItemManager.prepareItems(ds);
 
-		this.log.info('Data-SOLECTRUS formula engine started');
-		dsTickRunner.scheduleNextTick(ds);
+			this.log.info('Data-SOLECTRUS formula engine started');
+			dsTickRunner.scheduleNextTick(ds);
+		} catch (err) {
+			this.log.error(`Data-SOLECTRUS initialization failed: ${err.message}`);
+		}
 	}
 
 	/**
@@ -1143,7 +1160,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		// Create/update ioBroker states non-blocking – never stalls ds tick
 		if (stateUpdates.length > 0) {
-			this.updateForecastStates(stateUpdates);
+			this.updateForecastStates(stateUpdates).catch(err => {
+				this.log.debug(`Forecast state updates failed: ${err.message}`);
+			});
 		}
 	}
 
