@@ -31,7 +31,13 @@ const MAX_DELAY_MS = 2_147_483_647; // Node.js timer limit
 /* ---------- JSON sensor presets ---------- */
 const JSON_PRESETS = {
 	forecast: { tsField: 't', valField: 'y', measurement: 'forecast', field: 'watt', influxType: 'int' },
-	clearsky: { tsField: 't', valField: 'clearsky', measurement: 'forecast', field: 'watt_clearsky', influxType: 'int' },
+	clearsky: {
+		tsField: 't',
+		valField: 'clearsky',
+		measurement: 'forecast',
+		field: 'watt_clearsky',
+		influxType: 'int',
+	},
 	temperature: { tsField: 't', valField: 'temp', measurement: 'forecast', field: 'temp', influxType: 'float' },
 };
 
@@ -271,6 +277,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * Parse a raw JSON value (string or object) into a JS array.
 	 * Returns null if parsing fails or the result is not an array.
 	 * Set silent=true to suppress log warnings (e.g. for display-only extraction).
+	 *
+	 * @param {*} jsonVal - Raw JSON value (string or object)
+	 * @param {string} sourceLabel - Label for log messages
+	 * @param {boolean} [silent] - Suppress log warnings
 	 */
 	parseJsonArray(jsonVal, sourceLabel, silent) {
 		let data;
@@ -294,6 +304,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 	/**
 	 * Parse a raw timestamp (number in ms or s, or ISO string) into epoch-ms.
 	 * Returns NaN on failure.
+	 *
+	 * @param {number|string} rawTs - Raw timestamp value
 	 */
 	parseTimestamp(rawTs) {
 		if (typeof rawTs === 'number') {
@@ -305,6 +317,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 	/**
 	 * Parse a raw value according to an influx type ('int' or 'float').
 	 * Returns NaN on failure.
+	 *
+	 * @param {*} rawVal - Raw value to parse
+	 * @param {string} influxType - Influx field type ('int' or 'float')
 	 */
 	parseInfluxValue(rawVal, influxType) {
 		return influxType === 'int' ? parseInt(rawVal, 10) : parseFloat(rawVal);
@@ -832,6 +847,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 	/**
 	 * Extract only the relevant {tsField, valField} entries from raw JSON
 	 * for a specific sensor mapping, and return as JSON string.
+	 *
+	 * @param {*} jsonVal - Raw JSON value (string or object)
+	 * @param {string} tsField - Timestamp field name
+	 * @param {string} valField - Value field name
 	 */
 	extractJsonSensorValues(jsonVal, tsField, valField) {
 		const data = this.parseJsonArray(jsonVal, 'extractJsonSensorValues', true);
@@ -852,6 +871,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 	/**
 	 * Extract all known preset value fields from raw JSON for auto-detection mode.
+	 *
+	 * @param {*} jsonVal - Raw JSON value (string or object)
+	 * @param {string} tsField - Timestamp field name
 	 */
 	extractJsonSensorValuesAuto(jsonVal, tsField) {
 		const data = this.parseJsonArray(jsonVal, 'extractJsonSensorValuesAuto', true);
