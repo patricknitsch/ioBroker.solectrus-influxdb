@@ -482,6 +482,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 			// Adapter continues running; flush loop will retry
 		}
 
+		if (this.isUnloading) {
+			return;
+		}
+
 		if (!Array.isArray(this.config.sensors)) {
 			this.config.sensors = [];
 		}
@@ -504,6 +508,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 			await this.prepareForecastSources();
 		} catch (err) {
 			this.log.error(`Failed to prepare forecast sources: ${err.message}`);
+		}
+
+		if (this.isUnloading) {
+			return;
 		}
 
 		/* Collect loop */
@@ -529,6 +537,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 	 * ===================================================== */
 
 	async initDataSolectrus() {
+		if (this.isUnloading) {
+			return;
+		}
+
 		try {
 			this.log.info('Initializing Data-SOLECTRUS formula engine…');
 
