@@ -748,6 +748,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 	async prepareSensors() {
 		for (const sensor of this.config.sensors) {
+			if (this.isUnloading) {
+				break;
+			}
 			if (!sensor || !sensor.enabled) {
 				continue;
 			}
@@ -1079,6 +1082,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 
 		for (const fc of this.config.forecasts) {
+			if (this.isUnloading) {
+				break;
+			}
 			if (!fc || !fc.enabled || !fc.sourceState) {
 				continue;
 			}
@@ -1212,6 +1218,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 	async updateForecastStates(stateUpdates) {
 		for (const upd of stateUpdates) {
+			if (this.isUnloading) {
+				break;
+			}
 			try {
 				await this.setObjectNotExistsAsync(upd.stateId, {
 					type: 'state',
@@ -1226,7 +1235,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 				});
 				this.setState(upd.stateId, upd.value, true);
 			} catch (err) {
-				this.log.debug(`Forecast state update failed for ${upd.stateId}: ${err.message}`);
+				const msg = err && err.message ? err.message : String(err);
+				if (/connection is closed|db closed/i.test(msg)) {
+					this.log.warn(
+						`Forecast state updates aborted (connection lost) after ${upd.stateId}. Remaining updates skipped.`,
+					);
+					break;
+				}
+				this.log.debug(`Forecast state update failed for ${upd.stateId}: ${msg}`);
 			}
 		}
 	}
