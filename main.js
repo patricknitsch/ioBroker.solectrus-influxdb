@@ -541,20 +541,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 			let changed = false;
 
-			// --- Create default sensors (only on first install) ---
+			// Mark first-install flag (defaults come from io-package.json via ioBroker)
 			if (!obj.native._defaultSensorsCreated) {
-				const ioPackage = JSON.parse(
-					fs.readFileSync(path.join(this.adapterDir, 'io-package.json'), 'utf8'),
-				);
-				const defaultSensors = (ioPackage.native && ioPackage.native.sensors) || [];
-
-				for (const dflt of defaultSensors) {
-					if (dflt && dflt.SensorName) {
-						this.log.info(`Creating default sensor: ${dflt.SensorName}`);
-						obj.native.sensors.push(Object.assign({}, dflt));
-					}
-				}
-
 				obj.native._defaultSensorsCreated = true;
 				changed = true;
 			}
