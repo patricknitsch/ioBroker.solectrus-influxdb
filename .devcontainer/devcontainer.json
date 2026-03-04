@@ -6,9 +6,9 @@
 
 	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
 	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
-	"dockerComposeFile": [ "docker-compose.yml" ],
+	"dockerComposeFile": ["docker-compose.yml"],
 
- 	// Forwarding the nginx port to access ioBroker Admin interface
+	// Forwarding the nginx port to access ioBroker Admin interface
 	"forwardPorts": ["nginx:80"],
 
 	// Name of the forwarded port

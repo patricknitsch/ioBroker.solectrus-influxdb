@@ -4,17 +4,10 @@
 	"adapterName": "solectrus-influxdb",
 	"title": "Solectrus to InfluxDB",
 	"description": "Configure Sensors for Solectrus and push to InfluxDB",
-	"keywords": [
-		"solectrus",
-		"influxdb"
-	],
-	"contributors": [
-		"ledermann"
-	],
+	"keywords": ["solectrus", "influxdb"],
+	"contributors": ["ledermann"],
 	"expert": "yes",
-	"features": [
-		"adapter"
-	],
+	"features": ["adapter"],
 	"adminFeatures": [],
 	"type": "communication",
 	"startMode": "daemon",
@@ -24,11 +17,7 @@
 	"language": "JavaScript",
 	"nodeVersion": "20",
 	"adminUi": "json",
-	"tools": [
-		"ESLint",
-		"type checking",
-		"devcontainer"
-	],
+	"tools": ["ESLint", "type checking", "devcontainer"],
 	"eslintConfig": "official",
 	"releaseScript": "yes",
 	"devServer": "local",
