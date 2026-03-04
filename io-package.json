@@ -219,7 +219,7 @@
 			},
 			{
 				"enabled": false,
-				"SensorName": "GRID_IMPORT_POWER",
+				"SensorName": "GRID_POWER_IMPORT",
 				"sourceState": "",
 				"type": "int",
 				"measurement": "grid",
@@ -227,7 +227,7 @@
 			},
 			{
 				"enabled": false,
-				"SensorName": "GRID_EXPORT_POWER",
+				"SensorName": "GRID_POWER_EXPORT",
 				"sourceState": "",
 				"type": "int",
 				"measurement": "grid",
@@ -475,7 +475,7 @@
 			},
 			{
 				"enabled": false,
-				"SensorName": "WALLBOX_CAR_CONNECTED",
+				"SensorName": "WALLBOX_CONNECTED",
 				"sourceState": "",
 				"type": "bool",
 				"measurement": "wallbox",
@@ -493,7 +493,7 @@
 				"enabled": false,
 				"SensorName": "HEATPUMP_HEATING_POWER",
 				"sourceState": "",
-				"type": "float",
+				"type": "int",
 				"measurement": "heatpump",
 				"field": "heating_power"
 			},
@@ -527,8 +527,8 @@
 				"sourceState": "",
 				"type": "json",
 				"jsonPreset": "auto",
-				"measurement": "forecast",
-				"field": "watt"
+				"measurement": "inverter_forecast",
+				"field": "power"
 			},
 			{
 				"enabled": false,
@@ -536,8 +536,8 @@
 				"sourceState": "",
 				"type": "json",
 				"jsonPreset": "auto",
-				"measurement": "forecast",
-				"field": "watt_clearsky"
+				"measurement": "inverter_forecast_clearsky",
+				"field": "power"
 			},
 			{
 				"enabled": false,
@@ -545,8 +545,8 @@
 				"sourceState": "",
 				"type": "json",
 				"jsonPreset": "auto",
-				"measurement": "forecast",
-				"field": "temp"
+				"measurement": "outdoor_forecast",
+				"field": "temperature"
 			}
 		]
 	},
