@@ -774,24 +774,30 @@ class SolectrusInfluxdb extends utils.Adapter {
 			const iobType = typeMapping[sensor.type] || 'mixed';
 			const obj = await this.getObjectAsync(id);
 
-			const stateObj = {
-				type: 'state',
-				common: {
-					name: sensor.SensorName,
-					type: iobType,
-					role: 'value',
-					read: true,
-					write: false,
-				},
-				native: {
-					sourceState: sensor.sourceState,
-				},
-			};
-
 			if (!obj) {
-				this.setObject(id, stateObj);
+				this.setObject(id, {
+					type: 'state',
+					common: {
+						name: sensor.SensorName,
+						type: iobType,
+						role: 'value',
+						read: true,
+						write: false,
+					},
+					native: { sourceState: sensor.sourceState },
+				});
 			} else {
-				this.extendObject(id, stateObj);
+				this.extendObject(id, {
+					type: 'state',
+					common: {
+						name: sensor.SensorName,
+						type: iobType,
+						role: 'value',
+						read: true,
+						write: false,
+					},
+					native: { sourceState: sensor.sourceState },
+				});
 			}
 
 			// JSON sensors: read initial value (filtered to relevant fields only),
