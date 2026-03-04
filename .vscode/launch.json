@@ -5,14 +5,8 @@
 			"type": "node",
 			"request": "launch",
 			"name": "Launch ioBroker Adapter",
-			"skipFiles": [
-				"<node_internals>/**"
-			],
-			"args": [
-				"--debug",
-				"0",
-				"--logs"
-			],
+			"skipFiles": ["<node_internals>/**"],
+			"args": ["--debug", "0", "--logs"],
 			"program": "${workspaceFolder}/main.js",
 			"console": "integratedTerminal"
 		}
