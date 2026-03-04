@@ -67,6 +67,10 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 
 * (claude) Fix DS Tick time budget
 * (patricknitsch) Update Admin Package
+* (claude) Change Admin to easy and expert mode
+* (claude) Add information in easy mode 
+* (claude) Add type json for sending json, i.e. forecast
+* (claude) Update Readme
 
 ### 1.2.2 (2026-02-24)
 
