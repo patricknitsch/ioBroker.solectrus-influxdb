@@ -536,7 +536,7 @@
 				"sourceState": "",
 				"type": "json",
 				"jsonPreset": "auto",
-				"measurement": "inverter_forecast_clear",
+				"measurement": "inverter_forecast_clearsky",
 				"field": "power"
 			},
 			{
