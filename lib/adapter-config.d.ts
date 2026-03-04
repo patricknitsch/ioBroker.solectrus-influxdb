@@ -14,6 +14,10 @@ interface SensorEntry {
 	measurement: string;
 	field: string;
 	type: string;
+	jsonPreset?: string;
+	jsonTsField?: string;
+	jsonValField?: string;
+	jsonInfluxType?: string;
 	_title?: string;
 }
 
