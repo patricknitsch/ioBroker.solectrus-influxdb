@@ -219,7 +219,7 @@
 			},
 			{
 				"enabled": false,
-				"SensorName": "GRID_POWER_IMPORT",
+				"SensorName": "GRID_IMPORT_POWER",
 				"sourceState": "",
 				"type": "int",
 				"measurement": "grid",
@@ -227,7 +227,7 @@
 			},
 			{
 				"enabled": false,
-				"SensorName": "GRID_POWER_EXPORT",
+				"SensorName": "GRID_EXPORT_POWER",
 				"sourceState": "",
 				"type": "int",
 				"measurement": "grid",
