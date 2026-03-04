@@ -245,5 +245,8 @@
 	"jsonSensorDetailHint": "O estado de origem deve conter um array JSON (ex. de pvforecast). Cada entrada do array é analisada e escrita diretamente no InfluxDB com o carimbo de data/hora original. No modo automático, o adaptador detecta campos conhecidos (y, clearsky, temp) e os escreve nos measurements corretos. Para tipos personalizados, especifique a chave JSON para carimbo de data/hora e valor.",
 	"jsonSensorHint": "Os dados de previsão/meteorologia podem ser configurados como sensores JSON na aba Sensores (tipo de dados: Array JSON).",
 	"enableExpertModeLabel": "Modo especialista (configuração avançada de sensores)",
-	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Previsão)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Temperatura)\n\nCampos não presentes no JSON são ignorados automaticamente."
+	"jsonAutoDetectInfo": "y \u2192 inverter_forecast:power (Previsão)\nclearsky \u2192 inverter_forecast_clear:power (Clearsky)\ntemp \u2192 outdoor_forecast:temperature (Temperatura)\n\nCampos não presentes no JSON são ignorados automaticamente.",
+	"nonExpertSensorInfo": "O adaptador escreve o valor medido como %TYPE% em %MF%.",
+	"nonExpertJsonInfo": "O adaptador lê um array JSON do estado fonte (ex. de pvforecast) e escreve os dados de previsão com o timestamp original no InfluxDB.\n\n%MAPPING%\n\nCampos não presentes no JSON são ignorados automaticamente.",
+	"nonExpertExpertHint": "O mapeamento pode ser personalizado no modo especialista."
 }

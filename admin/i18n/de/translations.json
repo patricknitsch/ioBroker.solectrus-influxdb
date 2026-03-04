@@ -245,5 +245,8 @@
 	"jsonSensorDetailHint": "Der Quell-State muss ein JSON-Array enthalten (z.B. von pvforecast). Jeder Array-Eintrag wird geparst und direkt mit dem Original-Zeitstempel in InfluxDB geschrieben. Im automatischen Modus erkennt der Adapter bekannte Felder (y, clearsky, temp) und schreibt sie in die richtigen Measurements. Bei benutzerdefinierten Typen gib den JSON-Schlüssel für Zeitstempel und Wert an.",
 	"jsonSensorHint": "Prognose-/Wetterdaten können im Tab Sensoren als JSON-Sensoren konfiguriert werden (Datentyp: JSON-Array).",
 	"enableExpertModeLabel": "Expertenmodus (erweiterte Sensorkonfiguration)",
-	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Prognose)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Temperatur)\n\nFelder, die im JSON nicht vorhanden sind, werden automatisch übersprungen."
+	"jsonAutoDetectInfo": "y \u2192 inverter_forecast:power (Prognose)\nclearsky \u2192 inverter_forecast_clear:power (Clearsky)\ntemp \u2192 outdoor_forecast:temperature (Temperatur)\n\nFelder, die im JSON nicht vorhanden sind, werden automatisch übersprungen.",
+	"nonExpertSensorInfo": "Der Adapter schreibt den Messwert als %TYPE% in %MF%.",
+	"nonExpertJsonInfo": "Der Adapter liest ein JSON-Array aus dem Quell-State (z.\u00a0B. von pvforecast) und schreibt die Prognosedaten mit dem Original-Zeitstempel in InfluxDB.\n\n%MAPPING%\n\nFelder, die im JSON nicht vorhanden sind, werden automatisch übersprungen.",
+	"nonExpertExpertHint": "Im Expertenmodus kann die Zuordnung angepasst werden."
 }

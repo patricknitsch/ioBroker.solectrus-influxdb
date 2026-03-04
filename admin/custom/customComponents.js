@@ -72,9 +72,9 @@
     }
 
     const JSON_PRESETS = {
-        forecast:     { tsField: 't', valField: 'y',            valDesc: 'Forecast',          measurement: 'forecast', field: 'watt',          influxType: 'int' },
-        clearsky:     { tsField: 't', valField: 'clearsky',     valDesc: 'Forecast Clearsky', measurement: 'forecast', field: 'watt_clearsky', influxType: 'int' },
-        temperature:  { tsField: 't', valField: 'temp',         valDesc: 'Temperature',       measurement: 'forecast', field: 'temp',          influxType: 'float' },
+        forecast:     { tsField: 't', valField: 'y',        valDesc: 'Forecast',          measurement: 'inverter_forecast',       field: 'power',       influxType: 'int' },
+        clearsky:     { tsField: 't', valField: 'clearsky', valDesc: 'Forecast Clearsky', measurement: 'inverter_forecast_clear', field: 'power',       influxType: 'int' },
+        temperature:  { tsField: 't', valField: 'temp',     valDesc: 'Temperature',       measurement: 'outdoor_forecast',        field: 'temperature', influxType: 'float' },
     };
 
     function makeNewSensor() {
@@ -755,8 +755,68 @@
                                       React.createElement('option', { value: 'json' }, t('JSON Array'))
                                   )
                               ) : null,
-                              // JSON-specific fields (only when type === 'json')
-                              (editSensor.type || '') === 'json'
+                              // --- NON-EXPERT: info box for standard sensors ---
+                              !expertMode && (editSensor.type || '') !== 'json'
+                                  ? React.createElement(
+                                        'div',
+                                        {
+                                            style: {
+                                                marginTop: 12,
+                                                padding: 12,
+                                                borderRadius: 6,
+                                                background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+                                                fontSize: 13,
+                                                color: colors.textMuted,
+                                                lineHeight: 1.6,
+                                            },
+                                        },
+                                        (function () {
+                                            var typeNames = { 'int': t('Integer'), 'float': t('Float'), 'bool': t('Boolean'), 'string': t('String'), '': t('Standard') };
+                                            var typeName = typeNames[editSensor.type || ''] || t('Standard');
+                                            var mf = (editSensor.measurement || '?') + ':' + (editSensor.field || '?');
+                                            return t('nonExpertSensorInfo').replace('%TYPE%', typeName).replace('%MF%', mf)
+                                                + '\n' + t('nonExpertExpertHint');
+                                        })()
+                                    )
+                                  : null,
+                              // --- NON-EXPERT: simplified info for JSON sensors ---
+                              !expertMode && (editSensor.type || '') === 'json'
+                                  ? React.createElement(
+                                        'div',
+                                        {
+                                            style: {
+                                                marginTop: 12,
+                                                padding: 12,
+                                                borderRadius: 6,
+                                                background: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+                                                fontSize: 13,
+                                                color: colors.textMuted,
+                                                lineHeight: 1.6,
+                                                whiteSpace: 'pre-line',
+                                            },
+                                        },
+                                        (function () {
+                                            // Find the matching preset for this sensor
+                                            var matchingLine = '';
+                                            var m = editSensor.measurement || '';
+                                            var f = editSensor.field || '';
+                                            for (var key in JSON_PRESETS) {
+                                                var p = JSON_PRESETS[key];
+                                                if (p.measurement === m && p.field === f) {
+                                                    matchingLine = p.valField + ' \u2192 ' + m + ':' + f + ' (' + t(p.valDesc) + ')';
+                                                    break;
+                                                }
+                                            }
+                                            if (!matchingLine) {
+                                                matchingLine = m + ':' + f;
+                                            }
+                                            return t('nonExpertJsonInfo').replace('%MAPPING%', matchingLine)
+                                                + '\n' + t('nonExpertExpertHint');
+                                        })()
+                                    )
+                                  : null,
+                              // --- EXPERT: JSON-specific fields (only when type === 'json') ---
+                              expertMode && (editSensor.type || '') === 'json'
                                   ? React.createElement(
                                         React.Fragment,
                                         null,
@@ -798,7 +858,7 @@
                                                   t('jsonAutoDetectInfo')
                                               )
                                             : null,
-                                        // Custom JSON fields (only in expert mode with custom preset)
+                                        // Custom JSON fields
                                         (editSensor.jsonPreset || 'auto') === 'custom'
                                             ? React.createElement(
                                                   React.Fragment,

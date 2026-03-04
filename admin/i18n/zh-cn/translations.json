@@ -245,5 +245,8 @@
 	"jsonSensorDetailHint": "源状态必须包含一个 JSON 数组（例如来自 pvforecast）。每个数组条目被解析并直接写入 InfluxDB，使用原始时间戳。在自动模式下，适配器检测已知字段（y、clearsky、temp）并将其写入正确的 measurements。对于自定义类型，请指定时间戳和值的 JSON 键。",
 	"jsonSensorHint": "预报/天气数据可以在传感器选项卡中配置为 JSON 传感器（数据类型：JSON 数组）。",
 	"enableExpertModeLabel": "专家模式（高级传感器配置）",
-	"jsonAutoDetectInfo": "y \u2192 forecast.watt（预报）\nclearsky \u2192 forecast.watt_clearsky（Clearsky）\ntemp \u2192 forecast.temp（温度）\n\nJSON 中不存在的字段将自动跳过。"
+	"jsonAutoDetectInfo": "y \u2192 inverter_forecast:power（预报）\nclearsky \u2192 inverter_forecast_clear:power（Clearsky）\ntemp \u2192 outdoor_forecast:temperature（温度）\n\nJSON 中不存在的字段将自动跳过。",
+	"nonExpertSensorInfo": "适配器将测量值作为 %TYPE% 写入 %MF%。",
+	"nonExpertJsonInfo": "适配器从源状态读取 JSON 数组（例如来自 pvforecast），并将预测数据与原始时间戳一起写入 InfluxDB。\n\n%MAPPING%\n\nJSON 中不存在的字段将自动跳过。",
+	"nonExpertExpertHint": "映射可以在专家模式中自定义。"
 }

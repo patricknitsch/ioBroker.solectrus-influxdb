@@ -245,5 +245,8 @@
 	"jsonSensorDetailHint": "L'état source doit contenir un tableau JSON (p.ex. de pvforecast). Chaque entrée du tableau est analysée et écrite directement dans InfluxDB avec l'horodatage original. En mode automatique, l'adaptateur détecte les champs connus (y, clearsky, temp) et les écrit dans les measurements appropriés. Pour les types personnalisés, spécifiez la clé JSON pour l'horodatage et la valeur.",
 	"jsonSensorHint": "Les données de prévision/météo peuvent être configurées comme capteurs JSON dans l'onglet Capteurs (type de données : Tableau JSON).",
 	"enableExpertModeLabel": "Mode expert (configuration avancée des capteurs)",
-	"jsonAutoDetectInfo": "y \u2192 forecast.watt (Prévision)\nclearsky \u2192 forecast.watt_clearsky (Clearsky)\ntemp \u2192 forecast.temp (Température)\n\nLes champs absents du JSON sont ignorés automatiquement."
+	"jsonAutoDetectInfo": "y \u2192 inverter_forecast:power (Prévision)\nclearsky \u2192 inverter_forecast_clear:power (Clearsky)\ntemp \u2192 outdoor_forecast:temperature (Température)\n\nLes champs absents du JSON sont ignorés automatiquement.",
+	"nonExpertSensorInfo": "L'adaptateur écrit la valeur mesurée en tant que %TYPE% dans %MF%.",
+	"nonExpertJsonInfo": "L'adaptateur lit un tableau JSON à partir de l'état source (p.ex. de pvforecast) et écrit les données de prévision avec l'horodatage original dans InfluxDB.\n\n%MAPPING%\n\nLes champs absents du JSON sont ignorés automatiquement.",
+	"nonExpertExpertHint": "Le mapping peut être personnalisé en mode expert."
 }
