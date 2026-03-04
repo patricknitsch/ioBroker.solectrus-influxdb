@@ -73,7 +73,7 @@
 
     const JSON_PRESETS = {
         forecast:     { tsField: 't', valField: 'y',        valDesc: 'Forecast',          measurement: 'inverter_forecast',       field: 'power',       influxType: 'int' },
-        clearsky:     { tsField: 't', valField: 'clearsky', valDesc: 'Forecast Clearsky', measurement: 'inverter_forecast_clear', field: 'power',       influxType: 'int' },
+        clearsky:     { tsField: 't', valField: 'clearsky', valDesc: 'Forecast Clearsky', measurement: 'inverter_forecast_clearsky', field: 'power',       influxType: 'int' },
         temperature:  { tsField: 't', valField: 'temp',     valDesc: 'Temperature',       measurement: 'outdoor_forecast',        field: 'temperature', influxType: 'float' },
     };
 
@@ -796,20 +796,16 @@
                                             },
                                         },
                                         (function () {
-                                            // Find the matching preset for this sensor
-                                            var matchingLine = '';
-                                            var m = editSensor.measurement || '';
-                                            var f = editSensor.field || '';
-                                            for (var key in JSON_PRESETS) {
-                                                var p = JSON_PRESETS[key];
-                                                if (p.measurement === m && p.field === f) {
-                                                    matchingLine = p.valField + ' \u2192 ' + m + ':' + f + ' (' + t(p.valDesc) + ')';
-                                                    break;
-                                                }
-                                            }
-                                            if (!matchingLine) {
-                                                matchingLine = m + ':' + f;
-                                            }
+                                            // Determine matching preset by SensorName
+                                            var name = (editSensor.SensorName || '').toUpperCase();
+                                            var presetKey = name.indexOf('CLEARSKY') >= 0
+                                                ? 'clearsky'
+                                                : (name.indexOf('TEMP') >= 0 ? 'temperature' : 'forecast');
+                                            var p = JSON_PRESETS[presetKey];
+                                            // Show the actual sensor measurement:field, not the preset defaults
+                                            var m = editSensor.measurement || p.measurement;
+                                            var f = editSensor.field || p.field;
+                                            var matchingLine = p.valField + ' \u2192 ' + m + ':' + f + ' (' + t(p.valDesc) + ')';
                                             return t('nonExpertJsonInfo').replace('%MAPPING%', matchingLine)
                                                 + '\n' + t('nonExpertExpertHint');
                                         })()

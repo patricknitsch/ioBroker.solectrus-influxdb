@@ -245,7 +245,7 @@
 	"jsonSensorDetailHint": "The source state must contain a JSON array (e.g. from pvforecast). Each array entry is parsed and written directly to InfluxDB with the original timestamp. In automatic mode, the adapter detects known fields (y, clearsky, temp) and writes them to the correct measurements. For custom types, specify the JSON key for timestamp and value.",
 	"jsonSensorHint": "Forecast/weather data can be configured as JSON sensors in the Sensors tab (datatype: JSON Array).",
 	"enableExpertModeLabel": "Expert Mode (advanced sensor configuration)",
-	"jsonAutoDetectInfo": "y \u2192 inverter_forecast:power (Forecast)\nclearsky \u2192 inverter_forecast_clear:power (Clearsky)\ntemp \u2192 outdoor_forecast:temperature (Temperature)\n\nFields not present in the JSON are skipped automatically.",
+	"jsonAutoDetectInfo": "y \u2192 inverter_forecast:power (Forecast)\nclearsky \u2192 inverter_forecast_clearsky:power (Clearsky)\ntemp \u2192 outdoor_forecast:temperature (Temperature)\n\nFields not present in the JSON are skipped automatically.",
 	"nonExpertSensorInfo": "The adapter writes the measured value as %TYPE% into %MF%.",
 	"nonExpertJsonInfo": "The adapter reads a JSON array from the source state (e.g. from pvforecast) and writes the forecast data with the original timestamp to InfluxDB.\n\n%MAPPING%\n\nFields not present in the JSON are skipped automatically.",
 	"nonExpertExpertHint": "The mapping can be customized in Expert Mode."

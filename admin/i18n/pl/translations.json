@@ -245,7 +245,7 @@
 	"jsonSensorDetailHint": "Stan źródłowy musi zawierać tablicę JSON (np. z pvforecast). Każdy wpis tablicy jest parsowany i zapisywany bezpośrednio do InfluxDB z oryginalnym znacznikiem czasu. W trybie automatycznym adapter wykrywa znane pola (y, clearsky, temp) i zapisuje je do odpowiednich measurements. Dla typów niestandardowych podaj klucz JSON dla znacznika czasu i wartości.",
 	"jsonSensorHint": "Dane prognozy/pogody można skonfigurować jako czujniki JSON w zakładce Czujniki (typ danych: Tablica JSON).",
 	"enableExpertModeLabel": "Tryb eksperta (zaawansowana konfiguracja czujników)",
-	"jsonAutoDetectInfo": "y \u2192 inverter_forecast:power (Prognoza)\nclearsky \u2192 inverter_forecast_clear:power (Clearsky)\ntemp \u2192 outdoor_forecast:temperature (Temperatura)\n\nPola nieobecne w JSON są automatycznie pomijane.",
+	"jsonAutoDetectInfo": "y \u2192 inverter_forecast:power (Prognoza)\nclearsky \u2192 inverter_forecast_clearsky:power (Clearsky)\ntemp \u2192 outdoor_forecast:temperature (Temperatura)\n\nPola nieobecne w JSON są automatycznie pomijane.",
 	"nonExpertSensorInfo": "Adapter zapisuje wartość pomiarową jako %TYPE% w %MF%.",
 	"nonExpertJsonInfo": "Adapter odczytuje tablicę JSON ze stanu źródłowego (np. z pvforecast) i zapisuje dane prognozy z oryginalnym znacznikiem czasu do InfluxDB.\n\n%MAPPING%\n\nPola nieobecne w JSON są automatycznie pomijane.",
 	"nonExpertExpertHint": "Mapowanie można dostosować w trybie eksperta."

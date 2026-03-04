@@ -245,7 +245,7 @@
 	"jsonSensorDetailHint": "Стан-джерело повинен містити JSON-масив (напр. від pvforecast). Кожен запис масиву розбирається і записується безпосередньо в InfluxDB з оригінальною міткою часу. В автоматичному режимі адаптер визначає відомі поля (y, clearsky, temp) і записує їх у відповідні measurements. Для користувацьких типів вкажіть ключ JSON для мітки часу та значення.",
 	"jsonSensorHint": "Дані прогнозу/погоди можна налаштувати як JSON-датчики на вкладці «Датчики» (тип даних: JSON-масив).",
 	"enableExpertModeLabel": "Режим експерта (розширене налаштування датчиків)",
-	"jsonAutoDetectInfo": "y \u2192 inverter_forecast:power (Прогноз)\nclearsky \u2192 inverter_forecast_clear:power (Clearsky)\ntemp \u2192 outdoor_forecast:temperature (Температура)\n\nПоля, відсутні в JSON, автоматично пропускаються.",
+	"jsonAutoDetectInfo": "y \u2192 inverter_forecast:power (Прогноз)\nclearsky \u2192 inverter_forecast_clearsky:power (Clearsky)\ntemp \u2192 outdoor_forecast:temperature (Температура)\n\nПоля, відсутні в JSON, автоматично пропускаються.",
 	"nonExpertSensorInfo": "Адаптер записує виміряне значення як %TYPE% в %MF%.",
 	"nonExpertJsonInfo": "Адаптер зчитує JSON-масив із вихідного стану (наприклад, з pvforecast) і записує дані прогнозу з оригінальною міткою часу в InfluxDB.\n\n%MAPPING%\n\nПоля, відсутні в JSON, автоматично пропускаються.",
 	"nonExpertExpertHint": "Зіставлення можна налаштувати в режимі експерта."
