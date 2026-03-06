@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "news": {
+      "1.3.1": {
+        "en": "Fix DS Tick time budget",
+        "de": "Fix DS Tick Zeitbudget",
+        "ru": "Исправить DS Бюджет времени Tick",
+        "pt": "Corrigir DS Tick time budget",
+        "nl": "DS herstellen Tick time budget",
+        "fr": "Corriger DS Cochez le budget temps",
+        "it": "Risolvere DS Bilancio di tempo di punta",
+        "es": "Corrección DS Presupuesto del tiempo de marea",
+        "pl": "Napraw DS Budżet czasu przyklejenia",
+        "uk": "Фіксація DS Часовий бюджет",
+        "zh-cn": "修补 DS 时间预算"
+      },
       "1.3.0": {
         "en": "Fix DS Tick time budget\nUpdate Admin Package\nChange Admin to easy and expert mode\nAdd information in easy mode \nAdd type json for sending json, i.e. forecast\nUpdate Readme",
         "de": "Fix DS Tick Zeitbudget\nAdmin-Paket aktualisieren\nAdmin in einfachen und kompetenten Modus wechseln\nInformationen im einfachen Modus hinzufügen\nFügen Sie Typ json zum Senden von json, d.h. Prognose\nUpdate Reader",
@@ -80,19 +93,6 @@
         "pl": "Naprawiono błędy Eslint-",
         "uk": "Фіксація Eslint-Errors",
         "zh-cn": "修复 Eslint- 错误"
-      },
-      "1.0.0": {
-        "en": "change Config for Encryption -> Credentials must be re-entered",
-        "de": "config for Encryption -> Einsichtspunkte müssen neu eingeteilt werden",
-        "ru": "изменить конфигурацию для шифрования -> Полномочия должны быть повторно введены",
-        "pt": "mudar a Configuração para Criptografia -> As credenciais devem ser reentradas",
-        "nl": "configuratie wijzigen voor versleuteling -> De geloofsbrieven moeten opnieuw worden ingevoerd",
-        "fr": "modifier Config pour chiffrement -> Les pouvoirs doivent être rétablis",
-        "it": "cambiamento Configurazione per Crittografia -> Le credenziali devono essere reintegrate",
-        "es": "cambio Config for Encryption - Propiedad Las credenciales deben reiniciarse",
-        "pl": "zmień konfigurację szyfrowania - > Należności należy ponownie wprowadzić",
-        "uk": "змінити Налаштування для шифрування -> Потенціали повинні бути повторними",
-        "zh-cn": "更改加密配置 - > 全权证书必须重新输入"
       }
     },
     "titleLang": {

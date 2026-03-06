@@ -62,8 +62,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.3.1 (2026-03-06)
 
 * (claude) Fix DS Tick time budget
 
