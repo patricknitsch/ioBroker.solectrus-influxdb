@@ -19,6 +19,8 @@
 ---
 
 ## Overview
+
+<img align="left" src="admin/solectrus-influxdb.png" alt="image" width="128" /><p>
 The SOLECTRUS InfluxDB Adapter stores selected ioBroker states into an InfluxDB 2.x database and optionally computes derived values using a built-in formula engine.
 
 It is designed for energy monitoring systems such as photovoltaic installations, battery storage, heat pumps, wallboxes, grid import/export monitoring, and custom sensors.
