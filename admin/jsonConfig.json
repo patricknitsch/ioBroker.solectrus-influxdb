@@ -283,6 +283,32 @@
 					"xl": 12
 				}
 			}
+		},
+		"management": {
+			"type": "panel",
+			"label": "Management",
+			"items": {
+				"_mgmtHint": {
+					"type": "staticText",
+					"text": "mgmtHint",
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"_mgmtEditor": {
+					"type": "custom",
+					"url": "custom/customComponentsMgmt.js?v=20260315-1",
+					"name": "SolectrusMgmt/Components/SolectrusMgmtEditor",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				}
+			}
 		}
 	}
 }

@@ -271,6 +271,10 @@
 			} else {
 				value = extracted;
 			}
+		} else if (typeof rawValue === 'string') {
+			// Preserve string values: try numeric conversion, fall back to string
+			const n = Number(rawValue);
+			value = Number.isFinite(n) ? n : rawValue;
 		} else {
 			value = safeNumForPreview(rawValue);
 		}
@@ -1063,6 +1067,8 @@
 				if (!formulaBuilderOpen) return;
 				const onKeyDown = e => {
 					if (e && e.key === 'Escape') {
+						// Don't close the formula builder if the state picker dialog is open
+						if (selectContext) return;
 						setFormulaBuilderOpen(false);
 					}
 				};
@@ -1078,7 +1084,7 @@
 						// ignore
 					}
 				};
-			}, [formulaBuilderOpen]);
+			}, [formulaBuilderOpen, selectContext]);
 
 			const setByPath = (rootObj, path, value) => {
 				if (!path) {
