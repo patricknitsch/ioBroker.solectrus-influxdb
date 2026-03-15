@@ -148,23 +148,6 @@
     "adminUI": {
       "config": "json"
     },
-    "adminTab": {
-      "singleton": false,
-      "name": {
-        "en": "Management",
-        "de": "Verwaltung",
-        "ru": "Управление",
-        "pt": "Gestão",
-        "nl": "Beheer",
-        "fr": "Gestion",
-        "it": "Gestione",
-        "es": "Administración",
-        "pl": "Zarządzanie",
-        "uk": "Управління",
-        "zh-cn": "管理"
-      },
-      "fa-icon": "cog"
-    },
     "dependencies": [
       {
         "js-controller": ">=6.0.11"
