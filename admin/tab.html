@@ -496,12 +496,34 @@ if (window.parent.servConn) return window.parent.servConn;
 return null;
 }
 
+/* Wrap a socket method that may return a Promise (Admin 6+) or call
+   the supplied callback directly (Admin 5/legacy). Ensures the
+   callback is invoked exactly once either way. */
+function socketCall(socket, method) {
+var args = Array.prototype.slice.call(arguments, 2);
+var callback = args[args.length - 1];
+args = args.slice(0, args.length - 1);
+var done = false;
+function finish(err, val) {
+if (done) return;
+done = true;
+callback(err, val);
+}
+try {
+var result = socket[method].apply(socket, args.concat([finish]));
+if (result && typeof result.then === 'function') {
+result.then(function (val) { finish(null, val); }).catch(function (err) { finish(err); });
+}
+} catch (e) { finish(e); }
+}
+
 function sendToAdapter(command, callback) {
 var socket = getSocket();
 if (!socket) { callback(new Error(t('mgmt.noSocket'))); return; }
 try {
 if (typeof socket.sendTo === 'function') {
-socket.sendTo(adapterInstance, command, {}, function (result) {
+socketCall(socket, 'sendTo', adapterInstance, command, {}, function (err, result) {
+if (err) { callback(err); return; }
 if (result && result.error) callback(new Error(result.error));
 else callback(null, result || {});
 });
@@ -537,11 +559,9 @@ document.getElementById('btn-delete').disabled = !enabled;
 function checkAlive() {
 var socket = getSocket();
 if (!socket || typeof socket.getState !== 'function') { setAlive(null); return; }
-try {
-socket.getState(aliveId, function (err, state) {
+socketCall(socket, 'getState', aliveId, function (err, state) {
 setAlive(!!(state && state.val));
 });
-} catch (e) { setAlive(null); }
 }
 
 /* ──────────────────────────────────────────────────────────────────
@@ -585,20 +605,15 @@ window.parent.location.hash = '#tab-instances';
 ────────────────────────────────────────────────────────────────── */
 function fetchLiveValues(stateIds, onDone) {
 var socket = getSocket();
-if (!socket || !stateIds || stateIds.length === 0) { onDone && onDone(); return; }
+if (!socket || typeof socket.getState !== 'function' || !stateIds || stateIds.length === 0) { onDone && onDone(); return; }
 var pending = stateIds.length;
-var done = function () { if (--pending === 0) onDone && onDone(); };
+var doneOne = function () { if (--pending === 0) onDone && onDone(); };
 for (var i = 0; i < stateIds.length; i++) {
 (function (id) {
-try {
-socket.getState(id, function (err, state) {
+socketCall(socket, 'getState', id, function (err, state) {
 liveValues[id] = state || null;
-done();
+doneOne();
 });
-} catch (e) {
-liveValues[id] = null;
-done();
-}
 })(stateIds[i]);
 }
 }
@@ -763,12 +778,11 @@ if (container) container.innerHTML = buildItemsTable();
 function loadAdapterConfig() {
 var socket = getSocket();
 if (!socket || typeof socket.getObject !== 'function') {
-renderSensors([]);
-renderItems([], false);
+/* Socket not ready yet — retry after a short delay */
+setTimeout(loadAdapterConfig, 1000);
 return;
 }
-try {
-socket.getObject('system.adapter.' + adapterInstance, function (err, obj) {
+socketCall(socket, 'getObject', 'system.adapter.' + adapterInstance, function (err, obj) {
 if (err || !obj || !obj.native) {
 renderSensors([]);
 renderItems([], false);
@@ -780,10 +794,6 @@ var dsItems = Array.isArray(obj.native.dsItems) ? obj.native.dsItems : [];
 renderSensors(sensors);
 renderItems(dsItems, builderEnabled);
 });
-} catch (e) {
-renderSensors([]);
-renderItems([], false);
-}
 }
 
 /* ──────────────────────────────────────────────────────────────────
@@ -854,10 +864,12 @@ var label = document.getElementById('instance-label');
 if (label) label.textContent = 'Instance: ' + adapterInstance;
 
 setAlive(null);
+/* Small delay so the parent window socket is ready before we query it */
+setTimeout(function () {
 checkAlive();
-aliveCheckTimer = setInterval(checkAlive, ALIVE_CHECK_INTERVAL_MS);
-
 loadAdapterConfig();
+}, 300);
+aliveCheckTimer = setInterval(checkAlive, ALIVE_CHECK_INTERVAL_MS);
 
 document.getElementById('confirm-overlay').addEventListener('mousedown', function (e) {
 if (e.target === e.currentTarget) hideConfirm();
