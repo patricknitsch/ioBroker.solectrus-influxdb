@@ -635,6 +635,29 @@ window.parent.location.hash = '#tab-instances';
 ────────────────────────────────────────────────────────────────── */
 function fetchLiveValues(stateIds, onDone) {
 var socket = getSocket();
+if (!socket || !stateIds || stateIds.length === 0) { onDone && onDone(); return; }
+/* Primary: sendTo getStateValues — reads states via the adapter process,
+   bypassing any Admin socket namespace restrictions. */
+if (typeof socket.sendTo === 'function') {
+socketCall(socket, 'sendTo', adapterInstance, 'getStateValues', { stateIds: stateIds }, function (err, result) {
+if (!err && result && result.ok && result.values) {
+Object.keys(result.values).forEach(function (id) {
+var s = result.values[id];
+liveValues[id] = s ? { val: s.val, ts: s.ts || Date.now() } : null;
+});
+onDone && onDone();
+return;
+}
+/* Fallback: direct socket state reads */
+fetchLiveValuesFallback(stateIds, onDone);
+});
+return;
+}
+fetchLiveValuesFallback(stateIds, onDone);
+}
+
+function fetchLiveValuesFallback(stateIds, onDone) {
+var socket = getSocket();
 var stateMethod = socket && getStateMethod(socket);
 if (!stateMethod || !stateIds || stateIds.length === 0) { onDone && onDone(); return; }
 var pending = stateIds.length;
@@ -809,15 +832,41 @@ if (container) container.innerHTML = buildItemsTable();
 var loadConfigRetries = 0;
 function loadAdapterConfig() {
 var socket = getSocket();
-var objMethod = socket && (typeof socket.getForeignObject === 'function' ? 'getForeignObject'
-: typeof socket.getObject === 'function' ? 'getObject' : null);
-if (!objMethod) {
-/* Socket not ready yet — retry up to 15 times (15 s) */
+if (!socket) {
 if (++loadConfigRetries <= 15) { setTimeout(loadAdapterConfig, 1000); }
 else { renderSensors([]); renderItems([], false); }
 return;
 }
 loadConfigRetries = 0;
+/* Primary: sendTo getConfig — works in all Admin versions (same path
+   as ping/initStates/deleteStates which are proven to work). */
+if (typeof socket.sendTo === 'function') {
+socketCall(socket, 'sendTo', adapterInstance, 'getConfig', {}, function (err, result) {
+if (!err && result && result.ok) {
+var sensors = Array.isArray(result.sensors) ? result.sensors : [];
+var builderEnabled = !!result.enableDataSolectrus;
+var dsItems = Array.isArray(result.dsItems) ? result.dsItems : [];
+renderSensors(sensors);
+renderItems(dsItems, builderEnabled);
+return;
+}
+/* sendTo failed (adapter stopped or error) — try object API fallback */
+loadAdapterConfigFallback();
+});
+return;
+}
+loadAdapterConfigFallback();
+}
+
+function loadAdapterConfigFallback() {
+var socket = getSocket();
+var objMethod = socket && (typeof socket.getForeignObject === 'function' ? 'getForeignObject'
+: typeof socket.getObject === 'function' ? 'getObject' : null);
+if (!objMethod) {
+renderSensors([]);
+renderItems([], false);
+return;
+}
 socketCall(socket, objMethod, 'system.adapter.' + adapterInstance, function (err, obj) {
 if (err || !obj || !obj.native) {
 renderSensors([]);

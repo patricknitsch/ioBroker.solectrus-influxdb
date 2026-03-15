@@ -1372,6 +1372,45 @@ class SolectrusInfluxdb extends utils.Adapter {
 				}
 				return;
 			}
+			if (obj.command === 'getConfig') {
+				if (obj.callback) {
+					this.sendTo(
+						obj.from,
+						obj.command,
+						{
+							ok: true,
+							sensors: Array.isArray(this.config.sensors) ? this.config.sensors : [],
+							enableDataSolectrus: !!this.config.enableDataSolectrus,
+							dsItems: Array.isArray(this.config.dsItems) ? this.config.dsItems : [],
+						},
+						obj.callback,
+					);
+				}
+				return;
+			}
+			if (obj.command === 'getStateValues') {
+				const msg = obj.message && typeof obj.message === 'object' ? obj.message : {};
+				const stateIds = Array.isArray(msg.stateIds) ? msg.stateIds.slice(0, 200) : [];
+				const values = {};
+				(async () => {
+					for (const id of stateIds) {
+						try {
+							const state = await this.getForeignStateAsync(String(id));
+							values[id] = state ? { val: state.val, ts: state.ts } : null;
+						} catch {
+							values[id] = null;
+						}
+					}
+					if (obj.callback) {
+						this.sendTo(obj.from, obj.command, { ok: true, values }, obj.callback);
+					}
+				})().catch(e => {
+					if (obj.callback) {
+						this.sendTo(obj.from, obj.command, { ok: false, error: e.message || String(e) }, obj.callback);
+					}
+				});
+				return;
+			}
 			if (obj.command === 'initStates') {
 				this._handleInitStates(obj).catch(e => {
 					try {
