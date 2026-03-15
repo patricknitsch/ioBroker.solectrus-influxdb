@@ -271,6 +271,10 @@
 			} else {
 				value = extracted;
 			}
+		} else if (typeof rawValue === 'string') {
+			// Preserve string values: try numeric conversion, fall back to string
+			const n = Number(rawValue);
+			value = Number.isFinite(n) ? n : rawValue;
 		} else {
 			value = safeNumForPreview(rawValue);
 		}
@@ -991,6 +995,25 @@
 			const [openDropdown, setOpenDropdown] = React.useState(null);
 			const [collapsedFolders, setCollapsedFolders] = React.useState({});
 
+			// Ref to prevent the formula builder from closing immediately after the state
+			// picker dialog closes (race condition: the dialog's close event may propagate
+			// as an Escape keydown or a mousedown to the formula builder overlay).
+			// The 400ms window is intentionally generous to cover async portal cleanup and
+			// event propagation delays that vary across React/MUI versions and browsers.
+			const PICKER_CLOSE_DEBOUNCE_MS = 400;
+			const pickerJustClosedRef = React.useRef(false);
+			const closeStatePicker = () => {
+				pickerJustClosedRef.current = true;
+				setSelectContext(null);
+				try {
+					globalThis.setTimeout(() => {
+						pickerJustClosedRef.current = false;
+					}, PICKER_CLOSE_DEBOUNCE_MS);
+				} catch {
+					// ignore
+				}
+			};
+
 			const cloneForDraft = item => {
 				if (!item || typeof item !== 'object') return null;
 				try {
@@ -1063,6 +1086,9 @@
 				if (!formulaBuilderOpen) return;
 				const onKeyDown = e => {
 					if (e && e.key === 'Escape') {
+						// Don't close the formula builder if the state picker dialog is open
+						// or was very recently closed (race condition with dialog close events).
+						if (selectContext || pickerJustClosedRef.current) return;
 						setFormulaBuilderOpen(false);
 					}
 				};
@@ -1078,7 +1104,26 @@
 						// ignore
 					}
 				};
-			}, [formulaBuilderOpen]);
+			}, [formulaBuilderOpen, selectContext]);
+
+			// Raise the MUI Modal z-index above the formula builder overlay while the
+			// state picker is open so that DialogSelectID appears in the foreground.
+			// useLayoutEffect fires synchronously before paint, ensuring the style is
+			// applied before the dialog is rendered to the screen.
+			React.useLayoutEffect(() => {
+				if (!selectContext) return undefined;
+				const style = globalThis.document && globalThis.document.createElement('style');
+				if (!style) return undefined;
+				style.textContent = '.MuiModal-root { z-index: 9999 !important; }';
+				try {
+					globalThis.document.head.appendChild(style);
+				} catch {
+					return undefined;
+				}
+				return () => {
+					try { style.remove(); } catch { /* ignore */ }
+				};
+			}, [selectContext]);
 
 			const setByPath = (rootObj, path, value) => {
 				if (!path) {
@@ -1930,10 +1975,10 @@
 					socket: socket,
 					types: 'state',
 					selected: selected,
-					onClose: () => setSelectContext(null),
+					onClose: () => closeStatePicker(),
 					onOk: sel => {
 						const selectedStr = Array.isArray(sel) ? sel[0] : sel;
-						setSelectContext(null);
+						closeStatePicker();
 						if (!selectedStr) return;
 						if (selectContext.kind === 'itemSource') {
 							setDraftField('sourceState', selectedStr);
@@ -2113,7 +2158,10 @@
 
 				const onOverlayMouseDown = e => {
 					if (e && e.target === e.currentTarget) {
-						close();
+						// Don't close if the state picker was recently closed (race condition).
+						if (!selectContext && !pickerJustClosedRef.current) {
+							close();
+						}
 					}
 				};
 

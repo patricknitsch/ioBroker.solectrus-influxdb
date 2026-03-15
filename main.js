@@ -607,6 +607,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 				changed = true;
 			}
 
+			// Migration: enable Data-SOLECTRUS formula engine by default for existing instances
+			if (!obj.native._dsMigrated) {
+				obj.native._dsMigrated = true;
+				obj.native.enableDataSolectrus = true;
+				this.config.enableDataSolectrus = true;
+				changed = true;
+			}
+
 			// --- Sensor titles ---
 			for (const sensor of obj.native.sensors) {
 				if (!sensor || typeof sensor !== 'object') {

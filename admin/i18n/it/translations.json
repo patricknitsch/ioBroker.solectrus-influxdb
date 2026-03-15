@@ -244,7 +244,7 @@
 	"jsonSensorDetailHint": "Lo stato sorgente deve contenere un array JSON (es. da pvforecast). Ogni voce dell'array viene analizzata e scritta direttamente in InfluxDB con il timestamp originale. In modalità automatica, l'adattatore rileva i campi noti (y, clearsky, temp) e li scrive nei measurement corretti. Per i tipi personalizzati, specifica la chiave JSON per timestamp e valore.",
 	"jsonSensorHint": "I dati di previsione/meteo possono essere configurati come sensori JSON nella scheda Sensori (tipo di dati: Array JSON).",
 	"enableExpertModeLabel": "Modalità esperto (configurazione avanzata dei sensori)",
-	"jsonAutoDetectInfo": "y \u2192 inverter_forecast:power (Previsione)\nclearsky \u2192 inverter_forecast_clearsky:power (Clearsky)\ntemp \u2192 outdoor_forecast:temperature (Temperatura)\n\nI campi non presenti nel JSON vengono ignorati automaticamente.",
+	"jsonAutoDetectInfo": "y → inverter_forecast:power (Previsione)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperatura)\n\nI campi non presenti nel JSON vengono ignorati automaticamente.",
 	"nonExpertSensorInfo": "L'adattatore scrive il valore misurato come %TYPE% in %MF%.",
 	"nonExpertJsonInfo": "L'adattatore legge un array JSON dallo stato sorgente (es. da pvforecast) e scrive i dati di previsione con il timestamp originale in InfluxDB.\n\n%MAPPING%\n\nI campi non presenti nel JSON vengono ignorati automaticamente.",
 	"nonExpertExpertHint": "La mappatura può essere personalizzata in modalità esperto."

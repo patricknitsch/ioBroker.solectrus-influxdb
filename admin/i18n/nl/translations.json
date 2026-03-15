@@ -245,7 +245,7 @@
 	"jsonSensorDetailHint": "De bronstatus moet een JSON-array bevatten (bijv. van pvforecast). Elke array-entry wordt geparsed en direct naar InfluxDB geschreven met de originele tijdstempel. In automatische modus detecteert de adapter bekende velden (y, clearsky, temp) en schrijft deze naar de juiste measurements. Voor aangepaste typen, geef de JSON-sleutel op voor tijdstempel en waarde.",
 	"jsonSensorHint": "Prognose-/weergegevens kunnen als JSON-sensoren worden geconfigureerd in het tabblad Sensoren (gegevenstype: JSON-array).",
 	"enableExpertModeLabel": "Expertmodus (geavanceerde sensorconfiguratie)",
-	"jsonAutoDetectInfo": "y \u2192 inverter_forecast:power (Prognose)\nclearsky \u2192 inverter_forecast_clearsky:power (Clearsky)\ntemp \u2192 outdoor_forecast:temperature (Temperatuur)\n\nVelden die niet in de JSON aanwezig zijn, worden automatisch overgeslagen.",
+	"jsonAutoDetectInfo": "y → inverter_forecast:power (Prognose)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperatuur)\n\nVelden die niet in de JSON aanwezig zijn, worden automatisch overgeslagen.",
 	"nonExpertSensorInfo": "De adapter schrijft de meetwaarde als %TYPE% naar %MF%.",
 	"nonExpertJsonInfo": "De adapter leest een JSON-array uit de bronstatus (bijv. van pvforecast) en schrijft de prognosegegevens met de originele tijdstempel naar InfluxDB.\n\n%MAPPING%\n\nVelden die niet in de JSON aanwezig zijn, worden automatisch overgeslagen.",
 	"nonExpertExpertHint": "De toewijzing kan worden aangepast in de expertmodus."
