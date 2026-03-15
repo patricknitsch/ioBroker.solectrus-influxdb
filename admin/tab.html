@@ -26,6 +26,773 @@
 			--btn-primary: #3b82f6;
 			--btn-danger: #ef4444;
 			--btn-disabled: #9ca3af;
+			--tag-bg: #eff6ff;
+			--tag-text: #1d4ed8;
+			--tag-border: #bfdbfe;
+		}
+
+		@media (prefers-color-scheme: dark) {
+			:root {
+				--bg: #111827;
+				--bg2: #1e2229;
+				--text: #e2e8f0;
+				--text-muted: #94a3b8;
+				--border: #374151;
+				--panel-bg: #1e2229;
+				--success-bg: rgba(46,204,113,0.12);
+				--success-border: rgba(46,204,113,0.35);
+				--success-text: #86efac;
+				--error-bg: rgba(231,76,60,0.12);
+				--error-border: rgba(231,76,60,0.35);
+				--error-text: #fca5a5;
+				--warning-bg: rgba(234,179,8,0.12);
+				--warning-border: rgba(234,179,8,0.35);
+				--warning-text: #fde047;
+				--btn-primary: #2563eb;
+				--btn-danger: #dc2626;
+				--btn-disabled: #4b5563;
+				--tag-bg: #1e3a5f;
+				--tag-text: #93c5fd;
+				--tag-border: #1d4ed8;
+			}
+		}
+
+		body {
+			margin: 0;
+			padding: 20px;
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+			background: var(--bg);
+			color: var(--text);
+			font-size: 14px;
+			line-height: 1.5;
+		}
+
+		h1 {
+			font-size: 18px;
+			font-weight: 700;
+			margin: 0 0 4px 0;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+		.subtitle {
+			font-size: 12px;
+			color: var(--text-muted);
+			margin-bottom: 20px;
+		}
+
+		.status-bar {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			padding: 10px 14px;
+			border-radius: 8px;
+			border: 1px solid var(--border);
+			background: var(--panel-bg);
+			margin-bottom: 16px;
+			font-size: 13px;
+			max-width: 860px;
+		}
+
+		.section {
+			background: var(--panel-bg);
+			border: 1px solid var(--border);
+			border-radius: 10px;
+			padding: 16px;
+			margin-bottom: 16px;
+			max-width: 860px;
+		}
+
+		.section-title {
+			font-weight: 700;
+			font-size: 14px;
+			margin-bottom: 6px;
+		}
+
+		.section-desc {
+			font-size: 12px;
+			color: var(--text-muted);
+			margin-bottom: 14px;
+			line-height: 1.6;
+		}
+
+		button {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 8px 18px;
+			border-radius: 8px;
+			border: none;
+			font-family: inherit;
+			font-size: 13px;
+			font-weight: 500;
+			cursor: pointer;
+			transition: opacity 0.15s;
+		}
+
+		button:disabled {
+			cursor: not-allowed;
+			opacity: 0.45;
+		}
+
+		.btn-primary {
+			background: var(--btn-primary);
+			color: #fff;
+		}
+
+		.btn-danger {
+			background: var(--btn-danger);
+			color: #fff;
+		}
+
+		.result {
+			margin-top: 10px;
+			padding: 8px 12px;
+			border-radius: 8px;
+			font-size: 12px;
+			display: none;
+		}
+
+		.result.show { display: block; }
+
+		.result.success {
+			background: var(--success-bg);
+			border: 1px solid var(--success-border);
+			color: var(--success-text);
+		}
+
+		.result.error {
+			background: var(--error-bg);
+			border: 1px solid var(--error-border);
+			color: var(--error-text);
+		}
+
+		.result.loading {
+			background: var(--warning-bg);
+			border: 1px solid var(--warning-border);
+			color: var(--warning-text);
+		}
+
+		.divider {
+			height: 1px;
+			background: var(--border);
+			margin: 8px 0 16px 0;
+			max-width: 860px;
+		}
+
+		/* Builder disabled notice */
+		.notice {
+			display: none;
+			padding: 12px 16px;
+			border-radius: 8px;
+			font-size: 13px;
+			margin-bottom: 16px;
+			max-width: 860px;
+			background: var(--warning-bg);
+			border: 1px solid var(--warning-border);
+			color: var(--warning-text);
+		}
+
+		.notice.show { display: block; }
+
+		/* DS Items table */
+		.items-table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 12px;
+		}
+
+		.items-table th {
+			text-align: left;
+			padding: 6px 8px;
+			border-bottom: 2px solid var(--border);
+			color: var(--text-muted);
+			font-weight: 600;
+			font-size: 11px;
+			text-transform: uppercase;
+			letter-spacing: 0.03em;
+		}
+
+		.items-table td {
+			padding: 7px 8px;
+			border-bottom: 1px solid var(--border);
+			vertical-align: top;
+		}
+
+		.items-table tr:last-child td { border-bottom: none; }
+
+		.items-table tr:hover td { background: var(--bg); }
+
+		.tag {
+			display: inline-block;
+			padding: 1px 7px;
+			border-radius: 9999px;
+			background: var(--tag-bg);
+			border: 1px solid var(--tag-border);
+			color: var(--tag-text);
+			font-size: 10px;
+			font-weight: 600;
+		}
+
+		.enabled-dot {
+			display: inline-block;
+			width: 8px;
+			height: 8px;
+			border-radius: 50%;
+			margin-right: 4px;
+			vertical-align: middle;
+		}
+
+		.enabled-dot.on  { background: #22c55e; }
+		.enabled-dot.off { background: #6b7280; }
+
+		.mono {
+			font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+			font-size: 11px;
+			background: var(--bg);
+			border: 1px solid var(--border);
+			border-radius: 4px;
+			padding: 1px 5px;
+			word-break: break-all;
+		}
+
+		.empty-hint {
+			color: var(--text-muted);
+			font-size: 12px;
+			font-style: italic;
+		}
+
+		/* Confirm overlay */
+		#confirm-overlay {
+			display: none;
+			position: fixed;
+			inset: 0;
+			background: rgba(0,0,0,0.5);
+			z-index: 9999;
+			align-items: center;
+			justify-content: center;
+		}
+
+		#confirm-overlay.show { display: flex; }
+
+		.confirm-dialog {
+			background: var(--panel-bg);
+			border: 1px solid var(--border);
+			border-radius: 12px;
+			padding: 24px;
+			max-width: 420px;
+			width: 90%;
+			box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+		}
+
+		.confirm-title {
+			font-size: 15px;
+			font-weight: 700;
+			margin-bottom: 8px;
+		}
+
+		.confirm-text {
+			font-size: 13px;
+			color: var(--text-muted);
+			margin-bottom: 20px;
+			line-height: 1.6;
+		}
+
+		.confirm-actions {
+			display: flex;
+			gap: 10px;
+			justify-content: flex-end;
+		}
+
+		.btn-secondary {
+			background: var(--border);
+			color: var(--text);
+		}
+	</style>
+</head>
+<body>
+	<h1>⚡ SOLECTRUS InfluxDB</h1>
+	<div class="subtitle" id="instance-label">Instance: loading…</div>
+
+	<div class="status-bar">
+		<span id="alive-dot">⚪</span>
+		<span id="alive-text">Status checking…</span>
+	</div>
+
+	<!-- Builder-disabled notice (hidden when builder is active) -->
+	<div class="notice" id="builder-disabled-notice" data-i18n-notice="mgmt.builderDisabled"></div>
+
+	<!-- Formula Builder Items -->
+	<div class="section" id="section-items">
+		<div class="section-title" data-i18n="mgmt.itemsTitle">Formula Builder – Configured Values</div>
+		<div class="section-desc" data-i18n="mgmt.itemsDesc">All data values configured in the Formula Builder for this adapter instance.</div>
+		<div id="items-container"><span class="empty-hint" data-i18n="mgmt.itemsLoading">Loading…</span></div>
+	</div>
+
+	<div class="divider"></div>
+
+	<!-- Apply Configuration -->
+	<div class="section" id="section-init">
+		<div class="section-title" data-i18n="mgmt.initTitle">Apply Configuration</div>
+		<div class="section-desc" data-i18n="mgmt.initDesc">Creates all missing sensor states and re-initializes the Data-SOLECTRUS formula engine based on the current configuration. The adapter must be running.</div>
+		<button class="btn-primary" id="btn-init" onclick="doInit()" disabled>
+			<span data-i18n="mgmt.initBtn">Apply Configuration</span>
+		</button>
+		<div id="result-init" class="result"></div>
+	</div>
+
+	<div class="divider"></div>
+
+	<!-- Delete States -->
+	<div class="section" id="section-delete">
+		<div class="section-title" data-i18n="mgmt.deleteTitle">Delete States</div>
+		<div class="section-desc" data-i18n="mgmt.deleteDesc">Deletes all sensor states and Data-SOLECTRUS states created by this adapter instance. The states will be recreated on the next adapter start or when 'Apply Configuration' is used.</div>
+		<button class="btn-danger" id="btn-delete" onclick="askDelete()" disabled>
+			<span data-i18n="mgmt.deleteBtn">Delete States</span>
+		</button>
+		<div id="result-delete" class="result"></div>
+	</div>
+
+	<!-- Confirm Dialog -->
+	<div id="confirm-overlay">
+		<div class="confirm-dialog">
+			<div class="confirm-title" data-i18n="mgmt.deleteConfirmTitle">Delete States</div>
+			<div class="confirm-text" data-i18n="mgmt.deleteConfirmText">This will delete all sensor states and Data-SOLECTRUS states created by this adapter instance. Are you sure?</div>
+			<div class="confirm-actions">
+				<button class="btn-secondary" onclick="hideConfirm()"><span data-i18n="Cancel">Cancel</span></button>
+				<button class="btn-danger" onclick="doDelete()"><span data-i18n="mgmt.deleteConfirm">Delete</span></button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		'use strict';
+
+		/* ──────────────────────────────────────────────────────────────────
+		   Translations (German + English fallback)
+		────────────────────────────────────────────────────────────────── */
+		var TRANSLATIONS = {
+			de: {
+				'mgmt.initTitle': 'Einstellungen anwenden',
+				'mgmt.initDesc': 'Erstellt alle fehlenden Sensor-States und initialisiert die Data-SOLECTRUS Formel-Engine anhand der aktuellen Konfiguration neu. Der Adapter muss dabei laufen.',
+				'mgmt.initBtn': 'Einstellungen anwenden',
+				'mgmt.initSuccess': 'Einstellungen erfolgreich angewendet.',
+				'mgmt.deleteTitle': 'States löschen',
+				'mgmt.deleteDesc': 'Löscht alle Sensor-States und Data-SOLECTRUS-States, die von dieser Adapterinstanz erstellt wurden. Die States werden beim nächsten Adapterstart oder nach „Einstellungen anwenden" neu erstellt.',
+				'mgmt.deleteBtn': 'States löschen',
+				'mgmt.deleteSuccess': '%n State(s) gelöscht.',
+				'mgmt.deleteConfirmTitle': 'States löschen',
+				'mgmt.deleteConfirmText': 'Alle Sensor-States und Data-SOLECTRUS-States dieser Adapterinstanz werden gelöscht. Bist du sicher?',
+				'mgmt.deleteConfirm': 'Löschen',
+				'mgmt.adapterRunning': 'Adapter läuft',
+				'mgmt.adapterStopped': 'Adapter gestoppt',
+				'mgmt.statusChecking': 'Status wird geprüft…',
+				'mgmt.running': 'Wird ausgeführt…',
+				'mgmt.noSocket': 'Socket nicht verfügbar',
+				'Cancel': 'Abbrechen',
+				'mgmt.builderDisabled': 'Der Formel-Builder (Data Values) ist in der Adapterinstanz nicht aktiviert. Die Verwaltungsfunktionen sind dennoch verfügbar.',
+				'mgmt.itemsTitle': 'Formel-Builder – Konfigurierte Werte',
+				'mgmt.itemsDesc': 'Alle in der Adapterinstanz konfigurierten Data-Values-Einträge des Formel-Builders.',
+				'mgmt.itemsLoading': 'Wird geladen…',
+				'mgmt.itemsEmpty': 'Keine Einträge konfiguriert.',
+				'mgmt.colName': 'Name',
+				'mgmt.colTarget': 'Ziel-State',
+				'mgmt.colMode': 'Modus',
+				'mgmt.colFormula': 'Formel / Quelle',
+				'mgmt.colInputs': 'Eingaben',
+				'mgmt.modeFormula': 'Formel',
+				'mgmt.modeDirect': 'Direkt'
+			},
+			en: {
+				'mgmt.initTitle': 'Apply Configuration',
+				'mgmt.initDesc': 'Creates all missing sensor states and re-initializes the Data-SOLECTRUS formula engine based on the current configuration. The adapter must be running.',
+				'mgmt.initBtn': 'Apply Configuration',
+				'mgmt.initSuccess': 'Configuration applied successfully.',
+				'mgmt.deleteTitle': 'Delete States',
+				'mgmt.deleteDesc': 'Deletes all sensor states and Data-SOLECTRUS states created by this adapter instance. The states will be recreated on the next adapter start or when \'Apply Configuration\' is used.',
+				'mgmt.deleteBtn': 'Delete States',
+				'mgmt.deleteSuccess': '%n state(s) deleted.',
+				'mgmt.deleteConfirmTitle': 'Delete States',
+				'mgmt.deleteConfirmText': 'This will delete all sensor states and Data-SOLECTRUS states created by this adapter instance. Are you sure?',
+				'mgmt.deleteConfirm': 'Delete',
+				'mgmt.adapterRunning': 'Adapter running',
+				'mgmt.adapterStopped': 'Adapter stopped',
+				'mgmt.statusChecking': 'Checking status…',
+				'mgmt.running': 'Running…',
+				'mgmt.noSocket': 'Socket not available',
+				'Cancel': 'Cancel',
+				'mgmt.builderDisabled': 'The Formula Builder (Data Values) is not enabled for this adapter instance. Management functions are still available.',
+				'mgmt.itemsTitle': 'Formula Builder – Configured Values',
+				'mgmt.itemsDesc': 'All data value entries configured in the Formula Builder for this adapter instance.',
+				'mgmt.itemsLoading': 'Loading…',
+				'mgmt.itemsEmpty': 'No entries configured.',
+				'mgmt.colName': 'Name',
+				'mgmt.colTarget': 'Target State',
+				'mgmt.colMode': 'Mode',
+				'mgmt.colFormula': 'Formula / Source',
+				'mgmt.colInputs': 'Inputs',
+				'mgmt.modeFormula': 'Formula',
+				'mgmt.modeDirect': 'Direct'
+			}
+		};
+
+		/* Only base language codes (first 2 chars) are checked; regional variants like
+		   'zh-CN' fall back to English since we only ship 'de' and 'en' translations. */
+		var langCode = (navigator.language || 'en').slice(0, 2).toLowerCase();
+		var lang = TRANSLATIONS[langCode] || TRANSLATIONS['en'];
+
+		function t(key) {
+			return (lang && lang[key]) || (TRANSLATIONS['en'] && TRANSLATIONS['en'][key]) || key;
+		}
+
+		/* Apply translations to DOM */
+		function applyTranslations() {
+			var els = document.querySelectorAll('[data-i18n]');
+			for (var i = 0; i < els.length; i++) {
+				var el = els[i];
+				var key = el.getAttribute('data-i18n');
+				var translated = t(key);
+				if (translated && translated !== key) {
+					el.textContent = translated;
+				}
+			}
+		}
+
+		/* ──────────────────────────────────────────────────────────────────
+		   Instance / Socket helpers
+		────────────────────────────────────────────────────────────────── */
+		var adapterInstance = '';
+		var aliveCheckTimer = null;
+
+		function getInstanceFromUrl() {
+			try {
+				var search = window.location.search;
+				var m = search.match(/[?&]instance=([^&#]*)/);
+				if (m) {
+					var val = decodeURIComponent(m[1]);
+					/* val may be "solectrus-influxdb.0" or just "0" */
+					if (val.indexOf('.') !== -1) {
+						return val;
+					}
+					return 'solectrus-influxdb.' + val;
+				}
+				/* Try hash fragment: #tab-solectrus-influxdb-0 */
+				var hash = window.location.hash;
+				m = hash.match(/solectrus-influxdb[_-](\d+)/);
+				if (m) {
+					return 'solectrus-influxdb.' + m[1];
+				}
+			} catch (e) { /* ignore */ }
+			return 'solectrus-influxdb.0';
+		}
+
+		function getSocket() {
+			try {
+				/* Admin 6/7: socket is on parent window */
+				if (window.parent && window.parent !== window) {
+					if (window.parent.socket) return window.parent.socket;
+					/* Some Admin versions expose it via servConn */
+					if (window.parent.servConn) return window.parent.servConn;
+				}
+			} catch (e) { /* cross-origin – ignore */ }
+			return null;
+		}
+
+		function sendToAdapter(command, callback) {
+			var socket = getSocket();
+			if (!socket) {
+				callback(new Error(t('mgmt.noSocket')));
+				return;
+			}
+			try {
+				if (typeof socket.sendTo === 'function') {
+					socket.sendTo(adapterInstance, command, {}, function (result) {
+						if (result && result.error) {
+							callback(new Error(result.error));
+						} else {
+							callback(null, result || {});
+						}
+					});
+				} else if (typeof socket.emit === 'function') {
+					/* Raw socket.io fallback */
+					socket.emit('sendTo', adapterInstance, command, {}, function (result) {
+						if (result && result.error) {
+							callback(new Error(result.error));
+						} else {
+							callback(null, result || {});
+						}
+					});
+				} else {
+					callback(new Error(t('mgmt.noSocket')));
+				}
+			} catch (e) {
+				callback(e);
+			}
+		}
+
+		/* ──────────────────────────────────────────────────────────────────
+		   Alive status polling
+		────────────────────────────────────────────────────────────────── */
+		var aliveId = '';
+
+		function setAlive(state) {
+			var dot = document.getElementById('alive-dot');
+			var txt = document.getElementById('alive-text');
+			if (state === true) {
+				dot.textContent = '🟢';
+				txt.textContent = t('mgmt.adapterRunning');
+				enableButtons(true);
+			} else if (state === false) {
+				dot.textContent = '🔴';
+				txt.textContent = t('mgmt.adapterStopped');
+				enableButtons(false);
+			} else {
+				dot.textContent = '⚪';
+				txt.textContent = t('mgmt.statusChecking');
+				enableButtons(false);
+			}
+		}
+
+		function enableButtons(enabled) {
+			document.getElementById('btn-init').disabled = !enabled;
+			document.getElementById('btn-delete').disabled = !enabled;
+		}
+
+		function checkAlive() {
+			var socket = getSocket();
+			if (!socket || typeof socket.getState !== 'function') {
+				setAlive(null);
+				return;
+			}
+			try {
+				socket.getState(aliveId, function (err, state) {
+					setAlive(!!(state && state.val));
+				});
+			} catch (e) {
+				setAlive(null);
+			}
+		}
+
+		/* ──────────────────────────────────────────────────────────────────
+		   Load adapter config and render DS items
+		────────────────────────────────────────────────────────────────── */
+		function loadAdapterConfig() {
+			var socket = getSocket();
+			if (!socket || typeof socket.getObject !== 'function') {
+				renderItems(null, false);
+				return;
+			}
+			try {
+				socket.getObject('system.adapter.' + adapterInstance, function (err, obj) {
+					if (err || !obj || !obj.native) {
+						renderItems([], false);
+						return;
+					}
+					var builderEnabled = !!(obj.native.enableDataSolectrus);
+					var items = Array.isArray(obj.native.dsItems) ? obj.native.dsItems : [];
+					renderItems(items, builderEnabled);
+				});
+			} catch (e) {
+				renderItems([], false);
+			}
+		}
+
+		function esc(str) {
+			return String(str || '')
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;');
+		}
+
+		function renderItems(items, builderEnabled) {
+			/* Show/hide builder-disabled notice */
+			var notice = document.getElementById('builder-disabled-notice');
+			if (notice) {
+				if (!builderEnabled) {
+					notice.textContent = t('mgmt.builderDisabled');
+					notice.classList.add('show');
+				} else {
+					notice.classList.remove('show');
+				}
+			}
+
+			/* Hide items section when builder is not enabled */
+			var sectionItems = document.getElementById('section-items');
+			if (sectionItems) {
+				sectionItems.style.display = builderEnabled ? '' : 'none';
+			}
+
+			if (!builderEnabled || !items) return;
+
+			var container = document.getElementById('items-container');
+			if (!container) return;
+
+			if (items.length === 0) {
+				container.innerHTML = '<span class="empty-hint">' + esc(t('mgmt.itemsEmpty')) + '</span>';
+				return;
+			}
+
+			var html = '<table class="items-table">';
+			html += '<thead><tr>';
+			html += '<th>' + esc(t('mgmt.colName')) + '</th>';
+			html += '<th>' + esc(t('mgmt.colTarget')) + '</th>';
+			html += '<th>' + esc(t('mgmt.colMode')) + '</th>';
+			html += '<th>' + esc(t('mgmt.colFormula')) + '</th>';
+			html += '<th>' + esc(t('mgmt.colInputs')) + '</th>';
+			html += '</tr></thead><tbody>';
+
+			for (var i = 0; i < items.length; i++) {
+				var item = items[i] || {};
+				var enabled = !!(item.enabled);
+				var name = item.name || item.targetId || ('Item ' + (i + 1));
+				var target = item.targetId || '';
+				var mode = item.mode || 'formula';
+				var modeLabel = mode === 'formula' ? t('mgmt.modeFormula') : t('mgmt.modeDirect');
+				var formulaOrSource = mode === 'formula'
+					? (item.formula || '')
+					: (item.sourceState || item.jsonPath || '');
+				var inputs = Array.isArray(item.inputs) ? item.inputs : [];
+				var inputLabels = inputs.map(function (inp) {
+					return inp && inp.sourceState ? inp.sourceState : '';
+				}).filter(Boolean);
+
+				html += '<tr>';
+				html += '<td><span class="enabled-dot ' + (enabled ? 'on' : 'off') + '"></span>' + esc(name) + '</td>';
+				html += '<td>' + (target ? '<code class="mono">' + esc(target) + '</code>' : '') + '</td>';
+				html += '<td><span class="tag">' + esc(modeLabel) + '</span></td>';
+				html += '<td>' + (formulaOrSource ? '<code class="mono">' + esc(formulaOrSource) + '</code>' : '') + '</td>';
+				html += '<td>';
+				if (inputLabels.length > 0) {
+					for (var j = 0; j < inputLabels.length; j++) {
+						html += '<code class="mono" style="display:block;margin-bottom:2px">' + esc(inputLabels[j]) + '</code>';
+					}
+				}
+				html += '</td>';
+				html += '</tr>';
+			}
+
+			html += '</tbody></table>';
+			container.innerHTML = html;
+		}
+
+		/* ──────────────────────────────────────────────────────────────────
+		   Result display
+		────────────────────────────────────────────────────────────────── */
+		function showResult(elId, type, msg) {
+			var el = document.getElementById(elId);
+			if (!el) return;
+			el.className = 'result show ' + type;
+			var prefix = type === 'loading' ? '⏳ ' : (type === 'success' ? '✅ ' : '❌ ');
+			el.textContent = prefix + msg;
+		}
+
+		function hideResult(elId) {
+			var el = document.getElementById(elId);
+			if (!el) return;
+			el.className = 'result';
+			el.textContent = '';
+		}
+
+		/* ──────────────────────────────────────────────────────────────────
+		   Actions
+		────────────────────────────────────────────────────────────────── */
+		function doInit() {
+			hideResult('result-delete');
+			showResult('result-init', 'loading', t('mgmt.running'));
+			document.getElementById('btn-init').disabled = true;
+			document.getElementById('btn-delete').disabled = true;
+			sendToAdapter('initStates', function (err) {
+				enableButtons(true);
+				if (err) {
+					showResult('result-init', 'error', err.message || String(err));
+				} else {
+					showResult('result-init', 'success', t('mgmt.initSuccess'));
+				}
+			});
+		}
+
+		function askDelete() {
+			document.getElementById('confirm-overlay').classList.add('show');
+		}
+
+		function hideConfirm() {
+			document.getElementById('confirm-overlay').classList.remove('show');
+		}
+
+		function doDelete() {
+			hideConfirm();
+			hideResult('result-init');
+			showResult('result-delete', 'loading', t('mgmt.running'));
+			document.getElementById('btn-init').disabled = true;
+			document.getElementById('btn-delete').disabled = true;
+			sendToAdapter('deleteStates', function (err, result) {
+				enableButtons(true);
+				if (err) {
+					showResult('result-delete', 'error', err.message || String(err));
+				} else {
+					var n = (result && typeof result.deleted === 'number') ? result.deleted : 0;
+					showResult('result-delete', 'success', t('mgmt.deleteSuccess').replace('%n', n));
+				}
+			});
+		}
+
+		/* Polling interval for the adapter alive state (ms) */
+		var ALIVE_CHECK_INTERVAL_MS = 5000;
+
+		/* ──────────────────────────────────────────────────────────────────
+		   Init
+		────────────────────────────────────────────────────────────────── */
+		document.addEventListener('DOMContentLoaded', function () {
+			applyTranslations();
+
+			adapterInstance = getInstanceFromUrl();
+			aliveId = 'system.adapter.' + adapterInstance + '.alive';
+
+			var label = document.getElementById('instance-label');
+			if (label) label.textContent = 'Instance: ' + adapterInstance;
+
+			/* Initial alive check */
+			setAlive(null);
+			checkAlive();
+
+			/* Poll alive every ALIVE_CHECK_INTERVAL_MS */
+			aliveCheckTimer = setInterval(checkAlive, ALIVE_CHECK_INTERVAL_MS);
+
+			/* Load adapter config to render dsItems and check builder state */
+			loadAdapterConfig();
+
+			/* Close confirm on overlay click */
+			document.getElementById('confirm-overlay').addEventListener('mousedown', function (e) {
+				if (e.target === e.currentTarget) hideConfirm();
+			});
+		});
+	</script>
+</body>
+</html>
+
+		*, *::before, *::after { box-sizing: border-box; }
+
+		:root {
+			--bg: #f9fafb;
+			--bg2: #ffffff;
+			--text: #1a202c;
+			--text-muted: #718096;
+			--border: #e2e8f0;
+			--panel-bg: #ffffff;
+			--success-bg: rgba(46,204,113,0.10);
+			--success-border: rgba(46,204,113,0.25);
+			--success-text: #166534;
+			--error-bg: rgba(231,76,60,0.10);
+			--error-border: rgba(231,76,60,0.25);
+			--error-text: #991b1b;
+			--warning-bg: rgba(234,179,8,0.10);
+			--warning-border: rgba(234,179,8,0.25);
+			--warning-text: #854d0e;
+			--btn-primary: #3b82f6;
+			--btn-danger: #ef4444;
+			--btn-disabled: #9ca3af;
 		}
 
 		@media (prefers-color-scheme: dark) {

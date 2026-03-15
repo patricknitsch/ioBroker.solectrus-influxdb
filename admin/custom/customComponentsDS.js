@@ -1106,6 +1106,25 @@
 				};
 			}, [formulaBuilderOpen, selectContext]);
 
+			// Raise the MUI Modal z-index above the formula builder overlay while the
+			// state picker is open so that DialogSelectID appears in the foreground.
+			// useLayoutEffect fires synchronously before paint, ensuring the style is
+			// applied before the dialog is rendered to the screen.
+			React.useLayoutEffect(() => {
+				if (!selectContext) return undefined;
+				const style = globalThis.document && globalThis.document.createElement('style');
+				if (!style) return undefined;
+				style.textContent = '.MuiModal-root { z-index: 9999 !important; }';
+				try {
+					globalThis.document.head.appendChild(style);
+				} catch {
+					return undefined;
+				}
+				return () => {
+					try { style.remove(); } catch { /* ignore */ }
+				};
+			}, [selectContext]);
+
 			const setByPath = (rootObj, path, value) => {
 				if (!path) {
 					return value;
@@ -2009,9 +2028,7 @@
 					position: 'fixed',
 					inset: 0,
 					background: isDark ? 'rgba(0,0,0,0.65)' : 'rgba(0,0,0,0.35)',
-					// Lower z-index while the state picker (DialogSelectID) is open so that the
-					// MUI dialog (which renders at ~1300) appears in front of our overlay.
-					zIndex: selectContext ? 1200 : 5000,
+					zIndex: 5000,
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center',
