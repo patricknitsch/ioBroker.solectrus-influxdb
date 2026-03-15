@@ -131,7 +131,7 @@
             margin-bottom: 18px;
         }
         .intro-text {
-            font-size: 13px;
+            font-size: 15px;
             color: var(--text-muted);
             flex: 1;
             min-width: 200px;
@@ -165,7 +165,7 @@
     <!-- Intro bar -->
     <div class="intro-bar">
         <span id="intro-text" class="intro-text"></span>
-        <button class="config-btn" id="config-btn" onclick="openConfig()"></button>
+        <button class="config-btn" id="config-btn"></button>
     </div>
     <!-- InfluxDB Sensors -->
     <section id="influx-section">
@@ -522,15 +522,17 @@
 
     /* ── config navigation ── */
     function openConfig() {
-        var configHash = '/tab-instances/config/system.adapter.' + NS;
+        var hash = 'tab-instances/config/system.adapter.' + NS;
         try {
-            if (window.parent && window.parent !== window) {
-                window.parent.location.hash = configHash;
-                return;
-            }
-        } catch (_) { /* cross-origin – ignore */ }
-        window.location.hash = configHash;
+            var target = (window.parent && window.parent !== window) ? window.parent : window;
+            var base = target.location.href.split('#')[0];
+            target.location.href = base + '#' + hash;
+        } catch (_) {
+            /* cross-origin fallback: open in new tab */
+            window.open('/index.html#' + hash, '_blank');
+        }
     }
+    document.getElementById('config-btn').addEventListener('click', openConfig);
 
     /* ── load ── */
     function load() {
