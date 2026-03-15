@@ -183,7 +183,7 @@
     "influxInterval": 5,
     "influxToken": "",
     "enableExpertMode": false,
-    "enableDataSolectrus": false,
+    "enableDataSolectrus": true,
     "enableForecast": false,
     "dsPollIntervalSeconds": 5,
     "dsSnapshotInputs": false,
