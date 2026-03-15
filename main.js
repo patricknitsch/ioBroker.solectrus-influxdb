@@ -1366,6 +1366,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 			if (!obj || !obj.command) {
 				return;
 			}
+			if (obj.command === 'ping') {
+				if (obj.callback) {
+					this.sendTo(obj.from, obj.command, { pong: true }, obj.callback);
+				}
+				return;
+			}
 			if (obj.command === 'initStates') {
 				this._handleInitStates(obj).catch(e => {
 					try {

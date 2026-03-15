@@ -386,7 +386,7 @@ de: {
 'mgmt.running': 'Wird ausgeführt…',
 'mgmt.noSocket': 'Socket nicht verfügbar',
 'Cancel': 'Abbrechen',
-'mgmt.builderDisabled': 'Der Formel-Builder (Data Values) ist in der Adapterinstanz nicht aktiviert.',
+'mgmt.builderDisabled': 'Der Formel-Builder (Data Values) ist in der Adapterinstanz nicht aktiviert. Aktiviere ihn in den Instanzeinstellungen und speichere die Konfiguration.',
 'mgmt.sensorsTitle': 'Sensoren',
 'mgmt.sensorsDesc': 'Alle aktivierten Sensoren und deren aktueller Wert.',
 'mgmt.sensorsEmpty': 'Keine Sensoren konfiguriert oder aktiviert.',
@@ -423,7 +423,7 @@ en: {
 'mgmt.running': 'Running…',
 'mgmt.noSocket': 'Socket not available',
 'Cancel': 'Cancel',
-'mgmt.builderDisabled': 'The Formula Builder (Data Values) is not enabled for this adapter instance.',
+'mgmt.builderDisabled': 'The Formula Builder (Data Values) is not enabled for this adapter instance. Enable it in the instance settings and save the configuration.',
 'mgmt.sensorsTitle': 'Sensors',
 'mgmt.sensorsDesc': 'All enabled sensors and their current values.',
 'mgmt.sensorsEmpty': 'No sensors configured or enabled.',
@@ -571,7 +571,23 @@ document.getElementById('btn-delete').disabled = !enabled;
 
 function checkAlive() {
 var socket = getSocket();
-var stateMethod = socket && getStateMethod(socket);
+if (!socket) { setAlive(null); return; }
+/* Primary: sendTo ping — works regardless of socket API version (Admin 5/6/7).
+   If the adapter is running it responds immediately; if stopped, it errors out. */
+if (typeof socket.sendTo === 'function') {
+socketCall(socket, 'sendTo', adapterInstance, 'ping', {}, function (err, result) {
+if (!err && result && result.pong) { setAlive(true); return; }
+if (!err && result && !result.error) { setAlive(true); return; }
+/* Adapter not running or sendTo rejected — try reading the alive state */
+var stateMethod = getStateMethod(socket);
+if (!stateMethod) { setAlive(false); return; }
+socketCall(socket, stateMethod, aliveId, function (err2, state) {
+setAlive(!!(state && state.val));
+});
+});
+return;
+}
+var stateMethod = getStateMethod(socket);
 if (!stateMethod) { setAlive(null); return; }
 socketCall(socket, stateMethod, aliveId, function (err, state) {
 setAlive(!!(state && state.val));
@@ -711,7 +727,7 @@ function renderItems(items, builderEnabled) {
 var notice = document.getElementById('builder-disabled-notice');
 if (notice) {
 if (!builderEnabled) {
-notice.textContent = t('mgmt.builderDisabled');
+notice.textContent = t('mgmt.builderDisabled') + ' [' + adapterInstance + ']';
 notice.classList.add('show');
 } else {
 notice.classList.remove('show');
