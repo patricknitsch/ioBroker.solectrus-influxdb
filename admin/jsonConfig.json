@@ -74,6 +74,7 @@
 						"enableDataSolectrus": {
 							"type": "checkbox",
 							"label": "Enable Data-SOLECTRUS (formula engine)",
+							"default": true,
 							"newLine": true,
 							"xs": 12,
 							"sm": 12,
