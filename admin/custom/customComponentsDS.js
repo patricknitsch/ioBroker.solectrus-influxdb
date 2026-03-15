@@ -2009,7 +2009,9 @@
 					position: 'fixed',
 					inset: 0,
 					background: isDark ? 'rgba(0,0,0,0.65)' : 'rgba(0,0,0,0.35)',
-					zIndex: 5000,
+					// Lower z-index while the state picker (DialogSelectID) is open so that the
+					// MUI dialog (which renders at ~1300) appears in front of our overlay.
+					zIndex: selectContext ? 1200 : 5000,
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center',
