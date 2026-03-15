@@ -496,17 +496,30 @@ if (window.parent.servConn) return window.parent.servConn;
 return null;
 }
 
-/* Wrap a socket method that may return a Promise (Admin 6+) or call
-   the supplied callback directly (Admin 5/legacy). Ensures the
-   callback is invoked exactly once either way. */
+/* Prefer getForeignState (Admin 7 admin API) for cross-namespace state
+   access. Falls back to getState for legacy/socket.io-based admins. */
+function getStateMethod(socket) {
+if (typeof socket.getForeignState === 'function') return 'getForeignState';
+if (typeof socket.getState === 'function') return 'getState';
+return null;
+}
+
+/* Wrap a socket method that may return a Promise (Admin 7) or call
+   the supplied callback directly (Admin 5/6). Ensures the callback is
+   invoked exactly once. Includes an 8 s timeout failsafe so a hung
+   Promise never locks up the UI. */
 function socketCall(socket, method) {
 var args = Array.prototype.slice.call(arguments, 2);
 var callback = args[args.length - 1];
 args = args.slice(0, args.length - 1);
 var done = false;
+var timeoutId = setTimeout(function () {
+if (!done) { done = true; callback(new Error('socketCall timeout: ' + method)); }
+}, 8000);
 function finish(err, val) {
 if (done) return;
 done = true;
+clearTimeout(timeoutId);
 callback(err, val);
 }
 try {
@@ -558,8 +571,9 @@ document.getElementById('btn-delete').disabled = !enabled;
 
 function checkAlive() {
 var socket = getSocket();
-if (!socket || typeof socket.getState !== 'function') { setAlive(null); return; }
-socketCall(socket, 'getState', aliveId, function (err, state) {
+var stateMethod = socket && getStateMethod(socket);
+if (!stateMethod) { setAlive(null); return; }
+socketCall(socket, stateMethod, aliveId, function (err, state) {
 setAlive(!!(state && state.val));
 });
 }
@@ -605,12 +619,13 @@ window.parent.location.hash = '#tab-instances';
 ────────────────────────────────────────────────────────────────── */
 function fetchLiveValues(stateIds, onDone) {
 var socket = getSocket();
-if (!socket || typeof socket.getState !== 'function' || !stateIds || stateIds.length === 0) { onDone && onDone(); return; }
+var stateMethod = socket && getStateMethod(socket);
+if (!stateMethod || !stateIds || stateIds.length === 0) { onDone && onDone(); return; }
 var pending = stateIds.length;
 var doneOne = function () { if (--pending === 0) onDone && onDone(); };
 for (var i = 0; i < stateIds.length; i++) {
 (function (id) {
-socketCall(socket, 'getState', id, function (err, state) {
+socketCall(socket, stateMethod, id, function (err, state) {
 liveValues[id] = state || null;
 doneOne();
 });
@@ -775,14 +790,19 @@ if (container) container.innerHTML = buildItemsTable();
 /* ──────────────────────────────────────────────────────────────────
    Load adapter config
 ────────────────────────────────────────────────────────────────── */
+var loadConfigRetries = 0;
 function loadAdapterConfig() {
 var socket = getSocket();
-if (!socket || typeof socket.getObject !== 'function') {
-/* Socket not ready yet — retry after a short delay */
-setTimeout(loadAdapterConfig, 1000);
+var objMethod = socket && (typeof socket.getForeignObject === 'function' ? 'getForeignObject'
+: typeof socket.getObject === 'function' ? 'getObject' : null);
+if (!objMethod) {
+/* Socket not ready yet — retry up to 15 times (15 s) */
+if (++loadConfigRetries <= 15) { setTimeout(loadAdapterConfig, 1000); }
+else { renderSensors([]); renderItems([], false); }
 return;
 }
-socketCall(socket, 'getObject', 'system.adapter.' + adapterInstance, function (err, obj) {
+loadConfigRetries = 0;
+socketCall(socket, objMethod, 'system.adapter.' + adapterInstance, function (err, obj) {
 if (err || !obj || !obj.native) {
 renderSensors([]);
 renderItems([], false);
