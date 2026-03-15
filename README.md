@@ -62,6 +62,14 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* (copilot) Fix String Handling in Formula Engine
+* (copilot) Fix Formula Engine when using state formulas
+* (copilot) New Page for smart Sensor Overview
+* (patricknitsch) Update Readme and Doc
+
 ### 1.3.1 (2026-03-06)
 
 * (claude) Fix DS Tick time budget
