@@ -122,12 +122,51 @@
             margin-top: 6px;
         }
         #content { display: none; }
+        .intro-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+        .intro-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            flex: 1;
+            min-width: 200px;
+        }
+        .config-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            color: var(--accent);
+            border: 1.5px solid var(--accent);
+            border-radius: 6px;
+            padding: 6px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .config-btn:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
     </style>
 </head>
 <body>
 <div id="error-msg"></div>
 <div id="loading">…</div>
 <div id="content">
+    <!-- Intro bar -->
+    <div class="intro-bar">
+        <span id="intro-text" class="intro-text"></span>
+        <button class="config-btn" id="config-btn" onclick="openConfig()"></button>
+    </div>
     <!-- InfluxDB Sensors -->
     <section id="influx-section">
         <h2 id="h-influx"></h2>
@@ -138,6 +177,7 @@
                         <th class="col-status"></th>
                         <th id="th-name-i"></th>
                         <th id="th-sid-i"></th>
+                        <th id="th-type-i"></th>
                         <th id="th-val-i"></th>
                         <th id="th-meas"></th>
                         <th id="th-field"></th>
@@ -181,6 +221,7 @@
             hDs:            'Formula Engine (Data-SOLECTRUS)',
             name:           'Name',
             stateId:        'Source State',
+            type:           'Type',
             value:          'Current Value',
             measurement:    'Measurement',
             field:          'Field',
@@ -192,7 +233,9 @@
             refreshed:      'Last updated: ',
             error:          'Error: ',
             noConn:         'Cannot connect to ioBroker socket.',
-            jsonItems:      'items'
+            moreEntries:    'more entries',
+            configBtn:      'Open Configuration',
+            intro:          'This tab shows all configured and active sensors and data items at a glance.'
         },
         de: {
             loading:        'Lade…',
@@ -200,6 +243,7 @@
             hDs:            'Formel-Engine (Data-SOLECTRUS)',
             name:           'Name',
             stateId:        'Quell-State',
+            type:           'Typ',
             value:          'Aktueller Wert',
             measurement:    'Measurement',
             field:          'Field',
@@ -211,7 +255,9 @@
             refreshed:      'Zuletzt aktualisiert: ',
             error:          'Fehler: ',
             noConn:         'Verbindung zum ioBroker-Socket nicht möglich.',
-            jsonItems:      'Einträge'
+            moreEntries:    'weitere Einträge',
+            configBtn:      'Konfiguration öffnen',
+            intro:          'Dieser Tab zeigt alle konfigurierten und aktiven Sensoren und Datenpunkte im Überblick.'
         }
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
@@ -259,7 +305,7 @@
         if (typeof val === 'object')  return JSON.stringify(val).slice(0, TRUNCATE_VAL_LEN);
         return String(val);
     }
-    /* Compact formatter for sensor values: JSON arrays become "[N items]" */
+    /* Compact formatter for sensor values: JSON arrays show first entry + "+N more" */
     function fmtSensorVal(val, isJson) {
         if (val === null || val === undefined) return T.na;
         if (isJson) {
@@ -269,7 +315,13 @@
                 try { parsed = JSON.parse(val); } catch (_) { /* keep as string */ }
             }
             if (Array.isArray(parsed)) {
-                return '[' + parsed.length + ' ' + T.jsonItems + ']';
+                if (parsed.length === 0) return '[]';
+                var firstStr = JSON.stringify(parsed[0]);
+                if (firstStr.length > TRUNCATE_VAL_LEN) {
+                    firstStr = firstStr.slice(0, TRUNCATE_VAL_LEN) + '…';
+                }
+                if (parsed.length === 1) return firstStr;
+                return firstStr + ' (+' + (parsed.length - 1) + '\u00a0' + T.moreEntries + ')';
             }
         }
         return fmtVal(val);
@@ -351,6 +403,7 @@
         setText('h-influx', T.hInflux);
         setText('th-name-i', T.name);
         setText('th-sid-i',  T.stateId);
+        setText('th-type-i', T.type);
         setText('th-val-i',  T.value);
         setText('th-meas',   T.measurement);
         setText('th-field',  T.field);
@@ -361,7 +414,7 @@
         if (!active.length) {
             var row = tbody.insertRow();
             row.className = 'empty-row';
-            row.insertCell().colSpan = 6;
+            row.insertCell().colSpan = 7;
             row.cells[0].textContent = T.noSensors;
             return;
         }
@@ -382,6 +435,9 @@
             tdID.appendChild(sensor.sourceState
                 ? el('code', { text: sensor.sourceState })
                 : el('span', { text: T.na, style: 'color:var(--text-muted)' }));
+            /* type */
+            var tdT = tr.insertCell();
+            if (sensor.type) tdT.appendChild(el('code', { text: sensor.type }));
             /* value */
             var tdV = tr.insertCell(); tdV.className = 'value-cell';
             tdV.textContent = fmtSensorVal(hasVal ? state.val : null, isJson);
@@ -441,6 +497,9 @@
         document.getElementById('loading').style.display = 'none';
         document.getElementById('content').style.display = 'block';
 
+        setText('intro-text', T.intro);
+        setText('config-btn', T.configBtn);
+
         renderInflux(config.sensors, states);
 
         if (config.enableDataSolectrus) {
@@ -459,6 +518,18 @@
         e.textContent = T.error + msg;
         e.style.display = 'block';
         document.getElementById('loading').style.display = 'none';
+    }
+
+    /* ── config navigation ── */
+    function openConfig() {
+        var configHash = '/tab-instances/config/system.adapter.' + NS;
+        try {
+            if (window.parent && window.parent !== window) {
+                window.parent.location.hash = configHash;
+                return;
+            }
+        } catch (_) { /* cross-origin – ignore */ }
+        window.location.hash = configHash;
     }
 
     /* ── load ── */

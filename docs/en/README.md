@@ -4,16 +4,17 @@
 
 1. [InfluxDB Configuration](#1-influxdb-configuration)
 2. [Sensors](#2-sensors)
-3. [Forecast Sources](#3-forecast-sources)
-4. [How-To: pvForecast with pvnode](#4-how-to-pvforecast-with-pvnode)
-5. [Data-SOLECTRUS Formula Engine](#5-data-solectrus-formula-engine)
-6. [Item Modes](#6-item-modes)
-7. [Formula Builder](#7-formula-builder)
-8. [State Machine Mode](#8-state-machine-mode)
-9. [Data Runtime Settings](#9-data-runtime-settings)
-10. [Monitoring & Buffer](#10-monitoring--buffer)
-11. [Using Computed Values as Sensor Sources](#11-using-computed-values-as-sensor-sources)
-12. [Debugging](#12-debugging)
+3. [Sensors Overview Tab](#3-sensors-overview-tab)
+4. [Forecast Sources](#4-forecast-sources)
+5. [How-To: pvForecast with pvnode](#5-how-to-pvforecast-with-pvnode)
+6. [Data-SOLECTRUS Formula Engine](#6-data-solectrus-formula-engine)
+7. [Item Modes](#7-item-modes)
+8. [Formula Builder](#8-formula-builder)
+9. [State Machine Mode](#9-state-machine-mode)
+10. [Data Runtime Settings](#10-data-runtime-settings)
+11. [Monitoring & Buffer](#11-monitoring--buffer)
+12. [Using Computed Values as Sensor Sources](#12-using-computed-values-as-sensor-sources)
+13. [Debugging](#13-debugging)
 
 ---
 
@@ -123,7 +124,31 @@ If InfluxDB reports a field type conflict (e.g. writing a float to an existing i
 
 ---
 
-## 3. Forecast Sources
+## 3. Sensors Overview Tab
+
+The **SOLECTRUS Overview** tab (accessible via the tab bar in the adapter section) provides a real-time at-a-glance view of all configured and active sensors and data items.
+
+### Features
+
+- **Introduction bar**: A short description of the tab and an **Open Configuration** button that takes you directly to the adapter instance settings.
+- **InfluxDB Sensors table**: Shows all enabled sensors with their current live values. The table includes:
+  - Status indicator (green dot = value available, grey = no value yet)
+  - Sensor name
+  - ioBroker source state ID
+  - **Data type** (`int`, `float`, `bool`, `string`, `json`)
+  - Current value
+  - InfluxDB measurement and field names
+- **Formula Engine table** (only shown when Data-SOLECTRUS is enabled): Shows all active computed items with mode and formula/expression.
+- **JSON Array preview**: For sensors with data type `json`, the value cell displays the **first array entry** followed by a count of additional entries (e.g. `{"t":1710000000000,"y":1250} (+543 more entries)`). This gives a compact but informative preview without flooding the display.
+- **Auto-refresh**: The tab updates automatically every 5 seconds.
+
+### Navigation
+
+Click **Open Configuration** (top right) to jump directly to the instance configuration page of this adapter.
+
+---
+
+## 4. Forecast Sources
 
 Forecast and weather data from pvforecast or similar adapters can be written to InfluxDB using **JSON sensors** on the Sensors tab. Simply set the datatype to **JSON Array** and use the **Automatic** preset.
 
@@ -166,7 +191,7 @@ In **Automatic** mode, a single JSON sensor detects all present fields and write
 
 ---
 
-## 4. How-To: pvForecast with pvnode
+## 5. How-To: pvForecast with pvnode
 
 This section explains how to connect the **pvforecast** adapter to SOLECTRUS InfluxDB for forecast data.
 
@@ -220,7 +245,7 @@ After the next pvforecast update, check your InfluxDB bucket for the `forecast` 
 
 ---
 
-## 5. Data-SOLECTRUS Formula Engine
+## 6. Data-SOLECTRUS Formula Engine
 
 The formula engine is an optional feature that lets you compute derived values from any ioBroker states. Enable it by checking **Enable Data-SOLECTRUS (formula engine)** on the InfluxDB tab.
 
@@ -238,7 +263,7 @@ When enabled, two additional tabs appear:
 
 ---
 
-## 6. Item Modes
+## 7. Item Modes
 
 ### Source Mode
 
@@ -302,7 +327,7 @@ These functions read ioBroker states directly in a formula, without defining nam
 
 ---
 
-## 7. Formula Builder
+## 8. Formula Builder
 
 Click **Builder...** next to the formula input to open the visual formula builder.
 
@@ -319,7 +344,7 @@ The formula is always editable as plain text. The builder only inserts building 
 
 ---
 
-## 8. State Machine Mode
+## 9. State Machine Mode
 
 The state machine mode generates string or boolean states based on rules. Rules are evaluated top-to-bottom; the **first matching rule wins**.
 
@@ -364,7 +389,7 @@ Result: The output state will contain `Battery-Empty`, `Battery-Low`, `Full-Expo
 
 ---
 
-## 9. Data Runtime Settings
+## 10. Data Runtime Settings
 
 On the **Data Runtime** tab:
 
@@ -376,7 +401,7 @@ On the **Data Runtime** tab:
 
 ---
 
-## 10. Monitoring & Buffer
+## 11. Monitoring & Buffer
 
 ### Adapter states
 
@@ -404,7 +429,7 @@ Computed values appear under `solectrus-influxdb.X.ds.*` with per-item diagnosti
 
 ---
 
-## 11. Using Computed Values as Sensor Sources
+## 12. Using Computed Values as Sensor Sources
 
 You can use Data-SOLECTRUS computed values as input for sensors to write them to InfluxDB:
 
@@ -417,7 +442,7 @@ The adapter handles the initialization order automatically -- sensor subscriptio
 
 ---
 
-## 12. Debugging
+## 13. Debugging
 
 Set the adapter log level to **Debug** for detailed output including:
 
