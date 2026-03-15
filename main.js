@@ -1390,17 +1390,21 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 			if (obj.command === 'getStateValues') {
 				const msg = obj.message && typeof obj.message === 'object' ? obj.message : {};
+				// Limit to 200 IDs to cap memory usage and response payload size
 				const stateIds = Array.isArray(msg.stateIds) ? msg.stateIds.slice(0, 200) : [];
-				const values = {};
 				(async () => {
-					for (const id of stateIds) {
-						try {
-							const state = await this.getForeignStateAsync(String(id));
-							values[id] = state ? { val: state.val, ts: state.ts } : null;
-						} catch {
-							values[id] = null;
-						}
-					}
+					// Fetch all states in parallel for fast response
+					const results = await Promise.all(
+						stateIds.map(async id => {
+							try {
+								const state = await this.getForeignStateAsync(String(id));
+								return [id, state ? { val: state.val, ts: state.ts } : null];
+							} catch {
+								return [id, null];
+							}
+						}),
+					);
+					const values = Object.fromEntries(results);
 					if (obj.callback) {
 						this.sendTo(obj.from, obj.command, { ok: true, values }, obj.callback);
 					}
