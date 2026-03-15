@@ -995,6 +995,25 @@
 			const [openDropdown, setOpenDropdown] = React.useState(null);
 			const [collapsedFolders, setCollapsedFolders] = React.useState({});
 
+			// Ref to prevent the formula builder from closing immediately after the state
+			// picker dialog closes (race condition: the dialog's close event may propagate
+			// as an Escape keydown or a mousedown to the formula builder overlay).
+			// The 400ms window is intentionally generous to cover async portal cleanup and
+			// event propagation delays that vary across React/MUI versions and browsers.
+			const PICKER_CLOSE_DEBOUNCE_MS = 400;
+			const pickerJustClosedRef = React.useRef(false);
+			const closeStatePicker = () => {
+				pickerJustClosedRef.current = true;
+				setSelectContext(null);
+				try {
+					globalThis.setTimeout(() => {
+						pickerJustClosedRef.current = false;
+					}, PICKER_CLOSE_DEBOUNCE_MS);
+				} catch {
+					// ignore
+				}
+			};
+
 			const cloneForDraft = item => {
 				if (!item || typeof item !== 'object') return null;
 				try {
@@ -1068,7 +1087,8 @@
 				const onKeyDown = e => {
 					if (e && e.key === 'Escape') {
 						// Don't close the formula builder if the state picker dialog is open
-						if (selectContext) return;
+						// or was very recently closed (race condition with dialog close events).
+						if (selectContext || pickerJustClosedRef.current) return;
 						setFormulaBuilderOpen(false);
 					}
 				};
@@ -1936,10 +1956,10 @@
 					socket: socket,
 					types: 'state',
 					selected: selected,
-					onClose: () => setSelectContext(null),
+					onClose: () => closeStatePicker(),
 					onOk: sel => {
 						const selectedStr = Array.isArray(sel) ? sel[0] : sel;
-						setSelectContext(null);
+						closeStatePicker();
 						if (!selectedStr) return;
 						if (selectContext.kind === 'itemSource') {
 							setDraftField('sourceState', selectedStr);
@@ -2119,7 +2139,10 @@
 
 				const onOverlayMouseDown = e => {
 					if (e && e.target === e.currentTarget) {
-						close();
+						// Don't close if the state picker was recently closed (race condition).
+						if (!selectContext && !pickerJustClosedRef.current) {
+							close();
+						}
 					}
 				};
 
