@@ -306,10 +306,24 @@
         return new Promise(function (resolve, reject) {
             try {
                 var s = io.connect();
-                s.once('connect', function () { _sock = s; resolve(); });
-                s.once('connect_error', function (e) { reject(e); });
+                /* ioBroker Admin v7 socket client exposes .on() but not .once() */
+                var addListener = typeof s.once === 'function' ? s.once.bind(s)
+                                : typeof s.on   === 'function' ? s.on.bind(s)
+                                : null;
+                if (!addListener) { return reject(new Error(T.noConn)); }
+                /* socket might already be connected (no 'connect' event will fire) */
+                if (s.connected) { _sock = s; return resolve(); }
+                var done = false;
+                addListener('connect', function () {
+                    if (done) return; done = true; _sock = s; resolve();
+                });
+                addListener('connect_error', function (e) {
+                    if (done) return; done = true; reject(e);
+                });
                 /* timeout fallback */
-                setTimeout(function () { if (!_sock) reject(new Error('Socket timeout')); }, SOCKET_TIMEOUT_MS);
+                setTimeout(function () {
+                    if (!done) { done = true; reject(new Error('Socket timeout')); }
+                }, SOCKET_TIMEOUT_MS);
             } catch (e) { reject(e); }
         });
     }
