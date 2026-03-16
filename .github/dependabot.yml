@@ -5,10 +5,8 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "cron"
+      interval: "weekly"
       day: "monday"
-      timezone: "Europe/Berlin"
-      cronjob: "42 1 17 * *"
     open-pull-requests-limit: 15
     assignees:
       - "patricknitsch"
@@ -17,10 +15,9 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "cron"
+      interval: "weekly"
       day: "monday"
-      timezone: "Europe/Berlin"
-      cronjob: "42 1 17 * *"
+
     open-pull-requests-limit: 15
     assignees:
       - "patricknitsch"
