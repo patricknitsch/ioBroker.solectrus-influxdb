@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.3.1",
+    "version": "1.4.0",
     "news": {
+      "1.4.0": {
+        "en": "Fix String Handling in Formula Engine\nFix Formula Engine when using state formulas\nNew Page for smart Sensor Overview\nUpdate Readme and Doc",
+        "de": "Fix String Handling in Formelmotor\nDie Formel Motor bei Verwendung von Zustandsformeln\nNeue Seite für smart Sensor Übersicht\nUpdate Readme und Doc",
+        "ru": "Исправьте струнную обработку в двигателе Формулы\nФормула Фикс Двигатель при использовании формул состояния\nНовая страница для Smart Sensor\nОбновление Readme и Doc",
+        "pt": "Corrigir manuseamento de cordas no motor de fórmula\nCorrigir a Fórmula Motor ao usar fórmulas de estado\nNova Página para Visão Geral do Sensor Inteligente\nAtualizar o Readme e o Doc",
+        "nl": "Fix String Handling in Formule Motor\nFix Formule Motor bij gebruik van statusformules\nNieuwe pagina voor slimme sensor overzicht\nReadme en Doc bijwerken",
+        "fr": "Correction de la manipulation des chaînes dans le moteur Formula\nCorrection de la formule Moteur en utilisant des formules d'état\nNouvelle page pour le capteur intelligent Aperçu\nMettre à jour Readme et Doc",
+        "it": "Fissare la gestione delle stringhe in Formula Engine\nFormula di correzione Motore quando si utilizzano formule di stato\nNuova pagina per la panoramica dei sensori intelligenti\nAggiornamento Readme e Doc",
+        "es": "Manejo de cuerda fija en el motor de Fórmula\nFórmula fija Motor al usar fórmulas estatales\nNueva página para un sensor inteligente\nActualización Readme y Doc",
+        "pl": "Napraw obsługę strun w silniku formuły\nPopraw wzór Silnik przy użyciu wzorów stanu\nNowa strona dla inteligentnego przeglądu czujników\nAktualizuj Readme i Doc",
+        "uk": "Фіксація String Обробка в двигуні Формула\nФіксована формула Двигун при використанні державних формул\nНова сторінка для Smart Sensor Огляд\nОновлення Readme і Doc",
+        "zh-cn": "在公式引擎中修正字符串处理\n修正公式 使用状态公式时的引擎\n智能传感器概览的新页面\n更新 Readme 和 Doc"
+      },
       "1.3.1": {
         "en": "Fix DS Tick time budget",
         "de": "Fix DS Tick Zeitbudget",
@@ -80,19 +93,6 @@
         "pl": "Fix Eslint- Ostrzeżenia",
         "uk": "Фіксація Eslint-Warnings",
         "zh-cn": "修复 Eslint 警告"
-      },
-      "1.1.1": {
-        "en": "Fix Eslint-Errors",
-        "de": "Fix Eslint-Errors",
-        "ru": "Исправить ошибки Эслинта",
-        "pt": "Corrigir erros de Eslint",
-        "nl": "Fix Eslint-Errors",
-        "fr": "Corriger les épaves",
-        "it": "Fissare Eslint-Errors",
-        "es": "Corrección Eslint-Errors",
-        "pl": "Naprawiono błędy Eslint-",
-        "uk": "Фіксація Eslint-Errors",
-        "zh-cn": "修复 Eslint- 错误"
       }
     },
     "titleLang": {
