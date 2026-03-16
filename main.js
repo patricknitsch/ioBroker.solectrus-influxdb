@@ -608,8 +608,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 
 			// Migration: enable Data-SOLECTRUS formula engine by default for existing instances
-			if (!obj.native._dsMigrated) {
-				obj.native._dsMigrated = true;
+			// Only applies when the field was never explicitly saved (undefined = old install
+			// that pre-dates the checkbox).  An explicit false (user disabled it) is preserved.
+			if (obj.native.enableDataSolectrus === undefined || obj.native.enableDataSolectrus === null) {
 				obj.native.enableDataSolectrus = true;
 				this.config.enableDataSolectrus = true;
 				changed = true;

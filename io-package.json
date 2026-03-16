@@ -157,7 +157,25 @@
       {
         "admin": ">=7.6.20"
       }
-    ]
+    ],
+    "adminTab": {
+      "singleton": false,
+      "name": {
+        "en": "Sensors Overview",
+        "de": "Sensorübersicht",
+        "ru": "Обзор сенсоров",
+        "pt": "Visão geral dos sensores",
+        "nl": "Sensorenoverzicht",
+        "fr": "Aperçu des capteurs",
+        "it": "Panoramica dei sensori",
+        "es": "Resumen de sensores",
+        "pl": "Przegląd czujników",
+        "uk": "Огляд датчиків",
+        "zh-cn": "传感器概览"
+      },
+      "link": "",
+      "fa-icon": "list"
+    }
   },
   "native": {
     "influxUrl": "http://localhost:8086",

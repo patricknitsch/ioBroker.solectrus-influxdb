@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLECTRUS – Sensors Overview</title>
+    <script src="../../socket.io/socket.io.js"></script>
+    <style>
+        :root {
+            --bg: #121212;
+            --surface: #1e1e1e;
+            --text: #e0e0e0;
+            --text-muted: #888;
+            --accent: #4ade80;
+            --border: #333;
+            --th-bg: #2a2a2a;
+            --code-bg: rgba(255,255,255,0.08);
+            --dot-inactive: #555;
+            --shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f0f2f5;
+                --surface: #ffffff;
+                --text: #212121;
+                --text-muted: #757575;
+                --accent: #2e7d32;
+                --border: #e0e0e0;
+                --th-bg: #f5f5f5;
+                --code-bg: rgba(0,0,0,0.06);
+                --dot-inactive: #bdbdbd;
+                --shadow: 0 1px 3px rgba(0,0,0,0.15);
+            }
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            font-size: 14px;
+            min-height: 100vh;
+        }
+        section { margin-bottom: 28px; }
+        h2 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+        .card {
+            background: var(--surface);
+            border-radius: 8px;
+            overflow-x: auto;
+            box-shadow: var(--shadow);
+        }
+        table {
+            width: 100%;
+            min-width: 560px;
+            border-collapse: collapse;
+        }
+        th {
+            background: var(--th-bg);
+            padding: 9px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
+        }
+        td {
+            padding: 9px 14px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text);
+            vertical-align: middle;
+        }
+        tr:first-child td { border-top: none; }
+        .col-status { width: 36px; text-align: center; }
+        .dot {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: var(--accent);
+            vertical-align: middle;
+        }
+        .dot.inactive { background: var(--dot-inactive); }
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .value-cell { font-weight: 600; }
+        .empty-row td {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 18px;
+        }
+        #loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+        #error-msg {
+            background: rgba(244,67,54,0.12);
+            border: 1px solid rgba(244,67,54,0.4);
+            color: #ef5350;
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            display: none;
+            font-size: 13px;
+        }
+        #refresh-info {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: right;
+            margin-top: 6px;
+        }
+        #content { display: none; }
+        .intro-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+        .intro-text {
+            font-size: 15px;
+            color: var(--text-muted);
+            flex: 1;
+            min-width: 200px;
+        }
+        .config-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            color: var(--accent);
+            border: 1.5px solid var(--accent);
+            border-radius: 6px;
+            padding: 6px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .config-btn:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+    </style>
+</head>
+<body>
+<div id="error-msg"></div>
+<div id="loading">…</div>
+<div id="content">
+    <!-- Intro bar -->
+    <div class="intro-bar">
+        <span id="intro-text" class="intro-text"></span>
+        <button class="config-btn" id="config-btn"></button>
+    </div>
+    <!-- InfluxDB Sensors -->
+    <section id="influx-section">
+        <h2 id="h-influx"></h2>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-status"></th>
+                        <th id="th-name-i"></th>
+                        <th id="th-sid-i"></th>
+                        <th id="th-type-i"></th>
+                        <th id="th-val-i"></th>
+                        <th id="th-meas"></th>
+                        <th id="th-field"></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-influx"></tbody>
+            </table>
+        </div>
+    </section>
+    <!-- Formula Engine (only when enableDataSolectrus) -->
+    <section id="ds-section" style="display:none">
+        <h2 id="h-ds"></h2>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-status"></th>
+                        <th id="th-name-d"></th>
+                        <th id="th-sid-d"></th>
+                        <th id="th-val-d"></th>
+                        <th id="th-mode"></th>
+                        <th id="th-formula"></th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-ds"></tbody>
+            </table>
+        </div>
+    </section>
+    <div id="refresh-info"></div>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ── i18n ── */
+    var STRINGS = {
+        en: {
+            loading:        'Loading…',
+            hInflux:        'InfluxDB Sensors',
+            hDs:            'Formula Engine (Data-SOLECTRUS)',
+            name:           'Name',
+            stateId:        'Source State',
+            type:           'Type',
+            value:          'Current Value',
+            measurement:    'Measurement',
+            field:          'Field',
+            mode:           'Mode',
+            formula:        'Formula',
+            na:             'n/a',
+            noSensors:      'No active sensors configured.',
+            noItems:        'No active items configured.',
+            refreshed:      'Last updated: ',
+            error:          'Error: ',
+            noConn:         'Cannot connect to ioBroker socket.',
+            moreEntries:    'more entries',
+            configBtn:      'Open Configuration',
+            intro:          'This tab shows all configured and active sensors and data items at a glance.'
+        },
+        de: {
+            loading:        'Lade…',
+            hInflux:        'InfluxDB-Sensoren',
+            hDs:            'Formel-Engine (Data-SOLECTRUS)',
+            name:           'Name',
+            stateId:        'Quell-State',
+            type:           'Typ',
+            value:          'Aktueller Wert',
+            measurement:    'Measurement',
+            field:          'Field',
+            mode:           'Modus',
+            formula:        'Formel',
+            na:             'k.A.',
+            noSensors:      'Keine aktiven Sensoren konfiguriert.',
+            noItems:        'Keine aktiven Elemente konfiguriert.',
+            refreshed:      'Zuletzt aktualisiert: ',
+            error:          'Fehler: ',
+            noConn:         'Verbindung zum ioBroker-Socket nicht möglich.',
+            moreEntries:    'weitere Einträge',
+            configBtn:      'Konfiguration öffnen',
+            intro:          'Dieser Tab zeigt alle konfigurierten und aktiven Sensoren und Datenpunkte im Überblick.'
+        }
+    };
+    var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
+    var T = STRINGS[lang] || STRINGS.en;
+
+    /* ── constants ── */
+    var SOCKET_TIMEOUT_MS  = 8000;  /* ms to wait for socket.io to connect  */
+    var REFRESH_INTERVAL_MS = 5000; /* ms between data refreshes             */
+    var TRUNCATE_VAL_LEN   = 60;    /* max chars for JSON value preview      */
+
+    /* ── instance from URL ── */
+    var params = new URLSearchParams(window.location.search);
+    var instance = parseInt(params.get('instance') || '0', 10);
+    if (isNaN(instance) || instance < 0) instance = 0;
+    var NS = 'solectrus-influxdb.' + instance;
+
+    /* ── state-ID helpers ── */
+    function sensorStateId(sensor) {
+        var name = (sensor.SensorName || '').toLowerCase().replace(/[^a-z0-9]+/g, '_');
+        return NS + '.sensors.' + name;
+    }
+    function dsItemStateId(item) {
+        var group = (item.group || '').trim();
+        var tid   = (item.targetId || '').trim();
+        if (!tid) return null;
+        return NS + '.ds.' + (group ? group + '.' + tid : tid);
+    }
+    function dsFormulaText(item) {
+        var mode = item.mode || 'formula';
+        if (mode === 'formula')      return item.formula || '';
+        if (mode === 'source' || mode === 'sourceState')
+                                     return item.sourceState || '';
+        if (mode === 'jsonPath')     return (item.sourceState || '') + (item.jsonPath ? ' → ' + item.jsonPath : '');
+        if (mode === 'state-machine') return '[state-machine]';
+        return '';
+    }
+    function dsModeLabel(item) {
+        var m = { formula: 'Formula', source: 'Source', sourceState: 'Source',
+                  jsonPath: 'JSONPath', 'state-machine': 'State Machine' };
+        return m[item.mode || 'formula'] || (item.mode || 'formula');
+    }
+    function fmtVal(val) {
+        if (val === null || val === undefined) return T.na;
+        if (typeof val === 'boolean') return val ? 'true' : 'false';
+        if (typeof val === 'object')  return JSON.stringify(val).slice(0, TRUNCATE_VAL_LEN);
+        return String(val);
+    }
+    /* Compact formatter for sensor values: JSON arrays show first entry + "+N more" */
+    function fmtSensorVal(val, isJson) {
+        if (val === null || val === undefined) return T.na;
+        if (isJson) {
+            /* val may be a raw JSON string from ioBroker */
+            var parsed = val;
+            if (typeof val === 'string') {
+                try { parsed = JSON.parse(val); } catch (_) { /* keep as string */ }
+            }
+            if (Array.isArray(parsed)) {
+                if (parsed.length === 0) return '[]';
+                var firstStr = JSON.stringify(parsed[0]);
+                if (firstStr.length > TRUNCATE_VAL_LEN) {
+                    firstStr = firstStr.slice(0, TRUNCATE_VAL_LEN) + '…';
+                }
+                if (parsed.length === 1) return firstStr;
+                return firstStr + ' (+' + (parsed.length - 1) + '\u00a0' + T.moreEntries + ')';
+            }
+        }
+        return fmtVal(val);
+    }
+
+    /* ── DOM helpers ── */
+    function el(tag, opts) {
+        var e = document.createElement(tag);
+        if (opts) {
+            if (opts.text)  e.textContent = opts.text;
+            if (opts.html)  e.innerHTML   = opts.html;
+            if (opts.cls)   e.className   = opts.cls;
+            if (opts.span)  e.colSpan     = opts.span;
+            if (opts.style) e.style.cssText = opts.style;
+        }
+        return e;
+    }
+    function setText(id, txt) { document.getElementById(id).textContent = txt; }
+
+    /* ── socket abstraction ── */
+    var _sock = null;
+
+    function _getObject(id) {
+        var ps = _sock;
+        if (ps && typeof ps.getObject === 'function') return ps.getObject(id);
+        return new Promise(function (res, rej) {
+            ps.emit('getObject', id, function (err, obj) { err ? rej(new Error(err)) : res(obj); });
+        });
+    }
+    function _getStates(pattern) {
+        var ps = _sock;
+        if (ps && typeof ps.getStates === 'function') return ps.getStates(pattern);
+        return new Promise(function (res, rej) {
+            ps.emit('getForeignStates', pattern, function (err, states) { err ? rej(new Error(err)) : res(states || {}); });
+        });
+    }
+
+    function initSocket() {
+        /* Strategy 1 – reuse parent admin socket (admin v7+) */
+        try {
+            var ps = window.parent && window.parent !== window && window.parent.socket;
+            if (ps && (typeof ps.getObject === 'function' || typeof ps.emit === 'function')) {
+                _sock = ps;
+                return Promise.resolve();
+            }
+        } catch (_) { /* cross-origin – ignore */ }
+
+        /* Strategy 2 – create a fresh socket.io connection */
+        if (typeof io === 'undefined') {
+            return Promise.reject(new Error(T.noConn));
+        }
+        return new Promise(function (resolve, reject) {
+            try {
+                var s = io.connect();
+                /* ioBroker Admin v7 socket client exposes .on() but not .once() */
+                var addListener = typeof s.once === 'function' ? s.once.bind(s)
+                                : typeof s.on   === 'function' ? s.on.bind(s)
+                                : null;
+                if (!addListener) { return reject(new Error(T.noConn)); }
+                /* socket might already be connected (no 'connect' event will fire) */
+                if (s.connected) { _sock = s; return resolve(); }
+                var done = false;
+                addListener('connect', function () {
+                    if (done) return; done = true; _sock = s; resolve();
+                });
+                addListener('connect_error', function (e) {
+                    if (done) return; done = true; reject(e);
+                });
+                /* timeout fallback */
+                setTimeout(function () {
+                    if (!done) { done = true; reject(new Error('Socket timeout')); }
+                }, SOCKET_TIMEOUT_MS);
+            } catch (e) { reject(e); }
+        });
+    }
+
+    /* ── render ── */
+    function renderInflux(sensors, states) {
+        setText('h-influx', T.hInflux);
+        setText('th-name-i', T.name);
+        setText('th-sid-i',  T.stateId);
+        setText('th-type-i', T.type);
+        setText('th-val-i',  T.value);
+        setText('th-meas',   T.measurement);
+        setText('th-field',  T.field);
+
+        var tbody = document.getElementById('tbody-influx');
+        tbody.innerHTML = '';
+        var active = (sensors || []).filter(function (s) { return s && s.enabled && s.SensorName; });
+        if (!active.length) {
+            var row = tbody.insertRow();
+            row.className = 'empty-row';
+            row.insertCell().colSpan = 7;
+            row.cells[0].textContent = T.noSensors;
+            return;
+        }
+        active.forEach(function (sensor) {
+            var sid   = sensorStateId(sensor);
+            var state = states && states[sid];
+            var hasVal = state && state.val !== null && state.val !== undefined;
+            var isJson = sensor.type === 'json';
+
+            var tr = tbody.insertRow();
+            /* status */
+            var tdS = tr.insertCell(); tdS.className = 'col-status';
+            tdS.appendChild(el('span', { cls: 'dot' + (hasVal ? '' : ' inactive') }));
+            /* name */
+            tr.insertCell().textContent = sensor.SensorName;
+            /* source state id (the ioBroker state selected by the user) */
+            var tdID = tr.insertCell();
+            tdID.appendChild(sensor.sourceState
+                ? el('code', { text: sensor.sourceState })
+                : el('span', { text: T.na, style: 'color:var(--text-muted)' }));
+            /* type */
+            var tdT = tr.insertCell();
+            if (sensor.type) tdT.appendChild(el('code', { text: sensor.type }));
+            /* value */
+            var tdV = tr.insertCell(); tdV.className = 'value-cell';
+            tdV.textContent = fmtSensorVal(hasVal ? state.val : null, isJson);
+            /* measurement */
+            tr.insertCell().textContent = sensor.measurement || '';
+            /* field */
+            tr.insertCell().textContent = sensor.field || '';
+        });
+    }
+
+    function renderDs(items, states) {
+        setText('h-ds',      T.hDs);
+        setText('th-name-d', T.name);
+        setText('th-sid-d',  T.stateId);
+        setText('th-val-d',  T.value);
+        setText('th-mode',   T.mode);
+        setText('th-formula', T.formula);
+
+        var tbody = document.getElementById('tbody-ds');
+        tbody.innerHTML = '';
+        var active = (items || []).filter(function (it) { return it && it.enabled && it.targetId; });
+        if (!active.length) {
+            var row = tbody.insertRow();
+            row.className = 'empty-row';
+            row.insertCell().colSpan = 6;
+            row.cells[0].textContent = T.noItems;
+            return;
+        }
+        active.forEach(function (item) {
+            var sid   = dsItemStateId(item);
+            if (!sid) return;
+            var state  = states && states[sid];
+            var hasVal = state && state.val !== null && state.val !== undefined;
+
+            var tr = tbody.insertRow();
+            /* status */
+            var tdS = tr.insertCell(); tdS.className = 'col-status';
+            tdS.appendChild(el('span', { cls: 'dot' + (hasVal ? '' : ' inactive') }));
+            /* name */
+            tr.insertCell().textContent = item.name || item.targetId;
+            /* state id */
+            var tdID = tr.insertCell();
+            tdID.appendChild(el('code', { text: sid }));
+            /* value */
+            var tdV = tr.insertCell(); tdV.className = 'value-cell';
+            tdV.textContent = fmtVal(hasVal ? state.val : null);
+            /* mode */
+            tr.insertCell().textContent = dsModeLabel(item);
+            /* formula / expression */
+            var tdF = tr.insertCell();
+            var txt = dsFormulaText(item);
+            if (txt) tdF.appendChild(el('code', { text: txt }));
+        });
+    }
+
+    function render(config, states) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+
+        setText('intro-text', T.intro);
+        setText('config-btn', T.configBtn);
+
+        renderInflux(config.sensors, states);
+
+        if (config.enableDataSolectrus) {
+            document.getElementById('ds-section').style.display = 'block';
+            renderDs(config.dsItems, states);
+        } else {
+            document.getElementById('ds-section').style.display = 'none';
+        }
+
+        document.getElementById('refresh-info').textContent =
+            T.refreshed + new Date().toLocaleTimeString();
+    }
+
+    function showError(msg) {
+        var e = document.getElementById('error-msg');
+        e.textContent = T.error + msg;
+        e.style.display = 'block';
+        document.getElementById('loading').style.display = 'none';
+    }
+
+    /* ── config navigation ── */
+    function openConfig() {
+        var hash = 'tab-instances/config/system.adapter.' + NS;
+        try {
+            var target = (window.parent && window.parent !== window) ? window.parent : window;
+            var base = target.location.href.split('#')[0];
+            target.location.href = base + '#' + hash;
+        } catch (_) {
+            /* cross-origin fallback: open in new tab */
+            window.open('/index.html#' + hash, '_blank');
+        }
+    }
+    document.getElementById('config-btn').addEventListener('click', openConfig);
+
+    /* ── load ── */
+    function load() {
+        _getObject('system.adapter.' + NS)
+            .then(function (obj) {
+                if (!obj || !obj.native) {
+                    throw new Error('Adapter object not found: system.adapter.' + NS);
+                }
+                return _getStates(NS + '.*').then(function (states) {
+                    render(obj.native, states || {});
+                });
+            })
+            .catch(function (err) {
+                showError(err && err.message ? err.message : String(err));
+            });
+    }
+
+    /* ── init ── */
+    document.getElementById('loading').textContent = T.loading;
+
+    initSocket()
+        .then(function () {
+            load();
+            setInterval(load, REFRESH_INTERVAL_MS);
+        })
+        .catch(function (err) {
+            showError(err && err.message ? err.message : T.noConn);
+        });
+}());
+</script>
+</body>
+</html>
