@@ -218,6 +218,84 @@
             margin-top: 8px;
         }
 
+        /* ── SENSOR GRID ── */
+        .sensor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 10px;
+            padding: 12px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-top: 3px solid var(--primary);
+        }
+        .sensor-card {
+            background: var(--bg);
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+            padding: 10px 12px;
+            min-width: 0;
+        }
+        .sensor-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 6px;
+            margin-bottom: 5px;
+        }
+        .sensor-card-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text);
+            word-break: break-word;
+            line-height: 1.3;
+        }
+        .sensor-type-badge {
+            font-size: 10px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            background: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .sensor-card-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 4px;
+            min-height: 1.3em;
+        }
+        .sensor-card-value.na {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 400;
+        }
+        .sensor-card-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+        .sensor-card-source {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sensor-grid-empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 24px;
+            font-size: 13px;
+            grid-column: 1 / -1;
+        }
+
         /* ── DOCUMENTATION TAB ── */
         .doc-card {
             background: var(--surface);
@@ -301,22 +379,7 @@
                 <span class="icon">📊</span>
                 <span id="h-influx"></span>
             </div>
-            <div class="card">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="col-status"></th>
-                            <th id="th-name-i"></th>
-                            <th id="th-sid-i"></th>
-                            <th id="th-type-i"></th>
-                            <th id="th-val-i"></th>
-                            <th id="th-meas"></th>
-                            <th id="th-field"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-influx"></tbody>
-                </table>
-            </div>
+            <div id="sensor-grid" class="sensor-grid"></div>
         </div>
 
         <!-- Formula Engine Tab -->
@@ -349,9 +412,9 @@
                 <span id="h-docs"></span>
             </div>
 
-            <!-- Example picture: SVG mockup of the sensor table -->
+            <!-- Example picture: SVG mockup of the sensor card grid -->
             <div class="doc-card">
-                <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img" style="width:100%;display:block">
+                <svg viewBox="0 0 720 215" xmlns="http://www.w3.org/2000/svg" role="img" style="width:100%;display:block">
                     <!-- Toolbar (fixed green) -->
                     <rect x="0" y="0" width="720" height="38" fill="#388e3c"/>
                     <text x="14" y="24" fill="white" font-size="14" font-weight="600" font-family="system-ui,sans-serif">⚡ SOLECTRUS InfluxDB</text>
@@ -359,60 +422,55 @@
                     <text x="593" y="24" text-anchor="middle" fill="white" font-size="11" font-family="system-ui,sans-serif">Open Configuration</text>
                     <circle cx="676" cy="20" r="5" fill="#69f0ae"/>
                     <text x="685" y="24" fill="white" font-size="11" font-family="system-ui,sans-serif">Connected</text>
-                    <!-- Tab bar (theme-aware) -->
+                    <!-- Tab bar -->
                     <rect class="svg-bg" x="0" y="38" width="720" height="30"/>
                     <rect class="svg-border-fill" x="0" y="67" width="720" height="1"/>
                     <text x="14" y="58" fill="#388e3c" font-size="13" font-weight="700" font-family="system-ui,sans-serif">InfluxDB Sensors</text>
                     <rect x="10" y="65" width="113" height="3" fill="#388e3c"/>
                     <text class="svg-muted" x="142" y="58" font-size="13" font-weight="600" font-family="system-ui,sans-serif">Formula Engine</text>
                     <text class="svg-muted" x="268" y="58" font-size="13" font-weight="600" font-family="system-ui,sans-serif">Documentation</text>
-                    <!-- Card: primary top stripe + header row -->
+                    <!-- Section header -->
                     <rect x="0" y="68" width="720" height="3" fill="#388e3c"/>
-                    <rect class="svg-bg" x="0" y="71" width="720" height="26"/>
-                    <rect class="svg-border-fill" x="0" y="97" width="720" height="1"/>
-                    <text class="svg-text" x="30"  y="87" font-size="11" font-weight="700" font-family="system-ui,sans-serif">Name</text>
-                    <text class="svg-text" x="170" y="87" font-size="11" font-weight="700" font-family="system-ui,sans-serif">Source State</text>
-                    <text class="svg-text" x="380" y="87" font-size="11" font-weight="700" font-family="system-ui,sans-serif">Type</text>
-                    <text class="svg-text" x="432" y="87" font-size="11" font-weight="700" font-family="system-ui,sans-serif">Current Value</text>
-                    <text class="svg-text" x="542" y="87" font-size="11" font-weight="700" font-family="system-ui,sans-serif">Measurement</text>
-                    <text class="svg-text" x="645" y="87" font-size="11" font-weight="700" font-family="system-ui,sans-serif">Field</text>
-                    <!-- Row 1: INVERTER_POWER (active, value present) -->
-                    <rect class="svg-surface" x="0" y="98"  width="720" height="28"/>
-                    <rect class="svg-border-fill" x="0" y="126" width="720" height="1"/>
-                    <circle cx="15" cy="112" r="5.5" fill="#388e3c"/>
-                    <text class="svg-text" x="30"  y="116" font-size="11" font-family="system-ui,sans-serif">INVERTER_POWER</text>
-                    <rect class="svg-code-bg" x="164" y="102" width="208" height="15" rx="3"/>
-                    <text class="svg-text" x="168" y="113" font-size="9.5" font-family="monospace">…sensors.inverter_power</text>
-                    <rect class="svg-code-bg" x="376" y="102" width="38" height="15" rx="3"/>
-                    <text class="svg-text" x="380" y="113" font-size="9.5" font-family="monospace">float</text>
-                    <text class="svg-text" x="432" y="116" font-size="11" font-weight="600" font-family="system-ui,sans-serif">5 234</text>
-                    <text class="svg-text" x="542" y="116" font-size="11" font-family="system-ui,sans-serif">inverter</text>
-                    <text class="svg-text" x="645" y="116" font-size="11" font-family="system-ui,sans-serif">power</text>
-                    <!-- Row 2: BATTERY_SOC (active, value present) -->
-                    <rect class="svg-surface" x="0" y="127" width="720" height="28"/>
-                    <rect class="svg-border-fill" x="0" y="155" width="720" height="1"/>
-                    <circle cx="15" cy="141" r="5.5" fill="#388e3c"/>
-                    <text class="svg-text" x="30"  y="145" font-size="11" font-family="system-ui,sans-serif">BATTERY_SOC</text>
-                    <rect class="svg-code-bg" x="164" y="131" width="192" height="15" rx="3"/>
-                    <text class="svg-text" x="168" y="142" font-size="9.5" font-family="monospace">…sensors.battery_soc</text>
-                    <rect class="svg-code-bg" x="376" y="131" width="26" height="15" rx="3"/>
-                    <text class="svg-text" x="380" y="142" font-size="9.5" font-family="monospace">int</text>
-                    <text class="svg-text" x="432" y="145" font-size="11" font-weight="600" font-family="system-ui,sans-serif">82</text>
-                    <text class="svg-text" x="542" y="145" font-size="11" font-family="system-ui,sans-serif">battery</text>
-                    <text class="svg-text" x="645" y="145" font-size="11" font-family="system-ui,sans-serif">soc</text>
-                    <!-- Row 3: HOUSE_POWER (no source state → grey dot, n/a value) -->
-                    <rect class="svg-surface" x="0" y="156" width="720" height="28"/>
-                    <rect class="svg-border-fill" x="0" y="184" width="720" height="1"/>
-                    <circle cx="15" cy="170" r="5.5" class="svg-dot-inactive"/>
-                    <text class="svg-text" x="30"  y="174" font-size="11" font-family="system-ui,sans-serif">HOUSE_POWER</text>
-                    <text class="svg-muted" x="170" y="174" font-size="11" font-family="system-ui,sans-serif">—</text>
-                    <rect class="svg-code-bg" x="376" y="160" width="34" height="15" rx="3"/>
-                    <text class="svg-text" x="380" y="171" font-size="9.5" font-family="monospace">float</text>
-                    <text class="svg-muted" x="432" y="174" font-size="11" font-family="system-ui,sans-serif">n/a</text>
-                    <text class="svg-text" x="542" y="174" font-size="11" font-family="system-ui,sans-serif">house</text>
-                    <text class="svg-text" x="645" y="174" font-size="11" font-family="system-ui,sans-serif">power</text>
+                    <!-- Sensor grid background (surface) -->
+                    <rect class="svg-surface" x="0" y="71" width="720" height="140" rx="6"/>
+                    <rect x="0" y="71" width="720" height="3" fill="#388e3c" rx="1"/>
+                    <!-- Card 1: INVERTER_POWER -->
+                    <rect class="svg-bg" x="10"  y="82" width="160" height="72" rx="5"/>
+                    <rect x="10" y="82" width="3" height="72" fill="#388e3c" rx="1"/>
+                    <text class="svg-text" x="20" y="97"  font-size="10" font-weight="700" font-family="system-ui,sans-serif">INVERTER_POWER</text>
+                    <rect class="svg-code-bg" x="122" y="86" width="42" height="13" rx="3"/>
+                    <text class="svg-muted" x="125" y="96" font-size="9" font-family="monospace">float</text>
+                    <text x="20" y="117" font-size="16" font-weight="700" fill="#388e3c" font-family="system-ui,sans-serif">5 234</text>
+                    <text class="svg-muted" x="20" y="133" font-size="9" font-family="system-ui,sans-serif">inverter · power</text>
+                    <text class="svg-muted" x="20" y="146" font-size="8.5" font-family="monospace">…inverter_power</text>
+                    <!-- Card 2: BATTERY_SOC -->
+                    <rect class="svg-bg" x="180" y="82" width="160" height="72" rx="5"/>
+                    <rect x="180" y="82" width="3" height="72" fill="#388e3c" rx="1"/>
+                    <text class="svg-text" x="190" y="97"  font-size="10" font-weight="700" font-family="system-ui,sans-serif">BATTERY_SOC</text>
+                    <rect class="svg-code-bg" x="294" y="86" width="40" height="13" rx="3"/>
+                    <text class="svg-muted" x="297" y="96" font-size="9" font-family="monospace">int</text>
+                    <text x="190" y="117" font-size="16" font-weight="700" fill="#388e3c" font-family="system-ui,sans-serif">82</text>
+                    <text class="svg-muted" x="190" y="133" font-size="9" font-family="system-ui,sans-serif">battery · soc</text>
+                    <text class="svg-muted" x="190" y="146" font-size="8.5" font-family="monospace">…battery_soc</text>
+                    <!-- Card 3: HOUSE_POWER -->
+                    <rect class="svg-bg" x="350" y="82" width="160" height="72" rx="5"/>
+                    <rect x="350" y="82" width="3" height="72" fill="#388e3c" rx="1"/>
+                    <text class="svg-text" x="360" y="97"  font-size="10" font-weight="700" font-family="system-ui,sans-serif">HOUSE_POWER</text>
+                    <rect class="svg-code-bg" x="463" y="86" width="40" height="13" rx="3"/>
+                    <text class="svg-muted" x="466" y="96" font-size="9" font-family="monospace">float</text>
+                    <text class="svg-muted" x="360" y="117" font-size="14" font-family="system-ui,sans-serif">n/a</text>
+                    <text class="svg-muted" x="360" y="133" font-size="9" font-family="system-ui,sans-serif">house · power</text>
+                    <!-- Card 4: BATTERY_POWER -->
+                    <rect class="svg-bg" x="520" y="82" width="188" height="72" rx="5"/>
+                    <rect x="520" y="82" width="3" height="72" fill="#388e3c" rx="1"/>
+                    <text class="svg-text" x="530" y="97"  font-size="10" font-weight="700" font-family="system-ui,sans-serif">BATTERY_POWER</text>
+                    <rect class="svg-code-bg" x="638" y="86" width="62" height="13" rx="3"/>
+                    <text class="svg-muted" x="641" y="96" font-size="9" font-family="monospace">float</text>
+                    <text x="530" y="117" font-size="16" font-weight="700" fill="#388e3c" font-family="system-ui,sans-serif">−320</text>
+                    <text class="svg-muted" x="530" y="133" font-size="9" font-family="system-ui,sans-serif">battery · power</text>
+                    <text class="svg-muted" x="530" y="146" font-size="8.5" font-family="monospace">…battery_power</text>
                     <!-- Refresh info -->
-                    <text class="svg-muted" x="718" y="197" text-anchor="end" font-size="10" font-family="system-ui,sans-serif">Last updated: 14:32:05</text>
+                    <text class="svg-muted" x="718" y="210" text-anchor="end" font-size="10" font-family="system-ui,sans-serif">Last updated: 14:32:05</text>
                 </svg>
                 <p id="doc-fig-caption"></p>
             </div>
@@ -426,13 +484,13 @@
                         <p>This tab provides a real-time overview of all active sensors and computed values configured in this adapter instance. It refreshes automatically every 5 seconds.</p>
                     </div>
                     <div class="doc-section">
-                        <h3>InfluxDB Sensors table</h3>
+                        <h3>InfluxDB Sensors</h3>
+                        <p>Active sensors are displayed as compact cards in a responsive grid — all sensors are visible at once without scrolling. Each card shows:</p>
                         <ul>
-                            <li><strong>●</strong> <span style="color:#388e3c">(green)</span> — sensor has a current value &nbsp;·&nbsp; <strong>●</strong> <span style="color:var(--text-muted)">(grey)</span> — no value yet / no source state assigned</li>
-                            <li><strong>Source State</strong> — the ioBroker state ID being read by the adapter</li>
-                            <li><strong>Type</strong> — data type written to InfluxDB: <code>int</code>, <code>float</code>, <code>bool</code>, <code>string</code>, or <code>json</code></li>
-                            <li><strong>Current Value</strong> — live value as last read; JSON arrays show the first entry and a count of remaining entries</li>
-                            <li><strong>Measurement / Field</strong> — target location in InfluxDB where the value is written</li>
+                            <li><strong>Sensor name</strong> and a <strong>type badge</strong> (<code>int</code>, <code>float</code>, <code>bool</code>, <code>string</code>, <code>json</code>) in the header</li>
+                            <li><strong>Current value</strong> — live reading; <em>n/a</em> if no value has been received yet</li>
+                            <li><strong>Measurement · field</strong> — the target location in InfluxDB</li>
+                            <li><strong>Source state</strong> — the ioBroker state ID being read (truncated, full path shown on hover)</li>
                         </ul>
                     </div>
                     <div class="doc-section">
@@ -452,13 +510,13 @@
                         <p>Dieser Tab zeigt eine Echtzeit-Übersicht aller aktiven Sensoren und berechneten Werte dieser Adapterinstanz. Er aktualisiert sich automatisch alle 5 Sekunden.</p>
                     </div>
                     <div class="doc-section">
-                        <h3>InfluxDB-Sensoren Tabelle</h3>
+                        <h3>InfluxDB-Sensoren</h3>
+                        <p>Aktive Sensoren werden als kompakte Karten in einem responsiven Raster angezeigt — alle Sensoren sind auf einen Blick sichtbar, ohne zu scrollen. Jede Karte zeigt:</p>
                         <ul>
-                            <li><strong>●</strong> <span style="color:#388e3c">(grün)</span> — Sensor hat einen aktuellen Wert &nbsp;·&nbsp; <strong>●</strong> <span style="color:var(--text-muted)">(grau)</span> — noch kein Wert / kein Quell-State zugewiesen</li>
-                            <li><strong>Quell-State</strong> — die ioBroker-State-ID, die vom Adapter gelesen wird</li>
-                            <li><strong>Typ</strong> — Datentyp, der nach InfluxDB geschrieben wird: <code>int</code>, <code>float</code>, <code>bool</code>, <code>string</code> oder <code>json</code></li>
-                            <li><strong>Aktueller Wert</strong> — Live-Wert wie zuletzt gelesen; JSON-Arrays zeigen den ersten Eintrag und die Anzahl weiterer Einträge</li>
-                            <li><strong>Measurement / Field</strong> — Ziel in InfluxDB, wohin der Wert geschrieben wird</li>
+                            <li><strong>Sensorname</strong> und ein <strong>Typ-Badge</strong> (<code>int</code>, <code>float</code>, <code>bool</code>, <code>string</code>, <code>json</code>) im Header</li>
+                            <li><strong>Aktueller Wert</strong> — Live-Messwert; <em>k.A.</em> wenn noch kein Wert empfangen wurde</li>
+                            <li><strong>Measurement · Field</strong> — das Ziel in InfluxDB</li>
+                            <li><strong>Quell-State</strong> — die gelesene ioBroker-State-ID (gekürzt, voller Pfad als Tooltip)</li>
                         </ul>
                     </div>
                     <div class="doc-section">
@@ -754,22 +812,16 @@
 
     /* ── render ── */
     function renderInflux(sensors, states) {
-        setText('h-influx',  T.hInflux);
-        setText('th-name-i', T.name);
-        setText('th-sid-i',  T.stateId);
-        setText('th-type-i', T.type);
-        setText('th-val-i',  T.value);
-        setText('th-meas',   T.measurement);
-        setText('th-field',  T.field);
+        setText('h-influx', T.hInflux);
 
-        var tbody = document.getElementById('tbody-influx');
-        tbody.innerHTML = '';
+        var grid = document.getElementById('sensor-grid');
+        grid.innerHTML = '';
         var active = (sensors || []).filter(function (s) { return s && s.enabled && s.SensorName; });
         if (!active.length) {
-            var row = tbody.insertRow();
-            row.className = 'empty-row';
-            row.insertCell().colSpan = 7;
-            row.cells[0].textContent = T.noSensors;
+            var empty = document.createElement('div');
+            empty.className = 'sensor-grid-empty';
+            empty.textContent = T.noSensors;
+            grid.appendChild(empty);
             return;
         }
         active.forEach(function (sensor) {
@@ -777,28 +829,50 @@
             var state  = states && states[sid];
             var hasVal = state && state.val !== null && state.val !== undefined;
             var isJson = sensor.type === 'json';
+            var valText = fmtSensorVal(hasVal ? state.val : null, isJson);
 
-            var tr = tbody.insertRow();
-            /* status */
-            var tdS = tr.insertCell(); tdS.className = 'col-status';
-            tdS.appendChild(el('span', { cls: 'dot' + (hasVal ? '' : ' inactive') }));
-            /* name */
-            tr.insertCell().textContent = sensor.SensorName;
-            /* source state id */
-            var tdID = tr.insertCell();
-            tdID.appendChild(sensor.sourceState
-                ? el('code', { text: sensor.sourceState })
-                : el('span', { text: T.na, style: 'color:var(--text-muted)' }));
-            /* type */
-            var tdT = tr.insertCell();
-            if (sensor.type) tdT.appendChild(el('code', { text: sensor.type }));
+            var card = document.createElement('div');
+            card.className = 'sensor-card';
+
+            /* header: name + type badge */
+            var header = document.createElement('div');
+            header.className = 'sensor-card-header';
+            var nameEl = document.createElement('span');
+            nameEl.className = 'sensor-card-name';
+            nameEl.textContent = sensor.SensorName;
+            header.appendChild(nameEl);
+            if (sensor.type) {
+                var badge = document.createElement('span');
+                badge.className = 'sensor-type-badge';
+                badge.textContent = sensor.type;
+                header.appendChild(badge);
+            }
+            card.appendChild(header);
+
             /* value */
-            var tdV = tr.insertCell(); tdV.className = 'value-cell';
-            tdV.textContent = fmtSensorVal(hasVal ? state.val : null, isJson);
-            /* measurement */
-            tr.insertCell().textContent = sensor.measurement || '';
-            /* field */
-            tr.insertCell().textContent = sensor.field || '';
+            var valEl = document.createElement('div');
+            valEl.className = 'sensor-card-value' + (hasVal ? '' : ' na');
+            valEl.textContent = valText;
+            card.appendChild(valEl);
+
+            /* measurement · field */
+            if (sensor.measurement || sensor.field) {
+                var metaEl = document.createElement('div');
+                metaEl.className = 'sensor-card-meta';
+                metaEl.textContent = (sensor.measurement || '') + (sensor.field ? ' · ' + sensor.field : '');
+                card.appendChild(metaEl);
+            }
+
+            /* source state */
+            if (sensor.sourceState) {
+                var srcEl = document.createElement('div');
+                srcEl.className = 'sensor-card-source';
+                srcEl.textContent = sensor.sourceState;
+                srcEl.title = sensor.sourceState;
+                card.appendChild(srcEl);
+            }
+
+            grid.appendChild(card);
         });
     }
 
