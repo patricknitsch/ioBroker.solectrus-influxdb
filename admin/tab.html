@@ -208,6 +208,10 @@
             font-size: 14px;
             font-weight: 400;
         }
+        .sensor-card-value.json-val {
+            font-size: 11px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
         .sensor-card-meta {
             font-size: 11px;
             color: var(--text-muted);
@@ -594,6 +598,8 @@
             var valCls = 'sensor-card-value';
             if (!hasVal) {
                 valCls += ' na';
+            } else if (isJson) {
+                valCls += ' json-val';
             }
             valEl.className = valCls;
             valEl.textContent = valText;

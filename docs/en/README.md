@@ -134,7 +134,7 @@ The **SOLECTRUS Overview** tab (accessible via the tab bar in the adapter sectio
 
 - **InfluxDB Sensors grid**: Shows all enabled sensors as compact cards in a responsive grid. Each card shows:
   - **Sensor name** and **data type badge** (`int`, `float`, `bool`, `string`, `json`)
-  - **Current value** — live reading; *n/a* if no value has been received yet. The value is always shown at the same font size and without line wrapping.
+  - **Current value** — live reading; *n/a* if no value has been received yet. The value is always shown without line wrapping; the font size does not change with text length. JSON values are rendered compactly in a monospace font.
   - **Measurement: field** — the target location in InfluxDB (separated by a colon)
   - **Source state** — the ioBroker state ID being read (truncated, full path shown on hover)
 - **Formula Engine grid** (only shown when Data-SOLECTRUS is enabled): Shows all active computed items in the same card layout, with mode badge, current value, state ID, and formula/expression.
