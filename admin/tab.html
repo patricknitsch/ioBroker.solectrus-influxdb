@@ -154,20 +154,22 @@
 
         /* ── SENSOR GRID ── */
         .sensor-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
             gap: 10px;
             padding: 12px;
             background: var(--surface);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
+            overflow-x: auto;
         }
         .sensor-card {
             background: var(--bg);
             border-radius: 6px;
             border-left: 3px solid var(--primary);
             padding: 10px 12px;
-            min-width: 0;
+            flex: 1 1 auto;
+            min-width: max-content;
         }
         .sensor-card-header {
             display: flex;
@@ -180,7 +182,7 @@
             font-size: 12px;
             font-weight: 700;
             color: var(--text);
-            word-break: break-word;
+            white-space: nowrap;
             line-height: 1.3;
         }
         .sensor-type-badge {
