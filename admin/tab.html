@@ -320,9 +320,6 @@
             connecting:     'Connecting…',
             connected:      'Connected',
             disconnected:   'Disconnected',
-            tabDocs:        'Documentation',
-            hDocs:          'Documentation',
-            docFigCaption:  'Example: live sensor overview in the SOLECTRUS InfluxDB tab'
         },
         de: {
             loading:        'Lade…',
@@ -349,9 +346,6 @@
             connecting:     'Verbinde…',
             connected:      'Verbunden',
             disconnected:   'Getrennt',
-            tabDocs:        'Dokumentation',
-            hDocs:          'Dokumentation',
-            docFigCaption:  'Beispiel: Live-Sensor-Übersicht im SOLECTRUS InfluxDB Tab'
         }
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
@@ -604,15 +598,23 @@
 
             /* value */
             var valEl = document.createElement('div');
-            valEl.className = 'sensor-card-value' + (hasVal ? '' : ' na');
+            var valCls = 'sensor-card-value';
+            if (!hasVal) {
+                valCls += ' na';
+            } else if (valText.length > 30) {
+                valCls += ' long';
+            } else if (valText.length > 12) {
+                valCls += ' medium';
+            }
+            valEl.className = valCls;
             valEl.textContent = valText;
             card.appendChild(valEl);
 
-            /* measurement · field */
+            /* measurement: field */
             if (sensor.measurement || sensor.field) {
                 var metaEl = document.createElement('div');
                 metaEl.className = 'sensor-card-meta';
-                metaEl.textContent = (sensor.measurement || '') + (sensor.field ? ' · ' + sensor.field : '');
+                metaEl.textContent = (sensor.measurement || '') + (sensor.field ? ': ' + sensor.field : '');
                 card.appendChild(metaEl);
             }
 
@@ -630,21 +632,16 @@
     }
 
     function renderDs(items, states) {
-        setText('h-ds',       T.hDs);
-        setText('th-name-d',  T.name);
-        setText('th-sid-d',   T.stateId);
-        setText('th-val-d',   T.value);
-        setText('th-mode',    T.mode);
-        setText('th-formula', T.formula);
+        setText('h-ds', T.hDs);
 
-        var tbody = document.getElementById('tbody-ds');
-        tbody.innerHTML = '';
+        var grid = document.getElementById('ds-grid');
+        grid.innerHTML = '';
         var active = (items || []).filter(function (it) { return it && it.enabled && it.targetId; });
         if (!active.length) {
-            var row = tbody.insertRow();
-            row.className = 'empty-row';
-            row.insertCell().colSpan = 6;
-            row.cells[0].textContent = T.noItems;
+            var empty = document.createElement('div');
+            empty.className = 'sensor-grid-empty';
+            empty.textContent = T.noItems;
+            grid.appendChild(empty);
             return;
         }
         active.forEach(function (item) {
@@ -652,25 +649,56 @@
             if (!sid) return;
             var state  = states && states[sid];
             var hasVal = state && state.val !== null && state.val !== undefined;
+            var valText = fmtVal(hasVal ? state.val : null);
 
-            var tr = tbody.insertRow();
-            /* status */
-            var tdS = tr.insertCell(); tdS.className = 'col-status';
-            tdS.appendChild(el('span', { cls: 'dot' + (hasVal ? '' : ' inactive') }));
-            /* name */
-            tr.insertCell().textContent = item.name || item.targetId;
-            /* state id */
-            var tdID = tr.insertCell();
-            tdID.appendChild(el('code', { text: sid }));
+            var card = document.createElement('div');
+            card.className = 'sensor-card';
+
+            /* header: name + mode badge */
+            var header = document.createElement('div');
+            header.className = 'sensor-card-header';
+            var nameEl = document.createElement('span');
+            nameEl.className = 'sensor-card-name';
+            nameEl.textContent = item.name || item.targetId;
+            header.appendChild(nameEl);
+            var badge = document.createElement('span');
+            badge.className = 'sensor-type-badge';
+            badge.textContent = dsModeLabel(item);
+            header.appendChild(badge);
+            card.appendChild(header);
+
             /* value */
-            var tdV = tr.insertCell(); tdV.className = 'value-cell';
-            tdV.textContent = fmtVal(hasVal ? state.val : null);
-            /* mode */
-            tr.insertCell().textContent = dsModeLabel(item);
+            var valEl = document.createElement('div');
+            var valCls = 'sensor-card-value';
+            if (!hasVal) {
+                valCls += ' na';
+            } else if (valText.length > 30) {
+                valCls += ' long';
+            } else if (valText.length > 12) {
+                valCls += ' medium';
+            }
+            valEl.className = valCls;
+            valEl.textContent = valText;
+            card.appendChild(valEl);
+
+            /* state id */
+            var metaEl = document.createElement('div');
+            metaEl.className = 'sensor-card-meta';
+            metaEl.textContent = sid;
+            metaEl.title = sid;
+            card.appendChild(metaEl);
+
             /* formula / expression */
-            var tdF = tr.insertCell();
-            var txt = dsFormulaText(item);
-            if (txt) tdF.appendChild(el('code', { text: txt }));
+            var expr = dsFormulaText(item);
+            if (expr) {
+                var srcEl = document.createElement('div');
+                srcEl.className = 'sensor-card-source';
+                srcEl.textContent = expr;
+                srcEl.title = expr;
+                card.appendChild(srcEl);
+            }
+
+            grid.appendChild(card);
         });
     }
 
@@ -742,15 +770,6 @@
     setText('loading',    T.loading);
     setText('config-btn', T.configBtn);
     setConnStatus('');
-
-    /* docs tab: set labels and show language-specific content immediately */
-    setText('tab-docs-btn',    T.tabDocs);
-    setText('h-docs',          T.hDocs);
-    setText('doc-fig-caption', T.docFigCaption);
-    if (lang === 'de') {
-        document.getElementById('doc-content-en').style.display = 'none';
-        document.getElementById('doc-content-de').style.display = '';
-    }
 
     initSocket()
         .then(function () {

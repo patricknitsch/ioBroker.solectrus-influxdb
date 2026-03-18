@@ -1,0 +1,56 @@
+<svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SOLECTRUS InfluxDB sensor overview example">
+    <!-- Toolbar -->
+    <rect x="0" y="0" width="720" height="38" fill="#388e3c"/>
+    <text x="14" y="24" fill="white" font-size="14" font-weight="600" font-family="system-ui,sans-serif">⚡ SOLECTRUS InfluxDB</text>
+    <rect x="524" y="9" width="138" height="22" rx="4" fill="rgba(255,255,255,.2)" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+    <text x="593" y="24" text-anchor="middle" fill="white" font-size="11" font-family="system-ui,sans-serif">Open Configuration</text>
+    <circle cx="676" cy="20" r="5" fill="#69f0ae"/>
+    <text x="685" y="24" fill="white" font-size="11" font-family="system-ui,sans-serif">Connected</text>
+    <!-- Tab bar -->
+    <rect x="0" y="38" width="720" height="30" fill="#f5f5f5"/>
+    <rect x="0" y="67" width="720" height="1" fill="#e0e0e0"/>
+    <text x="14" y="58" fill="#388e3c" font-size="13" font-weight="700" font-family="system-ui,sans-serif">InfluxDB Sensors</text>
+    <rect x="10" y="65" width="113" height="3" fill="#388e3c"/>
+    <text x="142" y="58" fill="#757575" font-size="13" font-weight="600" font-family="system-ui,sans-serif">Formula Engine</text>
+    <!-- Section header -->
+    <rect x="0" y="68" width="720" height="3" fill="#388e3c"/>
+    <!-- Sensor grid -->
+    <rect x="0" y="71" width="720" height="144" rx="6" fill="#ffffff"/>
+    <!-- Card 1: INVERTER_POWER -->
+    <rect x="10" y="82" width="160" height="76" rx="5" fill="#f5f5f5"/>
+    <rect x="10" y="82" width="3" height="76" fill="#388e3c" rx="1"/>
+    <text x="20" y="97" font-size="10" font-weight="700" font-family="system-ui,sans-serif" fill="#212121">INVERTER_POWER</text>
+    <rect x="122" y="86" width="42" height="13" rx="3" fill="rgba(0,0,0,0.06)"/>
+    <text x="125" y="96" font-size="9" font-family="monospace" fill="#757575">float</text>
+    <text x="20" y="117" font-size="16" font-weight="700" fill="#388e3c" font-family="system-ui,sans-serif">5 234</text>
+    <text x="20" y="133" font-size="9" font-family="system-ui,sans-serif" fill="#757575">inverter: power</text>
+    <text x="20" y="148" font-size="8.5" font-family="monospace" fill="#757575">…inverter_power</text>
+    <!-- Card 2: BATTERY_SOC -->
+    <rect x="180" y="82" width="160" height="76" rx="5" fill="#f5f5f5"/>
+    <rect x="180" y="82" width="3" height="76" fill="#388e3c" rx="1"/>
+    <text x="190" y="97" font-size="10" font-weight="700" font-family="system-ui,sans-serif" fill="#212121">BATTERY_SOC</text>
+    <rect x="294" y="86" width="40" height="13" rx="3" fill="rgba(0,0,0,0.06)"/>
+    <text x="297" y="96" font-size="9" font-family="monospace" fill="#757575">int</text>
+    <text x="190" y="117" font-size="16" font-weight="700" fill="#388e3c" font-family="system-ui,sans-serif">82</text>
+    <text x="190" y="133" font-size="9" font-family="system-ui,sans-serif" fill="#757575">battery: soc</text>
+    <text x="190" y="148" font-size="8.5" font-family="monospace" fill="#757575">…battery_soc</text>
+    <!-- Card 3: HOUSE_POWER -->
+    <rect x="350" y="82" width="160" height="76" rx="5" fill="#f5f5f5"/>
+    <rect x="350" y="82" width="3" height="76" fill="#388e3c" rx="1"/>
+    <text x="360" y="97" font-size="10" font-weight="700" font-family="system-ui,sans-serif" fill="#212121">HOUSE_POWER</text>
+    <rect x="463" y="86" width="40" height="13" rx="3" fill="rgba(0,0,0,0.06)"/>
+    <text x="466" y="96" font-size="9" font-family="monospace" fill="#757575">float</text>
+    <text x="360" y="117" font-size="14" font-family="system-ui,sans-serif" fill="#757575">n/a</text>
+    <text x="360" y="133" font-size="9" font-family="system-ui,sans-serif" fill="#757575">house: power</text>
+    <!-- Card 4: BATTERY_POWER -->
+    <rect x="520" y="82" width="188" height="76" rx="5" fill="#f5f5f5"/>
+    <rect x="520" y="82" width="3" height="76" fill="#388e3c" rx="1"/>
+    <text x="530" y="97" font-size="10" font-weight="700" font-family="system-ui,sans-serif" fill="#212121">BATTERY_POWER</text>
+    <rect x="638" y="86" width="62" height="13" rx="3" fill="rgba(0,0,0,0.06)"/>
+    <text x="641" y="96" font-size="9" font-family="monospace" fill="#757575">float</text>
+    <text x="530" y="117" font-size="16" font-weight="700" fill="#388e3c" font-family="system-ui,sans-serif">−320</text>
+    <text x="530" y="133" font-size="9" font-family="system-ui,sans-serif" fill="#757575">battery: power</text>
+    <text x="530" y="148" font-size="8.5" font-family="monospace" fill="#757575">…battery_power</text>
+    <!-- Refresh info -->
+    <text x="718" y="215" text-anchor="end" font-size="10" font-family="system-ui,sans-serif" fill="#757575">Last updated: 14:32:05</text>
+</svg>
