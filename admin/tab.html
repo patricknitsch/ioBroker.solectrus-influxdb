@@ -218,6 +218,52 @@
             margin-top: 8px;
         }
 
+        /* ── DOCUMENTATION TAB ── */
+        .doc-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-top: 3px solid var(--primary);
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .doc-section { margin-bottom: 18px; }
+        .doc-section:last-child { margin-bottom: 0; }
+        .doc-section h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        .doc-section p, .doc-section ul {
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+            margin-bottom: 6px;
+        }
+        .doc-section ul { padding-left: 22px; }
+        .doc-section li { margin-bottom: 3px; }
+        .doc-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .doc-link:hover { text-decoration: underline; }
+        /* SVG mockup: theme-aware fill classes */
+        .svg-bg           { fill: var(--bg); }
+        .svg-surface      { fill: var(--surface); }
+        .svg-text         { fill: var(--text); }
+        .svg-muted        { fill: var(--text-muted); }
+        .svg-border-fill  { fill: var(--border); }
+        .svg-code-bg      { fill: var(--code-bg); }
+        .svg-dot-inactive { fill: var(--dot-inactive); }
+        #doc-fig-caption {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            text-align: center;
+        }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 480px) {
             #main { padding: 10px; }
@@ -246,6 +292,7 @@
         <div class="tab-bar">
             <button class="tab-btn active" data-tab="influx" id="tab-influx-btn"></button>
             <button class="tab-btn" data-tab="ds" id="tab-ds-btn" style="display:none"></button>
+            <button class="tab-btn" data-tab="docs" id="tab-docs-btn"></button>
         </div>
 
         <!-- InfluxDB Sensors Tab -->
@@ -295,6 +342,138 @@
             </div>
         </div>
 
+        <!-- Documentation Tab -->
+        <div class="tab-panel" id="tab-docs">
+            <div class="section-header">
+                <span class="icon">📖</span>
+                <span id="h-docs"></span>
+            </div>
+
+            <!-- Example picture: SVG mockup of the sensor table -->
+            <div class="doc-card">
+                <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img" style="width:100%;display:block">
+                    <!-- Toolbar (fixed green) -->
+                    <rect x="0" y="0" width="720" height="38" fill="#388e3c"/>
+                    <text x="14" y="24" fill="white" font-size="14" font-weight="600" font-family="system-ui,sans-serif">⚡ SOLECTRUS InfluxDB</text>
+                    <rect x="524" y="9" width="138" height="22" rx="4" fill="rgba(255,255,255,.2)" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
+                    <text x="593" y="24" text-anchor="middle" fill="white" font-size="11" font-family="system-ui,sans-serif">Open Configuration</text>
+                    <circle cx="676" cy="20" r="5" fill="#69f0ae"/>
+                    <text x="685" y="24" fill="white" font-size="11" font-family="system-ui,sans-serif">Connected</text>
+                    <!-- Tab bar (theme-aware) -->
+                    <rect class="svg-bg" x="0" y="38" width="720" height="30"/>
+                    <rect class="svg-border-fill" x="0" y="67" width="720" height="1"/>
+                    <text x="14" y="58" fill="#388e3c" font-size="13" font-weight="700" font-family="system-ui,sans-serif">InfluxDB Sensors</text>
+                    <rect x="10" y="65" width="113" height="3" fill="#388e3c"/>
+                    <text class="svg-muted" x="142" y="58" font-size="13" font-weight="600" font-family="system-ui,sans-serif">Formula Engine</text>
+                    <text class="svg-muted" x="268" y="58" font-size="13" font-weight="600" font-family="system-ui,sans-serif">Documentation</text>
+                    <!-- Card: primary top stripe + header row -->
+                    <rect x="0" y="68" width="720" height="3" fill="#388e3c"/>
+                    <rect class="svg-bg" x="0" y="71" width="720" height="26"/>
+                    <rect class="svg-border-fill" x="0" y="97" width="720" height="1"/>
+                    <text class="svg-text" x="30"  y="87" font-size="11" font-weight="700" font-family="system-ui,sans-serif">Name</text>
+                    <text class="svg-text" x="170" y="87" font-size="11" font-weight="700" font-family="system-ui,sans-serif">Source State</text>
+                    <text class="svg-text" x="380" y="87" font-size="11" font-weight="700" font-family="system-ui,sans-serif">Type</text>
+                    <text class="svg-text" x="432" y="87" font-size="11" font-weight="700" font-family="system-ui,sans-serif">Current Value</text>
+                    <text class="svg-text" x="542" y="87" font-size="11" font-weight="700" font-family="system-ui,sans-serif">Measurement</text>
+                    <text class="svg-text" x="645" y="87" font-size="11" font-weight="700" font-family="system-ui,sans-serif">Field</text>
+                    <!-- Row 1: INVERTER_POWER (active, value present) -->
+                    <rect class="svg-surface" x="0" y="98"  width="720" height="28"/>
+                    <rect class="svg-border-fill" x="0" y="126" width="720" height="1"/>
+                    <circle cx="15" cy="112" r="5.5" fill="#388e3c"/>
+                    <text class="svg-text" x="30"  y="116" font-size="11" font-family="system-ui,sans-serif">INVERTER_POWER</text>
+                    <rect class="svg-code-bg" x="164" y="102" width="208" height="15" rx="3"/>
+                    <text class="svg-text" x="168" y="113" font-size="9.5" font-family="monospace">…sensors.inverter_power</text>
+                    <rect class="svg-code-bg" x="376" y="102" width="38" height="15" rx="3"/>
+                    <text class="svg-text" x="380" y="113" font-size="9.5" font-family="monospace">float</text>
+                    <text class="svg-text" x="432" y="116" font-size="11" font-weight="600" font-family="system-ui,sans-serif">5 234</text>
+                    <text class="svg-text" x="542" y="116" font-size="11" font-family="system-ui,sans-serif">inverter</text>
+                    <text class="svg-text" x="645" y="116" font-size="11" font-family="system-ui,sans-serif">power</text>
+                    <!-- Row 2: BATTERY_SOC (active, value present) -->
+                    <rect class="svg-surface" x="0" y="127" width="720" height="28"/>
+                    <rect class="svg-border-fill" x="0" y="155" width="720" height="1"/>
+                    <circle cx="15" cy="141" r="5.5" fill="#388e3c"/>
+                    <text class="svg-text" x="30"  y="145" font-size="11" font-family="system-ui,sans-serif">BATTERY_SOC</text>
+                    <rect class="svg-code-bg" x="164" y="131" width="192" height="15" rx="3"/>
+                    <text class="svg-text" x="168" y="142" font-size="9.5" font-family="monospace">…sensors.battery_soc</text>
+                    <rect class="svg-code-bg" x="376" y="131" width="26" height="15" rx="3"/>
+                    <text class="svg-text" x="380" y="142" font-size="9.5" font-family="monospace">int</text>
+                    <text class="svg-text" x="432" y="145" font-size="11" font-weight="600" font-family="system-ui,sans-serif">82</text>
+                    <text class="svg-text" x="542" y="145" font-size="11" font-family="system-ui,sans-serif">battery</text>
+                    <text class="svg-text" x="645" y="145" font-size="11" font-family="system-ui,sans-serif">soc</text>
+                    <!-- Row 3: HOUSE_POWER (no source state → grey dot, n/a value) -->
+                    <rect class="svg-surface" x="0" y="156" width="720" height="28"/>
+                    <rect class="svg-border-fill" x="0" y="184" width="720" height="1"/>
+                    <circle cx="15" cy="170" r="5.5" class="svg-dot-inactive"/>
+                    <text class="svg-text" x="30"  y="174" font-size="11" font-family="system-ui,sans-serif">HOUSE_POWER</text>
+                    <text class="svg-muted" x="170" y="174" font-size="11" font-family="system-ui,sans-serif">—</text>
+                    <rect class="svg-code-bg" x="376" y="160" width="34" height="15" rx="3"/>
+                    <text class="svg-text" x="380" y="171" font-size="9.5" font-family="monospace">float</text>
+                    <text class="svg-muted" x="432" y="174" font-size="11" font-family="system-ui,sans-serif">n/a</text>
+                    <text class="svg-text" x="542" y="174" font-size="11" font-family="system-ui,sans-serif">house</text>
+                    <text class="svg-text" x="645" y="174" font-size="11" font-family="system-ui,sans-serif">power</text>
+                    <!-- Refresh info -->
+                    <text class="svg-muted" x="718" y="197" text-anchor="end" font-size="10" font-family="system-ui,sans-serif">Last updated: 14:32:05</text>
+                </svg>
+                <p id="doc-fig-caption"></p>
+            </div>
+
+            <!-- Documentation text (language-specific) -->
+            <div class="doc-card">
+                <!-- English -->
+                <div id="doc-content-en">
+                    <div class="doc-section">
+                        <h3>What this tab shows</h3>
+                        <p>This tab provides a real-time overview of all active sensors and computed values configured in this adapter instance. It refreshes automatically every 5 seconds.</p>
+                    </div>
+                    <div class="doc-section">
+                        <h3>InfluxDB Sensors table</h3>
+                        <ul>
+                            <li><strong>●</strong> <span style="color:#388e3c">(green)</span> — sensor has a current value &nbsp;·&nbsp; <strong>●</strong> <span style="color:var(--text-muted)">(grey)</span> — no value yet / no source state assigned</li>
+                            <li><strong>Source State</strong> — the ioBroker state ID being read by the adapter</li>
+                            <li><strong>Type</strong> — data type written to InfluxDB: <code>int</code>, <code>float</code>, <code>bool</code>, <code>string</code>, or <code>json</code></li>
+                            <li><strong>Current Value</strong> — live value as last read; JSON arrays show the first entry and a count of remaining entries</li>
+                            <li><strong>Measurement / Field</strong> — target location in InfluxDB where the value is written</li>
+                        </ul>
+                    </div>
+                    <div class="doc-section">
+                        <h3>Formula Engine table</h3>
+                        <p>Shown only when <strong>Data-SOLECTRUS</strong> is enabled in the adapter settings. Lists all active computed items with their current values, mode (<em>Formula</em>, <em>Source</em>, or <em>State Machine</em>), and expression.</p>
+                    </div>
+                    <div class="doc-section">
+                        <h3>Navigation</h3>
+                        <p>Click <strong>Open Configuration</strong> in the toolbar to jump directly to the adapter settings where you can add or edit sensors.</p>
+                        <p><a class="doc-link" href="https://github.com/patricknitsch/ioBroker.solectrus-influxdb/blob/main/docs/en/README.md" target="_blank" rel="noopener">Full documentation →</a></p>
+                    </div>
+                </div>
+                <!-- German -->
+                <div id="doc-content-de" style="display:none">
+                    <div class="doc-section">
+                        <h3>Was dieser Tab anzeigt</h3>
+                        <p>Dieser Tab zeigt eine Echtzeit-Übersicht aller aktiven Sensoren und berechneten Werte dieser Adapterinstanz. Er aktualisiert sich automatisch alle 5 Sekunden.</p>
+                    </div>
+                    <div class="doc-section">
+                        <h3>InfluxDB-Sensoren Tabelle</h3>
+                        <ul>
+                            <li><strong>●</strong> <span style="color:#388e3c">(grün)</span> — Sensor hat einen aktuellen Wert &nbsp;·&nbsp; <strong>●</strong> <span style="color:var(--text-muted)">(grau)</span> — noch kein Wert / kein Quell-State zugewiesen</li>
+                            <li><strong>Quell-State</strong> — die ioBroker-State-ID, die vom Adapter gelesen wird</li>
+                            <li><strong>Typ</strong> — Datentyp, der nach InfluxDB geschrieben wird: <code>int</code>, <code>float</code>, <code>bool</code>, <code>string</code> oder <code>json</code></li>
+                            <li><strong>Aktueller Wert</strong> — Live-Wert wie zuletzt gelesen; JSON-Arrays zeigen den ersten Eintrag und die Anzahl weiterer Einträge</li>
+                            <li><strong>Measurement / Field</strong> — Ziel in InfluxDB, wohin der Wert geschrieben wird</li>
+                        </ul>
+                    </div>
+                    <div class="doc-section">
+                        <h3>Formel-Engine Tabelle</h3>
+                        <p>Wird nur angezeigt, wenn <strong>Data-SOLECTRUS</strong> in den Adapter-Einstellungen aktiviert ist. Listet alle aktiven berechneten Items mit aktuellen Werten, Modus (<em>Formel</em>, <em>Quelle</em> oder <em>State Machine</em>) und Ausdruck auf.</p>
+                    </div>
+                    <div class="doc-section">
+                        <h3>Navigation</h3>
+                        <p>Auf <strong>Konfiguration öffnen</strong> in der Toolbar klicken, um direkt zu den Adapter-Einstellungen zu gelangen, wo Sensoren hinzugefügt oder bearbeitet werden können.</p>
+                        <p><a class="doc-link" href="https://github.com/patricknitsch/ioBroker.solectrus-influxdb/blob/main/docs/de/README.md" target="_blank" rel="noopener">Vollständige Dokumentation →</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="refresh-info"></div>
     </div>
 </div>
@@ -329,7 +508,10 @@
             configBtn:      'Open Configuration',
             connecting:     'Connecting…',
             connected:      'Connected',
-            disconnected:   'Disconnected'
+            disconnected:   'Disconnected',
+            tabDocs:        'Documentation',
+            hDocs:          'Documentation',
+            docFigCaption:  'Example: live sensor overview in the SOLECTRUS InfluxDB tab'
         },
         de: {
             loading:        'Lade…',
@@ -355,7 +537,10 @@
             configBtn:      'Konfiguration öffnen',
             connecting:     'Verbinde…',
             connected:      'Verbunden',
-            disconnected:   'Getrennt'
+            disconnected:   'Getrennt',
+            tabDocs:        'Dokumentation',
+            hDocs:          'Dokumentation',
+            docFigCaption:  'Beispiel: Live-Sensor-Übersicht im SOLECTRUS InfluxDB Tab'
         }
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
@@ -730,6 +915,15 @@
     setText('loading',    T.loading);
     setText('config-btn', T.configBtn);
     setConnStatus('');
+
+    /* docs tab: set labels and show language-specific content immediately */
+    setText('tab-docs-btn',    T.tabDocs);
+    setText('h-docs',          T.hDocs);
+    setText('doc-fig-caption', T.docFigCaption);
+    if (lang === 'de') {
+        document.getElementById('doc-content-en').style.display = 'none';
+        document.getElementById('doc-content-de').style.display = '';
+    }
 
     initSocket()
         .then(function () {
