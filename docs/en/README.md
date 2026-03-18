@@ -137,7 +137,7 @@ The **SOLECTRUS Overview** tab (accessible via the tab bar in the adapter sectio
   - **Current value** — live reading; *n/a* if no value has been received yet. The value is always shown without line wrapping; the font size does not change with text length. JSON values are rendered compactly in a monospace font.
   - **Measurement: field** — the target location in InfluxDB (separated by a colon)
   - **Source state** — the ioBroker state ID being read (truncated, full path shown on hover)
-- **Formula Engine grid** (only shown when Data-SOLECTRUS is enabled): Shows all active computed items in the same card layout, with mode badge, current value, state ID, and formula/expression.
+- **Formula Engine grid** (only shown when Data-SOLECTRUS is enabled): Shows all active computed items in the same card layout, with mode badge, current value, state ID, and formula/expression. Font sizes remain constant in all device orientations.
 - **JSON Array preview**: For sensors with data type `json`, the value displays the **first array entry** followed by a count of additional entries (e.g. `{"t":1710000000000,"y":1250} (+543 more entries)`).
 - **Auto-refresh**: The tab updates automatically every 5 seconds.
 

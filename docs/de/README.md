@@ -137,7 +137,7 @@ Der Tab **SOLECTRUS Overview** (erreichbar über die Tab-Leiste im Adapter-Berei
   - **Aktueller Wert** — Live-Messwert; *k.A.* wenn noch kein Wert empfangen wurde. Der Wert wird immer ohne Zeilenumbruch angezeigt; die Schriftgröße ändert sich nicht mit der Textlänge. JSON-Werte werden kompakt in Monospace-Schrift dargestellt.
   - **Measurement: Field** — das Ziel in InfluxDB (getrennt durch einen Doppelpunkt)
   - **Quell-State** — die gelesene ioBroker-State-ID (gekürzt, voller Pfad als Tooltip)
-- **Formel-Engine Raster** (wird nur angezeigt, wenn Data-SOLECTRUS aktiviert ist): Zeigt alle aktiven berechneten Items in der gleichen Kartendarstellung mit Modus-Badge, aktuellem Wert, State-ID und Formel/Ausdruck.
+- **Formel-Engine Raster** (wird nur angezeigt, wenn Data-SOLECTRUS aktiviert ist): Zeigt alle aktiven berechneten Items in der gleichen Kartendarstellung mit Modus-Badge, aktuellem Wert, State-ID und Formel/Ausdruck. Schriftgrößen bleiben in allen Gerätedrehungen konstant.
 - **JSON-Array Vorschau**: Bei Sensoren mit Datentyp `json` zeigt der Wert den **ersten Array-Eintrag** gefolgt von der Anzahl weiterer Einträge (z.B. `{"t":1710000000000,"y":1250} (+543 weitere Einträge)`).
 - **Automatische Aktualisierung**: Der Tab aktualisiert sich alle 5 Sekunden selbstständig.
 
