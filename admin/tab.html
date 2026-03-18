@@ -13,9 +13,7 @@
             --text: #212121;
             --text-muted: #757575;
             --border: #e0e0e0;
-            --th-bg: #f5f5f5;
             --code-bg: rgba(0,0,0,0.06);
-            --dot-inactive: #bdbdbd;
             --shadow: 0 1px 3px rgba(0,0,0,0.15);
             --radius: 8px;
         }
@@ -25,9 +23,7 @@
             --text: #e0e0e0;
             --text-muted: #888;
             --border: #333;
-            --th-bg: #2a2a2a;
             --code-bg: rgba(255,255,255,0.08);
-            --dot-inactive: #555;
             --shadow: 0 1px 4px rgba(0,0,0,0.5);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -156,68 +152,6 @@
         }
         .section-header .icon { font-size: 18px; }
 
-        /* ── CARD ── */
-        .card {
-            background: var(--surface);
-            border-radius: var(--radius);
-            overflow-x: auto;
-            box-shadow: var(--shadow);
-            border-top: 3px solid var(--primary);
-        }
-        table {
-            width: 100%;
-            min-width: 560px;
-            border-collapse: collapse;
-        }
-        th {
-            background: var(--th-bg);
-            padding: 9px 14px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 13px;
-            color: var(--text);
-            border-bottom: 1px solid var(--border);
-        }
-        td {
-            padding: 9px 14px;
-            border-top: 1px solid var(--border);
-            font-size: 13px;
-            color: var(--text);
-            vertical-align: middle;
-        }
-        tr:first-child td { border-top: none; }
-        .col-status { width: 36px; text-align: center; }
-        .dot {
-            display: inline-block;
-            width: 13px;
-            height: 13px;
-            border-radius: 50%;
-            background: var(--primary);
-            vertical-align: middle;
-        }
-        .dot.inactive { background: var(--dot-inactive); }
-        code {
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-            background: var(--code-bg);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-        .value-cell { font-weight: 600; }
-        .empty-row td {
-            text-align: center;
-            color: var(--text-muted);
-            padding: 18px;
-        }
-
-        /* ── REFRESH INFO ── */
-        #refresh-info {
-            font-size: 11px;
-            color: var(--text-muted);
-            text-align: right;
-            margin-top: 8px;
-        }
-
         /* ── SENSOR GRID ── */
         .sensor-grid {
             display: grid;
@@ -227,7 +161,6 @@
             background: var(--surface);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            border-top: 3px solid var(--primary);
         }
         .sensor-card {
             background: var(--bg);
@@ -275,6 +208,14 @@
             font-size: 14px;
             font-weight: 400;
         }
+        .sensor-card-value.medium {
+            font-size: 14px;
+        }
+        .sensor-card-value.long {
+            font-size: 11px;
+            white-space: normal;
+            word-break: break-all;
+        }
         .sensor-card-meta {
             font-size: 11px;
             color: var(--text-muted);
@@ -294,52 +235,6 @@
             padding: 24px;
             font-size: 13px;
             grid-column: 1 / -1;
-        }
-
-        /* ── DOCUMENTATION TAB ── */
-        .doc-card {
-            background: var(--surface);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border-top: 3px solid var(--primary);
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-        .doc-section { margin-bottom: 18px; }
-        .doc-section:last-child { margin-bottom: 0; }
-        .doc-section h3 {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-        .doc-section p, .doc-section ul {
-            font-size: 13px;
-            color: var(--text);
-            line-height: 1.6;
-            margin-bottom: 6px;
-        }
-        .doc-section ul { padding-left: 22px; }
-        .doc-section li { margin-bottom: 3px; }
-        .doc-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 13px;
-        }
-        .doc-link:hover { text-decoration: underline; }
-        /* SVG mockup: theme-aware fill classes */
-        .svg-bg           { fill: var(--bg); }
-        .svg-surface      { fill: var(--surface); }
-        .svg-text         { fill: var(--text); }
-        .svg-muted        { fill: var(--text-muted); }
-        .svg-border-fill  { fill: var(--border); }
-        .svg-code-bg      { fill: var(--code-bg); }
-        .svg-dot-inactive { fill: var(--dot-inactive); }
-        #doc-fig-caption {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 8px;
-            text-align: center;
         }
 
         /* ── RESPONSIVE ── */
@@ -370,7 +265,6 @@
         <div class="tab-bar">
             <button class="tab-btn active" data-tab="influx" id="tab-influx-btn"></button>
             <button class="tab-btn" data-tab="ds" id="tab-ds-btn" style="display:none"></button>
-            <button class="tab-btn" data-tab="docs" id="tab-docs-btn"></button>
         </div>
 
         <!-- InfluxDB Sensors Tab -->
@@ -388,148 +282,7 @@
                 <span class="icon">🧮</span>
                 <span id="h-ds"></span>
             </div>
-            <div class="card">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="col-status"></th>
-                            <th id="th-name-d"></th>
-                            <th id="th-sid-d"></th>
-                            <th id="th-val-d"></th>
-                            <th id="th-mode"></th>
-                            <th id="th-formula"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody-ds"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Documentation Tab -->
-        <div class="tab-panel" id="tab-docs">
-            <div class="section-header">
-                <span class="icon">📖</span>
-                <span id="h-docs"></span>
-            </div>
-
-            <!-- Example picture: SVG mockup of the sensor card grid -->
-            <div class="doc-card">
-                <svg viewBox="0 0 720 215" xmlns="http://www.w3.org/2000/svg" role="img" style="width:100%;display:block">
-                    <!-- Toolbar (fixed green) -->
-                    <rect x="0" y="0" width="720" height="38" fill="#388e3c"/>
-                    <text x="14" y="24" fill="white" font-size="14" font-weight="600" font-family="system-ui,sans-serif">⚡ SOLECTRUS InfluxDB</text>
-                    <rect x="524" y="9" width="138" height="22" rx="4" fill="rgba(255,255,255,.2)" stroke="rgba(255,255,255,.5)" stroke-width="1"/>
-                    <text x="593" y="24" text-anchor="middle" fill="white" font-size="11" font-family="system-ui,sans-serif">Open Configuration</text>
-                    <circle cx="676" cy="20" r="5" fill="#69f0ae"/>
-                    <text x="685" y="24" fill="white" font-size="11" font-family="system-ui,sans-serif">Connected</text>
-                    <!-- Tab bar -->
-                    <rect class="svg-bg" x="0" y="38" width="720" height="30"/>
-                    <rect class="svg-border-fill" x="0" y="67" width="720" height="1"/>
-                    <text x="14" y="58" fill="#388e3c" font-size="13" font-weight="700" font-family="system-ui,sans-serif">InfluxDB Sensors</text>
-                    <rect x="10" y="65" width="113" height="3" fill="#388e3c"/>
-                    <text class="svg-muted" x="142" y="58" font-size="13" font-weight="600" font-family="system-ui,sans-serif">Formula Engine</text>
-                    <text class="svg-muted" x="268" y="58" font-size="13" font-weight="600" font-family="system-ui,sans-serif">Documentation</text>
-                    <!-- Section header -->
-                    <rect x="0" y="68" width="720" height="3" fill="#388e3c"/>
-                    <!-- Sensor grid background (surface) -->
-                    <rect class="svg-surface" x="0" y="71" width="720" height="140" rx="6"/>
-                    <rect x="0" y="71" width="720" height="3" fill="#388e3c" rx="1"/>
-                    <!-- Card 1: INVERTER_POWER -->
-                    <rect class="svg-bg" x="10"  y="82" width="160" height="72" rx="5"/>
-                    <rect x="10" y="82" width="3" height="72" fill="#388e3c" rx="1"/>
-                    <text class="svg-text" x="20" y="97"  font-size="10" font-weight="700" font-family="system-ui,sans-serif">INVERTER_POWER</text>
-                    <rect class="svg-code-bg" x="122" y="86" width="42" height="13" rx="3"/>
-                    <text class="svg-muted" x="125" y="96" font-size="9" font-family="monospace">float</text>
-                    <text x="20" y="117" font-size="16" font-weight="700" fill="#388e3c" font-family="system-ui,sans-serif">5 234</text>
-                    <text class="svg-muted" x="20" y="133" font-size="9" font-family="system-ui,sans-serif">inverter · power</text>
-                    <text class="svg-muted" x="20" y="146" font-size="8.5" font-family="monospace">…inverter_power</text>
-                    <!-- Card 2: BATTERY_SOC -->
-                    <rect class="svg-bg" x="180" y="82" width="160" height="72" rx="5"/>
-                    <rect x="180" y="82" width="3" height="72" fill="#388e3c" rx="1"/>
-                    <text class="svg-text" x="190" y="97"  font-size="10" font-weight="700" font-family="system-ui,sans-serif">BATTERY_SOC</text>
-                    <rect class="svg-code-bg" x="294" y="86" width="40" height="13" rx="3"/>
-                    <text class="svg-muted" x="297" y="96" font-size="9" font-family="monospace">int</text>
-                    <text x="190" y="117" font-size="16" font-weight="700" fill="#388e3c" font-family="system-ui,sans-serif">82</text>
-                    <text class="svg-muted" x="190" y="133" font-size="9" font-family="system-ui,sans-serif">battery · soc</text>
-                    <text class="svg-muted" x="190" y="146" font-size="8.5" font-family="monospace">…battery_soc</text>
-                    <!-- Card 3: HOUSE_POWER -->
-                    <rect class="svg-bg" x="350" y="82" width="160" height="72" rx="5"/>
-                    <rect x="350" y="82" width="3" height="72" fill="#388e3c" rx="1"/>
-                    <text class="svg-text" x="360" y="97"  font-size="10" font-weight="700" font-family="system-ui,sans-serif">HOUSE_POWER</text>
-                    <rect class="svg-code-bg" x="463" y="86" width="40" height="13" rx="3"/>
-                    <text class="svg-muted" x="466" y="96" font-size="9" font-family="monospace">float</text>
-                    <text class="svg-muted" x="360" y="117" font-size="14" font-family="system-ui,sans-serif">n/a</text>
-                    <text class="svg-muted" x="360" y="133" font-size="9" font-family="system-ui,sans-serif">house · power</text>
-                    <!-- Card 4: BATTERY_POWER -->
-                    <rect class="svg-bg" x="520" y="82" width="188" height="72" rx="5"/>
-                    <rect x="520" y="82" width="3" height="72" fill="#388e3c" rx="1"/>
-                    <text class="svg-text" x="530" y="97"  font-size="10" font-weight="700" font-family="system-ui,sans-serif">BATTERY_POWER</text>
-                    <rect class="svg-code-bg" x="638" y="86" width="62" height="13" rx="3"/>
-                    <text class="svg-muted" x="641" y="96" font-size="9" font-family="monospace">float</text>
-                    <text x="530" y="117" font-size="16" font-weight="700" fill="#388e3c" font-family="system-ui,sans-serif">−320</text>
-                    <text class="svg-muted" x="530" y="133" font-size="9" font-family="system-ui,sans-serif">battery · power</text>
-                    <text class="svg-muted" x="530" y="146" font-size="8.5" font-family="monospace">…battery_power</text>
-                    <!-- Refresh info -->
-                    <text class="svg-muted" x="718" y="210" text-anchor="end" font-size="10" font-family="system-ui,sans-serif">Last updated: 14:32:05</text>
-                </svg>
-                <p id="doc-fig-caption"></p>
-            </div>
-
-            <!-- Documentation text (language-specific) -->
-            <div class="doc-card">
-                <!-- English -->
-                <div id="doc-content-en">
-                    <div class="doc-section">
-                        <h3>What this tab shows</h3>
-                        <p>This tab provides a real-time overview of all active sensors and computed values configured in this adapter instance. It refreshes automatically every 5 seconds.</p>
-                    </div>
-                    <div class="doc-section">
-                        <h3>InfluxDB Sensors</h3>
-                        <p>Active sensors are displayed as compact cards in a responsive grid — all sensors are visible at once without scrolling. Each card shows:</p>
-                        <ul>
-                            <li><strong>Sensor name</strong> and a <strong>type badge</strong> (<code>int</code>, <code>float</code>, <code>bool</code>, <code>string</code>, <code>json</code>) in the header</li>
-                            <li><strong>Current value</strong> — live reading; <em>n/a</em> if no value has been received yet</li>
-                            <li><strong>Measurement · field</strong> — the target location in InfluxDB</li>
-                            <li><strong>Source state</strong> — the ioBroker state ID being read (truncated, full path shown on hover)</li>
-                        </ul>
-                    </div>
-                    <div class="doc-section">
-                        <h3>Formula Engine table</h3>
-                        <p>Shown only when <strong>Data-SOLECTRUS</strong> is enabled in the adapter settings. Lists all active computed items with their current values, mode (<em>Formula</em>, <em>Source</em>, or <em>State Machine</em>), and expression.</p>
-                    </div>
-                    <div class="doc-section">
-                        <h3>Navigation</h3>
-                        <p>Click <strong>Open Configuration</strong> in the toolbar to jump directly to the adapter settings where you can add or edit sensors.</p>
-                        <p><a class="doc-link" href="https://github.com/patricknitsch/ioBroker.solectrus-influxdb/blob/main/docs/en/README.md" target="_blank" rel="noopener">Full documentation →</a></p>
-                    </div>
-                </div>
-                <!-- German -->
-                <div id="doc-content-de" style="display:none">
-                    <div class="doc-section">
-                        <h3>Was dieser Tab anzeigt</h3>
-                        <p>Dieser Tab zeigt eine Echtzeit-Übersicht aller aktiven Sensoren und berechneten Werte dieser Adapterinstanz. Er aktualisiert sich automatisch alle 5 Sekunden.</p>
-                    </div>
-                    <div class="doc-section">
-                        <h3>InfluxDB-Sensoren</h3>
-                        <p>Aktive Sensoren werden als kompakte Karten in einem responsiven Raster angezeigt — alle Sensoren sind auf einen Blick sichtbar, ohne zu scrollen. Jede Karte zeigt:</p>
-                        <ul>
-                            <li><strong>Sensorname</strong> und ein <strong>Typ-Badge</strong> (<code>int</code>, <code>float</code>, <code>bool</code>, <code>string</code>, <code>json</code>) im Header</li>
-                            <li><strong>Aktueller Wert</strong> — Live-Messwert; <em>k.A.</em> wenn noch kein Wert empfangen wurde</li>
-                            <li><strong>Measurement · Field</strong> — das Ziel in InfluxDB</li>
-                            <li><strong>Quell-State</strong> — die gelesene ioBroker-State-ID (gekürzt, voller Pfad als Tooltip)</li>
-                        </ul>
-                    </div>
-                    <div class="doc-section">
-                        <h3>Formel-Engine Tabelle</h3>
-                        <p>Wird nur angezeigt, wenn <strong>Data-SOLECTRUS</strong> in den Adapter-Einstellungen aktiviert ist. Listet alle aktiven berechneten Items mit aktuellen Werten, Modus (<em>Formel</em>, <em>Quelle</em> oder <em>State Machine</em>) und Ausdruck auf.</p>
-                    </div>
-                    <div class="doc-section">
-                        <h3>Navigation</h3>
-                        <p>Auf <strong>Konfiguration öffnen</strong> in der Toolbar klicken, um direkt zu den Adapter-Einstellungen zu gelangen, wo Sensoren hinzugefügt oder bearbeitet werden können.</p>
-                        <p><a class="doc-link" href="https://github.com/patricknitsch/ioBroker.solectrus-influxdb/blob/main/docs/de/README.md" target="_blank" rel="noopener">Vollständige Dokumentation →</a></p>
-                    </div>
-                </div>
-            </div>
+            <div id="ds-grid" class="sensor-grid"></div>
         </div>
 
         <div id="refresh-info"></div>
