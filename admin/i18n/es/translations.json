@@ -248,5 +248,8 @@
 	"jsonAutoDetectInfo": "y → inverter_forecast:power (Pronóstico)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperatura)\n\nLos campos no presentes en el JSON se omiten automáticamente.",
 	"nonExpertSensorInfo": "El adaptador escribe el valor medido como %TYPE% en %MF%.",
 	"nonExpertJsonInfo": "El adaptador lee un array JSON del estado fuente (p.ej. de pvforecast) y escribe los datos de pronóstico con la marca de tiempo original en InfluxDB.\n\n%MAPPING%\n\nLos campos no presentes en el JSON se omiten automáticamente.",
-	"nonExpertExpertHint": "La asignación se puede personalizar en el modo experto."
+	"nonExpertExpertHint": "La asignación se puede personalizar en el modo experto.",
+	"iFrame": "iFrame",
+	"iframeUrlLabel": "URL del panel (iFrame)",
+	"iframeHint": "Introduce la URL de una página web para mostrarla en el tab (p. ej. tu panel de SOLECTRUS). Déjalo vacío para ocultar el tab iFrame."
 }

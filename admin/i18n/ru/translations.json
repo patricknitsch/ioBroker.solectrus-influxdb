@@ -248,5 +248,8 @@
 	"jsonAutoDetectInfo": "y → inverter_forecast:power (Прогноз)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Температура)\n\nПоля, отсутствующие в JSON, автоматически пропускаются.",
 	"nonExpertSensorInfo": "Адаптер записывает измеренное значение как %TYPE% в %MF%.",
 	"nonExpertJsonInfo": "Адаптер считывает JSON-массив из исходного состояния (например, из pvforecast) и записывает данные прогноза с оригинальной меткой времени в InfluxDB.\n\n%MAPPING%\n\nПоля, отсутствующие в JSON, автоматически пропускаются.",
-	"nonExpertExpertHint": "Сопоставление можно настроить в режиме эксперта."
+	"nonExpertExpertHint": "Сопоставление можно настроить в режиме эксперта.",
+	"iFrame": "iFrame",
+	"iframeUrlLabel": "URL панели (iFrame)",
+	"iframeHint": "Введите URL веб-страницы для отображения во вкладке (например, ваш дашборд SOLECTRUS). Оставьте пустым, чтобы скрыть вкладку iFrame."
 }

@@ -248,5 +248,8 @@
 	"jsonAutoDetectInfo": "y → inverter_forecast:power (Prognose)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperatuur)\n\nVelden die niet in de JSON aanwezig zijn, worden automatisch overgeslagen.",
 	"nonExpertSensorInfo": "De adapter schrijft de meetwaarde als %TYPE% naar %MF%.",
 	"nonExpertJsonInfo": "De adapter leest een JSON-array uit de bronstatus (bijv. van pvforecast) en schrijft de prognosegegevens met de originele tijdstempel naar InfluxDB.\n\n%MAPPING%\n\nVelden die niet in de JSON aanwezig zijn, worden automatisch overgeslagen.",
-	"nonExpertExpertHint": "De toewijzing kan worden aangepast in de expertmodus."
+	"nonExpertExpertHint": "De toewijzing kan worden aangepast in de expertmodus.",
+	"iFrame": "iFrame",
+	"iframeUrlLabel": "Dashboard-URL (iFrame)",
+	"iframeHint": "Voer de URL in van een webpagina om in het tabblad te tonen (bijv. je SOLECTRUS-dashboard). Leeg laten om het iFrame-tabblad te verbergen."
 }

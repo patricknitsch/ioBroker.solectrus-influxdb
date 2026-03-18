@@ -248,5 +248,8 @@
 	"jsonAutoDetectInfo": "y → inverter_forecast:power（预报）\nclearsky → inverter_forecast_clearsky:power（Clearsky）\ntemp → outdoor_forecast:temperature（温度）\n\nJSON 中不存在的字段将自动跳过。",
 	"nonExpertSensorInfo": "适配器将测量值作为 %TYPE% 写入 %MF%。",
 	"nonExpertJsonInfo": "适配器从源状态读取 JSON 数组（例如来自 pvforecast），并将预测数据与原始时间戳一起写入 InfluxDB。\n\n%MAPPING%\n\nJSON 中不存在的字段将自动跳过。",
-	"nonExpertExpertHint": "映射可以在专家模式中自定义。"
+	"nonExpertExpertHint": "映射可以在专家模式中自定义。",
+	"iFrame": "iFrame",
+	"iframeUrlLabel": "仪表板 URL（iFrame）",
+	"iframeHint": "输入要在选项卡中显示的网页 URL（例如您的 SOLECTRUS 仪表板）。留空则隐藏 iFrame 选项卡。"
 }

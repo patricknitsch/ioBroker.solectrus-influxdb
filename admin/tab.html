@@ -242,6 +242,27 @@
             min-width: 0;
         }
 
+        /* ── IFRAME PANEL ── */
+        .iframe-panel {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .iframe-placeholder {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px 24px;
+            font-size: 14px;
+        }
+        #dashboard-iframe {
+            display: block;
+            width: 100%;
+            border: none;
+            height: calc(100vh - 140px);
+            min-height: 400px;
+        }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 480px) {
             #main { padding: 10px; }
@@ -271,6 +292,7 @@
         <div class="tab-bar">
             <button class="tab-btn active" data-tab="influx" id="tab-influx-btn"></button>
             <button class="tab-btn" data-tab="ds" id="tab-ds-btn" style="display:none"></button>
+            <button class="tab-btn" data-tab="iframe" id="tab-iframe-btn" style="display:none"></button>
         </div>
 
         <!-- InfluxDB Sensors Tab -->
@@ -291,6 +313,14 @@
             <div id="ds-grid" class="sensor-grid"></div>
         </div>
 
+        <!-- iFrame Tab -->
+        <div class="tab-panel" id="tab-iframe">
+            <div class="iframe-panel">
+                <div id="iframe-placeholder" class="iframe-placeholder"></div>
+                <iframe id="dashboard-iframe" style="display:none" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
+            </div>
+        </div>
+
         <div id="refresh-info"></div>
     </div>
 </div>
@@ -307,6 +337,8 @@
             hDs:            'Formula Engine (Data-SOLECTRUS)',
             tabInflux:      'InfluxDB Sensors',
             tabDs:          'Formula Engine',
+            tabIframe:      'Dashboard',
+            iframePlaceholder: 'No dashboard URL configured. Open the configuration and enter a URL in the iFrame tab.',
             name:           'Name',
             stateId:        'Source State',
             type:           'Type',
@@ -335,6 +367,8 @@
             hDs:            'Formel-Engine (Data-SOLECTRUS)',
             tabInflux:      'InfluxDB-Sensoren',
             tabDs:          'Formel-Engine',
+            tabIframe:      'Dashboard',
+            iframePlaceholder: 'Keine Dashboard-URL konfiguriert. Öffne die Konfiguration und gib eine URL im iFrame-Tab ein.',
             name:           'Name',
             stateId:        'Quell-State',
             type:           'Typ',
@@ -731,6 +765,7 @@
         /* update tab labels */
         setText('tab-influx-btn', T.tabInflux);
         setText('tab-ds-btn',     T.tabDs);
+        setText('tab-iframe-btn', T.tabIframe);
 
         renderInflux(config.sensors, states);
 
@@ -741,6 +776,27 @@
             document.getElementById('tab-ds-btn').style.display = 'none';
             /* if Formula Engine tab was active, switch back to InfluxDB tab */
             if (document.getElementById('tab-ds').classList.contains('active')) {
+                switchTab('influx');
+            }
+        }
+
+        var iframeUrl = (config.iframeUrl || '').trim();
+        var iframeEl = document.getElementById('dashboard-iframe');
+        var iframePlaceholder = document.getElementById('iframe-placeholder');
+        if (iframeUrl) {
+            document.getElementById('tab-iframe-btn').style.display = '';
+            if (iframeEl.src !== iframeUrl) {
+                iframeEl.src = iframeUrl;
+            }
+            iframeEl.style.display = 'block';
+            iframePlaceholder.style.display = 'none';
+        } else {
+            document.getElementById('tab-iframe-btn').style.display = 'none';
+            iframePlaceholder.textContent = T.iframePlaceholder;
+            iframePlaceholder.style.display = 'block';
+            iframeEl.style.display = 'none';
+            /* if iFrame tab was active, switch back to InfluxDB tab */
+            if (document.getElementById('tab-iframe').classList.contains('active')) {
                 switchTab('influx');
             }
         }
