@@ -134,7 +134,7 @@ Der Tab **SOLECTRUS Overview** (erreichbar über die Tab-Leiste im Adapter-Berei
 
 - **InfluxDB-Sensoren Raster**: Zeigt alle aktivierten Sensoren als kompakte Karten in einem responsiven Raster. Jede Karte zeigt:
   - **Sensorname** und **Datentyp-Badge** (`int`, `float`, `bool`, `string`, `json`)
-  - **Aktueller Wert** — Live-Messwert; *k.A.* wenn noch kein Wert empfangen wurde. Lange Werte (z.B. JSON) werden in kleinerer Schrift dargestellt, damit sie auch auf Mobilgeräten vollständig lesbar sind.
+  - **Aktueller Wert** — Live-Messwert; *k.A.* wenn noch kein Wert empfangen wurde. Der Wert wird immer in gleicher Schriftgröße und ohne Zeilenumbruch angezeigt.
   - **Measurement: Field** — das Ziel in InfluxDB (getrennt durch einen Doppelpunkt)
   - **Quell-State** — die gelesene ioBroker-State-ID (gekürzt, voller Pfad als Tooltip)
 - **Formel-Engine Raster** (wird nur angezeigt, wenn Data-SOLECTRUS aktiviert ist): Zeigt alle aktiven berechneten Items in der gleichen Kartendarstellung mit Modus-Badge, aktuellem Wert, State-ID und Formel/Ausdruck.

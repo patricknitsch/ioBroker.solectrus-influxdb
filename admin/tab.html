@@ -199,8 +199,7 @@
             font-size: 18px;
             font-weight: 700;
             color: var(--primary);
-            overflow-wrap: break-word;
-            word-break: break-word;
+            white-space: nowrap;
             margin-bottom: 4px;
             min-height: 1.3em;
         }
@@ -208,13 +207,6 @@
             color: var(--text-muted);
             font-size: 14px;
             font-weight: 400;
-        }
-        .sensor-card-value.medium {
-            font-size: 14px;
-        }
-        .sensor-card-value.long {
-            font-size: 11px;
-            word-break: break-all;
         }
         .sensor-card-meta {
             font-size: 11px;
@@ -602,10 +594,6 @@
             var valCls = 'sensor-card-value';
             if (!hasVal) {
                 valCls += ' na';
-            } else if (valText.length > 30) {
-                valCls += ' long';
-            } else if (valText.length > 12) {
-                valCls += ' medium';
             }
             valEl.className = valCls;
             valEl.textContent = valText;
@@ -673,10 +661,6 @@
             var valCls = 'sensor-card-value';
             if (!hasVal) {
                 valCls += ' na';
-            } else if (valText.length > 30) {
-                valCls += ' long';
-            } else if (valText.length > 12) {
-                valCls += ' medium';
             }
             valEl.className = valCls;
             valEl.textContent = valText;
