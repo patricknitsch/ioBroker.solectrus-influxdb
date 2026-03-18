@@ -236,6 +236,12 @@
             grid-column: 1 / -1;
         }
 
+        /* ── LAYOUT TOGGLE ── */
+        .sensor-grid.layout-full .sensor-card {
+            flex: 1 1 100%;
+            min-width: 0;
+        }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 480px) {
             #main { padding: 10px; }
@@ -248,6 +254,7 @@
 <div id="toolbar">
     <div class="logo">⚡ SOLECTRUS InfluxDB</div>
     <div class="spacer"></div>
+    <button class="btn-toolbar" id="layout-btn"></button>
     <button class="btn-toolbar" id="config-btn"></button>
     <div id="connStatus">
         <span class="conn-dot"></span>
@@ -316,6 +323,8 @@
             noConn:         'Cannot connect to ioBroker socket.',
             moreEntries:    'more entries',
             configBtn:      'Open Configuration',
+            layoutFlex:     'Flexible',
+            layoutFull:     'Full Width',
             connecting:     'Connecting…',
             connected:      'Connected',
             disconnected:   'Disconnected',
@@ -342,6 +351,8 @@
             noConn:         'Verbindung zum ioBroker-Socket nicht möglich.',
             moreEntries:    'weitere Einträge',
             configBtn:      'Konfiguration öffnen',
+            layoutFlex:     'Flexibel',
+            layoutFull:     'Ganze Breite',
             connecting:     'Verbinde…',
             connected:      'Verbunden',
             disconnected:   'Getrennt',
@@ -421,6 +432,24 @@
         btn.addEventListener('click', function () {
             switchTab(btn.getAttribute('data-tab'));
         });
+    });
+
+    /* ── layout toggle ── */
+    var LAYOUT_KEY = NS + '.layout';
+    var _layoutFull = false;
+
+    function applyLayout(full) {
+        _layoutFull = !!full;
+        document.querySelectorAll('.sensor-grid').forEach(function (g) {
+            g.classList.toggle('layout-full', _layoutFull);
+        });
+        var btn = document.getElementById('layout-btn');
+        if (btn) btn.textContent = _layoutFull ? T.layoutFlex : T.layoutFull;
+        try { localStorage.setItem(LAYOUT_KEY, _layoutFull ? 'full' : 'flex'); } catch (_) {}
+    }
+
+    document.getElementById('layout-btn').addEventListener('click', function () {
+        applyLayout(!_layoutFull);
     });
 
     /* ── connection status ── */
@@ -763,6 +792,10 @@
     setText('loading',    T.loading);
     setText('config-btn', T.configBtn);
     setConnStatus('');
+
+    var _savedLayout = 'flex';
+    try { _savedLayout = localStorage.getItem(LAYOUT_KEY) || 'flex'; } catch (_) {}
+    applyLayout(_savedLayout === 'full');
 
     initSocket()
         .then(function () {

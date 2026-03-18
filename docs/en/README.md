@@ -140,6 +140,7 @@ The **SOLECTRUS Overview** tab (accessible via the tab bar in the adapter sectio
 - **Formula Engine grid** (only shown when Data-SOLECTRUS is enabled): Shows all active computed items in the same card layout, with mode badge, current value, state ID, and formula/expression. Font sizes remain constant in all device orientations.
 - **JSON Array preview**: For sensors with data type `json`, the value displays the **first array entry** followed by a count of additional entries (e.g. `{"t":1710000000000,"y":1250} (+543 more entries)`).
 - **Auto-refresh**: The tab updates automatically every 5 seconds.
+- **Layout toggle**: The **Full Width** / **Flexible** button in the toolbar switches both grids between a flexible multi-column layout and a single-column full-width layout. The choice is saved in the browser and restored on the next visit.
 
 ### Navigation
 

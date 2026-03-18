@@ -140,6 +140,7 @@ Der Tab **SOLECTRUS Overview** (erreichbar über die Tab-Leiste im Adapter-Berei
 - **Formel-Engine Raster** (wird nur angezeigt, wenn Data-SOLECTRUS aktiviert ist): Zeigt alle aktiven berechneten Items in der gleichen Kartendarstellung mit Modus-Badge, aktuellem Wert, State-ID und Formel/Ausdruck. Schriftgrößen bleiben in allen Gerätedrehungen konstant.
 - **JSON-Array Vorschau**: Bei Sensoren mit Datentyp `json` zeigt der Wert den **ersten Array-Eintrag** gefolgt von der Anzahl weiterer Einträge (z.B. `{"t":1710000000000,"y":1250} (+543 weitere Einträge)`).
 - **Automatische Aktualisierung**: Der Tab aktualisiert sich alle 5 Sekunden selbstständig.
+- **Layout-Umschalter**: Die Schaltfläche **Ganze Breite** / **Flexibel** in der Toolbar wechselt beide Raster zwischen einem flexiblen Mehrspalten-Layout und einem einspaltigem Vollbreiten-Layout. Die Auswahl wird im Browser gespeichert und beim nächsten Besuch wiederhergestellt.
 
 ### Navigation
 
