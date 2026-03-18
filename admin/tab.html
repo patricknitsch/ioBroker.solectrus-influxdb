@@ -197,9 +197,8 @@
             font-size: 18px;
             font-weight: 700;
             color: var(--primary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            overflow-wrap: break-word;
+            word-break: break-word;
             margin-bottom: 4px;
             min-height: 1.3em;
         }
@@ -213,21 +212,21 @@
         }
         .sensor-card-value.long {
             font-size: 11px;
-            white-space: normal;
             word-break: break-all;
         }
         .sensor-card-meta {
             font-size: 11px;
             color: var(--text-muted);
             margin-bottom: 2px;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
         .sensor-card-source {
             font-size: 10px;
             color: var(--text-muted);
             font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            overflow-wrap: break-word;
+            word-break: break-all;
         }
         .sensor-grid-empty {
             text-align: center;
