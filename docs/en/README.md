@@ -128,19 +128,19 @@ If InfluxDB reports a field type conflict (e.g. writing a float to an existing i
 
 The **SOLECTRUS Overview** tab (accessible via the tab bar in the adapter section) provides a real-time at-a-glance view of all configured and active sensors and data items.
 
+![Sensor overview example](../img/sensor-overview.svg)
+
 ### Features
 
-- **Introduction bar**: A short description of the tab and an **Open Configuration** button that takes you directly to the adapter instance settings.
-- **InfluxDB Sensors table**: Shows all enabled sensors with their current live values. The table includes:
-  - Status indicator (green dot = value available, grey = no value yet)
-  - Sensor name
-  - ioBroker source state ID
-  - **Data type** (`int`, `float`, `bool`, `string`, `json`)
-  - Current value
-  - InfluxDB measurement and field names
-- **Formula Engine table** (only shown when Data-SOLECTRUS is enabled): Shows all active computed items with mode and formula/expression.
-- **JSON Array preview**: For sensors with data type `json`, the value cell displays the **first array entry** followed by a count of additional entries (e.g. `{"t":1710000000000,"y":1250} (+543 more entries)`). This gives a compact but informative preview without flooding the display.
+- **InfluxDB Sensors grid**: Shows all enabled sensors as compact cards in a responsive grid. Each card shows:
+  - **Sensor name** and **data type badge** (`int`, `float`, `bool`, `string`, `json`)
+  - **Current value** — live reading; *n/a* if no value has been received yet. The value is always shown without line wrapping; the font size does not change with text length. JSON values are rendered compactly in a monospace font.
+  - **Measurement: field** — the target location in InfluxDB (separated by a colon)
+  - **Source state** — the ioBroker state ID being read (truncated, full path shown on hover)
+- **Formula Engine grid** (only shown when Data-SOLECTRUS is enabled): Shows all active computed items in the same card layout, with mode badge, current value, state ID, and formula/expression. Font sizes remain constant in all device orientations.
+- **JSON Array preview**: For sensors with data type `json`, the value displays the **first array entry** followed by a count of additional entries (e.g. `{"t":1710000000000,"y":1250} (+543 more entries)`).
 - **Auto-refresh**: The tab updates automatically every 5 seconds.
+- **Layout toggle**: The **Full Width** / **Flexible** button in the toolbar switches both grids between a flexible multi-column layout and a single-column full-width layout. The choice is saved in the browser and restored on the next visit.
 
 ### Navigation
 

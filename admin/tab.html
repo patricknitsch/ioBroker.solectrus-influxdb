@@ -3,108 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOLECTRUS – Sensors Overview</title>
+    <title>SOLECTRUS – InfluxDB</title>
     <script src="../../socket.io/socket.io.js"></script>
     <style>
         :root {
+            --primary: #388e3c;
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --text: #212121;
+            --text-muted: #757575;
+            --border: #e0e0e0;
+            --code-bg: rgba(0,0,0,0.06);
+            --shadow: 0 1px 3px rgba(0,0,0,0.15);
+            --radius: 8px;
+        }
+        body.dark {
             --bg: #121212;
             --surface: #1e1e1e;
             --text: #e0e0e0;
             --text-muted: #888;
-            --accent: #4ade80;
             --border: #333;
-            --th-bg: #2a2a2a;
             --code-bg: rgba(255,255,255,0.08);
-            --dot-inactive: #555;
             --shadow: 0 1px 4px rgba(0,0,0,0.5);
-        }
-        @media (prefers-color-scheme: light) {
-            :root {
-                --bg: #f0f2f5;
-                --surface: #ffffff;
-                --text: #212121;
-                --text-muted: #757575;
-                --accent: #2e7d32;
-                --border: #e0e0e0;
-                --th-bg: #f5f5f5;
-                --code-bg: rgba(0,0,0,0.06);
-                --dot-inactive: #bdbdbd;
-                --shadow: 0 1px 3px rgba(0,0,0,0.15);
-            }
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
             background: var(--bg);
             color: var(--text);
-            padding: 20px;
             font-size: 14px;
             min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
-        section { margin-bottom: 28px; }
-        h2 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--text);
+
+        /* ── TOOLBAR ── */
+        #toolbar {
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,.3);
         }
-        .card {
-            background: var(--surface);
-            border-radius: 8px;
-            overflow-x: auto;
-            box-shadow: var(--shadow);
+        #toolbar .logo {
+            font-size: 18px;
+            font-weight: 500;
+            white-space: nowrap;
         }
-        table {
-            width: 100%;
-            min-width: 560px;
-            border-collapse: collapse;
-        }
-        th {
-            background: var(--th-bg);
-            padding: 9px 14px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 13px;
-            color: var(--text);
-            border-bottom: 1px solid var(--border);
-        }
-        td {
-            padding: 9px 14px;
-            border-top: 1px solid var(--border);
-            font-size: 13px;
-            color: var(--text);
-            vertical-align: middle;
-        }
-        tr:first-child td { border-top: none; }
-        .col-status { width: 36px; text-align: center; }
-        .dot {
-            display: inline-block;
-            width: 13px;
-            height: 13px;
-            border-radius: 50%;
-            background: var(--accent);
-            vertical-align: middle;
-        }
-        .dot.inactive { background: var(--dot-inactive); }
-        code {
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-            background: var(--code-bg);
-            padding: 2px 6px;
+        #toolbar .spacer { flex: 1; }
+        .btn-toolbar {
+            background: rgba(255,255,255,.2);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,.5);
             border-radius: 4px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background .2s;
+            font-family: inherit;
+        }
+        .btn-toolbar:hover { background: rgba(255,255,255,.35); }
+        #connStatus {
             font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
         }
-        .value-cell { font-weight: 600; }
-        .empty-row td {
-            text-align: center;
-            color: var(--text-muted);
-            padding: 18px;
+        #connStatus .conn-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #9e9e9e;
+            display: inline-block;
         }
-        #loading {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-muted);
-            font-size: 15px;
-        }
+        #connStatus.online .conn-dot  { background: #69f0ae; }
+        #connStatus.offline .conn-dot { background: #ef5350; }
+
+        /* ── MAIN ── */
+        #main { padding: 16px; }
+
+        /* ── ERROR ── */
         #error-msg {
             background: rgba(244,67,54,0.12);
             border: 1px solid rgba(244,67,54,0.4);
@@ -115,98 +99,200 @@
             display: none;
             font-size: 13px;
         }
-        #refresh-info {
-            font-size: 11px;
+
+        /* ── LOADING ── */
+        #loading {
+            text-align: center;
+            padding: 40px;
             color: var(--text-muted);
-            text-align: right;
-            margin-top: 6px;
-        }
-        #content { display: none; }
-        .intro-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 18px;
-        }
-        .intro-text {
             font-size: 15px;
-            color: var(--text-muted);
-            flex: 1;
-            min-width: 200px;
         }
-        .config-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+
+        /* ── CONTENT ── */
+        #content { display: none; }
+
+        /* ── TAB BAR ── */
+        .tab-bar {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+        .tab-btn {
             background: transparent;
-            color: var(--accent);
-            border: 1.5px solid var(--accent);
-            border-radius: 6px;
-            padding: 6px 14px;
-            cursor: pointer;
-            font-size: 13px;
+            border: none;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            padding: 8px 18px;
+            font-size: 14px;
             font-weight: 600;
-            white-space: nowrap;
-            flex-shrink: 0;
+            cursor: pointer;
+            color: var(--text-muted);
+            border-radius: 4px 4px 0 0;
+            transition: color .15s, border-color .15s;
             font-family: inherit;
         }
-        .config-btn:hover {
-            background: var(--accent);
-            color: var(--bg);
+        .tab-btn:hover { color: var(--primary); }
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── SECTION HEADER ── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
+        }
+        .section-header .icon { font-size: 18px; }
+
+        /* ── SENSOR GRID ── */
+        .sensor-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+        }
+        .sensor-card {
+            background: var(--bg);
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+            padding: 10px 12px;
+            flex: 1 1 auto;
+            min-width: max-content;
+        }
+        .sensor-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 6px;
+            margin-bottom: 5px;
+        }
+        .sensor-card-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text);
+            white-space: nowrap;
+            line-height: 1.3;
+        }
+        .sensor-type-badge {
+            font-size: 10px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            background: var(--code-bg);
+            padding: 2px 5px;
+            border-radius: 3px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .sensor-card-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            white-space: nowrap;
+            margin-bottom: 4px;
+            min-height: 1.3em;
+        }
+        .sensor-card-value.na {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 400;
+        }
+        .sensor-card-value.json-val {
+            font-size: 11px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+        .sensor-card-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+        .sensor-card-source {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            overflow-wrap: break-word;
+            word-break: break-all;
+        }
+        .sensor-grid-empty {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 24px;
+            font-size: 13px;
+            grid-column: 1 / -1;
+        }
+
+        /* ── LAYOUT TOGGLE ── */
+        .sensor-grid.layout-full .sensor-card {
+            flex: 1 1 100%;
+            min-width: 0;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 480px) {
+            #main { padding: 10px; }
         }
     </style>
 </head>
 <body>
-<div id="error-msg"></div>
-<div id="loading">…</div>
-<div id="content">
-    <!-- Intro bar -->
-    <div class="intro-bar">
-        <span id="intro-text" class="intro-text"></span>
-        <button class="config-btn" id="config-btn"></button>
+
+<!-- TOOLBAR -->
+<div id="toolbar">
+    <div class="logo">⚡ SOLECTRUS InfluxDB</div>
+    <div class="spacer"></div>
+    <button class="btn-toolbar" id="layout-btn"></button>
+    <button class="btn-toolbar" id="config-btn"></button>
+    <div id="connStatus">
+        <span class="conn-dot"></span>
+        <span id="connLabel"></span>
     </div>
-    <!-- InfluxDB Sensors -->
-    <section id="influx-section">
-        <h2 id="h-influx"></h2>
-        <div class="card">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="col-status"></th>
-                        <th id="th-name-i"></th>
-                        <th id="th-sid-i"></th>
-                        <th id="th-type-i"></th>
-                        <th id="th-val-i"></th>
-                        <th id="th-meas"></th>
-                        <th id="th-field"></th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-influx"></tbody>
-            </table>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+    <div id="error-msg"></div>
+    <div id="loading">…</div>
+    <div id="content">
+        <!-- TAB BAR -->
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="influx" id="tab-influx-btn"></button>
+            <button class="tab-btn" data-tab="ds" id="tab-ds-btn" style="display:none"></button>
         </div>
-    </section>
-    <!-- Formula Engine (only when enableDataSolectrus) -->
-    <section id="ds-section" style="display:none">
-        <h2 id="h-ds"></h2>
-        <div class="card">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="col-status"></th>
-                        <th id="th-name-d"></th>
-                        <th id="th-sid-d"></th>
-                        <th id="th-val-d"></th>
-                        <th id="th-mode"></th>
-                        <th id="th-formula"></th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-ds"></tbody>
-            </table>
+
+        <!-- InfluxDB Sensors Tab -->
+        <div class="tab-panel active" id="tab-influx">
+            <div class="section-header">
+                <span class="icon">📊</span>
+                <span id="h-influx"></span>
+            </div>
+            <div id="sensor-grid" class="sensor-grid"></div>
         </div>
-    </section>
-    <div id="refresh-info"></div>
+
+        <!-- Formula Engine Tab -->
+        <div class="tab-panel" id="tab-ds">
+            <div class="section-header">
+                <span class="icon">🧮</span>
+                <span id="h-ds"></span>
+            </div>
+            <div id="ds-grid" class="sensor-grid"></div>
+        </div>
+
+        <div id="refresh-info"></div>
+    </div>
 </div>
 
 <script>
@@ -219,6 +305,8 @@
             loading:        'Loading…',
             hInflux:        'InfluxDB Sensors',
             hDs:            'Formula Engine (Data-SOLECTRUS)',
+            tabInflux:      'InfluxDB Sensors',
+            tabDs:          'Formula Engine',
             name:           'Name',
             stateId:        'Source State',
             type:           'Type',
@@ -235,12 +323,18 @@
             noConn:         'Cannot connect to ioBroker socket.',
             moreEntries:    'more entries',
             configBtn:      'Open Configuration',
-            intro:          'This tab shows all configured and active sensors and data items at a glance.'
+            layoutFlex:     'Flexible',
+            layoutFull:     'Full Width',
+            connecting:     'Connecting…',
+            connected:      'Connected',
+            disconnected:   'Disconnected',
         },
         de: {
             loading:        'Lade…',
             hInflux:        'InfluxDB-Sensoren',
             hDs:            'Formel-Engine (Data-SOLECTRUS)',
+            tabInflux:      'InfluxDB-Sensoren',
+            tabDs:          'Formel-Engine',
             name:           'Name',
             stateId:        'Quell-State',
             type:           'Typ',
@@ -257,22 +351,130 @@
             noConn:         'Verbindung zum ioBroker-Socket nicht möglich.',
             moreEntries:    'weitere Einträge',
             configBtn:      'Konfiguration öffnen',
-            intro:          'Dieser Tab zeigt alle konfigurierten und aktiven Sensoren und Datenpunkte im Überblick.'
+            layoutFlex:     'Flexibel',
+            layoutFull:     'Ganze Breite',
+            connecting:     'Verbinde…',
+            connected:      'Verbunden',
+            disconnected:   'Getrennt',
         }
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
     var T = STRINGS[lang] || STRINGS.en;
 
     /* ── constants ── */
-    var SOCKET_TIMEOUT_MS  = 8000;  /* ms to wait for socket.io to connect  */
-    var REFRESH_INTERVAL_MS = 5000; /* ms between data refreshes             */
-    var TRUNCATE_VAL_LEN   = 60;    /* max chars for JSON value preview      */
+    var SOCKET_TIMEOUT_MS   = 8000;  /* ms to wait for socket.io to connect  */
+    var REFRESH_INTERVAL_MS = 5000;  /* ms between data refreshes             */
+    var TRUNCATE_VAL_LEN    = 60;    /* max chars for JSON value preview      */
 
     /* ── instance from URL ── */
     var params = new URLSearchParams(window.location.search);
     var instance = parseInt(params.get('instance') || '0', 10);
     if (isNaN(instance) || instance < 0) instance = 0;
     var NS = 'solectrus-influxdb.' + instance;
+
+    /* ── theme ── */
+    var DARK_THEME_NAMES = ['dark', 'blue'];
+
+    function resolveTheme() {
+        /* 1. localStorage keys written by ioBroker Admin Utils.setThemeName() */
+        try {
+            var t = localStorage.getItem('App.theme');
+            if (t) return t === 'dark';
+            var n = localStorage.getItem('App.themeName');
+            if (n) return DARK_THEME_NAMES.indexOf(n) !== -1;
+        } catch (_) { /* storage blocked */ }
+        /* 2. DOM class / data-theme attributes of parent Admin frame */
+        try {
+            var body = window.parent && window.parent.document && window.parent.document.body;
+            var html = window.parent && window.parent.document && window.parent.document.documentElement;
+            if (body) {
+                if ((body.className  || '').toLowerCase().indexOf('dark') !== -1) return true;
+                if (html && (html.className || '').toLowerCase().indexOf('dark') !== -1) return true;
+                if (body.getAttribute('data-theme') === 'dark') return true;
+                if (html && html.getAttribute('data-theme') === 'dark') return true;
+                if (body.getAttribute('data-bs-theme') === 'dark') return true;
+            }
+        } catch (_) { /* cross-origin */ }
+        return false;
+    }
+
+    function applyTheme(isDark) {
+        document.body.classList.toggle('dark', !!isDark);
+    }
+
+    function detectTheme() {
+        /* Admin 7 appends &react=dark|light|blue|colored to the tab URL */
+        try {
+            var urlTheme = new URLSearchParams(window.location.search).get('react');
+            if (urlTheme) { applyTheme(DARK_THEME_NAMES.indexOf(urlTheme) !== -1); return; }
+        } catch (_) { /* ignore */ }
+        applyTheme(resolveTheme());
+    }
+
+    detectTheme();
+
+    /* Listen for theme changes from parent Admin (same-origin localStorage events) */
+    window.addEventListener('storage', function (e) {
+        if (e.key === 'App.theme' || e.key === 'App.themeName') {
+            applyTheme(resolveTheme());
+        }
+    });
+
+    /* ── tabs ── */
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+        document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+        document.querySelector('.tab-btn[data-tab="' + tab + '"]').classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            switchTab(btn.getAttribute('data-tab'));
+        });
+    });
+
+    /* ── layout toggle ── */
+    var LAYOUT_KEY = NS + '.layout';
+    var _layoutFull = false;
+
+    function applyLayout(full) {
+        _layoutFull = !!full;
+        document.querySelectorAll('.sensor-grid').forEach(function (g) {
+            g.classList.toggle('layout-full', _layoutFull);
+        });
+        var btn = document.getElementById('layout-btn');
+        if (btn) btn.textContent = _layoutFull ? T.layoutFlex : T.layoutFull;
+        try { localStorage.setItem(LAYOUT_KEY, _layoutFull ? 'full' : 'flex'); } catch (_) {}
+    }
+
+    document.getElementById('layout-btn').addEventListener('click', function () {
+        applyLayout(!_layoutFull);
+    });
+
+    /* ── connection status ── */
+    function setConnStatus(status) {
+        var statusEl = document.getElementById('connStatus');
+        var label    = document.getElementById('connLabel');
+        statusEl.className = status;
+        label.textContent = status === 'online'   ? T.connected
+                          : status === 'offline'  ? T.disconnected
+                          : T.connecting;
+    }
+
+    /* ── DOM helpers ── */
+    function el(tag, opts) {
+        var e = document.createElement(tag);
+        if (opts) {
+            if (opts.text)  e.textContent   = opts.text;
+            if (opts.html)  e.innerHTML     = opts.html;
+            if (opts.cls)   e.className     = opts.cls;
+            if (opts.span)  e.colSpan       = opts.span;
+            if (opts.style) e.style.cssText = opts.style;
+        }
+        return e;
+    }
+    function setText(id, txt) { document.getElementById(id).textContent = txt; }
 
     /* ── state-ID helpers ── */
     function sensorStateId(sensor) {
@@ -287,10 +489,9 @@
     }
     function dsFormulaText(item) {
         var mode = item.mode || 'formula';
-        if (mode === 'formula')      return item.formula || '';
-        if (mode === 'source' || mode === 'sourceState')
-                                     return item.sourceState || '';
-        if (mode === 'jsonPath')     return (item.sourceState || '') + (item.jsonPath ? ' → ' + item.jsonPath : '');
+        if (mode === 'formula')                      return item.formula || '';
+        if (mode === 'source' || mode === 'sourceState') return item.sourceState || '';
+        if (mode === 'jsonPath')  return (item.sourceState || '') + (item.jsonPath ? ' → ' + item.jsonPath : '');
         if (mode === 'state-machine') return '[state-machine]';
         return '';
     }
@@ -326,20 +527,6 @@
         }
         return fmtVal(val);
     }
-
-    /* ── DOM helpers ── */
-    function el(tag, opts) {
-        var e = document.createElement(tag);
-        if (opts) {
-            if (opts.text)  e.textContent = opts.text;
-            if (opts.html)  e.innerHTML   = opts.html;
-            if (opts.cls)   e.className   = opts.cls;
-            if (opts.span)  e.colSpan     = opts.span;
-            if (opts.style) e.style.cssText = opts.style;
-        }
-        return e;
-    }
-    function setText(id, txt) { document.getElementById(id).textContent = txt; }
 
     /* ── socket abstraction ── */
     var _sock = null;
@@ -401,95 +588,139 @@
     /* ── render ── */
     function renderInflux(sensors, states) {
         setText('h-influx', T.hInflux);
-        setText('th-name-i', T.name);
-        setText('th-sid-i',  T.stateId);
-        setText('th-type-i', T.type);
-        setText('th-val-i',  T.value);
-        setText('th-meas',   T.measurement);
-        setText('th-field',  T.field);
 
-        var tbody = document.getElementById('tbody-influx');
-        tbody.innerHTML = '';
+        var grid = document.getElementById('sensor-grid');
+        grid.innerHTML = '';
         var active = (sensors || []).filter(function (s) { return s && s.enabled && s.SensorName; });
         if (!active.length) {
-            var row = tbody.insertRow();
-            row.className = 'empty-row';
-            row.insertCell().colSpan = 7;
-            row.cells[0].textContent = T.noSensors;
+            var empty = document.createElement('div');
+            empty.className = 'sensor-grid-empty';
+            empty.textContent = T.noSensors;
+            grid.appendChild(empty);
             return;
         }
         active.forEach(function (sensor) {
-            var sid   = sensorStateId(sensor);
-            var state = states && states[sid];
+            var sid    = sensorStateId(sensor);
+            var state  = states && states[sid];
             var hasVal = state && state.val !== null && state.val !== undefined;
             var isJson = sensor.type === 'json';
+            var valText = fmtSensorVal(hasVal ? state.val : null, isJson);
 
-            var tr = tbody.insertRow();
-            /* status */
-            var tdS = tr.insertCell(); tdS.className = 'col-status';
-            tdS.appendChild(el('span', { cls: 'dot' + (hasVal ? '' : ' inactive') }));
-            /* name */
-            tr.insertCell().textContent = sensor.SensorName;
-            /* source state id (the ioBroker state selected by the user) */
-            var tdID = tr.insertCell();
-            tdID.appendChild(sensor.sourceState
-                ? el('code', { text: sensor.sourceState })
-                : el('span', { text: T.na, style: 'color:var(--text-muted)' }));
-            /* type */
-            var tdT = tr.insertCell();
-            if (sensor.type) tdT.appendChild(el('code', { text: sensor.type }));
+            var card = document.createElement('div');
+            card.className = 'sensor-card';
+
+            /* header: name + type badge */
+            var header = document.createElement('div');
+            header.className = 'sensor-card-header';
+            var nameEl = document.createElement('span');
+            nameEl.className = 'sensor-card-name';
+            nameEl.textContent = sensor.SensorName;
+            header.appendChild(nameEl);
+            if (sensor.type) {
+                var badge = document.createElement('span');
+                badge.className = 'sensor-type-badge';
+                badge.textContent = sensor.type;
+                header.appendChild(badge);
+            }
+            card.appendChild(header);
+
             /* value */
-            var tdV = tr.insertCell(); tdV.className = 'value-cell';
-            tdV.textContent = fmtSensorVal(hasVal ? state.val : null, isJson);
-            /* measurement */
-            tr.insertCell().textContent = sensor.measurement || '';
-            /* field */
-            tr.insertCell().textContent = sensor.field || '';
+            var valEl = document.createElement('div');
+            var valCls = 'sensor-card-value';
+            if (!hasVal) {
+                valCls += ' na';
+            } else if (isJson) {
+                valCls += ' json-val';
+            }
+            valEl.className = valCls;
+            valEl.textContent = valText;
+            card.appendChild(valEl);
+
+            /* measurement: field */
+            if (sensor.measurement || sensor.field) {
+                var metaEl = document.createElement('div');
+                metaEl.className = 'sensor-card-meta';
+                metaEl.textContent = (sensor.measurement || '') + (sensor.field ? ': ' + sensor.field : '');
+                card.appendChild(metaEl);
+            }
+
+            /* source state */
+            if (sensor.sourceState) {
+                var srcEl = document.createElement('div');
+                srcEl.className = 'sensor-card-source';
+                srcEl.textContent = sensor.sourceState;
+                srcEl.title = sensor.sourceState;
+                card.appendChild(srcEl);
+            }
+
+            grid.appendChild(card);
         });
     }
 
     function renderDs(items, states) {
-        setText('h-ds',      T.hDs);
-        setText('th-name-d', T.name);
-        setText('th-sid-d',  T.stateId);
-        setText('th-val-d',  T.value);
-        setText('th-mode',   T.mode);
-        setText('th-formula', T.formula);
+        setText('h-ds', T.hDs);
 
-        var tbody = document.getElementById('tbody-ds');
-        tbody.innerHTML = '';
+        var grid = document.getElementById('ds-grid');
+        grid.innerHTML = '';
         var active = (items || []).filter(function (it) { return it && it.enabled && it.targetId; });
         if (!active.length) {
-            var row = tbody.insertRow();
-            row.className = 'empty-row';
-            row.insertCell().colSpan = 6;
-            row.cells[0].textContent = T.noItems;
+            var empty = document.createElement('div');
+            empty.className = 'sensor-grid-empty';
+            empty.textContent = T.noItems;
+            grid.appendChild(empty);
             return;
         }
         active.forEach(function (item) {
-            var sid   = dsItemStateId(item);
+            var sid    = dsItemStateId(item);
             if (!sid) return;
             var state  = states && states[sid];
             var hasVal = state && state.val !== null && state.val !== undefined;
+            var valText = fmtVal(hasVal ? state.val : null);
 
-            var tr = tbody.insertRow();
-            /* status */
-            var tdS = tr.insertCell(); tdS.className = 'col-status';
-            tdS.appendChild(el('span', { cls: 'dot' + (hasVal ? '' : ' inactive') }));
-            /* name */
-            tr.insertCell().textContent = item.name || item.targetId;
-            /* state id */
-            var tdID = tr.insertCell();
-            tdID.appendChild(el('code', { text: sid }));
+            var card = document.createElement('div');
+            card.className = 'sensor-card';
+
+            /* header: name + mode badge */
+            var header = document.createElement('div');
+            header.className = 'sensor-card-header';
+            var nameEl = document.createElement('span');
+            nameEl.className = 'sensor-card-name';
+            nameEl.textContent = item.name || item.targetId;
+            header.appendChild(nameEl);
+            var badge = document.createElement('span');
+            badge.className = 'sensor-type-badge';
+            badge.textContent = dsModeLabel(item);
+            header.appendChild(badge);
+            card.appendChild(header);
+
             /* value */
-            var tdV = tr.insertCell(); tdV.className = 'value-cell';
-            tdV.textContent = fmtVal(hasVal ? state.val : null);
-            /* mode */
-            tr.insertCell().textContent = dsModeLabel(item);
+            var valEl = document.createElement('div');
+            var valCls = 'sensor-card-value';
+            if (!hasVal) {
+                valCls += ' na';
+            }
+            valEl.className = valCls;
+            valEl.textContent = valText;
+            card.appendChild(valEl);
+
+            /* state id */
+            var metaEl = document.createElement('div');
+            metaEl.className = 'sensor-card-meta';
+            metaEl.textContent = sid;
+            metaEl.title = sid;
+            card.appendChild(metaEl);
+
             /* formula / expression */
-            var tdF = tr.insertCell();
-            var txt = dsFormulaText(item);
-            if (txt) tdF.appendChild(el('code', { text: txt }));
+            var expr = dsFormulaText(item);
+            if (expr) {
+                var srcEl = document.createElement('div');
+                srcEl.className = 'sensor-card-source';
+                srcEl.textContent = expr;
+                srcEl.title = expr;
+                card.appendChild(srcEl);
+            }
+
+            grid.appendChild(card);
         });
     }
 
@@ -497,16 +728,21 @@
         document.getElementById('loading').style.display = 'none';
         document.getElementById('content').style.display = 'block';
 
-        setText('intro-text', T.intro);
-        setText('config-btn', T.configBtn);
+        /* update tab labels */
+        setText('tab-influx-btn', T.tabInflux);
+        setText('tab-ds-btn',     T.tabDs);
 
         renderInflux(config.sensors, states);
 
         if (config.enableDataSolectrus) {
-            document.getElementById('ds-section').style.display = 'block';
+            document.getElementById('tab-ds-btn').style.display = '';
             renderDs(config.dsItems, states);
         } else {
-            document.getElementById('ds-section').style.display = 'none';
+            document.getElementById('tab-ds-btn').style.display = 'none';
+            /* if Formula Engine tab was active, switch back to InfluxDB tab */
+            if (document.getElementById('tab-ds').classList.contains('active')) {
+                switchTab('influx');
+            }
         }
 
         document.getElementById('refresh-info').textContent =
@@ -514,6 +750,7 @@
     }
 
     function showError(msg) {
+        setConnStatus('offline');
         var e = document.getElementById('error-msg');
         e.textContent = T.error + msg;
         e.style.display = 'block';
@@ -542,6 +779,7 @@
                     throw new Error('Adapter object not found: system.adapter.' + NS);
                 }
                 return _getStates(NS + '.*').then(function (states) {
+                    setConnStatus('online');
                     render(obj.native, states || {});
                 });
             })
@@ -551,7 +789,13 @@
     }
 
     /* ── init ── */
-    document.getElementById('loading').textContent = T.loading;
+    setText('loading',    T.loading);
+    setText('config-btn', T.configBtn);
+    setConnStatus('');
+
+    var _savedLayout = 'flex';
+    try { _savedLayout = localStorage.getItem(LAYOUT_KEY) || 'flex'; } catch (_) {}
+    applyLayout(_savedLayout === 'full');
 
     initSocket()
         .then(function () {

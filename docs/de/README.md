@@ -128,19 +128,19 @@ Meldet InfluxDB einen Field-Type-Konflikt (z.B. Float in ein bestehendes Int-Fel
 
 Der Tab **SOLECTRUS Overview** (erreichbar über die Tab-Leiste im Adapter-Bereich) zeigt in Echtzeit alle konfigurierten und aktiven Sensoren und Datenpunkte auf einen Blick.
 
+![Sensor-Übersicht Beispiel](../img/sensor-overview.svg)
+
 ### Funktionen
 
-- **Einleitungsleiste**: Eine kurze Beschreibung des Tabs und ein Button **Konfiguration öffnen**, der direkt zur Instanzkonfiguration des Adapters navigiert.
-- **InfluxDB-Sensoren Tabelle**: Zeigt alle aktivierten Sensoren mit ihrem aktuellen Live-Wert. Die Tabelle enthält:
-  - Statusanzeige (grüner Punkt = Wert vorhanden, grau = noch kein Wert)
-  - Sensorname
-  - ioBroker Quell-State ID
-  - **Datentyp** (`int`, `float`, `bool`, `string`, `json`)
-  - Aktueller Wert
-  - InfluxDB Measurement und Field-Name
-- **Formel-Engine Tabelle** (wird nur angezeigt, wenn Data-SOLECTRUS aktiviert ist): Zeigt alle aktiven berechneten Elemente mit Modus und Formel/Ausdruck.
-- **JSON-Array Vorschau**: Bei Sensoren mit Datentyp `json` zeigt die Wertspalte den **ersten Array-Eintrag** gefolgt von der Anzahl weiterer Einträge (z.B. `{"t":1710000000000,"y":1250} (+543 weitere Einträge)`). Dies ermöglicht eine kompakte, aber informative Vorschau.
+- **InfluxDB-Sensoren Raster**: Zeigt alle aktivierten Sensoren als kompakte Karten in einem responsiven Raster. Jede Karte zeigt:
+  - **Sensorname** und **Datentyp-Badge** (`int`, `float`, `bool`, `string`, `json`)
+  - **Aktueller Wert** — Live-Messwert; *k.A.* wenn noch kein Wert empfangen wurde. Der Wert wird immer ohne Zeilenumbruch angezeigt; die Schriftgröße ändert sich nicht mit der Textlänge. JSON-Werte werden kompakt in Monospace-Schrift dargestellt.
+  - **Measurement: Field** — das Ziel in InfluxDB (getrennt durch einen Doppelpunkt)
+  - **Quell-State** — die gelesene ioBroker-State-ID (gekürzt, voller Pfad als Tooltip)
+- **Formel-Engine Raster** (wird nur angezeigt, wenn Data-SOLECTRUS aktiviert ist): Zeigt alle aktiven berechneten Items in der gleichen Kartendarstellung mit Modus-Badge, aktuellem Wert, State-ID und Formel/Ausdruck. Schriftgrößen bleiben in allen Gerätedrehungen konstant.
+- **JSON-Array Vorschau**: Bei Sensoren mit Datentyp `json` zeigt der Wert den **ersten Array-Eintrag** gefolgt von der Anzahl weiterer Einträge (z.B. `{"t":1710000000000,"y":1250} (+543 weitere Einträge)`).
 - **Automatische Aktualisierung**: Der Tab aktualisiert sich alle 5 Sekunden selbstständig.
+- **Layout-Umschalter**: Die Schaltfläche **Ganze Breite** / **Flexibel** in der Toolbar wechselt beide Raster zwischen einem flexiblen Mehrspalten-Layout und einem einspaltigem Vollbreiten-Layout. Die Auswahl wird im Browser gespeichert und beim nächsten Besuch wiederhergestellt.
 
 ### Navigation
 
