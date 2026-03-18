@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "news": {
+      "1.4.1": {
+        "en": "Update Tab Format\nUpdate Readme\nUpdate Packages",
+        "de": "Update Tab Format\nUpdate Reader\nPakete aktualisieren",
+        "ru": "Обновление формата Tab\nОбновление Readme\nОбновление пакетов",
+        "pt": "Actualizar o Formato da Página\nActualizar a Leitura\nAtualizar pacotes",
+        "nl": "Tab-formaat bijwerken\nReadme bijwerken\nPakketten bijwerken",
+        "fr": "Mettre à jour le format de l'onglet\nMettre à jour Readme\nMettre à jour les paquets",
+        "it": "Formato della scheda di aggiornamento\nAggiornamento\nPacchetti di aggiornamento",
+        "es": "Formato de actualización de pestañas\nActualización Readme\nPaquetes de actualización",
+        "pl": "Aktualizuj format karty\nAktualizacja Readme\nAktualizacja pakietów",
+        "uk": "Статус на сервери\nОновлення Readme\nОновлення пакетів",
+        "zh-cn": "更新标签格式\n更新读取器\n更新软件包"
+      },
       "1.4.0": {
         "en": "Fix String Handling in Formula Engine\nFix Formula Engine when using state formulas\nNew Page for smart Sensor Overview\nUpdate Readme and Doc",
         "de": "Fix String Handling in Formelmotor\nDie Formel Motor bei Verwendung von Zustandsformeln\nNeue Seite für smart Sensor Übersicht\nUpdate Readme und Doc",
@@ -80,19 +93,6 @@
         "pl": "Równoczesne zbieranie i spłukiwanie bez zwłoki 5 s",
         "uk": "Збір і полоскання без затримки 5s",
         "zh-cn": "同步收集并冲出5s"
-      },
-      "1.1.2": {
-        "en": "Fix Eslint-Warnings",
-        "de": "Fix Eslint-Warnings",
-        "ru": "Обсуждение Eslint-Warnings",
-        "pt": "Corrigir avisos de Eslint",
-        "nl": "Repareren Eslint-Waarschuwingen",
-        "fr": "Correction des avertissements d'Eslint",
-        "it": "Fissare Eslint-Warnings",
-        "es": "Arregle Eslint-Warnings",
-        "pl": "Fix Eslint- Ostrzeżenia",
-        "uk": "Фіксація Eslint-Warnings",
-        "zh-cn": "修复 Eslint 警告"
       }
     },
     "titleLang": {
