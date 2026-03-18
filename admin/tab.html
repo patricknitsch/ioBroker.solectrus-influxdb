@@ -231,7 +231,6 @@
     <div class="logo">⚡ SOLECTRUS InfluxDB</div>
     <div class="spacer"></div>
     <button class="btn-toolbar" id="config-btn"></button>
-    <button class="btn-toolbar" id="theme-btn" title="Toggle dark/light mode">🌙</button>
     <div id="connStatus">
         <span class="conn-dot"></span>
         <span id="connLabel"></span>
@@ -401,7 +400,6 @@
 
     function applyTheme(isDark) {
         document.body.classList.toggle('dark', !!isDark);
-        document.getElementById('theme-btn').textContent = isDark ? '☀️' : '🌙';
     }
 
     function detectTheme() {
@@ -420,11 +418,6 @@
         if (e.key === 'App.theme' || e.key === 'App.themeName') {
             applyTheme(resolveTheme());
         }
-    });
-
-    /* Manual toggle */
-    document.getElementById('theme-btn').addEventListener('click', function () {
-        applyTheme(!document.body.classList.contains('dark'));
     });
 
     /* ── tabs ── */
