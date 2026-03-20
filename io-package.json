@@ -191,6 +191,7 @@
     "dsSnapshotDelayMs": 0,
     "dsItems": [],
     "forecasts": [],
+    "iframeUrl": "",
     "sensors": [
       {
         "enabled": false,
