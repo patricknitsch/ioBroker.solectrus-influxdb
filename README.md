@@ -44,9 +44,9 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 
 ## Documentation
 
-[English Documentation](./docs/en/README.md)
+[🇺🇸 Documentation](./docs/en/README.md)
 
-[Deutsche Dokumentation](./docs/de/README.md)
+[🇩🇪 Dokumentation](./docs/de/README.md)
 
 ---
 
