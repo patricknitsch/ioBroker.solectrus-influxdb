@@ -441,6 +441,13 @@
     var REFRESH_INTERVAL_MS = 5000;  /* ms between data refreshes             */
     var TRUNCATE_VAL_LEN    = 60;    /* max chars for JSON value preview      */
 
+    /* ── iframe state ── */
+    /* Track the URL we last loaded into the iframe.  We cannot compare against
+       iframeEl.src directly because the browser normalises the DOM property
+       (e.g. trailing slash is added), causing the comparison to always fail and
+       the iframe to reload on every REFRESH_INTERVAL_MS tick. */
+    var iframeLoadedUrl = '';
+
     /* ── instance from URL ── */
     var params = new URLSearchParams(window.location.search);
     var instance = parseInt(params.get('instance') || '0', 10);
@@ -829,8 +836,9 @@
         var iframeToolbar = document.getElementById('iframe-toolbar');
         if (iframeUrlSafe) {
             document.getElementById('tab-iframe-btn').style.display = '';
-            if (iframeEl.src !== iframeUrlSafe) {
+            if (iframeLoadedUrl !== iframeUrlSafe) {
                 iframeEl.src = iframeUrlSafe;
+                iframeLoadedUrl = iframeUrlSafe;
             }
             /* toolbar: cert hint + open-in-new-tab link */
             document.getElementById('iframe-cert-hint').textContent = T.iframeCertHint;
@@ -846,6 +854,7 @@
             iframePlaceholder.textContent = T.iframePlaceholder;
             iframePlaceholder.style.display = 'block';
             iframeEl.style.display = 'none';
+            iframeLoadedUrl = '';  /* reset so re-enabling the URL loads fresh */
             /* if iFrame tab was active, switch back to InfluxDB tab */
             if (document.getElementById('tab-iframe').classList.contains('active')) {
                 switchTab('influx');
