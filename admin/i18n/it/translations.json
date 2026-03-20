@@ -250,7 +250,7 @@
 	"nonExpertExpertHint": "La mappatura può essere personalizzata in modalità esperto.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "URL del pannello (iFrame)",
-	"iframeHint": "Inserisci l'URL di una pagina web da mostrare nella scheda (es. il tuo pannello SOLECTRUS). Lascia vuoto per nascondere la scheda iFrame. Se la pagina usa HTTPS con un certificato autofirmato, aprila prima in una nuova scheda per accettare l'avviso del certificato.",
+	"iframeHint": "Inserisci l'URL di una pagina web da mostrare nella scheda (es. il tuo pannello SOLECTRUS). Lascia vuoto per nascondere la scheda iFrame. Se la pagina usa HTTPS con un certificato autofirmato, aprila prima in una nuova scheda. Se il tuo pannello admin è su HTTPS e la destinazione usa HTTP, configura un URL proxy HTTPS (es. tramite il port forwarding dell'adattatore Web di ioBroker).",
 	"iframeOpenBtn": "Apri in una nuova scheda",
-	"iframeCertHint": "Se la pagina non si carica, aprila direttamente in una nuova scheda per accettare l'avviso del certificato."
+	"iframeCertHint": "La pagina non si carica? Possibili cause: (1) Certificato non attendibile – apri l'URL in una nuova scheda e accetta l'avviso. (2) Contenuto misto – il pannello di amministrazione è servito via HTTPS ma l'URL configurato usa HTTP; usa un URL proxy HTTPS. (3) Servizio non raggiungibile – verifica che il servizio di destinazione sia in esecuzione e che la porta sia accessibile."
 }

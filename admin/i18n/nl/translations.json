@@ -251,7 +251,7 @@
 	"nonExpertExpertHint": "De toewijzing kan worden aangepast in de expertmodus.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "Dashboard-URL (iFrame)",
-	"iframeHint": "Voer de URL in van een webpagina om in het tabblad te tonen (bijv. je SOLECTRUS-dashboard). Leeg laten om het iFrame-tabblad te verbergen. Als de pagina HTTPS gebruikt met een zelfondertekend certificaat, open het dan eerst in een nieuw tabblad om de certificaatwaarschuwing te accepteren.",
+	"iframeHint": "Voer de URL in van een webpagina om in het tabblad te tonen (bijv. je SOLECTRUS-dashboard). Leeg laten om het iFrame-tabblad te verbergen. Als de pagina HTTPS gebruikt met een zelfondertekend certificaat, open het dan eerst in een nieuw tabblad. Als je beheerpaneel op HTTPS staat en het doel HTTP gebruikt, configureer dan een HTTPS-proxy-URL (bijv. via de poortdoorschakeling van de ioBroker Web-adapter).",
 	"iframeOpenBtn": "Openen in nieuw tabblad",
-	"iframeCertHint": "Als de pagina niet laadt, open deze dan eerst rechtstreeks in een nieuw tabblad om een certificaatwaarschuwing te accepteren."
+	"iframeCertHint": "Pagina laadt niet? Mogelijke oorzaken: (1) Niet-vertrouwd certificaat – open de URL in een nieuw tabblad en accepteer de waarschuwing. (2) Gemengde inhoud – het beheerpaneel wordt via HTTPS geleverd maar de geconfigureerde URL gebruikt HTTP; gebruik een HTTPS-proxy-URL. (3) Service onbereikbaar – controleer of de doelservice actief is en of de poort toegankelijk is."
 }

@@ -251,7 +251,7 @@
 	"nonExpertExpertHint": "Mapowanie można dostosować w trybie eksperta.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "Adres URL panelu (iFrame)",
-	"iframeHint": "Wpisz adres URL strony internetowej do wyświetlenia w zakładce (np. pulpit SOLECTRUS). Pozostaw puste, aby ukryć zakładkę iFrame. Jeśli strona używa HTTPS z certyfikatem z podpisem własnym, najpierw otwórz ją w nowej zakładce, aby zaakceptować ostrzeżenie o certyfikacie.",
+	"iframeHint": "Wpisz adres URL strony internetowej do wyświetlenia w zakładce (np. pulpit SOLECTRUS). Pozostaw puste, aby ukryć zakładkę iFrame. Jeśli strona używa HTTPS z certyfikatem z podpisem własnym, najpierw otwórz ją w nowej zakładce. Jeśli panel administracyjny jest na HTTPS, a cel używa HTTP, skonfiguruj URL proxy HTTPS (np. przez przekierowanie portów adaptera Web ioBroker).",
 	"iframeOpenBtn": "Otwórz w nowej zakładce",
-	"iframeCertHint": "Jeśli strona nie ładuje się, otwórz ją bezpośrednio w nowej zakładce, aby zaakceptować ostrzeżenie o certyfikacie."
+	"iframeCertHint": "Strona nie ładuje się? Możliwe przyczyny: (1) Niezaufany certyfikat – otwórz URL w nowej zakładce i zaakceptuj ostrzeżenie. (2) Mieszana zawartość – panel administracyjny jest serwowany przez HTTPS, ale skonfigurowany URL używa HTTP; użyj URL proxy HTTPS. (3) Usługa niedostępna – sprawdź, czy usługa docelowa działa i czy port jest dostępny."
 }

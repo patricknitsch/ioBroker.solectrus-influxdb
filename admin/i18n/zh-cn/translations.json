@@ -251,7 +251,7 @@
 	"nonExpertExpertHint": "映射可以在专家模式中自定义。",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "仪表板 URL（iFrame）",
-	"iframeHint": "输入要在选项卡中显示的网页 URL（例如您的 SOLECTRUS 仪表板）。留空则隐藏 iFrame 选项卡。如果页面使用带有自签名证书的 HTTPS，请先在新标签页中打开以接受证书警告。",
+	"iframeHint": "输入要在选项卡中显示的网页URL（例如您的SOLECTRUS仪表板）。留空则隐藏iFrame选项卡。如果页面使用带有自签名证书的HTTPS，请先在新标签页中打开以接受证书警告。如果管理面板使用HTTPS而目标使用HTTP，请配置HTTPS代理URL（例如通过ioBroker Web适配器的端口转发）。",
 	"iframeOpenBtn": "在新标签页中打开",
-	"iframeCertHint": "如果页面未加载，请先直接在新标签页中打开，以接受证书警告。"
+	"iframeCertHint": "页面无法加载？可能的原因：(1) 不受信任的证书 – 在新标签页中打开该URL并接受警告。(2) 混合内容 – 管理面板通过HTTPS提供，但配置的URL使用HTTP；请改用HTTPS代理URL。(3) 服务不可达 – 检查目标服务是否正在运行以及端口是否可访问。"
 }

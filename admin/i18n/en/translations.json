@@ -251,7 +251,7 @@
 	"nonExpertExpertHint": "The mapping can be customized in Expert Mode.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "Dashboard URL (iFrame)",
-	"iframeHint": "Enter the URL of a web page to display inside the tab (e.g. your SOLECTRUS dashboard). Leave empty to hide the iFrame tab. If the page uses HTTPS with a self-signed certificate, open it in a new tab first to accept the certificate warning.",
+	"iframeHint": "Enter the URL of a web page to display inside the tab (e.g. your SOLECTRUS dashboard). Leave empty to hide the iFrame tab. If the page uses HTTPS with a self-signed certificate, open it in a new tab first to accept the certificate warning. If your admin panel is on HTTPS and the target uses HTTP, configure an HTTPS proxy URL (e.g. via the ioBroker Web Adapter port forwarding).",
 	"iframeOpenBtn": "Open in new tab",
-	"iframeCertHint": "If the page does not load, open it directly in a new tab first to accept any certificate warning."
+	"iframeCertHint": "Page not loading? Possible causes: (1) Untrusted certificate – open the URL in a new tab and accept the warning. (2) Mixed content – your admin panel is served via HTTPS but the configured URL uses HTTP; use an HTTPS proxy URL instead. (3) Service unreachable – check that the target service is running and the port is accessible."
 }

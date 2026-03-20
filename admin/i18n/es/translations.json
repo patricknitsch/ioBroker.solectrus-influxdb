@@ -251,7 +251,7 @@
 	"nonExpertExpertHint": "La asignación se puede personalizar en el modo experto.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "URL del panel (iFrame)",
-	"iframeHint": "Introduce la URL de una página web para mostrarla en el tab (p. ej. tu panel de SOLECTRUS). Déjalo vacío para ocultar el tab iFrame. Si la página usa HTTPS con un certificado autofirmado, ábrela primero en una nueva pestaña para aceptar la advertencia del certificado.",
+	"iframeHint": "Introduce la URL de una página web para mostrarla en el tab (p. ej. tu panel de SOLECTRUS). Déjalo vacío para ocultar el tab iFrame. Si la página usa HTTPS con un certificado autofirmado, ábrela primero en una nueva pestaña. Si el panel de administración usa HTTPS y el destino usa HTTP, configura una URL proxy HTTPS (p. ej. mediante el reenvío de puertos del adaptador Web de ioBroker).",
 	"iframeOpenBtn": "Abrir en nueva pestaña",
-	"iframeCertHint": "Si la página no carga, ábrela directamente en una nueva pestaña primero para aceptar la advertencia del certificado."
+	"iframeCertHint": "¿La página no carga? Causas posibles: (1) Certificado no confiable – abre la URL en una nueva pestaña y acepta la advertencia. (2) Contenido mixto – el panel de administración se sirve vía HTTPS pero la URL configurada usa HTTP; usa una URL proxy HTTPS. (3) Servicio inaccesible – comprueba que el servicio esté en ejecución y el puerto sea accesible."
 }

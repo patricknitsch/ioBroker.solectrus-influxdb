@@ -251,7 +251,7 @@
 	"nonExpertExpertHint": "Le mapping peut être personnalisé en mode expert.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "URL du tableau de bord (iFrame)",
-	"iframeHint": "Entrez l'URL d'une page web à afficher dans l'onglet (ex. votre tableau de bord SOLECTRUS). Laissez vide pour masquer l'onglet iFrame. Si la page utilise HTTPS avec un certificat auto-signé, ouvrez-la d'abord dans un nouvel onglet pour accepter l'avertissement de certificat.",
+	"iframeHint": "Entrez l'URL d'une page web à afficher dans l'onglet (ex. votre tableau de bord SOLECTRUS). Laissez vide pour masquer l'onglet iFrame. Si la page utilise HTTPS avec un certificat auto-signé, ouvrez-la d'abord dans un nouvel onglet. Si votre panneau admin est sur HTTPS et la cible utilise HTTP, configurez une URL proxy HTTPS (ex. via le transfert de port de l'adaptateur Web ioBroker).",
 	"iframeOpenBtn": "Ouvrir dans un nouvel onglet",
-	"iframeCertHint": "Si la page ne se charge pas, ouvrez-la directement dans un nouvel onglet pour accepter l'avertissement de certificat."
+	"iframeCertHint": "La page ne se charge pas ? Causes possibles : (1) Certificat non approuvé – ouvrez l'URL dans un nouvel onglet et acceptez l'avertissement. (2) Contenu mixte – le panneau d'administration est servi en HTTPS mais l'URL configurée utilise HTTP ; utilisez une URL proxy HTTPS. (3) Service inaccessible – vérifiez que le service cible fonctionne et que le port est accessible."
 }

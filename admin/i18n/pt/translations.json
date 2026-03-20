@@ -251,7 +251,7 @@
 	"nonExpertExpertHint": "O mapeamento pode ser personalizado no modo especialista.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "URL do painel (iFrame)",
-	"iframeHint": "Introduza o URL de uma página web para exibir no separador (p.ex. o seu painel SOLECTRUS). Deixe em branco para ocultar o separador iFrame. Se a página utilizar HTTPS com um certificado autoassinado, abra-a primeiro num novo separador para aceitar o aviso de certificado.",
+	"iframeHint": "Introduza o URL de uma página web para exibir no separador (p.ex. o seu painel SOLECTRUS). Deixe em branco para ocultar o separador iFrame. Se a página utilizar HTTPS com um certificado autoassinado, abra-a primeiro num novo separador. Se o painel de administração usar HTTPS e o destino usar HTTP, configure um URL proxy HTTPS (p.ex. através do reencaminhamento de portas do adaptador Web do ioBroker).",
 	"iframeOpenBtn": "Abrir num novo separador",
-	"iframeCertHint": "Se a página não carregar, abra-a diretamente num novo separador para aceitar o aviso de certificado."
+	"iframeCertHint": "A página não carrega? Causas possíveis: (1) Certificado não confiável – abra o URL num novo separador e aceite o aviso. (2) Conteúdo misto – o painel de administração é servido via HTTPS mas o URL configurado usa HTTP; use um URL proxy HTTPS. (3) Serviço inacessível – verifique se o serviço de destino está a funcionar e se a porta está acessível."
 }
