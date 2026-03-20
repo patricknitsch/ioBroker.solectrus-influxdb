@@ -249,6 +249,39 @@
             box-shadow: var(--shadow);
             overflow: hidden;
         }
+        .iframe-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .iframe-cert-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            flex: 1;
+            min-width: 0;
+        }
+        .iframe-open-btn {
+            background: rgba(0,0,0,.07);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+            font-family: inherit;
+            flex-shrink: 0;
+        }
+        .iframe-open-btn:hover { background: rgba(0,0,0,.14); }
+        body.dark .iframe-open-btn { background: rgba(255,255,255,.09); }
+        body.dark .iframe-open-btn:hover { background: rgba(255,255,255,.16); }
         .iframe-placeholder {
             text-align: center;
             color: var(--text-muted);
@@ -316,6 +349,10 @@
         <!-- iFrame Tab -->
         <div class="tab-panel" id="tab-iframe">
             <div class="iframe-panel">
+                <div id="iframe-toolbar" class="iframe-toolbar" style="display:none">
+                    <span id="iframe-cert-hint" class="iframe-cert-hint"></span>
+                    <a id="iframe-open-link" class="iframe-open-btn" target="_blank" rel="noopener noreferrer"></a>
+                </div>
                 <div id="iframe-placeholder" class="iframe-placeholder"></div>
                 <iframe id="dashboard-iframe" style="display:none" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe>
             </div>
@@ -339,6 +376,8 @@
             tabDs:          'Formula Engine',
             tabIframe:      'Dashboard',
             iframePlaceholder: 'No dashboard URL configured. Open the configuration and enter a URL in the iFrame tab.',
+            iframeCertHint: 'If the page does not load, open it directly in a new tab first to accept any certificate warning.',
+            iframeOpenBtn:  'Open in new tab',
             name:           'Name',
             stateId:        'Source State',
             type:           'Type',
@@ -369,6 +408,8 @@
             tabDs:          'Formel-Engine',
             tabIframe:      'Dashboard',
             iframePlaceholder: 'Keine Dashboard-URL konfiguriert. Öffne die Konfiguration und gib eine URL im iFrame-Tab ein.',
+            iframeCertHint: 'Falls die Seite nicht lädt, öffne sie zuerst direkt in einem neuen Tab, um eine Zertifikatswarnung zu akzeptieren.',
+            iframeOpenBtn:  'In neuem Tab öffnen',
             name:           'Name',
             stateId:        'Quell-State',
             type:           'Typ',
@@ -781,17 +822,27 @@
         }
 
         var iframeUrl = (config.iframeUrl || '').trim();
+        /* Only allow http/https to prevent javascript: / data: injection */
+        var iframeUrlSafe = /^https?:\/\//i.test(iframeUrl) ? iframeUrl : '';
         var iframeEl = document.getElementById('dashboard-iframe');
         var iframePlaceholder = document.getElementById('iframe-placeholder');
-        if (iframeUrl) {
+        var iframeToolbar = document.getElementById('iframe-toolbar');
+        if (iframeUrlSafe) {
             document.getElementById('tab-iframe-btn').style.display = '';
-            if (iframeEl.src !== iframeUrl) {
-                iframeEl.src = iframeUrl;
+            if (iframeEl.src !== iframeUrlSafe) {
+                iframeEl.src = iframeUrlSafe;
             }
+            /* toolbar: cert hint + open-in-new-tab link */
+            document.getElementById('iframe-cert-hint').textContent = T.iframeCertHint;
+            var openLink = document.getElementById('iframe-open-link');
+            openLink.textContent = T.iframeOpenBtn;
+            openLink.href = iframeUrlSafe;
+            iframeToolbar.style.display = '';
             iframeEl.style.display = 'block';
             iframePlaceholder.style.display = 'none';
         } else {
             document.getElementById('tab-iframe-btn').style.display = 'none';
+            iframeToolbar.style.display = 'none';
             iframePlaceholder.textContent = T.iframePlaceholder;
             iframePlaceholder.style.display = 'block';
             iframeEl.style.display = 'none';

@@ -250,5 +250,7 @@
 	"nonExpertExpertHint": "La mappatura può essere personalizzata in modalità esperto.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "URL del pannello (iFrame)",
-	"iframeHint": "Inserisci l'URL di una pagina web da mostrare nella scheda (es. il tuo pannello SOLECTRUS). Lascia vuoto per nascondere la scheda iFrame."
+	"iframeHint": "Inserisci l'URL di una pagina web da mostrare nella scheda (es. il tuo pannello SOLECTRUS). Lascia vuoto per nascondere la scheda iFrame. Se la pagina usa HTTPS con un certificato autofirmato, aprila prima in una nuova scheda per accettare l'avviso del certificato.",
+	"iframeOpenBtn": "Apri in una nuova scheda",
+	"iframeCertHint": "Se la pagina non si carica, aprila direttamente in una nuova scheda per accettare l'avviso del certificato."
 }

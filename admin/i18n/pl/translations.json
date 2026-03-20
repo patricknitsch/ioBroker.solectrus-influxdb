@@ -251,5 +251,7 @@
 	"nonExpertExpertHint": "Mapowanie można dostosować w trybie eksperta.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "Adres URL panelu (iFrame)",
-	"iframeHint": "Wpisz adres URL strony internetowej do wyświetlenia w zakładce (np. pulpit SOLECTRUS). Pozostaw puste, aby ukryć zakładkę iFrame."
+	"iframeHint": "Wpisz adres URL strony internetowej do wyświetlenia w zakładce (np. pulpit SOLECTRUS). Pozostaw puste, aby ukryć zakładkę iFrame. Jeśli strona używa HTTPS z certyfikatem z podpisem własnym, najpierw otwórz ją w nowej zakładce, aby zaakceptować ostrzeżenie o certyfikacie.",
+	"iframeOpenBtn": "Otwórz w nowej zakładce",
+	"iframeCertHint": "Jeśli strona nie ładuje się, otwórz ją bezpośrednio w nowej zakładce, aby zaakceptować ostrzeżenie o certyfikacie."
 }

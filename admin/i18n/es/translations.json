@@ -251,5 +251,7 @@
 	"nonExpertExpertHint": "La asignación se puede personalizar en el modo experto.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "URL del panel (iFrame)",
-	"iframeHint": "Introduce la URL de una página web para mostrarla en el tab (p. ej. tu panel de SOLECTRUS). Déjalo vacío para ocultar el tab iFrame."
+	"iframeHint": "Introduce la URL de una página web para mostrarla en el tab (p. ej. tu panel de SOLECTRUS). Déjalo vacío para ocultar el tab iFrame. Si la página usa HTTPS con un certificado autofirmado, ábrela primero en una nueva pestaña para aceptar la advertencia del certificado.",
+	"iframeOpenBtn": "Abrir en nueva pestaña",
+	"iframeCertHint": "Si la página no carga, ábrela directamente en una nueva pestaña primero para aceptar la advertencia del certificado."
 }

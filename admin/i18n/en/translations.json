@@ -251,5 +251,7 @@
 	"nonExpertExpertHint": "The mapping can be customized in Expert Mode.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "Dashboard URL (iFrame)",
-	"iframeHint": "Enter the URL of a web page to display inside the tab (e.g. your SOLECTRUS dashboard). Leave empty to hide the iFrame tab."
+	"iframeHint": "Enter the URL of a web page to display inside the tab (e.g. your SOLECTRUS dashboard). Leave empty to hide the iFrame tab. If the page uses HTTPS with a self-signed certificate, open it in a new tab first to accept the certificate warning.",
+	"iframeOpenBtn": "Open in new tab",
+	"iframeCertHint": "If the page does not load, open it directly in a new tab first to accept any certificate warning."
 }

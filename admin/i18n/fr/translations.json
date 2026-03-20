@@ -251,5 +251,7 @@
 	"nonExpertExpertHint": "Le mapping peut être personnalisé en mode expert.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "URL du tableau de bord (iFrame)",
-	"iframeHint": "Entrez l'URL d'une page web à afficher dans l'onglet (ex. votre tableau de bord SOLECTRUS). Laissez vide pour masquer l'onglet iFrame."
+	"iframeHint": "Entrez l'URL d'une page web à afficher dans l'onglet (ex. votre tableau de bord SOLECTRUS). Laissez vide pour masquer l'onglet iFrame. Si la page utilise HTTPS avec un certificat auto-signé, ouvrez-la d'abord dans un nouvel onglet pour accepter l'avertissement de certificat.",
+	"iframeOpenBtn": "Ouvrir dans un nouvel onglet",
+	"iframeCertHint": "Si la page ne se charge pas, ouvrez-la directement dans un nouvel onglet pour accepter l'avertissement de certificat."
 }

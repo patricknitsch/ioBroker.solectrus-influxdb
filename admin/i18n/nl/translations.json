@@ -251,5 +251,7 @@
 	"nonExpertExpertHint": "De toewijzing kan worden aangepast in de expertmodus.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "Dashboard-URL (iFrame)",
-	"iframeHint": "Voer de URL in van een webpagina om in het tabblad te tonen (bijv. je SOLECTRUS-dashboard). Leeg laten om het iFrame-tabblad te verbergen."
+	"iframeHint": "Voer de URL in van een webpagina om in het tabblad te tonen (bijv. je SOLECTRUS-dashboard). Leeg laten om het iFrame-tabblad te verbergen. Als de pagina HTTPS gebruikt met een zelfondertekend certificaat, open het dan eerst in een nieuw tabblad om de certificaatwaarschuwing te accepteren.",
+	"iframeOpenBtn": "Openen in nieuw tabblad",
+	"iframeCertHint": "Als de pagina niet laadt, open deze dan eerst rechtstreeks in een nieuw tabblad om een certificaatwaarschuwing te accepteren."
 }

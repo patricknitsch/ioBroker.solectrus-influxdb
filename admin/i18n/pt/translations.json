@@ -251,5 +251,7 @@
 	"nonExpertExpertHint": "O mapeamento pode ser personalizado no modo especialista.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "URL do painel (iFrame)",
-	"iframeHint": "Introduza o URL de uma página web para exibir no separador (p.ex. o seu painel SOLECTRUS). Deixe em branco para ocultar o separador iFrame."
+	"iframeHint": "Introduza o URL de uma página web para exibir no separador (p.ex. o seu painel SOLECTRUS). Deixe em branco para ocultar o separador iFrame. Se a página utilizar HTTPS com um certificado autoassinado, abra-a primeiro num novo separador para aceitar o aviso de certificado.",
+	"iframeOpenBtn": "Abrir num novo separador",
+	"iframeCertHint": "Se a página não carregar, abra-a diretamente num novo separador para aceitar o aviso de certificado."
 }

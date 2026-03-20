@@ -251,5 +251,7 @@
 	"nonExpertExpertHint": "Im Expertenmodus kann die Zuordnung angepasst werden.",
 	"iFrame": "iFrame",
 	"iframeUrlLabel": "Dashboard-URL (iFrame)",
-	"iframeHint": "Gib die URL einer Webseite ein, die im Tab angezeigt wird (z. B. dein SOLECTRUS-Dashboard). Leer lassen, um den iFrame-Tab auszublenden."
+	"iframeHint": "Gib die URL einer Webseite ein, die im Tab angezeigt wird (z. B. dein SOLECTRUS-Dashboard). Leer lassen, um den iFrame-Tab auszublenden. Nutzt die Seite HTTPS mit einem selbstsignierten Zertifikat, öffne sie zuerst direkt in einem neuen Tab und akzeptiere die Zertifikatswarnung.",
+	"iframeOpenBtn": "In neuem Tab öffnen",
+	"iframeCertHint": "Falls die Seite nicht lädt, öffne sie zuerst direkt in einem neuen Tab, um eine Zertifikatswarnung zu akzeptieren."
 }
