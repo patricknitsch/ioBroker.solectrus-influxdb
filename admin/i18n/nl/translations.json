@@ -253,5 +253,6 @@
   "iframeUrlLabel": "Dashboard-URL (iFrame)",
   "iframeHint": "Voer de directe URL van je SOLECTRUS-dashboard in (bijv. http://solectrus:3000). Gebruik geen proxy-URL van de ioBroker Web-adapter – die voegt een padprefix toe die 404-fouten veroorzaakt bij het laden van SOLECTRUS-resources. Leeg laten om het iFrame-tabblad te verbergen. SOLECTRUS blokkeert standaard insluiting in iFrames: voeg FRAME_ANCESTORS=http://jouw-iobroker-host:8081 toe aan het SOLECTRUS .env-bestand en herstart de dienst. Als je beheerpaneel op HTTPS staat maar SOLECTRUS HTTP gebruikt, gebruik dan een toegewijde reverse proxy (bijv. nginx of Caddy) die verzoeken doorstuurde naar SOLECTRUS op het rootpad.",
   "iframeOpenBtn": "Openen in nieuw tabblad",
+  "iframeHttpHint": "Opmerking: Het iFrame is alleen zichtbaar wanneer het ioBroker-beheerpaneel via HTTP (niet HTTPS) wordt geopend.",
   "iframeCertHint": "Pagina laadt niet? SOLECTRUS blokkeert standaard insluiting in iFrames – voeg FRAME_ANCESTORS=http://jouw-iobroker-host:8081 toe aan het SOLECTRUS .env-bestand en herstart de dienst."
 }

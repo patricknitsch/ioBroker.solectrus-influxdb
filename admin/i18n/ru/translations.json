@@ -253,5 +253,6 @@
   "iframeUrlLabel": "URL панели (iFrame)",
   "iframeHint": "Введите прямой URL вашего дашборда SOLECTRUS (например, http://solectrus:3000). Не используйте URL прокси адаптера Web ioBroker – он добавляет префикс пути, который вызывает ошибки 404 при загрузке ресурсов SOLECTRUS. Оставьте пустым, чтобы скрыть вкладку iFrame. SOLECTRUS блокирует встраивание в iFrame по умолчанию: добавьте FRAME_ANCESTORS=http://ваш-host-iobroker:8081 в файл .env SOLECTRUS и перезапустите сервис. Если панель администрации работает на HTTPS, а SOLECTRUS использует HTTP, используйте выделенный обратный прокси (например, nginx или Caddy), перенаправляющий запросы на SOLECTRUS по корневому пути.",
   "iframeOpenBtn": "Открыть в новой вкладке",
+  "iframeHttpHint": "Примечание: iFrame виден только при доступе к панели администрирования ioBroker через HTTP (не HTTPS).",
   "iframeCertHint": "Страница не загружается? SOLECTRUS блокирует встраивание в iFrame по умолчанию – добавьте FRAME_ANCESTORS=http://ваш-host-iobroker:8081 в файл .env SOLECTRUS и перезапустите сервис."
 }

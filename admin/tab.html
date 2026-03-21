@@ -251,23 +251,21 @@
         }
         .iframe-toolbar {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
             padding: 8px 12px;
             background: var(--bg);
             border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
         }
         .iframe-cert-hint {
             font-size: 12px;
             color: var(--text-muted);
-            flex: 1;
-            min-width: 0;
         }
         .iframe-open-btn {
-            background: rgba(0,0,0,.07);
-            color: var(--text);
-            border: 1px solid var(--border);
+            background: #4caf50;
+            color: #fff;
+            border: 1px solid #388e3c;
             border-radius: 4px;
             padding: 5px 12px;
             font-size: 12px;
@@ -277,11 +275,8 @@
             text-decoration: none;
             display: inline-block;
             font-family: inherit;
-            flex-shrink: 0;
         }
-        .iframe-open-btn:hover { background: rgba(0,0,0,.14); }
-        body.dark .iframe-open-btn { background: rgba(255,255,255,.09); }
-        body.dark .iframe-open-btn:hover { background: rgba(255,255,255,.16); }
+        .iframe-open-btn:hover { background: #388e3c; }
         .iframe-placeholder {
             text-align: center;
             color: var(--text-muted);
@@ -351,6 +346,7 @@
             <div class="iframe-panel">
                 <div id="iframe-toolbar" class="iframe-toolbar" style="display:none">
                     <span id="iframe-cert-hint" class="iframe-cert-hint"></span>
+                    <span id="iframe-http-hint" class="iframe-cert-hint"></span>
                     <a id="iframe-open-link" class="iframe-open-btn" target="_blank" rel="noopener noreferrer"></a>
                 </div>
                 <div id="iframe-placeholder" class="iframe-placeholder"></div>
@@ -377,6 +373,7 @@
             tabIframe:      'Dashboard',
             iframePlaceholder: 'No dashboard URL configured. Open the configuration and enter a URL in the iFrame tab.',
             iframeCertHint: 'Page not loading? SOLECTRUS blocks iframe embedding by default – add FRAME_ANCESTORS=http://your-iobroker-host:8081 to the SOLECTRUS .env file and restart the service.',
+            iframeHttpHint: 'Note: The iframe is only visible when accessing the ioBroker admin via HTTP (not HTTPS).',
             iframeOpenBtn:  'Open in new tab',
             name:           'Name',
             stateId:        'Source State',
@@ -409,6 +406,7 @@
             tabIframe:      'Dashboard',
             iframePlaceholder: 'Keine Dashboard-URL konfiguriert. Öffne die Konfiguration und gib eine URL im iFrame-Tab ein.',
             iframeCertHint: 'Seite lädt nicht? SOLECTRUS blockiert das Einbetten in iFrames standardmäßig – füge FRAME_ANCESTORS=http://dein-iobroker-host:8081 in die SOLECTRUS-.env-Datei ein und starte den Dienst neu.',
+            iframeHttpHint: 'Hinweis: Das iFrame ist nur sichtbar, wenn das ioBroker-Admin-Panel über HTTP (nicht HTTPS) aufgerufen wird.',
             iframeOpenBtn:  'In neuem Tab öffnen',
             name:           'Name',
             stateId:        'Quell-State',
@@ -840,8 +838,9 @@
                 iframeEl.src = iframeUrlSafe;
                 iframeLoadedUrl = iframeUrlSafe;
             }
-            /* toolbar: cert hint + open-in-new-tab link */
+            /* toolbar: cert hint + http hint + open-in-new-tab link */
             document.getElementById('iframe-cert-hint').textContent = T.iframeCertHint;
+            document.getElementById('iframe-http-hint').textContent = T.iframeHttpHint;
             var openLink = document.getElementById('iframe-open-link');
             openLink.textContent = T.iframeOpenBtn;
             openLink.href = iframeUrlSafe;

@@ -253,5 +253,6 @@
   "iframeUrlLabel": "URL do painel (iFrame)",
   "iframeHint": "Introduza o URL direto do seu painel SOLECTRUS (p.ex. http://solectrus:3000). Não use o URL proxy do adaptador Web do ioBroker – ele adiciona um prefixo de caminho que causa erros 404 ao carregar os recursos do SOLECTRUS. Deixe em branco para ocultar o separador iFrame. O SOLECTRUS bloqueia a incorporação em iFrames por padrão: adicione FRAME_ANCESTORS=http://seu-host-iobroker:8081 ao ficheiro .env do SOLECTRUS e reinicie o serviço. Se o painel de administração usa HTTPS mas o SOLECTRUS usa HTTP, utilize um reverse proxy dedicado (p.ex. nginx ou Caddy) que reencaminhe os pedidos para o SOLECTRUS no caminho raiz.",
   "iframeOpenBtn": "Abrir num novo separador",
+  "iframeHttpHint": "Nota: O iFrame só é visível quando o painel de administração do ioBroker é acedido via HTTP (não HTTPS).",
   "iframeCertHint": "A página não carrega? O SOLECTRUS bloqueia a incorporação em iFrames por padrão – adicione FRAME_ANCESTORS=http://seu-host-iobroker:8081 ao ficheiro .env do SOLECTRUS e reinicie o serviço."
 }

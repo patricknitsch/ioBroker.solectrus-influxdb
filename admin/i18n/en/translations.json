@@ -253,5 +253,6 @@
   "iframeUrlLabel": "Dashboard URL (iFrame)",
   "iframeHint": "Enter the direct URL of your SOLECTRUS dashboard (e.g. http://solectrus:3000). Do not use the ioBroker Web Adapter proxy URL – it adds a path prefix that causes 404 errors for SOLECTRUS asset requests. Leave empty to hide the iFrame tab. SOLECTRUS blocks iframe embedding by default: add FRAME_ANCESTORS=http://your-iobroker-host:8081 to the SOLECTRUS .env file and restart the service. If your admin panel runs on HTTPS but SOLECTRUS uses HTTP, use a dedicated reverse proxy (e.g. nginx or Caddy) forwarding to SOLECTRUS at the root path.",
   "iframeOpenBtn": "Open in new tab",
+  "iframeHttpHint": "Note: The iframe is only visible when accessing the ioBroker admin via HTTP (not HTTPS).",
   "iframeCertHint": "Page not loading? SOLECTRUS blocks iframe embedding by default – add FRAME_ANCESTORS=http://your-iobroker-host:8081 to the SOLECTRUS .env file and restart the service."
 }

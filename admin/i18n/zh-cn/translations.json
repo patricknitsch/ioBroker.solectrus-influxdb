@@ -253,5 +253,6 @@
   "iframeUrlLabel": "仪表板 URL（iFrame）",
   "iframeHint": "输入SOLECTRUS仪表板的直接URL（例如 http://solectrus:3000）。请勿使用ioBroker Web适配器的代理URL——它会添加路径前缀，导致加载SOLECTRUS资源时出现404错误。留空则隐藏iFrame选项卡。SOLECTRUS默认阻止iFrame嵌入：请在SOLECTRUS的.env文件中添加 FRAME_ANCESTORS=http://您的iobroker主机:8081 并重启服务。如果管理面板使用HTTPS而SOLECTRUS使用HTTP，请使用专用反向代理（如nginx或Caddy）将请求转发到SOLECTRUS的根路径。",
   "iframeOpenBtn": "在新标签页中打开",
+  "iframeHttpHint": "注意：只有通过 HTTP（非 HTTPS）访问 ioBroker 管理面板时，iFrame 才可见。",
   "iframeCertHint": "页面无法加载？SOLECTRUS默认阻止iFrame嵌入 – 在SOLECTRUS的.env文件中添加 FRAME_ANCESTORS=http://您的iobroker主机:8081 并重启服务。"
 }
