@@ -242,6 +242,55 @@
             min-width: 0;
         }
 
+        /* ── IFRAME PANEL ── */
+        .iframe-panel {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .iframe-toolbar {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+        .iframe-cert-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .iframe-open-btn {
+            background: #4caf50;
+            color: #fff;
+            border: 1px solid #388e3c;
+            border-radius: 4px;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+            font-family: inherit;
+        }
+        .iframe-open-btn:hover { background: #388e3c; }
+        .iframe-placeholder {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px 24px;
+            font-size: 14px;
+        }
+        #dashboard-iframe {
+            display: block;
+            width: 100%;
+            border: none;
+            height: calc(100vh - 140px);
+            min-height: 400px;
+        }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 480px) {
             #main { padding: 10px; }
@@ -271,6 +320,7 @@
         <div class="tab-bar">
             <button class="tab-btn active" data-tab="influx" id="tab-influx-btn"></button>
             <button class="tab-btn" data-tab="ds" id="tab-ds-btn" style="display:none"></button>
+            <button class="tab-btn" data-tab="iframe" id="tab-iframe-btn" style="display:none"></button>
         </div>
 
         <!-- InfluxDB Sensors Tab -->
@@ -291,6 +341,19 @@
             <div id="ds-grid" class="sensor-grid"></div>
         </div>
 
+        <!-- iFrame Tab -->
+        <div class="tab-panel" id="tab-iframe">
+            <div class="iframe-panel">
+                <div id="iframe-toolbar" class="iframe-toolbar" style="display:none">
+                    <span id="iframe-cert-hint" class="iframe-cert-hint"></span>
+                    <span id="iframe-http-hint" class="iframe-cert-hint"></span>
+                    <a id="iframe-open-link" class="iframe-open-btn" target="_blank" rel="noopener noreferrer"></a>
+                </div>
+                <div id="iframe-placeholder" class="iframe-placeholder"></div>
+                <iframe id="dashboard-iframe" style="display:none" sandbox="allow-scripts allow-forms allow-popups allow-same-origin allow-popups-to-escape-sandbox"></iframe>
+            </div>
+        </div>
+
         <div id="refresh-info"></div>
     </div>
 </div>
@@ -307,6 +370,11 @@
             hDs:            'Formula Engine (Data-SOLECTRUS)',
             tabInflux:      'InfluxDB Sensors',
             tabDs:          'Formula Engine',
+            tabIframe:      'Dashboard',
+            iframePlaceholder: 'No dashboard URL configured. Open the configuration and enter a URL in the iFrame tab.',
+            iframeCertHint: 'Page not loading? SOLECTRUS blocks iframe embedding by default – add FRAME_ANCESTORS=http://your-iobroker-host:8081 to the SOLECTRUS .env file and restart the service.',
+            iframeHttpHint: 'Note: The iframe is only visible when accessing the ioBroker admin via HTTP (not HTTPS).',
+            iframeOpenBtn:  'Open in new tab',
             name:           'Name',
             stateId:        'Source State',
             type:           'Type',
@@ -335,6 +403,11 @@
             hDs:            'Formel-Engine (Data-SOLECTRUS)',
             tabInflux:      'InfluxDB-Sensoren',
             tabDs:          'Formel-Engine',
+            tabIframe:      'Dashboard',
+            iframePlaceholder: 'Keine Dashboard-URL konfiguriert. Öffne die Konfiguration und gib eine URL im iFrame-Tab ein.',
+            iframeCertHint: 'Seite lädt nicht? SOLECTRUS blockiert das Einbetten in iFrames standardmäßig – füge FRAME_ANCESTORS=http://dein-iobroker-host:8081 in die SOLECTRUS-.env-Datei ein und starte den Dienst neu.',
+            iframeHttpHint: 'Hinweis: Das iFrame ist nur sichtbar, wenn das ioBroker-Admin-Panel über HTTP (nicht HTTPS) aufgerufen wird.',
+            iframeOpenBtn:  'In neuem Tab öffnen',
             name:           'Name',
             stateId:        'Quell-State',
             type:           'Typ',
@@ -365,6 +438,13 @@
     var SOCKET_TIMEOUT_MS   = 8000;  /* ms to wait for socket.io to connect  */
     var REFRESH_INTERVAL_MS = 5000;  /* ms between data refreshes             */
     var TRUNCATE_VAL_LEN    = 60;    /* max chars for JSON value preview      */
+
+    /* ── iframe state ── */
+    /* Track the URL we last loaded into the iframe.  We cannot compare against
+       iframeEl.src directly because the browser normalises the DOM property
+       (e.g. trailing slash is added), causing the comparison to always fail and
+       the iframe to reload on every REFRESH_INTERVAL_MS tick. */
+    var iframeLoadedUrl = '';
 
     /* ── instance from URL ── */
     var params = new URLSearchParams(window.location.search);
@@ -731,6 +811,7 @@
         /* update tab labels */
         setText('tab-influx-btn', T.tabInflux);
         setText('tab-ds-btn',     T.tabDs);
+        setText('tab-iframe-btn', T.tabIframe);
 
         renderInflux(config.sensors, states);
 
@@ -741,6 +822,40 @@
             document.getElementById('tab-ds-btn').style.display = 'none';
             /* if Formula Engine tab was active, switch back to InfluxDB tab */
             if (document.getElementById('tab-ds').classList.contains('active')) {
+                switchTab('influx');
+            }
+        }
+
+        var iframeUrl = (config.iframeUrl || '').trim();
+        /* Only allow http/https to prevent javascript: / data: injection */
+        var iframeUrlSafe = /^https?:\/\//i.test(iframeUrl) ? iframeUrl : '';
+        var iframeEl = document.getElementById('dashboard-iframe');
+        var iframePlaceholder = document.getElementById('iframe-placeholder');
+        var iframeToolbar = document.getElementById('iframe-toolbar');
+        if (iframeUrlSafe) {
+            document.getElementById('tab-iframe-btn').style.display = '';
+            if (iframeLoadedUrl !== iframeUrlSafe) {
+                iframeEl.src = iframeUrlSafe;
+                iframeLoadedUrl = iframeUrlSafe;
+            }
+            /* toolbar: cert hint + http hint + open-in-new-tab link */
+            document.getElementById('iframe-cert-hint').textContent = T.iframeCertHint;
+            document.getElementById('iframe-http-hint').textContent = T.iframeHttpHint;
+            var openLink = document.getElementById('iframe-open-link');
+            openLink.textContent = T.iframeOpenBtn;
+            openLink.href = iframeUrlSafe;
+            iframeToolbar.style.display = '';
+            iframeEl.style.display = 'block';
+            iframePlaceholder.style.display = 'none';
+        } else {
+            document.getElementById('tab-iframe-btn').style.display = 'none';
+            iframeToolbar.style.display = 'none';
+            iframePlaceholder.textContent = T.iframePlaceholder;
+            iframePlaceholder.style.display = 'block';
+            iframeEl.style.display = 'none';
+            iframeLoadedUrl = '';  /* reset so re-enabling the URL loads fresh */
+            /* if iFrame tab was active, switch back to InfluxDB tab */
+            if (document.getElementById('tab-iframe').classList.contains('active')) {
                 switchTab('influx');
             }
         }
