@@ -66,6 +66,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 ### **WORK IN PROGRESS**
 
 * (patricknitsch) Fix Issues RepoChecker
+* (copilot) Add Tab for SOLECTRUS iFrame
 
 ### 1.4.1 (2026-03-18)
 
