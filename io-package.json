@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.4.1",
+    "version": "1.5.0",
     "news": {
+      "1.5.0": {
+        "en": "Fix Issues RepoChecker\nAdd Tab for SOLECTRUS iFrame",
+        "de": "Probleme beheben RepoChecker\nTab hinzufügen für SOLECTRUS iFrame",
+        "ru": "Обсуждение RepoChecker\nДобавить вкладку для SolecTRUS iFrame",
+        "pt": "Corrigir o RepoChecker de Problemas\nAdicionar aba para o SOLECTRUS iFrame",
+        "nl": "Kwesties repochecker oplossen\nTabblad voor SOLECTRUS toevoegen iFrame",
+        "fr": "Correction des problèmes RepoChecker\nAjouter un onglet pour SOLECTRUS iFrame",
+        "it": "Riparare i problemi RepoChecker\nAggiungi scheda per SOLECTRUS IFrame",
+        "es": "Problemas fijos RepoChecker\nAñadir Tab para SOLECTRUS iFrame",
+        "pl": "Napraw repoChecker problemów\nDodaj kartę dla SOLECTRUS iFrame",
+        "uk": "Виправлення питань РепоЧекер\nДодати вкладку для SOLECTRUS ІФраме",
+        "zh-cn": "修复问题复检器\n为 SOLECTRUS 添加标签 iFrame 图像"
+      },
       "1.4.1": {
         "en": "Update Tab Format\nUpdate Readme\nUpdate Packages",
         "de": "Update Tab Format\nUpdate Reader\nPakete aktualisieren",
@@ -80,19 +93,6 @@
         "pl": "Napraw zły pakiet",
         "uk": "Виправити неправильний пакет",
         "zh-cn": "修正错误的软件包"
-      },
-      "1.2.0": {
-        "en": "Concurrent collect and flush without delay of 5s",
-        "de": "Gleichzeitig sammeln und spülen ohne Verzögerung von 5s",
-        "ru": "Параллельный сбор и смыв без задержки 5s",
-        "pt": "Coleta concomitante e flush sem demora de 5s",
-        "nl": "Gelijktijdig verzamelen en spoelen zonder vertraging van 5s",
-        "fr": "Collecte simultanée et rinçage sans délai de 5s",
-        "it": "Concurrent raccogliere e filo senza ritardo di 5s",
-        "es": "Recopilación y descarga simultánea sin demora de 5s",
-        "pl": "Równoczesne zbieranie i spłukiwanie bez zwłoki 5 s",
-        "uk": "Збір і полоскання без затримки 5s",
-        "zh-cn": "同步收集并冲出5s"
       }
     },
     "titleLang": {
