@@ -836,6 +836,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 						}
 					}
 				}
+				// Always use current time as baseline so JSON sensors also get a grace period after restart
+				this.lastUpdateTs.set(id, Date.now());
 				continue;
 			}
 
@@ -1370,6 +1372,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 		// JSON sensor source updates
 		if (this.jsonSourceMap[id]) {
 			this.processJsonSensorData(id, state.val);
+			// Refresh alive timestamp for each JSON sensor backed by this source
+			const tsNow = typeof state.ts === 'number' ? state.ts : Date.now();
+			for (const mapping of this.jsonSourceMap[id]) {
+				const mId = this.getSensorStateId({ SensorName: mapping.sensorName });
+				this.lastUpdateTs.set(mId, tsNow);
+			}
 		}
 
 		// Forward to Data-SOLECTRUS cache (if enabled)
@@ -1472,11 +1480,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 				continue;
 			}
 
-			// JSON sensors are event-driven (written on source state change), not polled
-			if (sensor.type === 'json') {
-				continue;
-			}
-
 			const id = this.getSensorStateId(sensor);
 
 			// Check alive timeout (throttle: warn at most once per timeout period per sensor)
@@ -1491,6 +1494,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 						);
 					}
 				}
+			}
+
+			// JSON sensors are event-driven (written on source state change), not polled
+			if (sensor.type === 'json') {
+				continue;
 			}
 
 			const value = this.cache[id];
