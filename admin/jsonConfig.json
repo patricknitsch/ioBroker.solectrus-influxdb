@@ -67,32 +67,6 @@
 							"lg": 12,
 							"xl": 12
 						},
-						"globalMaxValue": {
-							"type": "number",
-							"label": "Global Max Value in W (optional)",
-							"min": 0,
-							"newLine": true,
-							"xs": 12,
-							"sm": 12,
-							"md": 12,
-							"lg": 12,
-							"xl": 12
-						},
-						"_globalMaxValueHint": {
-							"type": "staticText",
-							"text": "globalMaxValueHint",
-							"newLine": true,
-							"style": {
-								"fontSize": "0.85em",
-								"color": "#888",
-								"marginTop": 2
-							},
-							"xs": 12,
-							"sm": 12,
-							"md": 12,
-							"lg": 12,
-							"xl": 12
-						},
 						"_dsEnableDivider": {
 							"type": "divider",
 							"newLine": true

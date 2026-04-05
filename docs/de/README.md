@@ -29,7 +29,6 @@ Adapter-Einstellungen öffnen und zum Tab **InfluxDB** wechseln.
 | Bucket | Ziel-Bucket für Zeitreihendaten |
 | Token | API-Token mit **Schreibrechten** |
 | Polling Interval (s) | Wie oft Sensorwerte gesammelt werden (5-30 Sekunden) |
-| Globaler Maximalwert in W (optional) | Globaler Plausibilitätswert in Watt, der für alle Sensoren ohne eigenen Maximalwert gilt. Standardwert: `10000`. Leer lassen zum Deaktivieren. Wird durch den sensor-spezifischen Maximalwert überschrieben. |
 
 Der Adapter prüft die Verbindung beim Start durch Schreiben eines Test-Punktes. Der Verbindungsstatus wird in `info.connection` angezeigt.
 
@@ -69,7 +68,7 @@ Auf **Add** klicken und konfigurieren:
 | Enabled | Sensor aktivieren/deaktivieren |
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. |
-| Maximalwert in W (optional) | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. Überschreibt den globalen Maximalwert in W. |
+| Maximalwert in W (optional) | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. Überschreibt den Standard-Grenzwert von 10000 W. |
 | Datatype | `int`, `float`, `bool`, `string` oder `json` (JSON-Array) |
 | Influx Measurement | InfluxDB Measurement-Name (z.B. `inverter`) |
 | Influx Field | InfluxDB Feldname (z.B. `power`) |
@@ -130,9 +129,9 @@ Jeder numerische Sensor (`int`, `float` oder Standardtyp) unterstützt ein optio
 
 Dadurch werden kurzzeitige Sensor-Ausreißer (z.B. kurze Burst-Lesungen von 99999 W) verhindert, die die Zeitreihendaten verfälschen würden.
 
-Im Tab **InfluxDB** kann ein **Globaler Maximalwert in W** gesetzt werden (Standardwert: `10000` W). Dieser gilt für alle Sensoren, die keinen eigenen Maximalwert konfiguriert haben. Der sensor-spezifische Maximalwert hat immer Vorrang vor dem globalen Wert.
+Für alle Sensoren ohne eigenen Maximalwert gilt ein Standardlimit von **10000 W**. Der sensor-spezifische Maximalwert hat immer Vorrang vor diesem Standardwert.
 
-**Beispiel:** Individuelle Sensor-Maximalwerte leer lassen und sich auf das globale Limit von `10000` W verlassen, oder einzelne Sensoren überschreiben (z.B. `5000` W für einen Zweitwechselrichter).
+**Beispiel:** Individuelle Sensor-Maximalwerte leer lassen, um das Standard-Limit von `10000` W zu verwenden, oder einzelne Sensoren überschreiben (z.B. `5000` W für einen Zweitwechselrichter).
 
 ### Field-Type-Konflikte
 

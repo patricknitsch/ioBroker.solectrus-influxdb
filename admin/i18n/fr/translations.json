@@ -256,8 +256,6 @@
   "iframeHttpHint": "Remarque : L'iFrame n'est visible que si le panneau d'administration ioBroker est accessible via HTTP (pas HTTPS).",
   "iframeCertHint": "La page ne se charge pas ? SOLECTRUS bloque l’intégration dans les iFrames par défaut – ajoutez FRAME_ANCESTORS=http://votre-host-iobroker:8081 dans le fichier .env de SOLECTRUS et redémarrez le service.",
   "e.g. 10000": "ex. 10000",
-  "maxValueHint": "Si défini, les valeurs dépassant cette limite seront rejetées et la dernière valeur valide sera transmise à la place (avec avertissement). Remplace la valeur maximale globale.",
-  "globalMaxValueHint": "Valeur maximale globale utilisée par défaut pour tous les capteurs sans valeur maximale par capteur. Remplacée par le réglage de valeur maximale par capteur.",
-  "Global Max Value in W (optional)": "Valeur maximale globale en W (optionnel)",
+  "maxValueHint": "Limite de plausibilité par capteur. Si dépassée, la dernière valeur valide est envoyée et un avertissement est enregistré. Par défaut: 10000 W.",
   "Max Value in W (optional)": "Valeur maximale en W (optionnel)"
 }

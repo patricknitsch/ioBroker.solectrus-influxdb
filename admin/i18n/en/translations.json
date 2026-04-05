@@ -256,8 +256,6 @@
   "iframeHttpHint": "Note: The iframe is only visible when accessing the ioBroker admin via HTTP (not HTTPS).",
   "iframeCertHint": "Page not loading? SOLECTRUS blocks iframe embedding by default – add FRAME_ANCESTORS=http://your-iobroker-host:8081 to the SOLECTRUS .env file and restart the service.",
   "e.g. 10000": "e.g. 10000",
-  "maxValueHint": "If set, values above this limit will be rejected and the last valid value will be sent instead (with a warning). Overrides the global Max Value.",
-  "globalMaxValueHint": "Global fallback max value for all sensors without a per-sensor max value configured. Overridden by the per-sensor Max Value setting.",
-  "Global Max Value in W (optional)": "Global Max Value in W (optional)",
+  "maxValueHint": "Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. Default: 10000 W.",
   "Max Value in W (optional)": "Max Value in W (optional)"
 }

@@ -1480,9 +1480,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 			// Validate against configured maximum value (for numeric-type sensors)
 			// Uses parseInt for 'int' type, parseFloat for 'float'/standard – consistent with flushBuffer.
 			// Non-numeric types (bool, string, json) are skipped.
-			// Per-sensor maxValue takes precedence; globalMaxValue is the fallback.
+			// Per-sensor maxValue takes precedence; default is 10000 W.
 			// Non-finite maxVal (NaN, Infinity) is treated as "not configured".
-			const rawMax = sensor.maxValue != null ? sensor.maxValue : this.config.globalMaxValue;
+			const rawMax = sensor.maxValue != null ? sensor.maxValue : 10000;
 			const maxVal = rawMax != null ? Number(rawMax) : NaN;
 			let valueToSend = value;
 			if (
