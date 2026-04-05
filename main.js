@@ -1483,7 +1483,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 			// Check alive timeout (throttle: warn at most once per timeout period per sensor)
 			if (aliveTimeoutMs > 0) {
 				const lastTs = this.lastUpdateTs.get(id);
-				if (lastTs !== undefined && now - lastTs > aliveTimeoutMs) {
+				if (lastTs > 0 && now - lastTs > aliveTimeoutMs) {
 					const lastWarnTs = this.aliveWarnedAt.get(id) || 0;
 					if (now - lastWarnTs >= aliveTimeoutMs) {
 						this.aliveWarnedAt.set(id, now);
