@@ -79,6 +79,20 @@
 							"lg": 12,
 							"xl": 12
 						},
+						"_aliveTimeoutHint": {
+							"type": "staticText",
+							"text": "aliveTimeoutHint",
+							"style": {
+								"fontSize": "0.85em",
+								"color": "#888",
+								"marginTop": 4
+							},
+							"xs": 12,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
+						},
 						"_dsEnableDivider": {
 							"type": "divider",
 							"newLine": true
