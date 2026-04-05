@@ -257,5 +257,7 @@
   "iframeCertHint": "La page ne se charge pas ? SOLECTRUS bloque l’intégration dans les iFrames par défaut – ajoutez FRAME_ANCESTORS=http://votre-host-iobroker:8081 dans le fichier .env de SOLECTRUS et redémarrez le service.",
   "e.g. 10000": "ex. 10000",
   "maxValueHint": "Limite de plausibilité par capteur. Si dépassée, la dernière valeur valide est envoyée et un avertissement est enregistré. Par défaut: 10000 W.",
-  "Max Value in W (optional)": "Valeur maximale en W (optionnel)"
+  "Max Value in W (optional)": "Valeur maximale en W (optionnel)",
+  "aliveTimeoutMinutesLabel": "Délai Alive (min, 0 = désactivé)",
+  "aliveTimeoutHint": "Si un capteur n'a pas reçu de nouvelle valeur depuis ce nombre de minutes, un avertissement est journalisé. Mettre 0 pour désactiver."
 }

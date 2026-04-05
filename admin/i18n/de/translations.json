@@ -257,5 +257,7 @@
   "iframeCertHint": "Seite lädt nicht? SOLECTRUS blockiert das Einbetten in iFrames standardmäßig – füge FRAME_ANCESTORS=http://dein-iobroker-host:8081 in die SOLECTRUS-.env-Datei ein und starte den Dienst neu.",
   "e.g. 10000": "z.B. 10000",
   "maxValueHint": "Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. Standard: 10000 W.",
-  "Max Value in W (optional)": "Maximalwert in W (optional)"
+  "Max Value in W (optional)": "Maximalwert in W (optional)",
+  "aliveTimeoutMinutesLabel": "Alive-Timeout (min, 0 = deaktiviert)",
+  "aliveTimeoutHint": "Wenn ein Sensor länger als diese Anzahl Minuten keinen neuen Wert erhalten hat, wird eine Warnung ausgegeben. 0 zum Deaktivieren."
 }

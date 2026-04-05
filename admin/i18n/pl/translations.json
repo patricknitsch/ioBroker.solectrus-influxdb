@@ -257,5 +257,7 @@
   "iframeCertHint": "Strona nie ładuje się? SOLECTRUS domyślnie blokuje osadzanie w iFrame – dodaj FRAME_ANCESTORS=http://twój-host-iobroker:8081 do pliku .env SOLECTRUS i uruchom ponownie usługę.",
   "e.g. 10000": "np. 10000",
   "maxValueHint": "Limit wiarygodności dla czujnika. Jeśli przekroczony, wysyłana jest ostatnia prawidłowa wartość i rejestrowane jest ostrzeżenie. Domyślnie: 10000 W.",
-  "Max Value in W (optional)": "Wartość maksymalna w W (opcjonalnie)"
+  "Max Value in W (optional)": "Wartość maksymalna w W (opcjonalnie)",
+  "aliveTimeoutMinutesLabel": "Limit czasu Alive (min, 0 = wyłączone)",
+  "aliveTimeoutHint": "Jeśli czujnik nie otrzymał nowej wartości przez podaną liczbę minut, zostanie zalogowane ostrzeżenie. Ustaw 0, aby wyłączyć."
 }

@@ -230,6 +230,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.negativeValueWarned = new Set();
 		this.lastValidValue = new Map();
 
+		/* ---------- Alive monitoring ---------- */
+		// Maps sensor state id → timestamp (ms) of last received value
+		this.lastUpdateTs = new Map();
+		// Maps sensor state id → timestamp (ms) when last alive warning was logged
+		this.aliveWarnedAt = new Map();
+
 		/* ---------- Forecast ---------- */
 		// Maps sourceState → array of forecast config entries that use it
 		this.forecastSourceMap = {};
@@ -851,6 +857,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 			if (state) {
 				this.cache[id] = state.val;
 				this.setState(id, state.val, true);
+				// Record initial timestamp for alive monitoring
+				this.lastUpdateTs.set(id, typeof state.ts === 'number' ? state.ts : Date.now());
+			} else {
+				// No state yet – use current time as baseline so the sensor gets a grace period
+				this.lastUpdateTs.set(id, Date.now());
 			}
 
 			this.subscribeForeignStates(sensor.sourceState);
@@ -1347,6 +1358,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 			} else {
 				this.cache[sensorId] = state.val;
 				this.setState(sensorId, state.val, true);
+				// Update alive timestamp for non-JSON sensors
+				this.lastUpdateTs.set(sensorId, typeof state.ts === 'number' ? state.ts : Date.now());
 			}
 		}
 
@@ -1452,6 +1465,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 	async collectPoints() {
 		const now = Date.now();
 
+		// Alive monitoring: warn if sensor timestamps are stale
+		const aliveTimeoutMs = this.config.aliveTimeoutMinutes > 0 ? this.config.aliveTimeoutMinutes * 60_000 : 0;
+
 		for (const sensor of this.config.sensors) {
 			if (!sensor || !sensor.enabled) {
 				continue;
@@ -1463,6 +1479,21 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 
 			const id = this.getSensorStateId(sensor);
+
+			// Check alive timeout (throttle: warn at most once per timeout period per sensor)
+			if (aliveTimeoutMs > 0) {
+				const lastTs = this.lastUpdateTs.get(id);
+				if (lastTs !== undefined && now - lastTs > aliveTimeoutMs) {
+					const lastWarnTs = this.aliveWarnedAt.get(id) || 0;
+					if (now - lastWarnTs >= aliveTimeoutMs) {
+						this.aliveWarnedAt.set(id, now);
+						this.log.warn(
+							`Sensor "${sensor.SensorName}": last measurement update longer than ${this.config.aliveTimeoutMinutes} minute(s)`,
+						);
+					}
+				}
+			}
+
 			const value = this.cache[id];
 
 			if (value === undefined || value === null) {

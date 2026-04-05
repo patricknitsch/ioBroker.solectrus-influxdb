@@ -67,6 +67,18 @@
 							"lg": 12,
 							"xl": 12
 						},
+						"aliveTimeoutMinutes": {
+							"type": "number",
+							"label": "aliveTimeoutMinutesLabel",
+							"min": 0,
+							"default": 0,
+							"newLine": true,
+							"xs": 12,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
+						},
 						"_dsEnableDivider": {
 							"type": "divider",
 							"newLine": true

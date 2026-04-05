@@ -29,6 +29,7 @@ Adapter-Einstellungen öffnen und zum Tab **InfluxDB** wechseln.
 | Bucket | Ziel-Bucket für Zeitreihendaten |
 | Token | API-Token mit **Schreibrechten** |
 | Polling Interval (s) | Wie oft Sensorwerte gesammelt werden (5-30 Sekunden) |
+| Alive-Timeout (min) | Wenn ein Sensor länger als diese Anzahl Minuten keinen neuen Wert erhalten hat, wird eine Warnung ausgegeben. `0` zum Deaktivieren. |
 
 Der Adapter prüft die Verbindung beim Start durch Schreiben eines Test-Punktes. Der Verbindungsstatus wird in `info.connection` angezeigt.
 
@@ -417,6 +418,18 @@ Im Tab **Data Runtime**:
 ---
 
 ## 11. Monitoring & Buffer
+
+### Alive-Monitoring
+
+Der Adapter kann überwachen, ob Sensorwerte noch regelmäßig aktualisiert werden. Setze das Feld **Alive-Timeout (min)** im InfluxDB-Tab auf eine positive Zahl (z.B. `10`).
+
+Erhält ein Sensor länger als den konfigurierten Timeout keinen neuen Wert, gibt der Adapter eine Warnung aus:
+
+```
+Sensor "INVERTER_POWER": last measurement update longer than 10 minute(s)
+```
+
+Die Warnung wird pro Sensor höchstens einmal pro Timeout-Periode wiederholt, damit das Log nicht überflutet wird. Setze den Timeout auf `0` (Standard), um diese Prüfung zu deaktivieren.
 
 ### Adapter-States
 
