@@ -857,12 +857,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 			if (state) {
 				this.cache[id] = state.val;
 				this.setState(id, state.val, true);
-				// Record initial timestamp for alive monitoring
-				this.lastUpdateTs.set(id, typeof state.ts === 'number' ? state.ts : Date.now());
-			} else {
-				// No state yet – use current time as baseline so the sensor gets a grace period
-				this.lastUpdateTs.set(id, Date.now());
 			}
+			// Always use current time as baseline so every sensor gets a grace period after restart
+			this.lastUpdateTs.set(id, Date.now());
 
 			this.subscribeForeignStates(sensor.sourceState);
 		}
