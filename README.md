@@ -62,6 +62,12 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* (patricknitsch) Catch max. Values - settable in Config
+* (patricknitsch) Increase Version from 20 to 24 becauso of deploy error
+
 ### 1.5.0 (2026-03-21)
 
 * (patricknitsch) Fix Issues RepoChecker
