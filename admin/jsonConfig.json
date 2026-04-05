@@ -92,47 +92,6 @@
 							"md": 12,
 							"lg": 12,
 							"xl": 12
-						},
-						"_dsEnableDivider": {
-							"type": "divider",
-							"newLine": true
-						},
-						"enableDataSolectrus": {
-							"type": "checkbox",
-							"label": "Enable Data-SOLECTRUS (formula engine)",
-							"default": false,
-							"newLine": true,
-							"xs": 12,
-							"sm": 12,
-							"md": 12,
-							"lg": 12,
-							"xl": 12
-						},
-						"enableExpertMode": {
-							"type": "checkbox",
-							"label": "enableExpertModeLabel",
-							"default": false,
-							"newLine": true,
-							"xs": 12,
-							"sm": 12,
-							"md": 12,
-							"lg": 12,
-							"xl": 12
-						},
-						"_legacyForecastNote": {
-							"type": "staticText",
-							"text": "jsonSensorHint",
-							"newLine": true,
-							"style": {
-								"fontSize": "0.85em",
-								"color": "#888",
-								"marginTop": 4
-							},
-							"xs": 12,
-							"sm": 12,
-							"md": 12,
-							"lg": 12,
-							"xl": 12
 						}
 					}
 				},
@@ -145,23 +104,6 @@
 					"lg": 8,
 					"xl": 8,
 					"items": {
-						"_influxSolectrusLogo": {
-							"type": "staticImage",
-							"src": "solectrus-influxdb.png",
-							"newLine": true,
-							"style": {
-								"maxWidth": 220,
-								"width": "100%",
-								"height": "auto",
-								"display": "block",
-								"margin": "0 auto"
-							},
-							"xs": 12,
-							"sm": 12,
-							"md": 12,
-							"lg": 12,
-							"xl": 12
-						},
 						"_influxSolectrusQuickStart": {
 							"type": "staticText",
 							"text": {
@@ -209,6 +151,47 @@
 								"color": "#e67e22",
 								"fontSize": "0.85em",
 								"marginTop": 8
+							},
+							"xs": 12,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
+						},
+						"_dsEnableDivider": {
+							"type": "divider",
+							"newLine": true
+						},
+						"enableDataSolectrus": {
+							"type": "checkbox",
+							"label": "Enable Data-SOLECTRUS (formula engine)",
+							"default": false,
+							"newLine": true,
+							"xs": 12,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
+						},
+						"enableExpertMode": {
+							"type": "checkbox",
+							"label": "enableExpertModeLabel",
+							"default": false,
+							"newLine": true,
+							"xs": 12,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
+						},
+						"_legacyForecastNote": {
+							"type": "staticText",
+							"text": "jsonSensorHint",
+							"newLine": true,
+							"style": {
+								"fontSize": "0.85em",
+								"color": "#888",
+								"marginTop": 4
 							},
 							"xs": 12,
 							"sm": 12,
