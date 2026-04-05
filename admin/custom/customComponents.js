@@ -784,7 +784,7 @@
 									? React.createElement(
 											React.Fragment,
 											null,
-											React.createElement('label', { style: labelStyle }, t('Max Value (optional)')),
+											React.createElement('label', { style: labelStyle }, t('Max Value in W (optional)')),
 											React.createElement('input', {
 												style: Object.assign({}, inputStyle, { maxWidth: 200 }),
 												type: 'number',

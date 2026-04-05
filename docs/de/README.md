@@ -69,7 +69,7 @@ Auf **Add** klicken und konfigurieren:
 | Enabled | Sensor aktivieren/deaktivieren |
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. |
-| Maximalwert (optional) | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. Überschreibt den globalen Maximalwert in W. |
+| Maximalwert in W (optional) | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. Überschreibt den globalen Maximalwert in W. |
 | Datatype | `int`, `float`, `bool`, `string` oder `json` (JSON-Array) |
 | Influx Measurement | InfluxDB Measurement-Name (z.B. `inverter`) |
 | Influx Field | InfluxDB Feldname (z.B. `power`) |
@@ -122,7 +122,7 @@ SOLECTRUS akzeptiert keine negativen Werte. Liefert ein Sensor nach dem Adapters
 
 ### Maximalwert-Validierung
 
-Jeder numerische Sensor (`int`, `float` oder Standardtyp) unterstützt ein optionales **Maximalwert**-Feld. Wird dieser Wert überschritten:
+Jeder numerische Sensor (`int`, `float` oder Standardtyp) unterstützt ein optionales **Maximalwert in W**-Feld. Wird dieser Wert überschritten:
 
 1. Es wird eine Warnung ins Log geschrieben: `Sensor "..." delivers implausible value (X > max Y). Using last valid value (Z) instead.`
 2. Stattdessen wird der **zuletzt gültige Wert** (der zuletzt gemessene Wert unterhalb des Limits) an InfluxDB gesendet.

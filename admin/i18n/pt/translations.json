@@ -255,9 +255,9 @@
   "iframeOpenBtn": "Abrir num novo separador",
   "iframeHttpHint": "Nota: O iFrame só é visível quando o painel de administração do ioBroker é acedido via HTTP (não HTTPS).",
   "iframeCertHint": "A página não carrega? O SOLECTRUS bloqueia a incorporação em iFrames por padrão – adicione FRAME_ANCESTORS=http://seu-host-iobroker:8081 ao ficheiro .env do SOLECTRUS e reinicie o serviço.",
-  "Max Value (optional)": "Valor máximo (opcional)",
   "e.g. 10000": "ex. 10000",
   "maxValueHint": "Se definido, valores acima deste limite serão rejeitados e o último valor válido será enviado em vez disso (com aviso). Substitui o valor máximo global.",
   "globalMaxValueHint": "Valor máximo global como alternativa para todos os sensores sem valor máximo por sensor. Substituído pela configuração de valor máximo por sensor.",
-  "Global Max Value in W (optional)": "Valor máximo global em W (opcional)"
+  "Global Max Value in W (optional)": "Valor máximo global em W (opcional)",
+  "Max Value in W (optional)": "Valor máximo em W (opcional)"
 }

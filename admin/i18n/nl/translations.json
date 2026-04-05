@@ -255,9 +255,9 @@
   "iframeOpenBtn": "Openen in nieuw tabblad",
   "iframeHttpHint": "Opmerking: Het iFrame is alleen zichtbaar wanneer het ioBroker-beheerpaneel via HTTP (niet HTTPS) wordt geopend.",
   "iframeCertHint": "Pagina laadt niet? SOLECTRUS blokkeert standaard insluiting in iFrames – voeg FRAME_ANCESTORS=http://jouw-iobroker-host:8081 toe aan het SOLECTRUS .env-bestand en herstart de dienst.",
-  "Max Value (optional)": "Maximale waarde (optioneel)",
   "e.g. 10000": "bijv. 10000",
   "maxValueHint": "Indien ingesteld, worden waarden boven deze limiet afgewezen en wordt de laatste geldige waarde verzonden (met waarschuwing). Overschrijft de globale maximale waarde.",
   "globalMaxValueHint": "Globale maximale waarde als terugvaloptie voor alle sensoren zonder per-sensor maximale waarde. Wordt overschreven door de per-sensor instelling voor maximale waarde.",
-  "Global Max Value in W (optional)": "Globale maximale waarde in W (optioneel)"
+  "Global Max Value in W (optional)": "Globale maximale waarde in W (optioneel)",
+  "Max Value in W (optional)": "Maximale waarde in W (optioneel)"
 }
