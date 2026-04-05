@@ -1482,12 +1482,15 @@ class SolectrusInfluxdb extends utils.Adapter {
 			let valueToSend = value;
 			if (maxVal !== null && typeof value === 'number' && value > maxVal) {
 				const lastValid = this.lastValidValue.get(id);
-				this.log.warn(
-					`Sensor "${sensor.SensorName}" delivers implausible value (${value} > max ${maxVal}). Using last valid value (${lastValid ?? 'none'}) instead.`,
-				);
 				if (lastValid === undefined) {
+					this.log.warn(
+						`Sensor "${sensor.SensorName}" delivers implausible value (${value} > max ${maxVal}). No last valid value available, skipping point.`,
+					);
 					continue;
 				}
+				this.log.warn(
+					`Sensor "${sensor.SensorName}" delivers implausible value (${value} > max ${maxVal}). Using last valid value (${lastValid}) instead.`,
+				);
 				valueToSend = lastValid;
 			} else if (typeof value === 'number') {
 				this.lastValidValue.set(id, value);
