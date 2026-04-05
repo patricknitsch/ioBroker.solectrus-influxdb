@@ -258,6 +258,6 @@
   "Max Value (optional)": "Valeur maximale (optionnel)",
   "e.g. 10000": "ex. 10000",
   "maxValueHint": "Si défini, les valeurs dépassant cette limite seront rejetées et la dernière valeur valide sera transmise à la place (avec avertissement). Remplace la valeur maximale globale.",
-  "Global Max Value (optional)": "Valeur maximale globale (optionnel)",
-  "globalMaxValueHint": "Valeur maximale globale utilisée par défaut pour tous les capteurs sans valeur maximale par capteur. Remplacée par le réglage de valeur maximale par capteur."
+  "globalMaxValueHint": "Valeur maximale globale utilisée par défaut pour tous les capteurs sans valeur maximale par capteur. Remplacée par le réglage de valeur maximale par capteur.",
+  "Global Max Value in W (optional)": "Valeur maximale globale en W (optionnel)"
 }

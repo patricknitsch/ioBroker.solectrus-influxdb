@@ -258,6 +258,6 @@
   "Max Value (optional)": "Maximale waarde (optioneel)",
   "e.g. 10000": "bijv. 10000",
   "maxValueHint": "Indien ingesteld, worden waarden boven deze limiet afgewezen en wordt de laatste geldige waarde verzonden (met waarschuwing). Overschrijft de globale maximale waarde.",
-  "Global Max Value (optional)": "Globale maximale waarde (optioneel)",
-  "globalMaxValueHint": "Globale maximale waarde als terugvaloptie voor alle sensoren zonder per-sensor maximale waarde. Wordt overschreven door de per-sensor instelling voor maximale waarde."
+  "globalMaxValueHint": "Globale maximale waarde als terugvaloptie voor alle sensoren zonder per-sensor maximale waarde. Wordt overschreven door de per-sensor instelling voor maximale waarde.",
+  "Global Max Value in W (optional)": "Globale maximale waarde in W (optioneel)"
 }

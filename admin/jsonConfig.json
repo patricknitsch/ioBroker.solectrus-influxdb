@@ -69,7 +69,7 @@
 						},
 						"globalMaxValue": {
 							"type": "number",
-							"label": "Global Max Value (optional)",
+							"label": "Global Max Value in W (optional)",
 							"min": 0,
 							"newLine": true,
 							"xs": 12,

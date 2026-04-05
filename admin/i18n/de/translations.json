@@ -258,6 +258,6 @@
   "Max Value (optional)": "Maximalwert (optional)",
   "e.g. 10000": "z.B. 10000",
   "maxValueHint": "Wenn gesetzt, werden Werte über diesem Limit abgelehnt und stattdessen der letzte gültige Wert übertragen (mit Warnung). Überschreibt den globalen Maximalwert.",
-  "Global Max Value (optional)": "Globaler Maximalwert (optional)",
-  "globalMaxValueHint": "Globaler Maximalwert als Fallback für alle Sensoren ohne eigene Maximalwert-Einstellung. Wird durch den sensorbezogenen Maximalwert überschrieben."
+  "globalMaxValueHint": "Globaler Maximalwert als Fallback für alle Sensoren ohne eigene Maximalwert-Einstellung. Wird durch den sensorbezogenen Maximalwert überschrieben.",
+  "Global Max Value in W (optional)": "Globaler Maximalwert in W (optional)"
 }

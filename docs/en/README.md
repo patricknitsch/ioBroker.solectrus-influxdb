@@ -29,6 +29,7 @@ Open the adapter settings and go to the **InfluxDB** tab.
 | Bucket | Target bucket for time-series data |
 | Token | API token with **write** permissions |
 | Polling Interval (s) | How often sensor values are collected (5-30 seconds) |
+| Global Max Value in W (optional) | Global plausibility limit in Watts applied to all sensors that do not have their own Max Value configured. Defaults to `10000`. Set to empty to disable. Overridden per sensor. |
 
 The adapter verifies the connection at startup by writing a test point. The connection state is shown in `info.connection`.
 
@@ -68,7 +69,7 @@ Click **Add** to create a new sensor, then configure:
 | Enabled | Activate/deactivate the sensor |
 | Sensor Name | Display name (also used for the ioBroker state ID under `sensors.*`) |
 | ioBroker Source State | The source state to read values from. Use the **Select** button to browse the object tree. |
-| Max Value (optional) | Maximum plausible value. If exceeded, the last valid value is sent instead and a warning is logged. |
+| Max Value (optional) | Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. Overrides the global Max Value in W. |
 | Datatype | `int`, `float`, `bool`, `string`, or `json` (JSON Array) |
 | Influx Measurement | The InfluxDB measurement name (e.g. `inverter`) |
 | Influx Field | The InfluxDB field name (e.g. `power`) |
@@ -129,7 +130,9 @@ Each numeric sensor (`int`, `float`, or default type) supports an optional **Max
 
 This prevents temporary sensor spikes (e.g. a brief burst reading of 99999 W) from corrupting the time-series data.
 
-**Example:** Set *Max Value* to `10000` for an inverter power sensor to discard any readings above 10 kW.
+A **Global Max Value in W** can be set on the **InfluxDB** tab (default: `10000` W). It applies to all sensors that do not have their own Max Value configured. The per-sensor Max Value always takes precedence over the global setting.
+
+**Example:** Leave individual sensor Max Values empty and rely on the global `10000` W limit, or override specific sensors (e.g. set `5000` W for a secondary inverter).
 
 ### Field type conflicts
 

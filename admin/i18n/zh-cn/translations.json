@@ -258,6 +258,6 @@
   "Max Value (optional)": "最大值（可选）",
   "e.g. 10000": "例如 10000",
   "maxValueHint": "如果设置，超过此限制的值将被拒绝，改为发送最后一个有效值（并发出警告）。覆盖全局最大值设置。",
-  "Global Max Value (optional)": "全局最大值（可选）",
-  "globalMaxValueHint": "作为所有未配置传感器专用最大值的传感器的全局最大值回退。被每个传感器的最大值设置覆盖。"
+  "globalMaxValueHint": "作为所有未配置传感器专用最大值的传感器的全局最大值回退。被每个传感器的最大值设置覆盖。",
+  "Global Max Value in W (optional)": "全局最大值（W，可选）"
 }

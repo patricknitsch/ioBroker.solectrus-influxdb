@@ -258,6 +258,6 @@
   "Max Value (optional)": "Max Value (optional)",
   "e.g. 10000": "e.g. 10000",
   "maxValueHint": "If set, values above this limit will be rejected and the last valid value will be sent instead (with a warning). Overrides the global Max Value.",
-  "Global Max Value (optional)": "Global Max Value (optional)",
-  "globalMaxValueHint": "Global fallback max value for all sensors without a per-sensor max value configured. Overridden by the per-sensor Max Value setting."
+  "globalMaxValueHint": "Global fallback max value for all sensors without a per-sensor max value configured. Overridden by the per-sensor Max Value setting.",
+  "Global Max Value in W (optional)": "Global Max Value in W (optional)"
 }

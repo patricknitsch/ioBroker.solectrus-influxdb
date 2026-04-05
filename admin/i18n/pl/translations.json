@@ -258,6 +258,6 @@
   "Max Value (optional)": "Wartość maksymalna (opcjonalnie)",
   "e.g. 10000": "np. 10000",
   "maxValueHint": "Jeśli ustawione, wartości przekraczające ten limit zostaną odrzucone, a zamiast nich zostanie wysłana ostatnia prawidłowa wartość (z ostrzeżeniem). Nadpisuje globalną wartość maksymalną.",
-  "Global Max Value (optional)": "Globalna wartość maksymalna (opcjonalnie)",
-  "globalMaxValueHint": "Globalna wartość maksymalna jako wartość zastępcza dla wszystkich czujników bez własnej wartości maksymalnej. Nadpisywana przez ustawienie wartości maksymalnej dla poszczególnych czujników."
+  "globalMaxValueHint": "Globalna wartość maksymalna jako wartość zastępcza dla wszystkich czujników bez własnej wartości maksymalnej. Nadpisywana przez ustawienie wartości maksymalnej dla poszczególnych czujników.",
+  "Global Max Value in W (optional)": "Globalna wartość maksymalna w W (opcjonalnie)"
 }
