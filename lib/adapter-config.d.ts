@@ -55,6 +55,7 @@ declare global {
 			sensors: SensorEntry[];
 			forecasts: ForecastEntry[];
 			dsItems: DsItemEntry[];
+			globalMaxValue?: number;
 		}
 	}
 }
