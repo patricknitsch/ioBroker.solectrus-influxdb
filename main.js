@@ -1489,8 +1489,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 					const lastWarnTs = this.aliveWarnedAt.get(id) || 0;
 					if (now - lastWarnTs >= aliveTimeoutMs) {
 						this.aliveWarnedAt.set(id, now);
+						const lastTsStr = new Date(lastTs).toLocaleString();
 						this.log.warn(
-							`Sensor "${sensor.SensorName}": last measurement update longer than ${this.config.aliveTimeoutMinutes} minute(s)`,
+							`Sensor "${sensor.SensorName}": no update since ${lastTsStr} (longer than ${this.config.aliveTimeoutMinutes} minute(s))`,
 						);
 					}
 				}
