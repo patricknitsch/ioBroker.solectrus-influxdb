@@ -254,5 +254,8 @@
   "iframeHint": "Introduce la URL directa de tu panel SOLECTRUS (p. ej. http://solectrus:3000). No uses la URL proxy del adaptador Web de ioBroker: añade un prefijo de ruta que provoca errores 404 al cargar los recursos de SOLECTRUS. Déjalo vacío para ocultar el tab iFrame. SOLECTRUS bloquea la inserción en iFrames por defecto: añade FRAME_ANCESTORS=http://tu-host-iobroker:8081 al archivo .env de SOLECTRUS y reinicia el servicio. Si el panel de administración usa HTTPS y SOLECTRUS usa HTTP, configura un proxy inverso dedicado (p. ej. nginx o Caddy) que redirija a SOLECTRUS en la ruta raíz.",
   "iframeOpenBtn": "Abrir en nueva pestaña",
   "iframeHttpHint": "Nota: El iFrame solo es visible cuando se accede al panel de administración de ioBroker a través de HTTP (no HTTPS).",
-  "iframeCertHint": "¿La página no carga? SOLECTRUS bloquea la inserción en iFrames por defecto – añade FRAME_ANCESTORS=http://tu-host-iobroker:8081 al archivo .env de SOLECTRUS y reinicia el servicio."
+  "iframeCertHint": "¿La página no carga? SOLECTRUS bloquea la inserción en iFrames por defecto – añade FRAME_ANCESTORS=http://tu-host-iobroker:8081 al archivo .env de SOLECTRUS y reinicia el servicio.",
+  "e.g. 10000": "p.ej. 10000",
+  "maxValueHint": "Límite de plausibilidad por sensor. Si se supera, se envía el último valor válido y se registra una advertencia. Valor predeterminado: 10000 W.",
+  "Max Value in W (optional)": "Valor máximo en W (opcional)"
 }

@@ -228,6 +228,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.isUnloading = false;
 		this.isFlushing = false;
 		this.negativeValueWarned = new Set();
+		this.lastValidValue = new Map();
 
 		/* ---------- Forecast ---------- */
 		// Maps sourceState → array of forecast config entries that use it
@@ -1476,13 +1477,47 @@ class SolectrusInfluxdb extends utils.Adapter {
 				);
 			}
 
-			this.log.debug(`Collect point: ${id} : ${value} to: ${sensor.measurement} : ${sensor.field}`);
+			// Validate against configured maximum value (for numeric-type sensors)
+			// Uses parseInt for 'int' type, parseFloat for 'float'/standard – consistent with flushBuffer.
+			// Non-numeric types (bool, string, json) are skipped.
+			// Per-sensor maxValue takes precedence; default is 10000 W.
+			// Non-finite maxVal (NaN, Infinity) is treated as "not configured".
+			const rawMax = sensor.maxValue != null ? sensor.maxValue : 10000;
+			const maxVal = rawMax != null ? Number(rawMax) : NaN;
+			let valueToSend = value;
+			if (
+				Number.isFinite(maxVal) &&
+				sensor.type !== 'bool' &&
+				sensor.type !== 'string' &&
+				sensor.type !== 'json'
+			) {
+				const numValue = sensor.type === 'int' ? parseInt(value, 10) : parseFloat(value);
+				if (Number.isFinite(numValue)) {
+					if (numValue > maxVal) {
+						const lastValid = this.lastValidValue.get(id);
+						if (lastValid === undefined) {
+							this.log.warn(
+								`Sensor "${sensor.SensorName}" delivers implausible value (${numValue} > max ${maxVal}). No last valid value available, skipping point.`,
+							);
+							continue;
+						}
+						this.log.warn(
+							`Sensor "${sensor.SensorName}" delivers implausible value (${numValue} > max ${maxVal}). Using last valid value (${lastValid}) instead.`,
+						);
+						valueToSend = lastValid;
+					} else {
+						this.lastValidValue.set(id, numValue);
+					}
+				}
+			}
+
+			this.log.debug(`Collect point: ${id} : ${valueToSend} to: ${sensor.measurement} : ${sensor.field}`);
 			this.buffer.push({
 				id: sensor.SensorName,
 				measurement: sensor.measurement,
 				field: sensor.field,
 				type: sensor.type,
-				value,
+				value: valueToSend,
 				ts: now,
 			});
 

@@ -779,6 +779,43 @@
 										t('Select'),
 									),
 								),
+								// Max value validation field (visible to all users for numeric types)
+								(editSensor.type || '') !== 'json' && (editSensor.type || '') !== 'bool' && (editSensor.type || '') !== 'string'
+									? React.createElement(
+											React.Fragment,
+											null,
+											React.createElement('label', { style: labelStyle }, t('Max Value in W (optional)')),
+											React.createElement('input', {
+												style: Object.assign({}, inputStyle, { maxWidth: 200 }),
+												type: 'number',
+												min: '0',
+												step: 'any',
+												value: editSensor.maxValue !== undefined && editSensor.maxValue !== null ? editSensor.maxValue : '',
+												placeholder: t('e.g. 10000'),
+												onChange: e => {
+													var raw = e.target.value;
+													var parsed = Number(raw);
+													setDraftField('maxValue', raw === '' || !Number.isFinite(parsed) ? undefined : parsed);
+												},
+												onBlur: e => {
+													var raw = e.target.value;
+													var parsed = Number(raw);
+													updateSelected('maxValue', raw === '' || !Number.isFinite(parsed) ? undefined : parsed);
+												},
+											}),
+											React.createElement(
+												'div',
+												{
+													style: {
+														fontSize: 12,
+														color: colors.textMuted,
+														marginTop: 2,
+													},
+												},
+												t('maxValueHint'),
+											),
+										)
+									: null,
 								// Datatype selector
 								// NOTE: All select values and conditionals use editSensor (draft)
 								// instead of selectedSensor (props) to avoid the value snapping back

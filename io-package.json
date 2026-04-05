@@ -1,606 +1,606 @@
 {
-  "common": {
-    "name": "solectrus-influxdb",
-    "version": "1.5.0",
-    "news": {
-      "1.5.0": {
-        "en": "Fix Issues RepoChecker\nAdd Tab for SOLECTRUS iFrame",
-        "de": "Probleme beheben RepoChecker\nTab hinzufügen für SOLECTRUS iFrame",
-        "ru": "Обсуждение RepoChecker\nДобавить вкладку для SolecTRUS iFrame",
-        "pt": "Corrigir o RepoChecker de Problemas\nAdicionar aba para o SOLECTRUS iFrame",
-        "nl": "Kwesties repochecker oplossen\nTabblad voor SOLECTRUS toevoegen iFrame",
-        "fr": "Correction des problèmes RepoChecker\nAjouter un onglet pour SOLECTRUS iFrame",
-        "it": "Riparare i problemi RepoChecker\nAggiungi scheda per SOLECTRUS IFrame",
-        "es": "Problemas fijos RepoChecker\nAñadir Tab para SOLECTRUS iFrame",
-        "pl": "Napraw repoChecker problemów\nDodaj kartę dla SOLECTRUS iFrame",
-        "uk": "Виправлення питань РепоЧекер\nДодати вкладку для SOLECTRUS ІФраме",
-        "zh-cn": "修复问题复检器\n为 SOLECTRUS 添加标签 iFrame 图像"
-      },
-      "1.4.1": {
-        "en": "Update Tab Format\nUpdate Readme\nUpdate Packages",
-        "de": "Update Tab Format\nUpdate Reader\nPakete aktualisieren",
-        "ru": "Обновление формата Tab\nОбновление Readme\nОбновление пакетов",
-        "pt": "Actualizar o Formato da Página\nActualizar a Leitura\nAtualizar pacotes",
-        "nl": "Tab-formaat bijwerken\nReadme bijwerken\nPakketten bijwerken",
-        "fr": "Mettre à jour le format de l'onglet\nMettre à jour Readme\nMettre à jour les paquets",
-        "it": "Formato della scheda di aggiornamento\nAggiornamento\nPacchetti di aggiornamento",
-        "es": "Formato de actualización de pestañas\nActualización Readme\nPaquetes de actualización",
-        "pl": "Aktualizuj format karty\nAktualizacja Readme\nAktualizacja pakietów",
-        "uk": "Статус на сервери\nОновлення Readme\nОновлення пакетів",
-        "zh-cn": "更新标签格式\n更新读取器\n更新软件包"
-      },
-      "1.4.0": {
-        "en": "Fix String Handling in Formula Engine\nFix Formula Engine when using state formulas\nNew Page for smart Sensor Overview\nUpdate Readme and Doc",
-        "de": "Fix String Handling in Formelmotor\nDie Formel Motor bei Verwendung von Zustandsformeln\nNeue Seite für smart Sensor Übersicht\nUpdate Readme und Doc",
-        "ru": "Исправьте струнную обработку в двигателе Формулы\nФормула Фикс Двигатель при использовании формул состояния\nНовая страница для Smart Sensor\nОбновление Readme и Doc",
-        "pt": "Corrigir manuseamento de cordas no motor de fórmula\nCorrigir a Fórmula Motor ao usar fórmulas de estado\nNova Página para Visão Geral do Sensor Inteligente\nAtualizar o Readme e o Doc",
-        "nl": "Fix String Handling in Formule Motor\nFix Formule Motor bij gebruik van statusformules\nNieuwe pagina voor slimme sensor overzicht\nReadme en Doc bijwerken",
-        "fr": "Correction de la manipulation des chaînes dans le moteur Formula\nCorrection de la formule Moteur en utilisant des formules d'état\nNouvelle page pour le capteur intelligent Aperçu\nMettre à jour Readme et Doc",
-        "it": "Fissare la gestione delle stringhe in Formula Engine\nFormula di correzione Motore quando si utilizzano formule di stato\nNuova pagina per la panoramica dei sensori intelligenti\nAggiornamento Readme e Doc",
-        "es": "Manejo de cuerda fija en el motor de Fórmula\nFórmula fija Motor al usar fórmulas estatales\nNueva página para un sensor inteligente\nActualización Readme y Doc",
-        "pl": "Napraw obsługę strun w silniku formuły\nPopraw wzór Silnik przy użyciu wzorów stanu\nNowa strona dla inteligentnego przeglądu czujników\nAktualizuj Readme i Doc",
-        "uk": "Фіксація String Обробка в двигуні Формула\nФіксована формула Двигун при використанні державних формул\nНова сторінка для Smart Sensor Огляд\nОновлення Readme і Doc",
-        "zh-cn": "在公式引擎中修正字符串处理\n修正公式 使用状态公式时的引擎\n智能传感器概览的新页面\n更新 Readme 和 Doc"
-      },
-      "1.3.1": {
-        "en": "Fix DS Tick time budget",
-        "de": "Fix DS Tick Zeitbudget",
-        "ru": "Исправить DS Бюджет времени Tick",
-        "pt": "Corrigir DS Tick time budget",
-        "nl": "DS herstellen Tick time budget",
-        "fr": "Corriger DS Cochez le budget temps",
-        "it": "Risolvere DS Bilancio di tempo di punta",
-        "es": "Corrección DS Presupuesto del tiempo de marea",
-        "pl": "Napraw DS Budżet czasu przyklejenia",
-        "uk": "Фіксація DS Часовий бюджет",
-        "zh-cn": "修补 DS 时间预算"
-      },
-      "1.3.0": {
-        "en": "Fix DS Tick time budget\nUpdate Admin Package\nChange Admin to easy and expert mode\nAdd information in easy mode \nAdd type json for sending json, i.e. forecast\nUpdate Readme",
-        "de": "Fix DS Tick Zeitbudget\nAdmin-Paket aktualisieren\nAdmin in einfachen und kompetenten Modus wechseln\nInformationen im einfachen Modus hinzufügen\nFügen Sie Typ json zum Senden von json, d.h. Prognose\nUpdate Reader",
-        "ru": "Исправить DS Бюджет времени Tick\nОбновление пакета Admin\nИзмените админ в простой и экспертный режим\nДобавить информацию в удобном режиме\nДобавить тип json для отправки json, т.е. прогноз\nОбновление Readme",
-        "pt": "Corrigir DS Tick time budget\nActualizar o Pacote de Administração\nAlterar o Admin para modo fácil e experiente\nAdicionar informações em modo fácil\nAdicionar o tipo json para enviar o json, ou seja, previsão\nActualizar a Leitura",
-        "nl": "DS herstellen Tick time budget\nAdmin-pakket bijwerken\nAdmin wijzigen naar eenvoudige en deskundige modus\nInformatie toevoegen in eenvoudige modus\nType json toevoegen voor het verzenden van json, d.w.z. voorspelling\nReadme bijwerken",
-        "fr": "Corriger DS Cochez le budget temps\nMettre à jour le paquet Admin\nChanger Admin en mode facile et expert\nAjouter des informations en mode facile\nAjouter le type json pour envoyer json, c.-à-d. prévision\nMettre à jour Readme",
-        "it": "Risolvere DS Bilancio di tempo di punta\nAggiorna il pacchetto Admin\nModificare Admin in modalità facile ed esperto\nAggiungi informazioni in modalità semplice\nAggiungi json tipo per l'invio di json, cioè previsioni\nAggiornamento",
-        "es": "Corrección DS Presupuesto del tiempo de marea\nPaquete de actualización\nCambiar de administrador a modo fácil y experto\nAñadir información en modo fácil\nAñadir tipo json para enviar json, i.e. previsión\nActualización Readme",
-        "pl": "Napraw DS Budżet czasu przyklejenia\nAktualizacja pakietu administracyjnego\nZmień administrację na tryb łatwy i specjalistyczny\nDodaj informacje w trybie łatwym\nDodaj typ json do wysyłania json, tj. prognozę\nAktualizacja Readme",
-        "uk": "Фіксація DS Часовий бюджет\nОновлення пакету адміністратора\nЗміна Адміністратора для легкого та експертного режиму\nДодати інформацію в простий режим\nДодати тип json для відправки json, тобто прогноз\nОновлення Readme",
-        "zh-cn": "修补 DS 时间预算\n更新管理软件包\n将管理员更改为简单和专家模式\n以简单模式添加信息\n用于发送 json 的添加类型 json, 即预测\n更新读取器"
-      },
-      "1.2.2": {
-        "en": "Synchronize Formal Engine with Repo from Felliglanz\nAdd Warning after first start, if value is negative\nAdd Comment on first page, that SOLECTRUS doesn't accept negative values\nUpdate Readme and Translations",
-        "de": "Synchronisieren Sie Formal Engine mit Repo von Felli\nWarnung nach dem ersten Start hinzufügen, wenn der Wert negativ ist\nKommentar auf der ersten Seite hinzufügen, dass SOLECTRUS keine negativen Werte akzeptiert\nReadme und Übersetzungen aktualisieren",
-        "ru": "Синхронизируйте формальный двигатель с Repo от Felliglanz\nДобавьте предупреждение после первого запуска, если значение отрицательное\nДобавить комментарий на первой странице, что SOLECTRUS не принимает отрицательные значения\nОбновление Readme и переводов",
-        "pt": "Sincronizar o Motor Formal com o Repo de Felliglanz\nAdicionar aviso após o primeiro início, se o valor for negativo\nAdicionar Comentário na primeira página, que o SOLECTRUS não aceita valores negativos\nAtualizar Readme e traduções",
-        "nl": "Formal Engine synchroniseren met Repo van Felliglanz\nWaarschuwing toevoegen na eerste start, als waarde negatief is\nCommentaar toevoegen op de eerste pagina, dat SOLECTRUS geen negatieve waarden accepteert\nReadme en vertalingen bijwerken",
-        "fr": "Synchronisez le moteur formel avec Repo de Felliglanz\nAjouter un avertissement après le premier démarrage, si la valeur est négative\nAjouter un commentaire sur la première page, que SOLECTRUS n'accepte pas les valeurs négatives\nMettre à jour le texte et les traductions",
-        "it": "Synchronize Formal Engine con Repo di Felliglanz\nAggiungi Avvertenza dopo il primo avvio, se il valore è negativo\nAggiungi commento alla prima pagina, che SOLECTRUS non accetta valori negativi\nAggiornamento Readme e Traduzioni",
-        "es": "Synchronize Formal Engine with Repo from Felliglanz\nAñadir Advertencia después del primer comienzo, si el valor es negativo\nAgregar comentario en la primera página, que SOLECTRUS no acepta valores negativos\nActualizar Readme y Traducciones",
-        "pl": "Synchronizuj formalny silnik z Repo z Felliglanz\nDodaj ostrzeżenie po pierwszym uruchomieniu, jeśli wartość jest ujemna\nDodaj komentarz na pierwszej stronie, że SOLECTRUS nie akceptuje wartości ujemnych\nAktualizacja Readme i tłumaczenia",
-        "uk": "Синхронізувати формувальний двигун з репо від Felliglanz\nДодати Попередження після першого початку, якщо значення негативно\nДодати коментар на першій сторінці, що SOLECTRUS не приймає негативних значень\nОновлення перекладу",
-        "zh-cn": "用 Felliglanz 的 Repo 同步正式引擎\n如果数值为负数, 在第一次启动后添加警告\n在第一页添加注释, SOLECTRUS 不接受负值\n更新阅读和翻译"
-      },
-      "1.2.1": {
-        "en": "Fix wrong package",
-        "de": "Fehlerhaftes Paket beheben",
-        "ru": "Исправить неправильный пакет",
-        "pt": "Corrigir o pacote errado",
-        "nl": "Foute verpakking herstellen",
-        "fr": "Correction du mauvais paquet",
-        "it": "Fissare il pacchetto sbagliato",
-        "es": "Arregla el paquete equivocado",
-        "pl": "Napraw zły pakiet",
-        "uk": "Виправити неправильний пакет",
-        "zh-cn": "修正错误的软件包"
-      }
+    "common": {
+        "name": "solectrus-influxdb",
+        "version": "1.5.0",
+        "news": {
+            "1.5.0": {
+                "en": "Fix Issues RepoChecker\nAdd Tab for SOLECTRUS iFrame",
+                "de": "Probleme beheben RepoChecker\nTab hinzufügen für SOLECTRUS iFrame",
+                "ru": "Обсуждение RepoChecker\nДобавить вкладку для SolecTRUS iFrame",
+                "pt": "Corrigir o RepoChecker de Problemas\nAdicionar aba para o SOLECTRUS iFrame",
+                "nl": "Kwesties repochecker oplossen\nTabblad voor SOLECTRUS toevoegen iFrame",
+                "fr": "Correction des problèmes RepoChecker\nAjouter un onglet pour SOLECTRUS iFrame",
+                "it": "Riparare i problemi RepoChecker\nAggiungi scheda per SOLECTRUS IFrame",
+                "es": "Problemas fijos RepoChecker\nAñadir Tab para SOLECTRUS iFrame",
+                "pl": "Napraw repoChecker problemów\nDodaj kartę dla SOLECTRUS iFrame",
+                "uk": "Виправлення питань РепоЧекер\nДодати вкладку для SOLECTRUS ІФраме",
+                "zh-cn": "修复问题复检器\n为 SOLECTRUS 添加标签 iFrame 图像"
+            },
+            "1.4.1": {
+                "en": "Update Tab Format\nUpdate Readme\nUpdate Packages",
+                "de": "Update Tab Format\nUpdate Reader\nPakete aktualisieren",
+                "ru": "Обновление формата Tab\nОбновление Readme\nОбновление пакетов",
+                "pt": "Actualizar o Formato da Página\nActualizar a Leitura\nAtualizar pacotes",
+                "nl": "Tab-formaat bijwerken\nReadme bijwerken\nPakketten bijwerken",
+                "fr": "Mettre à jour le format de l'onglet\nMettre à jour Readme\nMettre à jour les paquets",
+                "it": "Formato della scheda di aggiornamento\nAggiornamento\nPacchetti di aggiornamento",
+                "es": "Formato de actualización de pestañas\nActualización Readme\nPaquetes de actualización",
+                "pl": "Aktualizuj format karty\nAktualizacja Readme\nAktualizacja pakietów",
+                "uk": "Статус на сервери\nОновлення Readme\nОновлення пакетів",
+                "zh-cn": "更新标签格式\n更新读取器\n更新软件包"
+            },
+            "1.4.0": {
+                "en": "Fix String Handling in Formula Engine\nFix Formula Engine when using state formulas\nNew Page for smart Sensor Overview\nUpdate Readme and Doc",
+                "de": "Fix String Handling in Formelmotor\nDie Formel Motor bei Verwendung von Zustandsformeln\nNeue Seite für smart Sensor Übersicht\nUpdate Readme und Doc",
+                "ru": "Исправьте струнную обработку в двигателе Формулы\nФормула Фикс Двигатель при использовании формул состояния\nНовая страница для Smart Sensor\nОбновление Readme и Doc",
+                "pt": "Corrigir manuseamento de cordas no motor de fórmula\nCorrigir a Fórmula Motor ao usar fórmulas de estado\nNova Página para Visão Geral do Sensor Inteligente\nAtualizar o Readme e o Doc",
+                "nl": "Fix String Handling in Formule Motor\nFix Formule Motor bij gebruik van statusformules\nNieuwe pagina voor slimme sensor overzicht\nReadme en Doc bijwerken",
+                "fr": "Correction de la manipulation des chaînes dans le moteur Formula\nCorrection de la formule Moteur en utilisant des formules d'état\nNouvelle page pour le capteur intelligent Aperçu\nMettre à jour Readme et Doc",
+                "it": "Fissare la gestione delle stringhe in Formula Engine\nFormula di correzione Motore quando si utilizzano formule di stato\nNuova pagina per la panoramica dei sensori intelligenti\nAggiornamento Readme e Doc",
+                "es": "Manejo de cuerda fija en el motor de Fórmula\nFórmula fija Motor al usar fórmulas estatales\nNueva página para un sensor inteligente\nActualización Readme y Doc",
+                "pl": "Napraw obsługę strun w silniku formuły\nPopraw wzór Silnik przy użyciu wzorów stanu\nNowa strona dla inteligentnego przeglądu czujników\nAktualizuj Readme i Doc",
+                "uk": "Фіксація String Обробка в двигуні Формула\nФіксована формула Двигун при використанні державних формул\nНова сторінка для Smart Sensor Огляд\nОновлення Readme і Doc",
+                "zh-cn": "在公式引擎中修正字符串处理\n修正公式 使用状态公式时的引擎\n智能传感器概览的新页面\n更新 Readme 和 Doc"
+            },
+            "1.3.1": {
+                "en": "Fix DS Tick time budget",
+                "de": "Fix DS Tick Zeitbudget",
+                "ru": "Исправить DS Бюджет времени Tick",
+                "pt": "Corrigir DS Tick time budget",
+                "nl": "DS herstellen Tick time budget",
+                "fr": "Corriger DS Cochez le budget temps",
+                "it": "Risolvere DS Bilancio di tempo di punta",
+                "es": "Corrección DS Presupuesto del tiempo de marea",
+                "pl": "Napraw DS Budżet czasu przyklejenia",
+                "uk": "Фіксація DS Часовий бюджет",
+                "zh-cn": "修补 DS 时间预算"
+            },
+            "1.3.0": {
+                "en": "Fix DS Tick time budget\nUpdate Admin Package\nChange Admin to easy and expert mode\nAdd information in easy mode \nAdd type json for sending json, i.e. forecast\nUpdate Readme",
+                "de": "Fix DS Tick Zeitbudget\nAdmin-Paket aktualisieren\nAdmin in einfachen und kompetenten Modus wechseln\nInformationen im einfachen Modus hinzufügen\nFügen Sie Typ json zum Senden von json, d.h. Prognose\nUpdate Reader",
+                "ru": "Исправить DS Бюджет времени Tick\nОбновление пакета Admin\nИзмените админ в простой и экспертный режим\nДобавить информацию в удобном режиме\nДобавить тип json для отправки json, т.е. прогноз\nОбновление Readme",
+                "pt": "Corrigir DS Tick time budget\nActualizar o Pacote de Administração\nAlterar o Admin para modo fácil e experiente\nAdicionar informações em modo fácil\nAdicionar o tipo json para enviar o json, ou seja, previsão\nActualizar a Leitura",
+                "nl": "DS herstellen Tick time budget\nAdmin-pakket bijwerken\nAdmin wijzigen naar eenvoudige en deskundige modus\nInformatie toevoegen in eenvoudige modus\nType json toevoegen voor het verzenden van json, d.w.z. voorspelling\nReadme bijwerken",
+                "fr": "Corriger DS Cochez le budget temps\nMettre à jour le paquet Admin\nChanger Admin en mode facile et expert\nAjouter des informations en mode facile\nAjouter le type json pour envoyer json, c.-à-d. prévision\nMettre à jour Readme",
+                "it": "Risolvere DS Bilancio di tempo di punta\nAggiorna il pacchetto Admin\nModificare Admin in modalità facile ed esperto\nAggiungi informazioni in modalità semplice\nAggiungi json tipo per l'invio di json, cioè previsioni\nAggiornamento",
+                "es": "Corrección DS Presupuesto del tiempo de marea\nPaquete de actualización\nCambiar de administrador a modo fácil y experto\nAñadir información en modo fácil\nAñadir tipo json para enviar json, i.e. previsión\nActualización Readme",
+                "pl": "Napraw DS Budżet czasu przyklejenia\nAktualizacja pakietu administracyjnego\nZmień administrację na tryb łatwy i specjalistyczny\nDodaj informacje w trybie łatwym\nDodaj typ json do wysyłania json, tj. prognozę\nAktualizacja Readme",
+                "uk": "Фіксація DS Часовий бюджет\nОновлення пакету адміністратора\nЗміна Адміністратора для легкого та експертного режиму\nДодати інформацію в простий режим\nДодати тип json для відправки json, тобто прогноз\nОновлення Readme",
+                "zh-cn": "修补 DS 时间预算\n更新管理软件包\n将管理员更改为简单和专家模式\n以简单模式添加信息\n用于发送 json 的添加类型 json, 即预测\n更新读取器"
+            },
+            "1.2.2": {
+                "en": "Synchronize Formal Engine with Repo from Felliglanz\nAdd Warning after first start, if value is negative\nAdd Comment on first page, that SOLECTRUS doesn't accept negative values\nUpdate Readme and Translations",
+                "de": "Synchronisieren Sie Formal Engine mit Repo von Felli\nWarnung nach dem ersten Start hinzufügen, wenn der Wert negativ ist\nKommentar auf der ersten Seite hinzufügen, dass SOLECTRUS keine negativen Werte akzeptiert\nReadme und Übersetzungen aktualisieren",
+                "ru": "Синхронизируйте формальный двигатель с Repo от Felliglanz\nДобавьте предупреждение после первого запуска, если значение отрицательное\nДобавить комментарий на первой странице, что SOLECTRUS не принимает отрицательные значения\nОбновление Readme и переводов",
+                "pt": "Sincronizar o Motor Formal com o Repo de Felliglanz\nAdicionar aviso após o primeiro início, se o valor for negativo\nAdicionar Comentário na primeira página, que o SOLECTRUS não aceita valores negativos\nAtualizar Readme e traduções",
+                "nl": "Formal Engine synchroniseren met Repo van Felliglanz\nWaarschuwing toevoegen na eerste start, als waarde negatief is\nCommentaar toevoegen op de eerste pagina, dat SOLECTRUS geen negatieve waarden accepteert\nReadme en vertalingen bijwerken",
+                "fr": "Synchronisez le moteur formel avec Repo de Felliglanz\nAjouter un avertissement après le premier démarrage, si la valeur est négative\nAjouter un commentaire sur la première page, que SOLECTRUS n'accepte pas les valeurs négatives\nMettre à jour le texte et les traductions",
+                "it": "Synchronize Formal Engine con Repo di Felliglanz\nAggiungi Avvertenza dopo il primo avvio, se il valore è negativo\nAggiungi commento alla prima pagina, che SOLECTRUS non accetta valori negativi\nAggiornamento Readme e Traduzioni",
+                "es": "Synchronize Formal Engine with Repo from Felliglanz\nAñadir Advertencia después del primer comienzo, si el valor es negativo\nAgregar comentario en la primera página, que SOLECTRUS no acepta valores negativos\nActualizar Readme y Traducciones",
+                "pl": "Synchronizuj formalny silnik z Repo z Felliglanz\nDodaj ostrzeżenie po pierwszym uruchomieniu, jeśli wartość jest ujemna\nDodaj komentarz na pierwszej stronie, że SOLECTRUS nie akceptuje wartości ujemnych\nAktualizacja Readme i tłumaczenia",
+                "uk": "Синхронізувати формувальний двигун з репо від Felliglanz\nДодати Попередження після першого початку, якщо значення негативно\nДодати коментар на першій сторінці, що SOLECTRUS не приймає негативних значень\nОновлення перекладу",
+                "zh-cn": "用 Felliglanz 的 Repo 同步正式引擎\n如果数值为负数, 在第一次启动后添加警告\n在第一页添加注释, SOLECTRUS 不接受负值\n更新阅读和翻译"
+            },
+            "1.2.1": {
+                "en": "Fix wrong package",
+                "de": "Fehlerhaftes Paket beheben",
+                "ru": "Исправить неправильный пакет",
+                "pt": "Corrigir o pacote errado",
+                "nl": "Foute verpakking herstellen",
+                "fr": "Correction du mauvais paquet",
+                "it": "Fissare il pacchetto sbagliato",
+                "es": "Arregla el paquete equivocado",
+                "pl": "Napraw zły pakiet",
+                "uk": "Виправити неправильний пакет",
+                "zh-cn": "修正错误的软件包"
+            }
+        },
+        "titleLang": {
+            "en": "SOLECTRUS InfluxDB",
+            "de": "SOLECTRUS InfluxDB",
+            "ru": "SOLECTRUS InfluxDB",
+            "pt": "SOLECTRUS InfluxDB",
+            "nl": "SOLECTRUS InfluxDB",
+            "fr": "SOLECTRUS InfluxDB",
+            "it": "SOLECTRUS InfluxDB",
+            "es": "SOLECTRUS InfluxDB",
+            "pl": "SOLECTRUS InfluxDB",
+            "uk": "SOLECTRUS InfluxDB",
+            "zh-cn": "SOLECTRUS InfluxDB"
+        },
+        "desc": {
+            "en": "Writes configurable ioBroker states to InfluxDB",
+            "de": "Schreibt konfigurierbare ioBroker-Datenpunkte in eine InfluxDB",
+            "ru": "Записывает настраиваемые состояния ioBroker в InfluxDB.",
+            "pt": "Grava estados configuráveis ​​do ioBroker no InfluxDB",
+            "nl": "Schrijft configureerbare ioBroker-statussen naar InfluxDB",
+            "fr": "Écrit les états ioBroker configurables dans InfluxDB",
+            "it": "Scrive stati ioBroker configurabili su InfluxDB",
+            "es": "Escribe estados configurables de ioBroker en InfluxDB",
+            "pl": "Zapisuje konfigurowalne stany ioBroker w InfluxDB",
+            "uk": "Записує настроювані стани ioBroker до InfluxDB",
+            "zh-cn": "将可配置的 ioBroker 状态写入 InfluxDB"
+        },
+        "authors": [
+            "patricknitsch <patricknitsch@web.de>"
+        ],
+        "keywords": [
+            "SOLECTRUS",
+            "influxdb"
+        ],
+        "licenseInformation": {
+            "type": "free",
+            "license": "MIT"
+        },
+        "platform": "Javascript/Node.js",
+        "icon": "solectrus-influxdb.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/patricknitsch/ioBroker.solectrus-influxdb/main/admin/solectrus-influxdb.png",
+        "readme": "https://github.com/patricknitsch/ioBroker.solectrus-influxdb/blob/main/README.md",
+        "loglevel": "info",
+        "tier": 3,
+        "mode": "daemon",
+        "type": "communication",
+        "compact": true,
+        "messagebox": true,
+        "connectionType": "local",
+        "dataSource": "push",
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=6.0.11"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=7.6.20"
+            }
+        ],
+        "adminTab": {
+            "singleton": false,
+            "name": {
+                "en": "Sensors Overview",
+                "de": "Sensorübersicht",
+                "ru": "Обзор сенсоров",
+                "pt": "Visão geral dos sensores",
+                "nl": "Sensorenoverzicht",
+                "fr": "Aperçu des capteurs",
+                "it": "Panoramica dei sensori",
+                "es": "Resumen de sensores",
+                "pl": "Przegląd czujników",
+                "uk": "Огляд датчиків",
+                "zh-cn": "传感器概览"
+            },
+            "link": ""
+        }
     },
-    "titleLang": {
-      "en": "SOLECTRUS InfluxDB",
-      "de": "SOLECTRUS InfluxDB",
-      "ru": "SOLECTRUS InfluxDB",
-      "pt": "SOLECTRUS InfluxDB",
-      "nl": "SOLECTRUS InfluxDB",
-      "fr": "SOLECTRUS InfluxDB",
-      "it": "SOLECTRUS InfluxDB",
-      "es": "SOLECTRUS InfluxDB",
-      "pl": "SOLECTRUS InfluxDB",
-      "uk": "SOLECTRUS InfluxDB",
-      "zh-cn": "SOLECTRUS InfluxDB"
+    "native": {
+        "influxUrl": "http://localhost:8086",
+        "influxOrg": "solectrus",
+        "influxBucket": "solectrus",
+        "influxInterval": 5,
+        "influxToken": "",
+        "enableExpertMode": false,
+        "enableDataSolectrus": false,
+        "enableForecast": false,
+        "dsPollIntervalSeconds": 5,
+        "dsSnapshotInputs": false,
+        "dsSnapshotDelayMs": 0,
+        "dsItems": [],
+        "forecasts": [],
+        "iframeUrl": "",
+        "sensors": [
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "inverter",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_1",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "inverter_1",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_2",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "inverter_2",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_3",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "inverter_3",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_4",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "inverter_4",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_5",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "inverter_5",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "GRID_IMPORT_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "grid",
+                "field": "import_power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "GRID_EXPORT_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "grid",
+                "field": "export_power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "GRID_EXPORT_LIMIT",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "grid",
+                "field": "export_limit"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CASE_TEMP",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "case",
+                "field": "temperature"
+            },
+            {
+                "enabled": false,
+                "SensorName": "SYSTEM_STATUS",
+                "sourceState": "",
+                "type": "string",
+                "measurement": "system",
+                "field": "status"
+            },
+            {
+                "enabled": false,
+                "SensorName": "SYSTEM_STATUS_OK",
+                "sourceState": "",
+                "type": "bool",
+                "measurement": "system",
+                "field": "status_ok"
+            },
+            {
+                "enabled": false,
+                "SensorName": "BATTERY_SOC",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "battery",
+                "field": "soc"
+            },
+            {
+                "enabled": false,
+                "SensorName": "BATTERY_CHARGING_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "battery",
+                "field": "charging_power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "BATTERY_DISCHARGING_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "battery",
+                "field": "discharging_power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "HOUSE_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "house",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "HEATPUMP_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "heatpump",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_01",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_01",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_02",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_02",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_03",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "custom_03",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_04",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "custom_04",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_05",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "custom_05",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_06",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_06",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_07",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_07",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_08",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_08",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_09",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_09",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_10",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_10",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_11",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_11",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_12",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_12",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_13",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_13",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_14",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_14",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_15",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_15",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_16",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_16",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_17",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_17",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_18",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_18",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_19",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_19",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_20",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_20",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "WALLBOX_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "wallbox",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "WALLBOX_CONNECTED",
+                "sourceState": "",
+                "type": "bool",
+                "measurement": "wallbox",
+                "field": "connected"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CAR_BATTERY_SOC",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "car",
+                "field": "battery_soc"
+            },
+            {
+                "enabled": false,
+                "SensorName": "HEATPUMP_HEATING_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "heatpump",
+                "field": "heating_power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "HEATPUMP_TANK_TEMP",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "heatpump",
+                "field": "tank_temp"
+            },
+            {
+                "enabled": false,
+                "SensorName": "HEATPUMP_STATUS",
+                "sourceState": "",
+                "type": "string",
+                "measurement": "heatpump",
+                "field": "status"
+            },
+            {
+                "enabled": false,
+                "SensorName": "OUTDOOR_TEMP",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "outdoor",
+                "field": "temperature"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_FORECAST",
+                "sourceState": "",
+                "type": "json",
+                "jsonPreset": "auto",
+                "measurement": "inverter_forecast",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_FORECAST_CLEARSKY",
+                "sourceState": "",
+                "type": "json",
+                "jsonPreset": "auto",
+                "measurement": "inverter_forecast_clearsky",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "OUTDOOR_TEMP_FORECAST",
+                "sourceState": "",
+                "type": "json",
+                "jsonPreset": "auto",
+                "measurement": "outdoor_forecast",
+                "field": "temperature"
+            }
+        ]
     },
-    "desc": {
-      "en": "Writes configurable ioBroker states to InfluxDB",
-      "de": "Schreibt konfigurierbare ioBroker-Datenpunkte in eine InfluxDB",
-      "ru": "Записывает настраиваемые состояния ioBroker в InfluxDB.",
-      "pt": "Grava estados configuráveis ​​do ioBroker no InfluxDB",
-      "nl": "Schrijft configureerbare ioBroker-statussen naar InfluxDB",
-      "fr": "Écrit les états ioBroker configurables dans InfluxDB",
-      "it": "Scrive stati ioBroker configurabili su InfluxDB",
-      "es": "Escribe estados configurables de ioBroker en InfluxDB",
-      "pl": "Zapisuje konfigurowalne stany ioBroker w InfluxDB",
-      "uk": "Записує настроювані стани ioBroker до InfluxDB",
-      "zh-cn": "将可配置的 ioBroker 状态写入 InfluxDB"
-    },
-    "authors": [
-      "patricknitsch <patricknitsch@web.de>"
+    "encryptedNative": [
+        "influxToken"
     ],
-    "keywords": [
-      "SOLECTRUS",
-      "influxdb"
+    "protectedNative": [
+        "influxToken"
     ],
-    "licenseInformation": {
-      "type": "free",
-      "license": "MIT"
-    },
-    "platform": "Javascript/Node.js",
-    "icon": "solectrus-influxdb.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/patricknitsch/ioBroker.solectrus-influxdb/main/admin/solectrus-influxdb.png",
-    "readme": "https://github.com/patricknitsch/ioBroker.solectrus-influxdb/blob/main/README.md",
-    "loglevel": "info",
-    "tier": 3,
-    "mode": "daemon",
-    "type": "communication",
-    "compact": true,
-    "messagebox": true,
-    "connectionType": "local",
-    "dataSource": "push",
-    "adminUI": {
-      "config": "json"
-    },
-    "dependencies": [
-      {
-        "js-controller": ">=6.0.11"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=7.6.20"
-      }
-    ],
-    "adminTab": {
-      "singleton": false,
-      "name": {
-        "en": "Sensors Overview",
-        "de": "Sensorübersicht",
-        "ru": "Обзор сенсоров",
-        "pt": "Visão geral dos sensores",
-        "nl": "Sensorenoverzicht",
-        "fr": "Aperçu des capteurs",
-        "it": "Panoramica dei sensori",
-        "es": "Resumen de sensores",
-        "pl": "Przegląd czujników",
-        "uk": "Огляд датчиків",
-        "zh-cn": "传感器概览"
-      },
-      "link": ""
-    }
-  },
-  "native": {
-    "influxUrl": "http://localhost:8086",
-    "influxOrg": "solectrus",
-    "influxBucket": "solectrus",
-    "influxInterval": 5,
-    "influxToken": "",
-    "enableExpertMode": false,
-    "enableDataSolectrus": false,
-    "enableForecast": false,
-    "dsPollIntervalSeconds": 5,
-    "dsSnapshotInputs": false,
-    "dsSnapshotDelayMs": 0,
-    "dsItems": [],
-    "forecasts": [],
-    "iframeUrl": "",
-    "sensors": [
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "inverter",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_1",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "inverter_1",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_2",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "inverter_2",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_3",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "inverter_3",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_4",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "inverter_4",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_5",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "inverter_5",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "GRID_IMPORT_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "grid",
-        "field": "import_power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "GRID_EXPORT_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "grid",
-        "field": "export_power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "GRID_EXPORT_LIMIT",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "grid",
-        "field": "export_limit"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CASE_TEMP",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "case",
-        "field": "temperature"
-      },
-      {
-        "enabled": false,
-        "SensorName": "SYSTEM_STATUS",
-        "sourceState": "",
-        "type": "string",
-        "measurement": "system",
-        "field": "status"
-      },
-      {
-        "enabled": false,
-        "SensorName": "SYSTEM_STATUS_OK",
-        "sourceState": "",
-        "type": "bool",
-        "measurement": "system",
-        "field": "status_ok"
-      },
-      {
-        "enabled": false,
-        "SensorName": "BATTERY_SOC",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "battery",
-        "field": "soc"
-      },
-      {
-        "enabled": false,
-        "SensorName": "BATTERY_CHARGING_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "battery",
-        "field": "charging_power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "BATTERY_DISCHARGING_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "battery",
-        "field": "discharging_power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "HOUSE_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "house",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "HEATPUMP_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "heatpump",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_01",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_01",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_02",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_02",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_03",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "custom_03",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_04",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "custom_04",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_05",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "custom_05",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_06",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_06",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_07",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_07",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_08",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_08",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_09",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_09",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_10",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_10",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_11",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_11",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_12",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_12",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_13",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_13",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_14",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_14",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_15",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_15",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_16",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_16",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_17",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_17",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_18",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_18",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_19",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_19",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_20",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_20",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "WALLBOX_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "wallbox",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "WALLBOX_CONNECTED",
-        "sourceState": "",
-        "type": "bool",
-        "measurement": "wallbox",
-        "field": "connected"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CAR_BATTERY_SOC",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "car",
-        "field": "battery_soc"
-      },
-      {
-        "enabled": false,
-        "SensorName": "HEATPUMP_HEATING_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "heatpump",
-        "field": "heating_power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "HEATPUMP_TANK_TEMP",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "heatpump",
-        "field": "tank_temp"
-      },
-      {
-        "enabled": false,
-        "SensorName": "HEATPUMP_STATUS",
-        "sourceState": "",
-        "type": "string",
-        "measurement": "heatpump",
-        "field": "status"
-      },
-      {
-        "enabled": false,
-        "SensorName": "OUTDOOR_TEMP",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "outdoor",
-        "field": "temperature"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_FORECAST",
-        "sourceState": "",
-        "type": "json",
-        "jsonPreset": "auto",
-        "measurement": "inverter_forecast",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_FORECAST_CLEARSKY",
-        "sourceState": "",
-        "type": "json",
-        "jsonPreset": "auto",
-        "measurement": "inverter_forecast_clearsky",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "OUTDOOR_TEMP_FORECAST",
-        "sourceState": "",
-        "type": "json",
-        "jsonPreset": "auto",
-        "measurement": "outdoor_forecast",
-        "field": "temperature"
-      }
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "Device or service connected",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
     ]
-  },
-  "encryptedNative": [
-    "influxToken"
-  ],
-  "protectedNative": [
-    "influxToken"
-  ],
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": "Information"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.connected",
-        "name": "Device or service connected",
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    }
-  ]
 }

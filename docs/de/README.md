@@ -68,6 +68,7 @@ Auf **Add** klicken und konfigurieren:
 | Enabled | Sensor aktivieren/deaktivieren |
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. |
+| Maximalwert in W (optional) | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. Überschreibt den Standard-Grenzwert von 10000 W. |
 | Datatype | `int`, `float`, `bool`, `string` oder `json` (JSON-Array) |
 | Influx Measurement | InfluxDB Measurement-Name (z.B. `inverter`) |
 | Influx Field | InfluxDB Feldname (z.B. `power`) |
@@ -117,6 +118,20 @@ Ungültige Werte (`NaN` bei int/float, `null`/`undefined` bei Strings) werden au
 ### Negative Werte
 
 SOLECTRUS akzeptiert keine negativen Werte. Liefert ein Sensor nach dem Adapterstart einen negativen Wert, wird **einmalig** eine Warnung im Log ausgegeben. Die Werte werden trotzdem an InfluxDB gesendet, können dort aber zu fehlerhaften Auswertungen führen. Abhilfe: Quell-Datenpunkte prüfen oder die Data-SOLECTRUS Formel-Engine mit der Option **Negative Werte auf 0 begrenzen** (Clamp negative to 0) verwenden.
+
+### Maximalwert-Validierung
+
+Jeder numerische Sensor (`int`, `float` oder Standardtyp) unterstützt ein optionales **Maximalwert in W**-Feld. Wird dieser Wert überschritten:
+
+1. Es wird eine Warnung ins Log geschrieben: `Sensor "..." delivers implausible value (X > max Y). Using last valid value (Z) instead.`
+2. Stattdessen wird der **zuletzt gültige Wert** (der zuletzt gemessene Wert unterhalb des Limits) an InfluxDB gesendet.
+3. Falls noch kein gültiger Wert vorliegt, wird der Datenpunkt vollständig übersprungen.
+
+Dadurch werden kurzzeitige Sensor-Ausreißer (z.B. kurze Burst-Lesungen von 99999 W) verhindert, die die Zeitreihendaten verfälschen würden.
+
+Für alle Sensoren ohne eigenen Maximalwert gilt ein Standardlimit von **10000 W**. Der sensor-spezifische Maximalwert hat immer Vorrang vor diesem Standardwert.
+
+**Beispiel:** Individuelle Sensor-Maximalwerte leer lassen, um das Standard-Limit von `10000` W zu verwenden, oder einzelne Sensoren überschreiben (z.B. `5000` W für einen Zweitwechselrichter).
 
 ### Field-Type-Konflikte
 
