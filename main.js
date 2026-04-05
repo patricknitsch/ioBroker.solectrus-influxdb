@@ -1319,6 +1319,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 			if (sensorId) {
 				this.cache[sensorId] = state.val;
 				this.setState(sensorId, state.val, true);
+				// Keep alive timestamp up-to-date for ds.* sensor sources
+				this.lastUpdateTs.set(sensorId, typeof state.ts === 'number' ? state.ts : Date.now());
 			}
 			return;
 		}
