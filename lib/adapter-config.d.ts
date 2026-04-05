@@ -14,6 +14,7 @@ interface SensorEntry {
 	measurement: string;
 	field: string;
 	type: string;
+	maxValue?: number;
 	jsonPreset?: string;
 	jsonTsField?: string;
 	jsonValField?: string;

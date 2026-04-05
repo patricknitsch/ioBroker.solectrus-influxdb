@@ -68,6 +68,7 @@ Auf **Add** klicken und konfigurieren:
 | Enabled | Sensor aktivieren/deaktivieren |
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. |
+| Maximalwert (optional) | Maximaler plausibler Wert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. |
 | Datatype | `int`, `float`, `bool`, `string` oder `json` (JSON-Array) |
 | Influx Measurement | InfluxDB Measurement-Name (z.B. `inverter`) |
 | Influx Field | InfluxDB Feldname (z.B. `power`) |
@@ -117,6 +118,18 @@ Ungültige Werte (`NaN` bei int/float, `null`/`undefined` bei Strings) werden au
 ### Negative Werte
 
 SOLECTRUS akzeptiert keine negativen Werte. Liefert ein Sensor nach dem Adapterstart einen negativen Wert, wird **einmalig** eine Warnung im Log ausgegeben. Die Werte werden trotzdem an InfluxDB gesendet, können dort aber zu fehlerhaften Auswertungen führen. Abhilfe: Quell-Datenpunkte prüfen oder die Data-SOLECTRUS Formel-Engine mit der Option **Negative Werte auf 0 begrenzen** (Clamp negative to 0) verwenden.
+
+### Maximalwert-Validierung
+
+Jeder numerische Sensor (`int`, `float` oder Standardtyp) unterstützt ein optionales **Maximalwert**-Feld. Wird dieser Wert überschritten:
+
+1. Es wird eine Warnung ins Log geschrieben: `Sensor "..." delivers implausible value (X > max Y). Using last valid value (Z) instead.`
+2. Stattdessen wird der **zuletzt gültige Wert** (der zuletzt gemessene Wert unterhalb des Limits) an InfluxDB gesendet.
+3. Falls noch kein gültiger Wert vorliegt, wird der Datenpunkt vollständig übersprungen.
+
+Dadurch werden kurzzeitige Sensor-Ausreißer (z.B. kurze Burst-Lesungen von 99999 W) verhindert, die die Zeitreihendaten verfälschen würden.
+
+**Beispiel:** Den *Maximalwert* auf `10000` setzen, um Messwerte eines Wechselrichters über 10 kW zu verwerfen.
 
 ### Field-Type-Konflikte
 

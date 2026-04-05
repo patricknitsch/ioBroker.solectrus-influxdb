@@ -68,6 +68,7 @@ Click **Add** to create a new sensor, then configure:
 | Enabled | Activate/deactivate the sensor |
 | Sensor Name | Display name (also used for the ioBroker state ID under `sensors.*`) |
 | ioBroker Source State | The source state to read values from. Use the **Select** button to browse the object tree. |
+| Max Value (optional) | Maximum plausible value. If exceeded, the last valid value is sent instead and a warning is logged. |
 | Datatype | `int`, `float`, `bool`, `string`, or `json` (JSON Array) |
 | Influx Measurement | The InfluxDB measurement name (e.g. `inverter`) |
 | Influx Field | The InfluxDB field name (e.g. `power`) |
@@ -117,6 +118,18 @@ Invalid values (`NaN` for int/float, `null`/`undefined` for strings) are automat
 ### Negative values
 
 SOLECTRUS does not accept negative values. If a sensor delivers a negative value after adapter start, a warning is logged **once**. The values are still sent to InfluxDB but may cause incorrect evaluations there. To fix this, check your source states or use the Data-SOLECTRUS formula engine with the **Clamp negative to 0** option.
+
+### Maximum value validation
+
+Each numeric sensor (`int`, `float`, or default type) supports an optional **Max Value** field. If a collected value exceeds this limit:
+
+1. A warning is logged: `Sensor "..." delivers implausible value (X > max Y). Using last valid value (Z) instead.`
+2. The **last valid value** (the most recent value at or below the limit) is sent to InfluxDB instead.
+3. If no valid value has been seen yet for that sensor, the data point is skipped entirely.
+
+This prevents temporary sensor spikes (e.g. a brief burst reading of 99999 W) from corrupting the time-series data.
+
+**Example:** Set *Max Value* to `10000` for an inverter power sensor to discard any readings above 10 kW.
 
 ### Field type conflicts
 

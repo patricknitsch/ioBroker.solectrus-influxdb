@@ -228,6 +228,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.isUnloading = false;
 		this.isFlushing = false;
 		this.negativeValueWarned = new Set();
+		this.lastValidValue = new Map();
 
 		/* ---------- Forecast ---------- */
 		// Maps sourceState → array of forecast config entries that use it
@@ -1476,13 +1477,29 @@ class SolectrusInfluxdb extends utils.Adapter {
 				);
 			}
 
-			this.log.debug(`Collect point: ${id} : ${value} to: ${sensor.measurement} : ${sensor.field}`);
+			// Validate against configured maximum value
+			const maxVal = typeof sensor.maxValue === 'number' ? sensor.maxValue : null;
+			let valueToSend = value;
+			if (maxVal !== null && typeof value === 'number' && value > maxVal) {
+				const lastValid = this.lastValidValue.get(id);
+				this.log.warn(
+					`Sensor "${sensor.SensorName}" delivers implausible value (${value} > max ${maxVal}). Using last valid value (${lastValid ?? 'none'}) instead.`,
+				);
+				if (lastValid === undefined) {
+					continue;
+				}
+				valueToSend = lastValid;
+			} else if (typeof value === 'number') {
+				this.lastValidValue.set(id, value);
+			}
+
+			this.log.debug(`Collect point: ${id} : ${valueToSend} to: ${sensor.measurement} : ${sensor.field}`);
 			this.buffer.push({
 				id: sensor.SensorName,
 				measurement: sensor.measurement,
 				field: sensor.field,
 				type: sensor.type,
-				value,
+				value: valueToSend,
 				ts: now,
 			});
 
