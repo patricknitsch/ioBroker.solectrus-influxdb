@@ -788,15 +788,19 @@
 											React.createElement('input', {
 												style: Object.assign({}, inputStyle, { maxWidth: 200 }),
 												type: 'number',
+												min: '0',
+												step: 'any',
 												value: editSensor.maxValue !== undefined && editSensor.maxValue !== null ? editSensor.maxValue : '',
 												placeholder: t('e.g. 10000'),
 												onChange: e => {
 													var raw = e.target.value;
-													setDraftField('maxValue', raw === '' ? undefined : Number(raw));
+													var parsed = Number(raw);
+													setDraftField('maxValue', raw === '' || !Number.isFinite(parsed) ? undefined : parsed);
 												},
 												onBlur: e => {
 													var raw = e.target.value;
-													updateSelected('maxValue', raw === '' ? undefined : Number(raw));
+													var parsed = Number(raw);
+													updateSelected('maxValue', raw === '' || !Number.isFinite(parsed) ? undefined : parsed);
 												},
 											}),
 											React.createElement(

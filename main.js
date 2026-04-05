@@ -1477,23 +1477,36 @@ class SolectrusInfluxdb extends utils.Adapter {
 				);
 			}
 
-			// Validate against configured maximum value
-			const maxVal = typeof sensor.maxValue === 'number' ? sensor.maxValue : null;
+			// Validate against configured maximum value (for numeric-type sensors)
+			// Uses parseInt for 'int' type, parseFloat for 'float'/standard – consistent with flushBuffer.
+			// Non-numeric types (bool, string, json) are skipped.
+			// Non-finite maxVal (NaN, Infinity) is treated as "not configured".
+			const maxVal = Number(sensor.maxValue);
 			let valueToSend = value;
-			if (maxVal !== null && typeof value === 'number' && value > maxVal) {
-				const lastValid = this.lastValidValue.get(id);
-				if (lastValid === undefined) {
-					this.log.warn(
-						`Sensor "${sensor.SensorName}" delivers implausible value (${value} > max ${maxVal}). No last valid value available, skipping point.`,
-					);
-					continue;
+			if (
+				Number.isFinite(maxVal) &&
+				sensor.type !== 'bool' &&
+				sensor.type !== 'string' &&
+				sensor.type !== 'json'
+			) {
+				const numValue = sensor.type === 'int' ? parseInt(value, 10) : parseFloat(value);
+				if (Number.isFinite(numValue)) {
+					if (numValue > maxVal) {
+						const lastValid = this.lastValidValue.get(id);
+						if (lastValid === undefined) {
+							this.log.warn(
+								`Sensor "${sensor.SensorName}" delivers implausible value (${numValue} > max ${maxVal}). No last valid value available, skipping point.`,
+							);
+							continue;
+						}
+						this.log.warn(
+							`Sensor "${sensor.SensorName}" delivers implausible value (${numValue} > max ${maxVal}). Using last valid value (${lastValid}) instead.`,
+						);
+						valueToSend = lastValid;
+					} else {
+						this.lastValidValue.set(id, numValue);
+					}
 				}
-				this.log.warn(
-					`Sensor "${sensor.SensorName}" delivers implausible value (${value} > max ${maxVal}). Using last valid value (${lastValid}) instead.`,
-				);
-				valueToSend = lastValid;
-			} else if (typeof value === 'number') {
-				this.lastValidValue.set(id, value);
 			}
 
 			this.log.debug(`Collect point: ${id} : ${valueToSend} to: ${sensor.measurement} : ${sensor.field}`);
