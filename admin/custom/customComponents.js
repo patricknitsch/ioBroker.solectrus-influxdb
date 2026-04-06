@@ -779,13 +779,14 @@
 										t('Select'),
 									),
 								),
-								// Row: Max value (numeric types only) + Alive timeout (all types) side by side
-								React.createElement(
-									'div',
-									{ style: rowStyle },
-									// Left column: max value (only for numeric types)
-									(editSensor.type || '') !== 'json' && (editSensor.type || '') !== 'bool' && (editSensor.type || '') !== 'string'
-										? React.createElement(
+								// Alive timeout (all types) + Max value (numeric types only):
+								// 2-column layout when max value applies, full-width otherwise
+								(editSensor.type || '') !== 'json' && (editSensor.type || '') !== 'bool' && (editSensor.type || '') !== 'string'
+									? React.createElement(
+										'div',
+										{ style: rowStyle },
+										// Left column: max value
+										React.createElement(
 											'div',
 											null,
 											React.createElement('label', { style: labelStyle }, t('Max Value in W (optional)')),
@@ -812,15 +813,42 @@
 												{ style: { fontSize: 12, color: colors.textMuted, marginTop: 2 } },
 												t('maxValueHint'),
 											),
-										)
-										: React.createElement('div', null),
-									// Right column: alive timeout (all sensor types)
-									React.createElement(
+										),
+										// Right column: alive timeout
+										React.createElement(
+											'div',
+											null,
+											React.createElement('label', { style: labelStyle }, t('aliveTimeoutMinutesLabel')),
+											React.createElement('input', {
+												style: inputStyle,
+												type: 'number',
+												min: '0',
+												value: editSensor.aliveTimeoutMinutes !== undefined && editSensor.aliveTimeoutMinutes !== null ? editSensor.aliveTimeoutMinutes : 0,
+												onChange: e => {
+													var raw = e.target.value;
+													var parsed = parseInt(raw, 10);
+													setDraftField('aliveTimeoutMinutes', raw === '' || !Number.isFinite(parsed) ? 0 : parsed);
+												},
+												onBlur: e => {
+													var raw = e.target.value;
+													var parsed = parseInt(raw, 10);
+													updateSelected('aliveTimeoutMinutes', raw === '' || !Number.isFinite(parsed) ? 0 : parsed);
+												},
+											}),
+											React.createElement(
+												'div',
+												{ style: { fontSize: 12, color: colors.textMuted, marginTop: 2 } },
+												t('aliveTimeoutHint'),
+											),
+										),
+									)
+									: React.createElement(
 										'div',
 										null,
+										// Full-width alive timeout when max value doesn't apply
 										React.createElement('label', { style: labelStyle }, t('aliveTimeoutMinutesLabel')),
 										React.createElement('input', {
-											style: inputStyle,
+											style: Object.assign({}, inputStyle, { maxWidth: 200 }),
 											type: 'number',
 											min: '0',
 											value: editSensor.aliveTimeoutMinutes !== undefined && editSensor.aliveTimeoutMinutes !== null ? editSensor.aliveTimeoutMinutes : 0,
@@ -841,7 +869,6 @@
 											t('aliveTimeoutHint'),
 										),
 									),
-								),
 								// NOTE: All select values and conditionals use editSensor (draft)
 								// instead of selectedSensor (props) to avoid the value snapping back
 								// when Admin re-renders with stale props before the update propagates.
