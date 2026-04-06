@@ -47,11 +47,11 @@ Go to the **Sensors** tab. The master/detail editor shows all configured sensors
 
 By default, the adapter runs in **Standard Mode**. The sensor list shows all preconfigured sensors (INVERTER_POWER, BATTERY_SOC, HOUSE_POWER, forecast sensors, etc.). In standard mode:
 
-- **Editable**: Source State (ioBroker state) and Enabled checkbox
+- **Editable**: Source State (ioBroker state), Enabled checkbox, **Max Value in W**, and **Alive Timeout**
 - **Read-only**: Sensor Name, Datatype, Measurement, Field, JSON Preset
 - **Hidden**: Add, Delete, Duplicate buttons
 
-This ensures that beginners can simply enable sensors and assign source states without accidentally changing the InfluxDB mapping.
+This ensures that beginners can simply enable sensors and assign source states without accidentally changing the InfluxDB mapping. **Max Value** and **Alive Timeout** can always be configured — Expert Mode is not required for these fields.
 
 To unlock full control, enable **Expert Mode** on the InfluxDB settings page. In expert mode:
 
@@ -59,9 +59,11 @@ To unlock full control, enable **Expert Mode** on the InfluxDB settings page. In
 - Sensors can be added, deleted, duplicated, and reordered
 - JSON presets can be changed to custom mode
 
-### Adding a sensor (Expert Mode)
+### Sensor settings
 
-Click **Add** to create a new sensor, then configure:
+The table below shows all configurable fields per sensor. **Max Value in W** and **Alive Timeout** are editable in Standard Mode too. In **Expert Mode**, Sensor Name, Datatype, Measurement, and Field also become editable, and sensors can be added, deleted, and reordered.
+
+Click **Add** (Expert Mode) or select an existing sensor to configure:
 
 | Setting | Description |
 |---------|-------------|
