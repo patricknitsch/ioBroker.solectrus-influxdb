@@ -825,6 +825,7 @@
 												type: 'number',
 												min: '0',
 												value: editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : '',
+												placeholder: t('e.g. 60'),
 												onChange: e => {
 													var raw = e.target.value;
 													var parsed = parseInt(raw, 10);
@@ -853,6 +854,7 @@
 											type: 'number',
 											min: '0',
 											value: editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : '',
+											placeholder: t('e.g. 60'),
 											onChange: e => {
 												var raw = e.target.value;
 												var parsed = parseInt(raw, 10);
