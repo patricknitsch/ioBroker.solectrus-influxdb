@@ -739,6 +739,9 @@
             if (state && state.ts) {
                 var tsEl = document.createElement('div');
                 tsEl.className = 'sensor-card-source';
+                var aliveMs = sensor.aliveTimeoutMinutes > 0 ? sensor.aliveTimeoutMinutes * 60000 : 0;
+                var isStale = aliveMs > 0 && (Date.now() - state.ts) > aliveMs;
+                if (isStale) tsEl.style.color = '#e67e22';
                 tsEl.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
                 card.appendChild(tsEl);
             }

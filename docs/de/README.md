@@ -426,8 +426,10 @@ Der Adapter kann überwachen, ob Sensorwerte noch regelmäßig aktualisiert werd
 Erhält ein Sensor länger als den konfigurierten Timeout keinen neuen Wert, gibt der Adapter eine Warnung aus:
 
 ```
-Sensor "INVERTER_POWER": last measurement update longer than 10 minute(s)
+Sensor "INVERTER_POWER": no update since 4/5/2026, 6:30:00 PM (longer than 10 minute(s))
 ```
+
+Zusätzlich wird der letzte Zeitstempel des betroffenen Sensors im **Tab** in **orange** angezeigt, sodass du veraltete Sensoren auf einen Blick erkennst, ohne das Log zu öffnen.
 
 Die Warnung wird pro Sensor höchstens einmal pro Timeout-Periode wiederholt, damit das Log nicht überflutet wird. Setze den Timeout auf `0`, um diese Prüfung zu deaktivieren. Neu angelegte Sensoren haben standardmäßig einen Timeout von `60` Minuten.
 
