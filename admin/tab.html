@@ -396,6 +396,7 @@
             connecting:     'Connecting…',
             connected:      'Connected',
             disconnected:   'Disconnected',
+            lastUpdate:     'Last update:',
         },
         de: {
             loading:        'Lade…',
@@ -429,6 +430,7 @@
             connecting:     'Verbinde…',
             connected:      'Verbunden',
             disconnected:   'Getrennt',
+            lastUpdate:     'Letzter Zeitstempel:',
         }
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
@@ -733,6 +735,14 @@
                 card.appendChild(srcEl);
             }
 
+            /* last update timestamp */
+            if (state && state.ts) {
+                var tsEl = document.createElement('div');
+                tsEl.className = 'sensor-card-source';
+                tsEl.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
+                card.appendChild(tsEl);
+            }
+
             grid.appendChild(card);
         });
     }
@@ -798,6 +808,14 @@
                 srcEl.textContent = expr;
                 srcEl.title = expr;
                 card.appendChild(srcEl);
+            }
+
+            /* last update timestamp */
+            if (state && state.ts) {
+                var tsEl = document.createElement('div');
+                tsEl.className = 'sensor-card-source';
+                tsEl.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
+                card.appendChild(tsEl);
             }
 
             grid.appendChild(card);
