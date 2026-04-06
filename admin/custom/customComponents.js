@@ -941,15 +941,14 @@
 												var mf =
 													(editSensor.measurement || '?') + ':' + (editSensor.field || '?');
 												var sensorType = editSensor.type || '';
+												var timeoutMin = editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : 60;
 												var monitoringInfo;
 												if (sensorType !== 'bool' && sensorType !== 'string') {
 													var maxW = editSensor.maxValue != null ? editSensor.maxValue : 10000;
-													var timeoutMin = editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : 60;
 													monitoringInfo = t('nonExpertMonitoringInfoFull')
 														.replace('%MAXW%', maxW)
 														.replace('%TIMEOUTMIN%', timeoutMin);
 												} else {
-													var timeoutMin = editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : 60;
 													monitoringInfo = t('nonExpertMonitoringInfo')
 														.replace('%TIMEOUTMIN%', timeoutMin);
 												}
