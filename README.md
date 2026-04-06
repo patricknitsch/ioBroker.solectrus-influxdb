@@ -62,8 +62,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.6.0 (2026-04-06)
 
 * (patricknitsch) Catch max. Values - settable in Config
 * (patricknitsch) Increase Version from 20 to 24 becauso of deploy error
