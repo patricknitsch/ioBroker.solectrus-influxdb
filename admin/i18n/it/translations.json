@@ -260,6 +260,6 @@
   "aliveTimeoutMinutesLabel": "Timeout Alive in min (min, 0 = disabilitato)",
   "aliveTimeoutHint": "Se l'ultimo timestamp dello stato sorgente supera il timeout, viene registrato un avviso. Tieni presente che il timeout deve essere maggiore dell'intervallo di aggiornamento degli adattatori sorgente. Predefinito: 60 min.",
   "e.g. 60": "es. 60",
-  "nonExpertMonitoringInfoFull": "Monitoraggio attivo: valori fino a %MAXW% W · timeout fino a %TIMEOUTMIN% min. Configurabile in modalità esperto.",
-  "nonExpertMonitoringInfo": "Monitoraggio attivo: timeout fino a %TIMEOUTMIN% min. Configurabile in modalità esperto."
+  "nonExpertMonitoringInfoFull": "Monitoraggio attivo: valori fino a %MAXW% W · timeout fino a %TIMEOUTMIN% min.\nConfigurabile in modalità esperto.",
+  "nonExpertMonitoringInfo": "Monitoraggio attivo: timeout fino a %TIMEOUTMIN% min.\nConfigurabile in modalità esperto."
 }

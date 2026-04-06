@@ -261,6 +261,6 @@
   "aliveTimeoutMinutesLabel": "Délai Alive in min (min, 0 = désactivé)",
   "aliveTimeoutHint": "Si le dernier horodatage de l'état source dépasse le délai, un avertissement est journalisé. Notez que le délai doit être supérieur à l'intervalle de mise à jour des adaptateurs source. Par défaut: 60 min.",
   "e.g. 60": "ex. 60",
-  "nonExpertMonitoringInfoFull": "Surveillance active : valeurs jusqu'à %MAXW% W · délai jusqu'à %TIMEOUTMIN% min. Configurable en mode expert.",
-  "nonExpertMonitoringInfo": "Surveillance active : délai jusqu'à %TIMEOUTMIN% min. Configurable en mode expert."
+  "nonExpertMonitoringInfoFull": "Surveillance active : valeurs jusqu'à %MAXW% W · délai jusqu'à %TIMEOUTMIN% min.\nConfigurable en mode expert.",
+  "nonExpertMonitoringInfo": "Surveillance active : délai jusqu'à %TIMEOUTMIN% min.\nConfigurable en mode expert."
 }

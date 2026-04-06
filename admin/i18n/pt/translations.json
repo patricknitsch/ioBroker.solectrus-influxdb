@@ -261,6 +261,6 @@
   "aliveTimeoutMinutesLabel": "Tempo limite Alive in min (min, 0 = desativado)",
   "aliveTimeoutHint": "Se o último carimbo de data/hora do estado de origem exceder o tempo limite, um aviso é registrado. Observe que o tempo limite deve ser maior que o intervalo de atualização dos adaptadores de origem. Padrão: 60 min.",
   "e.g. 60": "ex. 60",
-  "nonExpertMonitoringInfoFull": "Monitorização ativa: valores até %MAXW% W · timeout até %TIMEOUTMIN% min. Configurável no modo especialista.",
-  "nonExpertMonitoringInfo": "Monitorização ativa: timeout até %TIMEOUTMIN% min. Configurável no modo especialista."
+  "nonExpertMonitoringInfoFull": "Monitorização ativa: valores até %MAXW% W · timeout até %TIMEOUTMIN% min.\nConfigurável no modo especialista.",
+  "nonExpertMonitoringInfo": "Monitorização ativa: timeout até %TIMEOUTMIN% min.\nConfigurável no modo especialista."
 }

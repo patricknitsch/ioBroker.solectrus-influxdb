@@ -261,6 +261,6 @@
   "aliveTimeoutMinutesLabel": "Alive-Timeout in min (min, 0 = deaktiviert)",
   "aliveTimeoutHint": "Überschreitet der letzte Zeitstempel des Quellstatus den Alive-Timeout, wird eine Warnung ausgegeben. Bitte beachte, dass der Timeout größer als das Aktualisierungsintervall der Quelladapter sein muss. Standard: 60 Min.",
   "e.g. 60": "z.B. 60",
-  "nonExpertMonitoringInfoFull": "Überwachung aktiv: Werte bis %MAXW% W · Timeout bis %TIMEOUTMIN% min. Im Expertenmodus konfigurierbar.",
-  "nonExpertMonitoringInfo": "Überwachung aktiv: Timeout bis %TIMEOUTMIN% min. Im Expertenmodus konfigurierbar."
+  "nonExpertMonitoringInfoFull": "Überwachung aktiv: Werte bis %MAXW% W · Timeout bis %TIMEOUTMIN% min.\nIm Expertenmodus konfigurierbar.",
+  "nonExpertMonitoringInfo": "Überwachung aktiv: Timeout bis %TIMEOUTMIN% min.\nIm Expertenmodus konfigurierbar."
 }

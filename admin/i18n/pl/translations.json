@@ -261,6 +261,6 @@
   "aliveTimeoutMinutesLabel": "Limit czasu Alive in min (min, 0 = wyłączone)",
   "aliveTimeoutHint": "Jeśli ostatni znacznik czasu stanu źródłowego przekroczy limit czasu, zostanie zalogowane ostrzeżenie. Należy pamiętać, że limit czasu musi być większy niż interwał aktualizacji adapterów źródłowych. Domyślnie: 60 min.",
   "e.g. 60": "np. 60",
-  "nonExpertMonitoringInfoFull": "Monitorowanie aktywne: wartości do %MAXW% W · limit czasu do %TIMEOUTMIN% min. Konfigurowalne w trybie eksperta.",
-  "nonExpertMonitoringInfo": "Monitorowanie aktywne: limit czasu do %TIMEOUTMIN% min. Konfigurowalne w trybie eksperta."
+  "nonExpertMonitoringInfoFull": "Monitorowanie aktywne: wartości do %MAXW% W · limit czasu do %TIMEOUTMIN% min.\nKonfigurowalne w trybie eksperta.",
+  "nonExpertMonitoringInfo": "Monitorowanie aktywne: limit czasu do %TIMEOUTMIN% min.\nKonfigurowalne w trybie eksperta."
 }

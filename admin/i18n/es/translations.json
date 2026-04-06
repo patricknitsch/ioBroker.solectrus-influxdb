@@ -261,6 +261,6 @@
   "aliveTimeoutMinutesLabel": "Tiempo de espera Alive in min (min, 0 = desactivado)",
   "aliveTimeoutHint": "Si la última marca de tiempo del estado de origen supera el tiempo de espera, se registra una advertencia. Ten en cuenta que el tiempo de espera debe ser mayor que el intervalo de actualización de los adaptadores de origen. Valor predeterminado: 60 min.",
   "e.g. 60": "p.ej. 60",
-  "nonExpertMonitoringInfoFull": "Supervisión activa: valores hasta %MAXW% W · tiempo de espera hasta %TIMEOUTMIN% min. Configurable en modo experto.",
-  "nonExpertMonitoringInfo": "Supervisión activa: tiempo de espera hasta %TIMEOUTMIN% min. Configurable en modo experto."
+  "nonExpertMonitoringInfoFull": "Supervisión activa: valores hasta %MAXW% W · tiempo de espera hasta %TIMEOUTMIN% min.\nConfigurable en modo experto.",
+  "nonExpertMonitoringInfo": "Supervisión activa: tiempo de espera hasta %TIMEOUTMIN% min.\nConfigurable en modo experto."
 }

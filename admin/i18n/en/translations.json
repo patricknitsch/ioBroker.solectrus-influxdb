@@ -261,6 +261,6 @@
   "aliveTimeoutMinutesLabel": "Alive timeout in min (min, 0 = disabled)",
   "aliveTimeoutHint": "If the last timestamp of the source state exceeds the timeout, a warning is logged. Note that the timeout must be greater than the update interval of the source adapters. Default: 60 min.",
   "e.g. 60": "e.g. 60",
-  "nonExpertMonitoringInfoFull": "Monitoring active: values up to %MAXW% W · timeout up to %TIMEOUTMIN% min. Configurable in Expert Mode.",
-  "nonExpertMonitoringInfo": "Monitoring active: timeout up to %TIMEOUTMIN% min. Configurable in Expert Mode."
+  "nonExpertMonitoringInfoFull": "Monitoring active: values up to %MAXW% W · timeout up to %TIMEOUTMIN% min.\nConfigurable in Expert Mode.",
+  "nonExpertMonitoringInfo": "Monitoring active: timeout up to %TIMEOUTMIN% min.\nConfigurable in Expert Mode."
 }
