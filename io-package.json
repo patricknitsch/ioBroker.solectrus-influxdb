@@ -181,6 +181,7 @@
         "influxOrg": "solectrus",
         "influxBucket": "solectrus",
         "influxInterval": 5,
+        "aliveTimeoutMinutes": 0,
         "influxToken": "",
         "enableExpertMode": false,
         "enableDataSolectrus": false,

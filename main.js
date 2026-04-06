@@ -230,6 +230,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.negativeValueWarned = new Set();
 		this.lastValidValue = new Map();
 
+		/* ---------- Alive monitoring ---------- */
+		// Maps sensor state id → timestamp (ms) of last received value
+		this.lastUpdateTs = new Map();
+		// Maps sensor state id → timestamp (ms) when last alive warning was logged
+		this.aliveWarnedAt = new Map();
+
 		/* ---------- Forecast ---------- */
 		// Maps sourceState → array of forecast config entries that use it
 		this.forecastSourceMap = {};
@@ -830,6 +836,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 						}
 					}
 				}
+				// Always use current time as baseline so JSON sensors also get a grace period after restart
+				this.lastUpdateTs.set(id, Date.now());
 				continue;
 			}
 
@@ -852,6 +860,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 				this.cache[id] = state.val;
 				this.setState(id, state.val, true);
 			}
+			// Always use current time as baseline so every sensor gets a grace period after restart
+			this.lastUpdateTs.set(id, Date.now());
 
 			this.subscribeForeignStates(sensor.sourceState);
 		}
@@ -1308,6 +1318,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 			if (sensorId) {
 				this.cache[sensorId] = state.val;
 				this.setState(sensorId, state.val, true);
+				// Keep alive timestamp up-to-date for ds.* sensor sources
+				this.lastUpdateTs.set(sensorId, typeof state.ts === 'number' ? state.ts : Date.now());
 			}
 			return;
 		}
@@ -1347,6 +1359,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 			} else {
 				this.cache[sensorId] = state.val;
 				this.setState(sensorId, state.val, true);
+				// Update alive timestamp for non-JSON sensors
+				this.lastUpdateTs.set(sensorId, typeof state.ts === 'number' ? state.ts : Date.now());
 			}
 		}
 
@@ -1358,6 +1372,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 		// JSON sensor source updates
 		if (this.jsonSourceMap[id]) {
 			this.processJsonSensorData(id, state.val);
+			// Refresh alive timestamp for each JSON sensor backed by this source
+			const tsNow = typeof state.ts === 'number' ? state.ts : Date.now();
+			for (const mapping of this.jsonSourceMap[id]) {
+				const mId = this.getSensorStateId({ SensorName: mapping.sensorName });
+				this.lastUpdateTs.set(mId, tsNow);
+			}
 		}
 
 		// Forward to Data-SOLECTRUS cache (if enabled)
@@ -1457,12 +1477,29 @@ class SolectrusInfluxdb extends utils.Adapter {
 				continue;
 			}
 
+			const id = this.getSensorStateId(sensor);
+
+			// Check alive timeout (throttle: warn at most once per timeout period per sensor)
+			const sensorAliveTimeoutMs = sensor.aliveTimeoutMinutes > 0 ? sensor.aliveTimeoutMinutes * 60_000 : 0;
+			if (sensorAliveTimeoutMs > 0) {
+				const lastTs = this.lastUpdateTs.get(id);
+				if (lastTs > 0 && now - lastTs > sensorAliveTimeoutMs) {
+					const lastWarnTs = this.aliveWarnedAt.get(id) || 0;
+					if (now - lastWarnTs >= sensorAliveTimeoutMs) {
+						this.aliveWarnedAt.set(id, now);
+						const lastTsStr = new Date(lastTs).toLocaleString();
+						this.log.warn(
+							`Sensor "${sensor.SensorName}": no update since ${lastTsStr} (longer than ${sensor.aliveTimeoutMinutes} minute(s))`,
+						);
+					}
+				}
+			}
+
 			// JSON sensors are event-driven (written on source state change), not polled
 			if (sensor.type === 'json') {
 				continue;
 			}
 
-			const id = this.getSensorStateId(sensor);
 			const value = this.cache[id];
 
 			if (value === undefined || value === null) {

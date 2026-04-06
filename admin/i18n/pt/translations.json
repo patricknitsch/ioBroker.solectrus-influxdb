@@ -257,5 +257,8 @@
   "iframeCertHint": "A página não carrega? O SOLECTRUS bloqueia a incorporação em iFrames por padrão – adicione FRAME_ANCESTORS=http://seu-host-iobroker:8081 ao ficheiro .env do SOLECTRUS e reinicie o serviço.",
   "e.g. 10000": "ex. 10000",
   "maxValueHint": "Limite de plausibilidade por sensor. Se excedido, o último valor válido é enviado e um aviso é registrado. Padrão: 10000 W.",
-  "Max Value in W (optional)": "Valor máximo em W (opcional)"
+  "Max Value in W (optional)": "Valor máximo em W (opcional)",
+  "aliveTimeoutMinutesLabel": "Tempo limite Alive in min (min, 0 = desativado)",
+  "aliveTimeoutHint": "Se o último carimbo de data/hora do estado de origem exceder o tempo limite, um aviso é registrado. Observe que o tempo limite deve ser maior que o intervalo de atualização dos adaptadores de origem. Padrão: 60 min.",
+  "e.g. 60": "ex. 60"
 }

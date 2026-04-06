@@ -47,11 +47,11 @@ Zum Tab **Sensors** wechseln. Der Master/Detail-Editor zeigt alle konfigurierten
 
 Standardmäßig läuft der Adapter im **Standardmodus**. Die Sensorliste zeigt alle vorkonfigurierten Sensoren (INVERTER_POWER, BATTERY_SOC, HOUSE_POWER, Prognosesensoren usw.). Im Standardmodus:
 
-- **Editierbar**: Source State (ioBroker-Datenpunkt) und Aktiviert-Checkbox
+- **Editierbar**: Source State (ioBroker-Datenpunkt), Aktiviert-Checkbox, **Maximalwert in W** und **Alive-Timeout**
 - **Nur lesen**: Sensorname, Datentyp, Measurement, Field, JSON-Vorlage
 - **Ausgeblendet**: Hinzufügen-, Löschen-, Duplizieren-Buttons
 
-So wird sichergestellt, dass Anfänger einfach Sensoren aktivieren und Quell-States zuweisen können, ohne versehentlich das InfluxDB-Mapping zu ändern.
+So wird sichergestellt, dass Anfänger einfach Sensoren aktivieren und Quell-States zuweisen können, ohne versehentlich das InfluxDB-Mapping zu ändern. **Maximalwert** und **Alive-Timeout** können immer eingestellt werden -- der Expertenmodus ist dafür nicht notwendig.
 
 Für volle Kontrolle den **Expertenmodus** auf der InfluxDB-Einstellungsseite aktivieren. Im Expertenmodus:
 
@@ -59,9 +59,11 @@ Für volle Kontrolle den **Expertenmodus** auf der InfluxDB-Einstellungsseite ak
 - Sensoren können hinzugefügt, gelöscht, dupliziert und umsortiert werden
 - JSON-Vorlagen können auf Benutzerdefiniert umgestellt werden
 
-### Sensor hinzufügen (Expertenmodus)
+### Sensor-Einstellungen
 
-Auf **Add** klicken und konfigurieren:
+Die folgende Tabelle zeigt alle konfigurierbaren Felder pro Sensor. **Maximalwert in W** und **Alive-Timeout** sind auch im Standardmodus editierbar. Im **Expertenmodus** sind zusätzlich Sensorname, Datentyp, Measurement und Field änderbar, und Sensoren können hinzugefügt, gelöscht und umsortiert werden.
+
+Auf **Add** klicken (Expertenmodus) oder einen bestehenden Sensor auswählen und konfigurieren:
 
 | Einstellung | Beschreibung |
 |-------------|--------------|
@@ -69,6 +71,7 @@ Auf **Add** klicken und konfigurieren:
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. |
 | Maximalwert in W (optional) | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. Überschreibt den Standard-Grenzwert von 10000 W. |
+| Alive-Timeout (min, 0 = deaktiviert) | Meldet eine Warnung und markiert den Zeitstempel im Tab **orange**, wenn kein neuer Wert innerhalb dieser Zeitspanne empfangen wurde. Standard: `60`. Muss größer sein als das Aktualisierungsintervall des Quelladapters. |
 | Datatype | `int`, `float`, `bool`, `string` oder `json` (JSON-Array) |
 | Influx Measurement | InfluxDB Measurement-Name (z.B. `inverter`) |
 | Influx Field | InfluxDB Feldname (z.B. `power`) |
@@ -152,6 +155,7 @@ Der Tab **SOLECTRUS Overview** (erreichbar über die Tab-Leiste im Adapter-Berei
   - **Aktueller Wert** — Live-Messwert; *k.A.* wenn noch kein Wert empfangen wurde. Der Wert wird immer ohne Zeilenumbruch angezeigt; die Schriftgröße ändert sich nicht mit der Textlänge. JSON-Werte werden kompakt in Monospace-Schrift dargestellt.
   - **Measurement: Field** — das Ziel in InfluxDB (getrennt durch einen Doppelpunkt)
   - **Quell-State** — die gelesene ioBroker-State-ID (gekürzt, voller Pfad als Tooltip)
+  - **Letzter Zeitstempel** — Zeitpunkt der letzten Wertaktualisierung. Wird **orange** angezeigt, wenn der konfigurierte Alive-Timeout für diesen Sensor überschritten wurde.
 - **Formel-Engine Raster** (wird nur angezeigt, wenn Data-SOLECTRUS aktiviert ist): Zeigt alle aktiven berechneten Items in der gleichen Kartendarstellung mit Modus-Badge, aktuellem Wert, State-ID und Formel/Ausdruck. Schriftgrößen bleiben in allen Gerätedrehungen konstant.
 - **JSON-Array Vorschau**: Bei Sensoren mit Datentyp `json` zeigt der Wert den **ersten Array-Eintrag** gefolgt von der Anzahl weiterer Einträge (z.B. `{"t":1710000000000,"y":1250} (+543 weitere Einträge)`).
 - **Automatische Aktualisierung**: Der Tab aktualisiert sich alle 5 Sekunden selbstständig.
@@ -417,6 +421,20 @@ Im Tab **Data Runtime**:
 ---
 
 ## 11. Monitoring & Buffer
+
+### Alive-Monitoring
+
+Der Adapter kann überwachen, ob Sensorwerte noch regelmäßig aktualisiert werden. Konfiguriere das Feld **Alive-Timeout (min, 0 = deaktiviert)** individuell für jeden Sensor im Tab **Sensors**.
+
+Erhält ein Sensor länger als den konfigurierten Timeout keinen neuen Wert, gibt der Adapter eine Warnung aus:
+
+```
+Sensor "INVERTER_POWER": no update since 4/5/2026, 6:30:00 PM (longer than 60 minute(s))
+```
+
+Zusätzlich wird der letzte Zeitstempel des betroffenen Sensors im **Tab** in **orange** angezeigt, sodass du veraltete Sensoren auf einen Blick erkennst, ohne das Log zu öffnen.
+
+Die Warnung wird pro Sensor höchstens einmal pro Timeout-Periode wiederholt, damit das Log nicht überflutet wird. Setze den Timeout auf `0`, um die Prüfung für einen einzelnen Sensor zu deaktivieren. Neu angelegte Sensoren haben standardmäßig einen Timeout von `60` Minuten. Der Timeout muss größer sein als das Aktualisierungsintervall des jeweiligen Quelladapters.
 
 ### Adapter-States
 

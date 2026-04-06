@@ -257,5 +257,8 @@
   "iframeCertHint": "Pagina laadt niet? SOLECTRUS blokkeert standaard insluiting in iFrames – voeg FRAME_ANCESTORS=http://jouw-iobroker-host:8081 toe aan het SOLECTRUS .env-bestand en herstart de dienst.",
   "e.g. 10000": "bijv. 10000",
   "maxValueHint": "Plausibiliteitslimiet per sensor. Als overschreden, wordt de laatste geldige waarde verzonden en een waarschuwing gelogd. Standaard: 10000 W.",
-  "Max Value in W (optional)": "Maximale waarde in W (optioneel)"
+  "Max Value in W (optional)": "Maximale waarde in W (optioneel)",
+  "aliveTimeoutMinutesLabel": "Alive-timeout in min (min, 0 = uitgeschakeld)",
+  "aliveTimeoutHint": "Als de laatste tijdstempel van de bronstatus de time-out overschrijdt, wordt een waarschuwing gelogd. Let op: de time-out moet groter zijn dan het updateinterval van de bronadapters. Standaard: 60 min.",
+  "e.g. 60": "bijv. 60"
 }

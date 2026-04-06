@@ -257,5 +257,8 @@
   "iframeCertHint": "Page not loading? SOLECTRUS blocks iframe embedding by default – add FRAME_ANCESTORS=http://your-iobroker-host:8081 to the SOLECTRUS .env file and restart the service.",
   "e.g. 10000": "e.g. 10000",
   "maxValueHint": "Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. Default: 10000 W.",
-  "Max Value in W (optional)": "Max Value in W (optional)"
+  "Max Value in W (optional)": "Max Value in W (optional)",
+  "aliveTimeoutMinutesLabel": "Alive timeout in min (min, 0 = disabled)",
+  "aliveTimeoutHint": "If the last timestamp of the source state exceeds the timeout, a warning is logged. Note that the timeout must be greater than the update interval of the source adapters. Default: 60 min.",
+  "e.g. 60": "e.g. 60"
 }

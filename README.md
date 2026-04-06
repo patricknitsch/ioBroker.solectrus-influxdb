@@ -67,6 +67,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 
 * (patricknitsch) Catch max. Values - settable in Config
 * (patricknitsch) Increase Version from 20 to 24 becauso of deploy error
+* (copilot) Add Alive monitoring: configurable timeout warns when sensor values are not updated
 
 ### 1.5.0 (2026-03-21)
 
