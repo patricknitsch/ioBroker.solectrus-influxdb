@@ -106,6 +106,7 @@
 			type: '',
 			measurement: 'solectrus',
 			field: '',
+			aliveTimeoutMinutes: 60,
 		};
 		return ensureTitle(sensor);
 	}
@@ -823,16 +824,16 @@
 												style: inputStyle,
 												type: 'number',
 												min: '0',
-												value: editSensor.aliveTimeoutMinutes !== undefined && editSensor.aliveTimeoutMinutes !== null ? editSensor.aliveTimeoutMinutes : 0,
+												value: editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : '',
 												onChange: e => {
 													var raw = e.target.value;
 													var parsed = parseInt(raw, 10);
-													setDraftField('aliveTimeoutMinutes', raw === '' || !Number.isFinite(parsed) ? 0 : parsed);
+													setDraftField('aliveTimeoutMinutes', raw === '' ? null : Number.isFinite(parsed) ? parsed : null);
 												},
 												onBlur: e => {
 													var raw = e.target.value;
 													var parsed = parseInt(raw, 10);
-													updateSelected('aliveTimeoutMinutes', raw === '' || !Number.isFinite(parsed) ? 0 : parsed);
+													updateSelected('aliveTimeoutMinutes', raw === '' || !Number.isFinite(parsed) ? 60 : parsed);
 												},
 											}),
 											React.createElement(
@@ -851,16 +852,16 @@
 											style: Object.assign({}, inputStyle, { maxWidth: 200 }),
 											type: 'number',
 											min: '0',
-											value: editSensor.aliveTimeoutMinutes !== undefined && editSensor.aliveTimeoutMinutes !== null ? editSensor.aliveTimeoutMinutes : 0,
+											value: editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : '',
 											onChange: e => {
 												var raw = e.target.value;
 												var parsed = parseInt(raw, 10);
-												setDraftField('aliveTimeoutMinutes', raw === '' || !Number.isFinite(parsed) ? 0 : parsed);
+												setDraftField('aliveTimeoutMinutes', raw === '' ? null : Number.isFinite(parsed) ? parsed : null);
 											},
 											onBlur: e => {
 												var raw = e.target.value;
 												var parsed = parseInt(raw, 10);
-												updateSelected('aliveTimeoutMinutes', raw === '' || !Number.isFinite(parsed) ? 0 : parsed);
+												updateSelected('aliveTimeoutMinutes', raw === '' || !Number.isFinite(parsed) ? 60 : parsed);
 											},
 										}),
 										React.createElement(

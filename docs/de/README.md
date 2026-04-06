@@ -29,7 +29,7 @@ Adapter-Einstellungen öffnen und zum Tab **InfluxDB** wechseln.
 | Bucket | Ziel-Bucket für Zeitreihendaten |
 | Token | API-Token mit **Schreibrechten** |
 | Polling Interval (s) | Wie oft Sensorwerte gesammelt werden (5-30 Sekunden) |
-| Alive-Timeout (min) | Wenn ein Sensor länger als diese Anzahl Minuten keinen neuen Wert erhalten hat, wird eine Warnung ausgegeben. `0` zum Deaktivieren. |
+| Alive-Timeout (min) | Wenn ein Sensor länger als diese Anzahl Minuten keinen neuen Wert erhalten hat, wird eine Warnung ausgegeben. `0` zum Deaktivieren. Standard: `60`. |
 
 Der Adapter prüft die Verbindung beim Start durch Schreiben eines Test-Punktes. Der Verbindungsstatus wird in `info.connection` angezeigt.
 
@@ -421,7 +421,7 @@ Im Tab **Data Runtime**:
 
 ### Alive-Monitoring
 
-Der Adapter kann überwachen, ob Sensorwerte noch regelmäßig aktualisiert werden. Setze das Feld **Alive-Timeout (min)** im InfluxDB-Tab auf eine positive Zahl (z.B. `10`).
+Der Adapter kann überwachen, ob Sensorwerte noch regelmäßig aktualisiert werden. Setze das Feld **Alive-Timeout (min)** im InfluxDB-Tab auf eine positive Zahl (z.B. `60`).
 
 Erhält ein Sensor länger als den konfigurierten Timeout keinen neuen Wert, gibt der Adapter eine Warnung aus:
 
@@ -429,7 +429,7 @@ Erhält ein Sensor länger als den konfigurierten Timeout keinen neuen Wert, gib
 Sensor "INVERTER_POWER": last measurement update longer than 10 minute(s)
 ```
 
-Die Warnung wird pro Sensor höchstens einmal pro Timeout-Periode wiederholt, damit das Log nicht überflutet wird. Setze den Timeout auf `0` (Standard), um diese Prüfung zu deaktivieren.
+Die Warnung wird pro Sensor höchstens einmal pro Timeout-Periode wiederholt, damit das Log nicht überflutet wird. Setze den Timeout auf `0`, um diese Prüfung zu deaktivieren. Neu angelegte Sensoren haben standardmäßig einen Timeout von `60` Minuten.
 
 ### Adapter-States
 
