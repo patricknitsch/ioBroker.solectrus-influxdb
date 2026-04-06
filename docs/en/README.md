@@ -29,7 +29,6 @@ Open the adapter settings and go to the **InfluxDB** tab.
 | Bucket | Target bucket for time-series data |
 | Token | API token with **write** permissions |
 | Polling Interval (s) | How often sensor values are collected (5-30 seconds) |
-| Alive Timeout (min) | If a sensor has not received a new value for this many minutes, a warning is logged. Set to `0` to disable. Default: `60`. |
 
 The adapter verifies the connection at startup by writing a test point. The connection state is shown in `info.connection`.
 
@@ -70,6 +69,7 @@ Click **Add** to create a new sensor, then configure:
 | Sensor Name | Display name (also used for the ioBroker state ID under `sensors.*`) |
 | ioBroker Source State | The source state to read values from. Use the **Select** button to browse the object tree. |
 | Max Value in W (optional) | Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. Overrides the default 10000 W limit. |
+| Alive Timeout (min, 0 = disabled) | Logs a warning and marks the timestamp in the tab in **orange** if no new value is received within this timespan. Default: `60`. Must be greater than the update interval of the source adapter. |
 | Datatype | `int`, `float`, `bool`, `string`, or `json` (JSON Array) |
 | Influx Measurement | The InfluxDB measurement name (e.g. `inverter`) |
 | Influx Field | The InfluxDB field name (e.g. `power`) |
@@ -153,6 +153,7 @@ The **SOLECTRUS Overview** tab (accessible via the tab bar in the adapter sectio
   - **Current value** — live reading; *n/a* if no value has been received yet. The value is always shown without line wrapping; the font size does not change with text length. JSON values are rendered compactly in a monospace font.
   - **Measurement: field** — the target location in InfluxDB (separated by a colon)
   - **Source state** — the ioBroker state ID being read (truncated, full path shown on hover)
+  - **Last timestamp** — when the sensor last received a new value. Shown in **orange** when the sensor's configured alive timeout has been exceeded.
 - **Formula Engine grid** (only shown when Data-SOLECTRUS is enabled): Shows all active computed items in the same card layout, with mode badge, current value, state ID, and formula/expression. Font sizes remain constant in all device orientations.
 - **JSON Array preview**: For sensors with data type `json`, the value displays the **first array entry** followed by a count of additional entries (e.g. `{"t":1710000000000,"y":1250} (+543 more entries)`).
 - **Auto-refresh**: The tab updates automatically every 5 seconds.
@@ -421,17 +422,17 @@ On the **Data Runtime** tab:
 
 ### Alive Monitoring
 
-The adapter can monitor whether sensor values are still being updated regularly. Set the **Alive Timeout (min)** field on the InfluxDB tab to a positive number (e.g. `60`).
+The adapter can monitor whether sensor values are still being updated regularly. Configure the **Alive Timeout (min, 0 = disabled)** field individually for each sensor on the **Sensors** tab.
 
 If a sensor has not received a new value for longer than the configured timeout, the adapter logs a warning:
 
 ```
-Sensor "INVERTER_POWER": no update since 4/5/2026, 6:30:00 PM (longer than 10 minute(s))
+Sensor "INVERTER_POWER": no update since 4/5/2026, 6:30:00 PM (longer than 60 minute(s))
 ```
 
 In addition, the last timestamp of the affected sensor is shown in **orange** in the **tab view**, so you can spot stale sensors at a glance without opening the log.
 
-The warning is repeated at most once per timeout period per sensor to avoid log flooding. Set the timeout to `0` to disable this check. Newly created sensors default to a timeout of `60` minutes.
+The warning is repeated at most once per timeout period per sensor to avoid log flooding. Set the timeout to `0` to disable the check for an individual sensor. Newly created sensors default to a timeout of `60` minutes. The timeout must be greater than the update interval of the respective source adapter.
 
 ### Adapter states
 
