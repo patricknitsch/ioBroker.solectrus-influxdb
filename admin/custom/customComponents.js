@@ -8,7 +8,7 @@
 	'use strict';
 
 	const REMOTE_NAME = 'SolectrusSensors';
-	const UI_VERSION = '2026-03-02 20260302-1';
+	const UI_VERSION = '2026-04-06 20260406-1';
 	const DEBUG = false;
 	let shareScope;
 
@@ -779,14 +779,18 @@
 										t('Select'),
 									),
 								),
-								// Max value validation field (visible to all users for numeric types)
-								(editSensor.type || '') !== 'json' && (editSensor.type || '') !== 'bool' && (editSensor.type || '') !== 'string'
-									? React.createElement(
-											React.Fragment,
+								// Row: Max value (numeric types only) + Alive timeout (all types) side by side
+								React.createElement(
+									'div',
+									{ style: rowStyle },
+									// Left column: max value (only for numeric types)
+									(editSensor.type || '') !== 'json' && (editSensor.type || '') !== 'bool' && (editSensor.type || '') !== 'string'
+										? React.createElement(
+											'div',
 											null,
 											React.createElement('label', { style: labelStyle }, t('Max Value in W (optional)')),
 											React.createElement('input', {
-												style: Object.assign({}, inputStyle, { maxWidth: 200 }),
+												style: inputStyle,
 												type: 'number',
 												min: '0',
 												step: 'any',
@@ -805,18 +809,39 @@
 											}),
 											React.createElement(
 												'div',
-												{
-													style: {
-														fontSize: 12,
-														color: colors.textMuted,
-														marginTop: 2,
-													},
-												},
+												{ style: { fontSize: 12, color: colors.textMuted, marginTop: 2 } },
 												t('maxValueHint'),
 											),
 										)
-									: null,
-								// Datatype selector
+										: React.createElement('div', null),
+									// Right column: alive timeout (all sensor types)
+									React.createElement(
+										'div',
+										null,
+										React.createElement('label', { style: labelStyle }, t('aliveTimeoutMinutesLabel')),
+										React.createElement('input', {
+											style: inputStyle,
+											type: 'number',
+											min: '0',
+											value: editSensor.aliveTimeoutMinutes !== undefined && editSensor.aliveTimeoutMinutes !== null ? editSensor.aliveTimeoutMinutes : 0,
+											onChange: e => {
+												var raw = e.target.value;
+												var parsed = parseInt(raw, 10);
+												setDraftField('aliveTimeoutMinutes', raw === '' || !Number.isFinite(parsed) ? 0 : parsed);
+											},
+											onBlur: e => {
+												var raw = e.target.value;
+												var parsed = parseInt(raw, 10);
+												updateSelected('aliveTimeoutMinutes', raw === '' || !Number.isFinite(parsed) ? 0 : parsed);
+											},
+										}),
+										React.createElement(
+											'div',
+											{ style: { fontSize: 12, color: colors.textMuted, marginTop: 2 } },
+											t('aliveTimeoutHint'),
+										),
+									),
+								),
 								// NOTE: All select values and conditionals use editSensor (draft)
 								// instead of selectedSensor (props) to avoid the value snapping back
 								// when Admin re-renders with stale props before the update propagates.

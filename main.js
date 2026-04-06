@@ -1472,9 +1472,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 	async collectPoints() {
 		const now = Date.now();
 
-		// Alive monitoring: warn if sensor timestamps are stale
-		const aliveTimeoutMs = this.config.aliveTimeoutMinutes > 0 ? this.config.aliveTimeoutMinutes * 60_000 : 0;
-
 		for (const sensor of this.config.sensors) {
 			if (!sensor || !sensor.enabled) {
 				continue;
@@ -1483,15 +1480,16 @@ class SolectrusInfluxdb extends utils.Adapter {
 			const id = this.getSensorStateId(sensor);
 
 			// Check alive timeout (throttle: warn at most once per timeout period per sensor)
-			if (aliveTimeoutMs > 0) {
+			const sensorAliveTimeoutMs = sensor.aliveTimeoutMinutes > 0 ? sensor.aliveTimeoutMinutes * 60_000 : 0;
+			if (sensorAliveTimeoutMs > 0) {
 				const lastTs = this.lastUpdateTs.get(id);
-				if (lastTs > 0 && now - lastTs > aliveTimeoutMs) {
+				if (lastTs > 0 && now - lastTs > sensorAliveTimeoutMs) {
 					const lastWarnTs = this.aliveWarnedAt.get(id) || 0;
-					if (now - lastWarnTs >= aliveTimeoutMs) {
+					if (now - lastWarnTs >= sensorAliveTimeoutMs) {
 						this.aliveWarnedAt.set(id, now);
 						const lastTsStr = new Date(lastTs).toLocaleString();
 						this.log.warn(
-							`Sensor "${sensor.SensorName}": no update since ${lastTsStr} (longer than ${this.config.aliveTimeoutMinutes} minute(s))`,
+							`Sensor "${sensor.SensorName}": no update since ${lastTsStr} (longer than ${sensor.aliveTimeoutMinutes} minute(s))`,
 						);
 					}
 				}
