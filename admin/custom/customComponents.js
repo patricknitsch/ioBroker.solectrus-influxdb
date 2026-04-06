@@ -780,48 +780,77 @@
 										t('Select'),
 									),
 								),
-								// Alive timeout (all types) + Max value (numeric types only):
-								// 2-column layout when max value applies, full-width otherwise
-								(editSensor.type || '') !== 'json' && (editSensor.type || '') !== 'bool' && (editSensor.type || '') !== 'string'
-									? React.createElement(
-										'div',
-										{ style: rowStyle },
-										// Left column: max value
-										React.createElement(
+								// Alive timeout (all types) + Max value (numeric types only) -- expert mode only
+								expertMode
+									? (editSensor.type || '') !== 'json' && (editSensor.type || '') !== 'bool' && (editSensor.type || '') !== 'string'
+										? React.createElement(
 											'div',
-											null,
-											React.createElement('label', { style: labelStyle }, t('Max Value in W (optional)')),
-											React.createElement('input', {
-												style: inputStyle,
-												type: 'number',
-												min: '0',
-												step: 'any',
-												value: editSensor.maxValue !== undefined && editSensor.maxValue !== null ? editSensor.maxValue : '',
-												placeholder: t('e.g. 10000'),
-												onChange: e => {
-													var raw = e.target.value;
-													var parsed = Number(raw);
-													setDraftField('maxValue', raw === '' || !Number.isFinite(parsed) ? undefined : parsed);
-												},
-												onBlur: e => {
-													var raw = e.target.value;
-													var parsed = Number(raw);
-													updateSelected('maxValue', raw === '' || !Number.isFinite(parsed) ? undefined : parsed);
-												},
-											}),
+											{ style: rowStyle },
+											// Left column: max value
 											React.createElement(
 												'div',
-												{ style: { fontSize: 12, color: colors.textMuted, marginTop: 2 } },
-												t('maxValueHint'),
+												null,
+												React.createElement('label', { style: labelStyle }, t('Max Value in W')),
+												React.createElement('input', {
+													style: inputStyle,
+													type: 'number',
+													min: '0',
+													step: 'any',
+													value: editSensor.maxValue !== undefined && editSensor.maxValue !== null ? editSensor.maxValue : '',
+													placeholder: t('e.g. 10000'),
+													onChange: e => {
+														var raw = e.target.value;
+														var parsed = Number(raw);
+														setDraftField('maxValue', raw === '' || !Number.isFinite(parsed) ? undefined : parsed);
+													},
+													onBlur: e => {
+														var raw = e.target.value;
+														var parsed = Number(raw);
+														updateSelected('maxValue', raw === '' || !Number.isFinite(parsed) ? undefined : parsed);
+													},
+												}),
+												React.createElement(
+													'div',
+													{ style: { fontSize: 12, color: colors.textMuted, marginTop: 2 } },
+													t('maxValueHint'),
+												),
 											),
-										),
-										// Right column: alive timeout
-										React.createElement(
+											// Right column: alive timeout
+											React.createElement(
+												'div',
+												null,
+												React.createElement('label', { style: labelStyle }, t('aliveTimeoutMinutesLabel')),
+												React.createElement('input', {
+													style: inputStyle,
+													type: 'number',
+													min: '0',
+													value: editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : '',
+													placeholder: t('e.g. 60'),
+													onChange: e => {
+														var raw = e.target.value;
+														var parsed = parseInt(raw, 10);
+														setDraftField('aliveTimeoutMinutes', raw === '' ? null : Number.isFinite(parsed) ? parsed : null);
+													},
+													onBlur: e => {
+														var raw = e.target.value;
+														var parsed = parseInt(raw, 10);
+														updateSelected('aliveTimeoutMinutes', raw === '' || !Number.isFinite(parsed) ? 60 : parsed);
+													},
+												}),
+												React.createElement(
+													'div',
+													{ style: { fontSize: 12, color: colors.textMuted, marginTop: 2 } },
+													t('aliveTimeoutHint'),
+												),
+											),
+										)
+										: React.createElement(
 											'div',
 											null,
+											// Full-width alive timeout when max value doesn't apply
 											React.createElement('label', { style: labelStyle }, t('aliveTimeoutMinutesLabel')),
 											React.createElement('input', {
-												style: inputStyle,
+												style: Object.assign({}, inputStyle, { maxWidth: 200 }),
 												type: 'number',
 												min: '0',
 												value: editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : '',
@@ -842,36 +871,8 @@
 												{ style: { fontSize: 12, color: colors.textMuted, marginTop: 2 } },
 												t('aliveTimeoutHint'),
 											),
-										),
-									)
-									: React.createElement(
-										'div',
-										null,
-										// Full-width alive timeout when max value doesn't apply
-										React.createElement('label', { style: labelStyle }, t('aliveTimeoutMinutesLabel')),
-										React.createElement('input', {
-											style: Object.assign({}, inputStyle, { maxWidth: 200 }),
-											type: 'number',
-											min: '0',
-											value: editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : '',
-											placeholder: t('e.g. 60'),
-											onChange: e => {
-												var raw = e.target.value;
-												var parsed = parseInt(raw, 10);
-												setDraftField('aliveTimeoutMinutes', raw === '' ? null : Number.isFinite(parsed) ? parsed : null);
-											},
-											onBlur: e => {
-												var raw = e.target.value;
-												var parsed = parseInt(raw, 10);
-												updateSelected('aliveTimeoutMinutes', raw === '' || !Number.isFinite(parsed) ? 60 : parsed);
-											},
-										}),
-										React.createElement(
-											'div',
-											{ style: { fontSize: 12, color: colors.textMuted, marginTop: 2 } },
-											t('aliveTimeoutHint'),
-										),
-									),
+										)
+									: null,
 								// NOTE: All select values and conditionals use editSensor (draft)
 								// instead of selectedSensor (props) to avoid the value snapping back
 								// when Admin re-renders with stale props before the update propagates.
@@ -925,6 +926,7 @@
 													fontSize: 13,
 													color: colors.textMuted,
 													lineHeight: 1.6,
+													whiteSpace: 'pre-line',
 												},
 											},
 											(function () {
@@ -938,12 +940,27 @@
 												var typeName = typeNames[editSensor.type || ''] || t('Standard');
 												var mf =
 													(editSensor.measurement || '?') + ':' + (editSensor.field || '?');
+												var sensorType = editSensor.type || '';
+												var monitoringInfo;
+												if (sensorType !== 'bool' && sensorType !== 'string') {
+													var maxW = editSensor.maxValue != null ? editSensor.maxValue : 10000;
+													var timeoutMin = editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : 60;
+													monitoringInfo = t('nonExpertMonitoringInfoFull')
+														.replace('%MAXW%', maxW)
+														.replace('%TIMEOUTMIN%', timeoutMin);
+												} else {
+													var timeoutMin = editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : 60;
+													monitoringInfo = t('nonExpertMonitoringInfo')
+														.replace('%TIMEOUTMIN%', timeoutMin);
+												}
 												return (
 													t('nonExpertSensorInfo')
 														.replace('%TYPE%', typeName)
 														.replace('%MF%', mf) +
 													'\n' +
-													t('nonExpertExpertHint')
+													t('nonExpertExpertHint') +
+													'\n' +
+													monitoringInfo
 												);
 											})(),
 										)
@@ -979,10 +996,13 @@
 												var f = editSensor.field || p.field;
 												var matchingLine =
 													p.valField + ' \u2192 ' + m + ':' + f + ' (' + t(p.valDesc) + ')';
+												var timeoutMin = editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : 60;
 												return (
 													t('nonExpertJsonInfo').replace('%MAPPING%', matchingLine) +
 													'\n' +
-													t('nonExpertExpertHint')
+													t('nonExpertExpertHint') +
+													'\n' +
+													t('nonExpertMonitoringInfo').replace('%TIMEOUTMIN%', timeoutMin)
 												);
 											})(),
 										)
