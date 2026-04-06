@@ -259,5 +259,5 @@
   "maxValueHint": "每个传感器的合理性限制。超出时发送最后一个有效值并记录警告。默认值：10000 W。",
   "Max Value in W (optional)": "最大值（W，可选）",
   "aliveTimeoutMinutesLabel": "Alive 超时（分钟，0 = 禁用）",
-  "aliveTimeoutHint": "如果传感器在此分钟数内未收到新值，将记录警告。设置为 0 可禁用此功能。"
+  "aliveTimeoutHint": "如果传感器在此分钟数内未收到新值，将记录警告。设置为 0 可禁用此功能。请注意，超时时间必须大于源适配器的更新间隔。"
 }

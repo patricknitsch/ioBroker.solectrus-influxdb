@@ -259,5 +259,5 @@
   "maxValueHint": "Limit wiarygodności dla czujnika. Jeśli przekroczony, wysyłana jest ostatnia prawidłowa wartość i rejestrowane jest ostrzeżenie. Domyślnie: 10000 W.",
   "Max Value in W (optional)": "Wartość maksymalna w W (opcjonalnie)",
   "aliveTimeoutMinutesLabel": "Limit czasu Alive (min, 0 = wyłączone)",
-  "aliveTimeoutHint": "Jeśli czujnik nie otrzymał nowej wartości przez podaną liczbę minut, zostanie zalogowane ostrzeżenie. Ustaw 0, aby wyłączyć."
+  "aliveTimeoutHint": "Jeśli czujnik nie otrzymał nowej wartości przez podaną liczbę minut, zostanie zalogowane ostrzeżenie. Ustaw 0, aby wyłączyć. Należy pamiętać, że limit czasu musi być większy niż interwał aktualizacji adapterów źródłowych."
 }

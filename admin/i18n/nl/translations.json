@@ -259,5 +259,5 @@
   "maxValueHint": "Plausibiliteitslimiet per sensor. Als overschreden, wordt de laatste geldige waarde verzonden en een waarschuwing gelogd. Standaard: 10000 W.",
   "Max Value in W (optional)": "Maximale waarde in W (optioneel)",
   "aliveTimeoutMinutesLabel": "Alive-timeout (min, 0 = uitgeschakeld)",
-  "aliveTimeoutHint": "Als een sensor gedurende dit aantal minuten geen nieuwe waarde heeft ontvangen, wordt een waarschuwing gelogd. Stel 0 in om uit te schakelen."
+  "aliveTimeoutHint": "Als een sensor gedurende dit aantal minuten geen nieuwe waarde heeft ontvangen, wordt een waarschuwing gelogd. Stel 0 in om uit te schakelen. Let op: de time-out moet groter zijn dan het updateinterval van de bronadapters."
 }

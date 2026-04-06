@@ -259,5 +259,5 @@
   "maxValueHint": "Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. Default: 10000 W.",
   "Max Value in W (optional)": "Max Value in W (optional)",
   "aliveTimeoutMinutesLabel": "Alive timeout (min, 0 = disabled)",
-  "aliveTimeoutHint": "If a sensor has not received a new value for this many minutes, a warning is logged. Set to 0 to disable."
+  "aliveTimeoutHint": "If a sensor has not received a new value for this many minutes, a warning is logged. Set to 0 to disable. Note that the timeout must be greater than the update interval of the source adapters."
 }

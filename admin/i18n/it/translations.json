@@ -258,5 +258,5 @@
   "maxValueHint": "Limite di plausibilità per sensore. Se superato, viene inviato l'ultimo valore valido e viene registrato un avviso. Predefinito: 10000 W.",
   "Max Value in W (optional)": "Valore massimo in W (opzionale)",
   "aliveTimeoutMinutesLabel": "Timeout Alive (min, 0 = disabilitato)",
-  "aliveTimeoutHint": "Se un sensore non ha ricevuto un nuovo valore per questo numero di minuti, viene registrato un avviso. Impostare 0 per disabilitare."
+  "aliveTimeoutHint": "Se un sensore non ha ricevuto un nuovo valore per questo numero di minuti, viene registrato un avviso. Impostare 0 per disabilitare. Tieni presente che il timeout deve essere maggiore dell'intervallo di aggiornamento degli adattatori sorgente."
 }

@@ -259,5 +259,5 @@
   "maxValueHint": "Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. Standard: 10000 W.",
   "Max Value in W (optional)": "Maximalwert in W (optional)",
   "aliveTimeoutMinutesLabel": "Alive-Timeout (min, 0 = deaktiviert)",
-  "aliveTimeoutHint": "Wenn ein Sensor länger als diese Anzahl Minuten keinen neuen Wert erhalten hat, wird eine Warnung ausgegeben. 0 zum Deaktivieren."
+  "aliveTimeoutHint": "Wenn ein Sensor länger als diese Anzahl Minuten keinen neuen Wert erhalten hat, wird eine Warnung ausgegeben. 0 zum Deaktivieren. Bitte beachte, dass der Timeout größer als das Aktualisierungsintervall der Quelladapter sein muss."
 }
