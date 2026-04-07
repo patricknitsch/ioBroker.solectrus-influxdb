@@ -397,7 +397,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 			const maxWait = 5000;
 			const waitStart = Date.now();
 			while (this.isFlushing && Date.now() - waitStart < maxWait) {
-				await new Promise(resolve => setTimeout(resolve, 50));
+				await new Promise(resolve => this.setTimeout(resolve, 50));
 			}
 
 			saveBuffer(this);
