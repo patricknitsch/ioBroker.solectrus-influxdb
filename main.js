@@ -9,7 +9,7 @@ const path = require('node:path');
 
 /* ---------- lib modules ---------- */
 const { createDsProxy } = require('./lib/dsProxy');
-const { retryOnConnectionError, getSensorStateId, getCollectIntervalMs } = require('./lib/helpers');
+const { retryOnConnectionError, getSensorStateId, getCollectIntervalMs, hasEnabledSensors } = require('./lib/helpers');
 const { loadBuffer, saveBuffer, updateBufferStates, clearBuffer } = require('./lib/bufferManager');
 const { validateInfluxConfig, verifyInfluxConnection, closeWriteApi } = require('./lib/influxManager');
 const { ensureObjectTree, createInfoStates, ensureDefaultSensorsAndTitles } = require('./lib/objectManager');
@@ -120,7 +120,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		await ensureDefaultSensorsAndTitles(this);
 
-		if (!Array.isArray(this.config.sensors) || !this.config.sensors.some(s => s && s.enabled)) {
+		if (!hasEnabledSensors(this)) {
 			const msg = 'No sensor is enabled. Please activate at least one sensor in the adapter configuration.';
 			this.log.warn(msg);
 			this.setState('info.lastError', msg, true);
