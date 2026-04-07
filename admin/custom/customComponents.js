@@ -797,7 +797,7 @@
 													min: '0',
 													step: 'any',
 													value: editSensor.maxValue !== undefined && editSensor.maxValue !== null ? editSensor.maxValue : '',
-													placeholder: t('e.g. 10000'),
+													placeholder: t('e.g. 15000'),
 													onChange: e => {
 														var raw = e.target.value;
 														var parsed = Number(raw);
@@ -944,7 +944,7 @@
 												var timeoutMin = editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : 60;
 												var monitoringInfo;
 												if (sensorType !== 'bool' && sensorType !== 'string') {
-													var maxW = editSensor.maxValue != null ? editSensor.maxValue : 10000;
+													var maxW = editSensor.maxValue != null ? editSensor.maxValue : 15000;
 													monitoringInfo = t('nonExpertMonitoringInfoFull')
 														.replace('%MAXW%', maxW)
 														.replace('%TIMEOUTMIN%', timeoutMin);

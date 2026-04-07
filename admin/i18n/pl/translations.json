@@ -255,12 +255,12 @@
   "iframeOpenBtn": "Otwórz w nowej zakładce",
   "iframeHttpHint": "Uwaga: iFrame jest widoczny tylko wtedy, gdy panel administracyjny ioBroker jest dostępny przez HTTP (nie HTTPS).",
   "iframeCertHint": "Strona nie ładuje się? SOLECTRUS domyślnie blokuje osadzanie w iFrame – dodaj FRAME_ANCESTORS=http://twój-host-iobroker:8081 do pliku .env SOLECTRUS i uruchom ponownie usługę.",
-  "e.g. 10000": "np. 10000",
-  "maxValueHint": "Limit wiarygodności dla czujnika. Jeśli przekroczony, wysyłana jest ostatnia prawidłowa wartość i rejestrowane jest ostrzeżenie. Domyślnie: 10000 W.",
+  "maxValueHint": "Limit wiarygodności dla czujnika. Jeśli przekroczony, wysyłana jest ostatnia prawidłowa wartość i rejestrowane jest ostrzeżenie. Domyślnie: 15000 W.",
   "Max Value in W": "Wartość maksymalna w W",
   "aliveTimeoutMinutesLabel": "Limit czasu Alive in min (min, 0 = wyłączone)",
   "aliveTimeoutHint": "Jeśli ostatni znacznik czasu stanu źródłowego przekroczy limit czasu, zostanie zalogowane ostrzeżenie. Należy pamiętać, że limit czasu musi być większy niż interwał aktualizacji adapterów źródłowych. Domyślnie: 60 min.",
   "e.g. 60": "np. 60",
   "nonExpertMonitoringInfoFull": "Monitorowanie aktywne: wartości do %MAXW% W · limit czasu do %TIMEOUTMIN% min.\nKonfigurowalne w trybie eksperta.",
-  "nonExpertMonitoringInfo": "Monitorowanie aktywne: limit czasu do %TIMEOUTMIN% min.\nKonfigurowalne w trybie eksperta."
+  "nonExpertMonitoringInfo": "Monitorowanie aktywne: limit czasu do %TIMEOUTMIN% min.\nKonfigurowalne w trybie eksperta.",
+  "e.g. 15000": "np. 15000"
 }

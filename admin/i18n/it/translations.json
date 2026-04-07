@@ -254,12 +254,12 @@
   "iframeOpenBtn": "Apri in una nuova scheda",
   "iframeHttpHint": "Nota: L'iFrame è visibile solo se il pannello di amministrazione ioBroker è accessibile tramite HTTP (non HTTPS).",
   "iframeCertHint": "La pagina non si carica? SOLECTRUS blocca l'incorporamento nei iFrame per impostazione predefinita – aggiungi FRAME_ANCESTORS=http://tuo-host-iobroker:8081 al file .env di SOLECTRUS e riavvia il servizio.",
-  "e.g. 10000": "es. 10000",
-  "maxValueHint": "Limite di plausibilità per sensore. Se superato, viene inviato l'ultimo valore valido e viene registrato un avviso. Predefinito: 10000 W.",
+  "maxValueHint": "Limite di plausibilità per sensore. Se superato, viene inviato l'ultimo valore valido e viene registrato un avviso. Predefinito: 15000 W.",
   "Max Value in W": "Valore massimo in W",
   "aliveTimeoutMinutesLabel": "Timeout Alive in min (min, 0 = disabilitato)",
   "aliveTimeoutHint": "Se l'ultimo timestamp dello stato sorgente supera il timeout, viene registrato un avviso. Tieni presente che il timeout deve essere maggiore dell'intervallo di aggiornamento degli adattatori sorgente. Predefinito: 60 min.",
   "e.g. 60": "es. 60",
   "nonExpertMonitoringInfoFull": "Monitoraggio attivo: valori fino a %MAXW% W · timeout fino a %TIMEOUTMIN% min.\nConfigurabile in modalità esperto.",
-  "nonExpertMonitoringInfo": "Monitoraggio attivo: timeout fino a %TIMEOUTMIN% min.\nConfigurabile in modalità esperto."
+  "nonExpertMonitoringInfo": "Monitoraggio attivo: timeout fino a %TIMEOUTMIN% min.\nConfigurabile in modalità esperto.",
+  "e.g. 15000": "es. 15000"
 }

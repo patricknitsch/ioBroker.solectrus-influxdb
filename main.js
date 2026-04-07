@@ -5,205 +5,20 @@
  */
 
 const utils = require('@iobroker/adapter-core');
-const { InfluxDB, Point } = require('@influxdata/influxdb-client');
-const fs = require('node:fs');
 const path = require('node:path');
 
-/* ---------- Data-SOLECTRUS imports ---------- */
-const {
-	parseExpression,
-	normalizeFormulaExpression: normalizeFormulaExpressionImpl,
-	analyzeAst: analyzeAstImpl,
-	evalFormulaAst: evalFormulaAstImpl,
-} = require('./lib/data-solectrus/formula');
-const {
-	applyJsonPath: applyJsonPathImpl,
-	getNumericFromJsonPath: getNumericFromJsonPathImpl,
-	getValueFromJsonPath: getValueFromJsonPathImpl,
-} = require('./lib/data-solectrus/jsonpath');
+/* ---------- lib modules ---------- */
+const { createDsProxy } = require('./lib/dsProxy');
+const { retryOnConnectionError, getSensorStateId, getCollectIntervalMs } = require('./lib/helpers');
+const { loadBuffer, saveBuffer, updateBufferStates, clearBuffer } = require('./lib/bufferManager');
+const { validateInfluxConfig, verifyInfluxConnection, closeWriteApi } = require('./lib/influxManager');
+const { ensureObjectTree, createInfoStates, ensureDefaultSensorsAndTitles } = require('./lib/objectManager');
+const { prepareSensors, processJsonSensorData, extractJsonSensorValues, extractJsonSensorValuesAuto, disableSensorByFieldTypeConflict } = require('./lib/sensorManager');
+const { prepareForecastSources, processForecastJson } = require('./lib/forecastManager');
+const { collectPoints, scheduleNextFlush } = require('./lib/collectFlush');
 const dsStateRegistry = require('./lib/data-solectrus/services/stateRegistry');
 const dsItemManager = require('./lib/data-solectrus/services/itemManager');
 const dsTickRunner = require('./lib/data-solectrus/services/tickRunner');
-const dsEvaluator = require('./lib/data-solectrus/services/evaluator');
-
-const MAX_DELAY_MS = 2_147_483_647; // Node.js timer limit
-
-/* ---------- JSON sensor presets ---------- */
-const JSON_PRESETS = {
-	forecast: { tsField: 't', valField: 'y', measurement: 'inverter_forecast', field: 'power', influxType: 'int' },
-	clearsky: {
-		tsField: 't',
-		valField: 'clearsky',
-		measurement: 'inverter_forecast_clearsky',
-		field: 'power',
-		influxType: 'int',
-	},
-	temperature: {
-		tsField: 't',
-		valField: 'temp',
-		measurement: 'outdoor_forecast',
-		field: 'temperature',
-		influxType: 'float',
-	},
-};
-
-/* =====================================================
- * Data-SOLECTRUS Adapter Proxy
- *
- * Wraps the real adapter so the data-solectrus service
- * modules can operate with their original property names.
- * Own-state operations (setObjectAsync, setStateAsync, …)
- * transparently prefix IDs with "ds." to avoid conflicts
- * with the InfluxDB sensor states.
- * ===================================================== */
-function createDsProxy(adapter) {
-	const self = {
-		/* ---------- DS-specific state ---------- */
-		cache: new Map(),
-		cacheTs: new Map(),
-		compiledItems: new Map(),
-		subscribedIds: new Set(),
-		currentSnapshot: null,
-		lastGoodValue: new Map(),
-		lastGoodTs: new Map(),
-		consecutiveErrorCounts: new Map(),
-		tickTimer: null,
-		itemsConfigSignature: '',
-		warnedOnce: new Set(),
-		debuggedOnce: new Set(),
-		isUnloading: false,
-
-		/* ---------- Constants ---------- */
-		MAX_FORMULA_LENGTH: 8000,
-		MAX_AST_NODES: 2000,
-		MAX_AST_DEPTH: 60,
-		MAX_DISCOVERED_STATE_IDS_PER_ITEM: 250,
-		MAX_TOTAL_SOURCE_IDS: 5000,
-		TICK_TIME_BUDGET_RATIO: 0.8,
-
-		/* ---------- Config proxy ---------- */
-		config: new Proxy(
-			{},
-			{
-				get(_, prop) {
-					switch (prop) {
-						case 'items': {
-							const its = adapter.config['dsItems'];
-							const itsEd = adapter.config['dsItemsEditor'];
-							const a =
-								Array.isArray(its) && its.length
-									? its
-									: Array.isArray(itsEd) && itsEd.length
-										? itsEd
-										: [];
-							return a;
-						}
-						case 'pollIntervalSeconds':
-							return adapter.config.dsPollIntervalSeconds || 5;
-						case 'snapshotInputs':
-							return adapter.config.dsSnapshotInputs || false;
-						case 'snapshotDelayMs':
-							return adapter.config.dsSnapshotDelayMs || 0;
-						case 'errorRetriesBeforeZero':
-							return 3;
-						default:
-							return adapter.config[prop];
-					}
-				},
-			},
-		),
-
-		/* ---------- Own-state methods (prefix with ds.) ---------- */
-		setObjectNotExistsAsync: (id, obj) => adapter.setObjectNotExistsAsync(`ds.${id}`, obj),
-		setObjectAsync: (id, obj) => adapter.setObjectAsync(`ds.${id}`, obj),
-		extendObjectAsync: (id, obj) => adapter.extendObjectAsync(`ds.${id}`, obj),
-		getObjectAsync: id => adapter.getObjectAsync(`ds.${id}`),
-		setStateAsync: (id, val, ack) => adapter.setStateAsync(`ds.${id}`, val, ack),
-		setState: (id, val, ack) => adapter.setState(`ds.${id}`, val, ack),
-
-		/* ---------- DS-specific methods ---------- */
-		warnOnce(key, msg) {
-			if (self.warnedOnce.size > 500) {
-				self.warnedOnce.clear();
-			}
-			if (self.warnedOnce.has(key)) {
-				return;
-			}
-			self.warnedOnce.add(key);
-			adapter.log.warn(`[DS] ${msg}`);
-		},
-		debugOnce(key, msg) {
-			if (self.debuggedOnce.size > 500) {
-				self.debuggedOnce.clear();
-			}
-			if (self.debuggedOnce.has(key)) {
-				return;
-			}
-			self.debuggedOnce.add(key);
-			adapter.log.debug(`[DS] ${msg}`);
-		},
-		safeNum(val, fallback = 0) {
-			const n = Number(val);
-			return Number.isFinite(n) ? n : fallback;
-		},
-		applyJsonPath(obj, jsonPath) {
-			return applyJsonPathImpl(obj, jsonPath);
-		},
-		getNumericFromJsonPath(rawValue, jsonPath, warnKeyPrefix = '') {
-			return getNumericFromJsonPathImpl(rawValue, jsonPath, {
-				safeNum: self.safeNum.bind(self),
-				warnOnce: self.warnOnce.bind(self),
-				debugOnce: self.debugOnce.bind(self),
-				warnKeyPrefix,
-			});
-		},
-		getValueFromJsonPath(rawValue, jsonPath, warnKeyPrefix = '') {
-			return getValueFromJsonPathImpl(rawValue, jsonPath, {
-				warnOnce: self.warnOnce.bind(self),
-				warnKeyPrefix,
-			});
-		},
-		normalizeFormulaExpression(expr) {
-			return normalizeFormulaExpressionImpl(expr);
-		},
-		analyzeAst(ast) {
-			return analyzeAstImpl(ast, { maxNodes: self.MAX_AST_NODES, maxDepth: self.MAX_AST_DEPTH });
-		},
-		evalFormula(expr, vars) {
-			const normalized = self.normalizeFormulaExpression(expr);
-			if (normalized && normalized.length > self.MAX_FORMULA_LENGTH) {
-				throw new Error(`Formula too long (>${self.MAX_FORMULA_LENGTH} chars)`);
-			}
-			const ast = parseExpression(String(normalized));
-			self.analyzeAst(ast);
-			return self.evalFormulaAst(ast, vars);
-		},
-		evalFormulaAst(ast, vars) {
-			return evalFormulaAstImpl(ast, vars, self.formulaFunctions);
-		},
-	};
-
-	// Formula functions need the proxy (for v/s/jp), so create after self exists.
-	self.formulaFunctions = dsEvaluator.createFormulaFunctions(self);
-
-	// Return a Proxy that delegates anything not on `self` to the real adapter.
-	return new Proxy(self, {
-		get(target, prop) {
-			if (prop in target) {
-				return target[prop];
-			}
-			const val = adapter[prop];
-			if (typeof val === 'function') {
-				return val.bind(adapter);
-			}
-			return val;
-		},
-		set(target, prop, value) {
-			target[prop] = value;
-			return true;
-		},
-	});
-}
 
 class SolectrusInfluxdb extends utils.Adapter {
 	constructor(options) {
@@ -262,255 +77,34 @@ class SolectrusInfluxdb extends utils.Adapter {
 	}
 
 	/* =====================================================
-	 * HELPERS
-	 * ===================================================== */
-
-	getInfluxConfig() {
-		// New top-level config (preferred)
-		const url = (this.config.influxUrl || '').trim();
-		const org = (this.config.influxOrg || '').trim();
-		const bucket = (this.config.influxBucket || '').trim();
-		const token = (this.config.influxToken || '').trim();
-
-		return { url, token, org, bucket };
-	}
-
-	async retryOnConnectionError(fn, label, maxRetries = 3, delayMs = 3000) {
-		for (let attempt = 1; attempt <= maxRetries; attempt++) {
-			if (this.isUnloading) {
-				return;
-			}
-			try {
-				await fn();
-				return;
-			} catch (err) {
-				const isConnectionError = err && err.message && /connection is closed|db closed/i.test(err.message);
-				if (isConnectionError && attempt < maxRetries && !this.isUnloading) {
-					this.log.warn(
-						`${label} failed (attempt ${attempt}/${maxRetries}): ${err.message} – retrying in ${Math.round(delayMs / 1000)}s`,
-					);
-					await new Promise(resolve => setTimeout(resolve, delayMs));
-				} else {
-					this.log.error(`${label} failed: ${err.message}`);
-					return;
-				}
-			}
-		}
-	}
-
-	clampDelay(ms, fallbackMs) {
-		let v = Number(ms);
-		if (!Number.isFinite(v) || v < 0) {
-			v = fallbackMs;
-		}
-		if (v > MAX_DELAY_MS) {
-			v = MAX_DELAY_MS;
-		}
-		return v;
-	}
-
-	/**
-	 * Parse a raw JSON value (string or object) into a JS array.
-	 * Returns null if parsing fails or the result is not an array.
-	 * Set silent=true to suppress log warnings (e.g. for display-only extraction).
-	 *
-	 * @param {*} jsonVal - Raw JSON value (string or object)
-	 * @param {string} sourceLabel - Label for log messages
-	 * @param {boolean} [silent] - Suppress log warnings
-	 */
-	parseJsonArray(jsonVal, sourceLabel, silent) {
-		let data;
-		try {
-			data = typeof jsonVal === 'string' ? JSON.parse(jsonVal) : jsonVal;
-		} catch (err) {
-			if (!silent) {
-				this.log.warn(`Failed to parse JSON from ${sourceLabel}: ${err.message}`);
-			}
-			return null;
-		}
-		if (!Array.isArray(data)) {
-			if (!silent) {
-				this.log.warn(`Expected JSON array from ${sourceLabel}, got ${typeof data}`);
-			}
-			return null;
-		}
-		return data;
-	}
-
-	/**
-	 * Parse a raw timestamp (number in ms or s, or ISO string) into epoch-ms.
-	 * Returns NaN on failure.
-	 *
-	 * @param {number|string} rawTs - Raw timestamp value
-	 */
-	parseTimestamp(rawTs) {
-		if (typeof rawTs === 'number') {
-			return rawTs < 1e12 ? rawTs * 1000 : rawTs;
-		}
-		return new Date(rawTs).getTime();
-	}
-
-	/**
-	 * Parse a raw value according to an influx type ('int' or 'float').
-	 * Returns NaN on failure.
-	 *
-	 * @param {*} rawVal - Raw value to parse
-	 * @param {string} influxType - Influx field type ('int' or 'float')
-	 */
-	parseInfluxValue(rawVal, influxType) {
-		return influxType === 'int' ? parseInt(rawVal, 10) : parseFloat(rawVal);
-	}
-
-	parseFieldTypeConflictError(err) {
-		if (!err || !err.message) {
-			return null;
-		}
-
-		const regex = /field type conflict: input field "([^"]+)" on measurement "([^"]+)"/i;
-		const match = err.message.match(regex);
-
-		if (!match) {
-			return null;
-		}
-
-		return {
-			field: match[1],
-			measurement: match[2],
-		};
-	}
-
-	isFieldTypeConflict(err) {
-		return !!(err && err.message && err.message.toLowerCase().includes('field type conflict'));
-	}
-
-	getSensorStateId(sensor) {
-		return `sensors.${sensor.SensorName.toLowerCase().replace(/[^a-z0-9]+/g, '_')}`;
-	}
-
-	getForecastStateId(fc) {
-		return `forecasts.${(fc.name || 'forecast').toLowerCase().replace(/[^a-z0-9]+/g, '_')}`;
-	}
-
-	isInfluxReady() {
-		return !!this.writeApi && this.influxVerified && !this.isUnloading;
-	}
-
-	getCollectIntervalMs() {
-		const sec = Number(this.config.influxInterval);
-		const ms = sec > 0 ? sec * 1000 : 5000;
-		return this.clampDelay(ms, 5000);
-	}
-
-	getFlushIntervalMs() {
-		// Fallback interval used for retries and safety-net scheduling.
-		// Normal flushes are triggered directly by collectPoints().
-		const sec = Number(this.config.influxInterval);
-		const base = sec > 0 ? sec * 1000 : 5000;
-		return this.clampDelay(base, 5000);
-	}
-
-	hasEnabledSensors() {
-		return Array.isArray(this.config.sensors) && this.config.sensors.some(s => s && s.enabled);
-	}
-
-	/* =====================================================
-	 * OBJECT TREE (INTERMEDIATE OBJECTS)
-	 * ===================================================== */
-
-	async ensureObjectTree() {
-		// info channel
-		await this.setObjectNotExistsAsync('info', {
-			type: 'channel',
-			common: { name: 'Info' },
-			native: {},
-		});
-
-		// buffer channel
-		await this.setObjectNotExistsAsync('info.buffer', {
-			type: 'channel',
-			common: { name: 'Buffer' },
-			native: {},
-		});
-
-		// sensors channel
-		await this.setObjectNotExistsAsync('sensors', {
-			type: 'channel',
-			common: { name: 'Sensors' },
-			native: {},
-		});
-	}
-
-	/* =====================================================
-	 * BUFFER (PERSISTENT)
-	 * ===================================================== */
-
-	async clearBuffer() {
-		this.log.info('Clear Buffer...');
-		this.buffer = [];
-		try {
-			this.saveBuffer();
-			this.log.info('Buffer successfully cleared');
-		} catch (err) {
-			this.log.error(`Error at clearing Buffer: ${err.message}`);
-		}
-		this.updateBufferStates();
-	}
-
-	loadBuffer() {
-		try {
-			if (fs.existsSync(this.bufferFile)) {
-				this.buffer = JSON.parse(fs.readFileSync(this.bufferFile, 'utf8')) || [];
-				this.log.info(`Loaded ${this.buffer.length} buffered points`);
-			}
-		} catch (err) {
-			this.log.error(`Failed to load buffer: ${err.message}`);
-			this.buffer = [];
-		}
-	}
-
-	saveBuffer() {
-		try {
-			fs.writeFileSync(this.bufferFile, JSON.stringify(this.buffer));
-		} catch (err) {
-			this.log.error(`Failed to save buffer: ${err.message}`);
-		}
-	}
-
-	updateBufferStates() {
-		this.setState('info.buffer.size', this.buffer.length, true);
-		if (this.buffer.length > 0) {
-			this.setState('info.buffer.oldest', new Date(this.buffer[0].ts).toISOString(), true);
-		} else {
-			// optional: clear oldest when empty
-			this.setState('info.buffer.oldest', '', true);
-		}
-	}
-
-	/* =====================================================
 	 * READY
 	 * ===================================================== */
 
 	async onReady() {
-		await this.retryOnConnectionError(async () => {
-			await this.ensureObjectTree();
-			await this.createInfoStates();
-		}, 'Create adapter objects');
+		await retryOnConnectionError(
+			this,
+			async () => {
+				await ensureObjectTree(this);
+				await createInfoStates(this);
+			},
+			'Create adapter objects',
+		);
 
 		this.setState('info.connection', false, true);
 		this.setState('info.buffer.clear', false, true);
 		this.setState('info.lastError', '', true);
 
-		this.loadBuffer();
-		this.updateBufferStates();
+		loadBuffer(this);
+		updateBufferStates(this);
 
-		if (!this.validateInfluxConfig()) {
+		if (!validateInfluxConfig(this)) {
 			this.log.error('InfluxDB configuration incomplete');
 			this.setState('info.lastError', 'InfluxDB configuration incomplete (URL/Token/Org/Bucket missing)', true);
 			return;
 		}
 
 		/* --- Always check Influx Connection once at startup --- */
-		const influxOk = await this.verifyInfluxConnection();
+		const influxOk = await verifyInfluxConnection(this);
 		if (!influxOk) {
 			this.setState('info.lastError', 'InfluxDB connection failed – check URL, Token, Org and Bucket', true);
 			// Adapter continues running; flush loop will retry
@@ -524,28 +118,28 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.config.sensors = [];
 		}
 
-		await this.ensureDefaultSensorsAndTitles();
+		await ensureDefaultSensorsAndTitles(this);
 
-		if (!this.hasEnabledSensors()) {
+		if (!Array.isArray(this.config.sensors) || !this.config.sensors.some(s => s && s.enabled)) {
 			const msg = 'No sensor is enabled. Please activate at least one sensor in the adapter configuration.';
 			this.log.warn(msg);
 			this.setState('info.lastError', msg, true);
 		}
 
-		await this.retryOnConnectionError(() => this.prepareSensors(), 'Prepare sensors');
-		await this.retryOnConnectionError(() => this.prepareForecastSources(), 'Prepare forecast sources');
+		await retryOnConnectionError(this, () => prepareSensors(this), 'Prepare sensors');
+		await retryOnConnectionError(this, () => prepareForecastSources(this), 'Prepare forecast sources');
 
 		if (this.isUnloading) {
 			return;
 		}
 
 		/* Collect loop */
-		const collectMs = this.getCollectIntervalMs();
+		const collectMs = getCollectIntervalMs(this);
 		this.log.info(`Collect interval: ${Math.round(collectMs / 1000)}s`);
-		this.collectTimer = this.setInterval(() => this.collectPoints().catch(() => {}), collectMs);
+		this.collectTimer = this.setInterval(() => collectPoints(this).catch(() => {}), collectMs);
 
 		/* Flush loop – start immediately */
-		this.scheduleNextFlush(1000);
+		scheduleNextFlush(this, 1000);
 
 		/* ---------- Data-SOLECTRUS (optional) ---------- */
 		if (this.config.enableDataSolectrus) {
@@ -571,733 +165,43 @@ class SolectrusInfluxdb extends utils.Adapter {
 		const ds = createDsProxy(this);
 		this.dsProxy = ds;
 
-		await this.retryOnConnectionError(async () => {
-			// Ensure ds channel hierarchy
-			await this.setObjectNotExistsAsync('ds', {
-				type: 'channel',
-				common: { name: 'Data-SOLECTRUS' },
-				native: {},
-			});
-			await this.setObjectNotExistsAsync('ds.info', {
-				type: 'channel',
-				common: { name: 'DS Info' },
-				native: {},
-			});
-
-			await dsStateRegistry.createInfoStates(ds);
-
-			await dsItemManager.ensureItemTitlesInInstanceConfig(ds);
-			await dsItemManager.prepareItems(ds);
-
-			this.log.info('Data-SOLECTRUS formula engine started');
-			dsTickRunner.scheduleNextTick(ds);
-		}, 'Data-SOLECTRUS initialization');
-	}
-
-	/**
-	 * Ensures all default sensors from io-package.json exist in the instance config
-	 * and that sensor titles are up-to-date.
-	 */
-	async ensureDefaultSensorsAndTitles() {
-		try {
-			const objId = `system.adapter.${this.namespace}`;
-			const obj = await this.getForeignObjectAsync(objId);
-			if (!obj || !obj.native || !Array.isArray(obj.native.sensors)) {
-				return;
-			}
-
-			let changed = false;
-
-			// Mark first-install flag (defaults come from io-package.json via ioBroker)
-			if (!obj.native._defaultSensorsCreated) {
-				obj.native._defaultSensorsCreated = true;
-				changed = true;
-			}
-
-			// Migration: enable Data-SOLECTRUS formula engine by default for existing instances
-			// Only applies when the field was never explicitly saved (undefined = old install
-			// that pre-dates the checkbox).  An explicit false (user disabled it) is preserved.
-			if (obj.native.enableDataSolectrus === undefined || obj.native.enableDataSolectrus === null) {
-				obj.native.enableDataSolectrus = true;
-				this.config.enableDataSolectrus = true;
-				changed = true;
-			}
-
-			// --- Sensor titles ---
-			for (const sensor of obj.native.sensors) {
-				if (!sensor || typeof sensor !== 'object') {
-					continue;
-				}
-				const sensorName = sensor.SensorName || 'Sensor';
-				const expectedTitle = `${sensor.enabled ? '🟢 ' : '⚪ '}${sensorName}`;
-				if (sensor._title !== expectedTitle) {
-					sensor._title = expectedTitle;
-					changed = true;
-				}
-			}
-
-			if (changed) {
-				await this.setForeignObject(objId, obj);
-				this.config.sensors = obj.native.sensors;
-			}
-		} catch (e) {
-			this.log.warn(`Cannot ensure default sensors / titles: ${e}`);
-		}
-	}
-
-	async createInfoStates() {
-		await this.setObjectNotExistsAsync('info.connection', {
-			type: 'state',
-			common: {
-				name: 'Device or service connected',
-				type: 'boolean',
-				role: 'indicator.connected',
-				read: true,
-				write: false,
-			},
-			native: {},
-		});
-
-		await this.setObjectNotExistsAsync('info.buffer.size', {
-			type: 'state',
-			common: {
-				name: 'Buffered points',
-				type: 'number',
-				role: 'value',
-				read: true,
-				write: false,
-			},
-			native: {},
-		});
-
-		await this.setObjectNotExistsAsync('info.buffer.oldest', {
-			type: 'state',
-			common: {
-				name: 'Oldest buffered timestamp',
-				type: 'string',
-				role: 'text',
-				read: true,
-				write: false,
-			},
-			native: {},
-		});
-
-		await this.setObjectNotExistsAsync('info.buffer.clear', {
-			type: 'state',
-			common: {
-				name: 'Clear Buffer manually',
-				type: 'boolean',
-				role: 'button',
-				read: false,
-				write: true,
-			},
-			native: {},
-		});
-		this.subscribeStates('info.buffer.clear');
-
-		await this.setObjectNotExistsAsync('info.lastError', {
-			type: 'state',
-			common: {
-				name: 'Last Error',
-				type: 'string',
-				role: 'text',
-				read: true,
-				write: false,
-			},
-			native: {},
-		});
-	}
-
-	/* =====================================================
-	 * INFLUX
-	 * ===================================================== */
-
-	validateInfluxConfig() {
-		const cfg = this.getInfluxConfig();
-		return !!(cfg.url && cfg.token && cfg.org && cfg.bucket);
-	}
-
-	async verifyInfluxConnection() {
-		try {
-			const { url, token, org, bucket } = this.getInfluxConfig();
-
-			this.influx = new InfluxDB({ url, token });
-			this.writeApi = this.influx.getWriteApi(org, bucket, 'ms');
-
-			const testPoint = new Point('adapter_connection_test').booleanField('ok', true).timestamp(new Date());
-			this.writeApi.writePoint(testPoint);
-			await this.writeApi.flush();
-
-			this.influxVerified = true;
-			this.setState('info.connection', true, true);
-			this.log.info('InfluxDB connection verified');
-			return true;
-		} catch (err) {
-			this.log.error(`Influx verification failed: ${err.message}`);
-			this.influxVerified = false;
-			await this.closeWriteApi();
-			this.setState('info.connection', false, true);
-			return false;
-		}
-	}
-
-	async closeWriteApi() {
-		if (!this.writeApi) {
-			return;
-		}
-
-		try {
-			await this.writeApi.close();
-		} catch {
-			// ignore
-		} finally {
-			this.writeApi = null;
-			this.influx = null;
-		}
-	}
-
-	async ensureInflux() {
-		if (this.isInfluxReady()) {
-			return true;
-		}
-		this.log.debug('Verify Influx Connection...');
-		return await this.verifyInfluxConnection();
-	}
-
-	/* =====================================================
-	 * SENSORS
-	 * ===================================================== */
-
-	async prepareSensors() {
-		for (const sensor of this.config.sensors) {
-			if (this.isUnloading) {
-				break;
-			}
-			if (!sensor || !sensor.enabled) {
-				continue;
-			}
-
-			const id = this.getSensorStateId(sensor);
-
-			const typeMapping = {
-				int: 'number',
-				float: 'number',
-				bool: 'boolean',
-				string: 'string',
-				json: 'string',
-			};
-
-			const iobType = typeMapping[sensor.type] || 'mixed';
-			const obj = await this.getObjectAsync(id);
-
-			if (!obj) {
-				this.setObject(id, {
-					type: 'state',
-					common: {
-						name: sensor.SensorName,
-						type: iobType,
-						role: 'value',
-						read: true,
-						write: false,
-					},
-					native: { sourceState: sensor.sourceState },
-				});
-			} else {
-				this.extendObject(id, {
-					type: 'state',
-					common: {
-						name: sensor.SensorName,
-						type: iobType,
-						role: 'value',
-						read: true,
-						write: false,
-					},
-					native: { sourceState: sensor.sourceState },
-				});
-			}
-
-			// JSON sensors: read initial value (filtered to relevant fields only),
-			// map sourceState, but skip foreignObj check and subscribeForeignStates
-			// (done in prepareJsonSensors)
-			if (sensor.type === 'json') {
-				if (sensor.sourceState) {
-					this.sourceToSensorId[sensor.sourceState] = id;
-					const cfg = this.getJsonSensorConfig(sensor);
-					const state = await this.getForeignStateAsync(sensor.sourceState);
-					if (state && state.val != null) {
-						let filtered;
-						if (cfg.autoDetect) {
-							filtered = this.extractJsonSensorValuesAuto(state.val, cfg.tsField);
-						} else {
-							filtered = this.extractJsonSensorValues(state.val, cfg.tsField, cfg.valField);
-						}
-						if (filtered) {
-							this.setState(id, filtered, true);
-						}
-					}
-				}
-				// Always use current time as baseline so JSON sensors also get a grace period after restart
-				this.lastUpdateTs.set(id, Date.now());
-				continue;
-			}
-
-			if (!sensor.sourceState) {
-				continue;
-			}
-
-			// ds.* states from this adapter may not exist yet (created by initDataSolectrus later)
-			const isOwnDsState = sensor.sourceState.startsWith(`${this.namespace}.ds.`);
-			const foreignObj = await this.getForeignObjectAsync(sensor.sourceState);
-			if (!foreignObj && !isOwnDsState) {
-				this.log.warn(`Source state not found: ${sensor.sourceState}`);
-				continue;
-			}
-
-			this.sourceToSensorId[sensor.sourceState] = id;
-
-			const state = await this.getForeignStateAsync(sensor.sourceState);
-			if (state) {
-				this.cache[id] = state.val;
-				this.setState(id, state.val, true);
-			}
-			// Always use current time as baseline so every sensor gets a grace period after restart
-			this.lastUpdateTs.set(id, Date.now());
-
-			this.subscribeForeignStates(sensor.sourceState);
-		}
-
-		// Prepare JSON-type sensors (forecast/weather data)
-		await this.prepareJsonSensors();
-	}
-
-	/* =====================================================
-	 * JSON SENSORS (forecast / weather data via json type)
-	 * ===================================================== */
-
-	getJsonSensorConfig(sensor) {
-		// Auto-detection: scan JSON data for all known value fields
-		if (sensor.jsonPreset === 'auto') {
-			return { autoDetect: true, tsField: 't' };
-		}
-
-		const preset = JSON_PRESETS[sensor.jsonPreset];
-		if (preset) {
-			// Preset provides defaults, but user-defined measurement/field take priority
-			return {
-				tsField: preset.tsField,
-				valField: preset.valField,
-				measurement: sensor.measurement || preset.measurement,
-				field: sensor.field || preset.field,
-				influxType: preset.influxType,
-			};
-		}
-		// Custom preset: user-defined fields
-		return {
-			tsField: sensor.jsonTsField || 't',
-			valField: sensor.jsonValField || 'y',
-			measurement: sensor.measurement || 'custom_json',
-			field: sensor.field || 'value',
-			influxType: sensor.jsonInfluxType || 'float',
-		};
-	}
-
-	/**
-	 * Extract only the relevant {tsField, valField} entries from raw JSON
-	 * for a specific sensor mapping, and return as JSON string.
-	 *
-	 * @param {*} jsonVal - Raw JSON value (string or object)
-	 * @param {string} tsField - Timestamp field name
-	 * @param {string} valField - Value field name
-	 */
-	extractJsonSensorValues(jsonVal, tsField, valField) {
-		const data = this.parseJsonArray(jsonVal, 'extractJsonSensorValues', true);
-		if (!data) {
-			return null;
-		}
-		const filtered = [];
-		for (const entry of data) {
-			if (!entry || typeof entry !== 'object') {
-				continue;
-			}
-			if (entry[tsField] != null && entry[valField] != null) {
-				filtered.push({ [tsField]: entry[tsField], [valField]: entry[valField] });
-			}
-		}
-		return JSON.stringify(filtered);
-	}
-
-	/**
-	 * Extract all known preset value fields from raw JSON for auto-detection mode.
-	 *
-	 * @param {*} jsonVal - Raw JSON value (string or object)
-	 * @param {string} tsField - Timestamp field name
-	 */
-	extractJsonSensorValuesAuto(jsonVal, tsField) {
-		const data = this.parseJsonArray(jsonVal, 'extractJsonSensorValuesAuto', true);
-		if (!data) {
-			return null;
-		}
-		const knownFields = Object.values(JSON_PRESETS).map(p => p.valField);
-		const filtered = [];
-		for (const entry of data) {
-			if (!entry || typeof entry !== 'object' || entry[tsField] == null) {
-				continue;
-			}
-			const obj = { [tsField]: entry[tsField] };
-			let hasField = false;
-			for (const vf of knownFields) {
-				if (entry[vf] != null) {
-					obj[vf] = entry[vf];
-					hasField = true;
-				}
-			}
-			if (hasField) {
-				filtered.push(obj);
-			}
-		}
-		return JSON.stringify(filtered);
-	}
-
-	async prepareJsonSensors() {
-		this.jsonSourceMap = {};
-
-		for (const sensor of this.config.sensors) {
-			if (!sensor || !sensor.enabled || sensor.type !== 'json') {
-				continue;
-			}
-
-			if (!sensor.sourceState) {
-				this.log.warn(`JSON sensor "${sensor.SensorName}" has no source state`);
-				continue;
-			}
-
-			const cfg = this.getJsonSensorConfig(sensor);
-
-			if (!this.jsonSourceMap[sensor.sourceState]) {
-				this.jsonSourceMap[sensor.sourceState] = [];
-			}
-			this.jsonSourceMap[sensor.sourceState].push({
-				sensorName: sensor.SensorName,
-				...cfg,
-			});
-		}
-
-		const sourceStates = Object.keys(this.jsonSourceMap);
-		if (sourceStates.length === 0) {
-			return;
-		}
-
-		this.log.info(`JSON sensors: subscribing to ${sourceStates.length} JSON source(s)`);
-		for (const stateId of sourceStates) {
-			this.subscribeForeignStates(stateId);
-		}
-	}
-
-	processJsonSensorData(sourceState, jsonVal) {
-		const mappings = this.jsonSourceMap[sourceState];
-		if (!mappings || mappings.length === 0) {
-			return;
-		}
-
-		const data = this.parseJsonArray(jsonVal, sourceState);
-		if (!data) {
-			return;
-		}
-
-		let totalPoints = 0;
-		const presetValues = Object.values(JSON_PRESETS);
-
-		for (const mapping of mappings) {
-			// Auto-detection: scan for all known value fields in each entry
-			if (mapping.autoDetect) {
-				for (const entry of data) {
-					if (!entry || typeof entry !== 'object') {
-						continue;
-					}
-
-					const rawTs = entry[mapping.tsField];
-					if (rawTs == null) {
-						continue;
-					}
-
-					const ts = this.parseTimestamp(rawTs);
-					if (!Number.isFinite(ts)) {
-						this.log.debug(`JSON sensor: invalid timestamp ${rawTs} in ${sourceState}`);
-						continue;
-					}
-
-					for (const preset of presetValues) {
-						const rawVal = entry[preset.valField];
-						if (rawVal == null) {
-							continue;
-						}
-
-						const value = this.parseInfluxValue(rawVal, preset.influxType);
-						if (Number.isNaN(value)) {
-							continue;
-						}
-
-						this.buffer.push({
-							id: `${mapping.sensorName}_${preset.valField}`,
-							measurement: preset.measurement,
-							field: preset.field,
-							type: preset.influxType,
-							value,
-							ts,
-						});
-						totalPoints++;
-					}
-				}
-				continue;
-			}
-
-			// Standard mapping (specific preset or custom)
-			for (const entry of data) {
-				if (!entry || typeof entry !== 'object') {
-					continue;
-				}
-
-				const rawTs = entry[mapping.tsField];
-				const rawVal = entry[mapping.valField];
-				if (rawTs == null || rawVal == null) {
-					continue;
-				}
-
-				const ts = this.parseTimestamp(rawTs);
-				if (!Number.isFinite(ts)) {
-					this.log.debug(`JSON sensor: invalid timestamp ${rawTs} in ${sourceState}`);
-					continue;
-				}
-
-				const value = this.parseInfluxValue(rawVal, mapping.influxType);
-				if (Number.isNaN(value)) {
-					continue;
-				}
-
-				this.buffer.push({
-					id: mapping.sensorName,
-					measurement: mapping.measurement,
-					field: mapping.field,
-					type: mapping.influxType,
-					value,
-					ts,
-				});
-				totalPoints++;
-			}
-		}
-
-		if (totalPoints > 0) {
-			this.log.info(`JSON sensor: buffered ${totalPoints} points from ${sourceState}`);
-
-			if (this.buffer.length > this.maxBufferSize) {
-				this.log.warn('Buffer limit reached – dropping oldest entries');
-				this.buffer.splice(0, this.buffer.length - this.maxBufferSize);
-			}
-
-			this.saveBuffer();
-			this.updateBufferStates();
-
-			// Trigger immediate flush
-			if (!this.isFlushing) {
-				this.scheduleNextFlush(0);
-			}
-		}
-	}
-
-	/* =====================================================
-	 * FORECAST
-	 * ===================================================== */
-
-	async prepareForecastSources() {
-		if (!this.config.enableForecast || !Array.isArray(this.config.forecasts)) {
-			return;
-		}
-
-		for (const fc of this.config.forecasts) {
-			if (this.isUnloading) {
-				break;
-			}
-			if (!fc || !fc.enabled || !fc.sourceState) {
-				continue;
-			}
-
-			// Create ioBroker channel for this forecast entry
-			const channelId = this.getForecastStateId(fc);
-			await this.setObjectNotExistsAsync(channelId, {
-				type: 'channel',
-				common: {
-					name: fc.name || 'Forecast',
-				},
-				native: {
-					sourceState: fc.sourceState,
-					valField: fc.valField || 'y',
-					measurement: fc.measurement,
-					field: fc.field,
-				},
-			});
-
-			if (!this.forecastSourceMap[fc.sourceState]) {
-				this.forecastSourceMap[fc.sourceState] = [];
-			}
-			this.forecastSourceMap[fc.sourceState].push(fc);
-		}
-
-		const sourceStates = Object.keys(this.forecastSourceMap);
-		if (sourceStates.length === 0) {
-			return;
-		}
-
-		this.log.info(`Forecast: subscribing to ${sourceStates.length} JSON source(s)`);
-		for (const stateId of sourceStates) {
-			this.subscribeForeignStates(stateId);
-		}
-	}
-
-	formatForecastTimestamp(tsMs) {
-		const d = new Date(tsMs);
-		const pad = (n, len) => String(n).padStart(len || 2, '0');
-		return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
-	}
-
-	processForecastJson(sourceState, jsonVal) {
-		const mappings = this.forecastSourceMap[sourceState];
-		if (!mappings || mappings.length === 0) {
-			return;
-		}
-
-		const data = this.parseJsonArray(jsonVal, sourceState);
-		if (!data) {
-			return;
-		}
-
-		let totalPoints = 0;
-		const typeMapping = { int: 'number', float: 'number' };
-		const stateUpdates = [];
-
-		for (const fc of mappings) {
-			const tsField = fc.tsField || 't';
-			const valField = fc.valField || 'y';
-			const channelId = this.getForecastStateId(fc);
-			const iobType = typeMapping[fc.type] || 'number';
-
-			for (const entry of data) {
-				if (!entry || typeof entry !== 'object') {
-					continue;
-				}
-
-				const rawTs = entry[tsField];
-				const rawVal = entry[valField];
-				if (rawTs == null || rawVal == null) {
-					continue;
-				}
-
-				const ts = this.parseTimestamp(rawTs);
-				if (!Number.isFinite(ts)) {
-					this.log.debug(`Forecast: invalid timestamp ${rawTs} in ${sourceState}`);
-					continue;
-				}
-
-				const value = this.parseInfluxValue(rawVal, fc.type);
-				if (Number.isNaN(value)) {
-					continue;
-				}
-
-				this.buffer.push({
-					id: fc.name || 'forecast',
-					measurement: fc.measurement,
-					field: fc.field,
-					type: fc.type,
-					value,
-					ts,
-				});
-				totalPoints++;
-
-				// Collect state update (created non-blocking below)
-				const tsName = this.formatForecastTimestamp(ts);
-				stateUpdates.push({
-					stateId: `${channelId}.${tsName}`,
-					name: `${fc.name || 'Forecast'} ${new Date(ts).toLocaleString()}`,
-					iobType,
-					value,
-				});
-			}
-		}
-
-		if (totalPoints > 0) {
-			this.log.info(`Forecast: buffered ${totalPoints} points from ${sourceState}`);
-
-			if (this.buffer.length > this.maxBufferSize) {
-				this.log.warn('Buffer limit reached – dropping oldest entries');
-				this.buffer.splice(0, this.buffer.length - this.maxBufferSize);
-			}
-
-			this.saveBuffer();
-			this.updateBufferStates();
-
-			// Trigger immediate flush
-			if (!this.isFlushing) {
-				this.scheduleNextFlush(0);
-			}
-		}
-
-		// Create/update ioBroker states non-blocking – never stalls ds tick
-		if (stateUpdates.length > 0) {
-			this.updateForecastStates(stateUpdates).catch(err => {
-				this.log.debug(`Forecast state updates failed: ${err.message}`);
-			});
-		}
-	}
-
-	async updateForecastStates(stateUpdates) {
-		for (const upd of stateUpdates) {
-			if (this.isUnloading) {
-				break;
-			}
-			try {
-				await this.setObjectNotExistsAsync(upd.stateId, {
-					type: 'state',
-					common: {
-						name: upd.name,
-						type: upd.iobType,
-						role: 'value',
-						read: true,
-						write: false,
-					},
+		await retryOnConnectionError(
+			this,
+			async () => {
+				// Ensure ds channel hierarchy
+				await this.setObjectNotExistsAsync('ds', {
+					type: 'channel',
+					common: { name: 'Data-SOLECTRUS' },
 					native: {},
 				});
-				this.setState(upd.stateId, upd.value, true);
-			} catch (err) {
-				const msg = err && err.message ? err.message : String(err);
-				if (/connection is closed|db closed/i.test(msg)) {
-					this.log.warn(
-						`Forecast state updates aborted (connection lost) after ${upd.stateId}. Remaining updates skipped.`,
-					);
-					break;
-				}
-				this.log.debug(`Forecast state update failed for ${upd.stateId}: ${msg}`);
-			}
-		}
+				await this.setObjectNotExistsAsync('ds.info', {
+					type: 'channel',
+					common: { name: 'DS Info' },
+					native: {},
+				});
+
+				await dsStateRegistry.createInfoStates(ds);
+
+				await dsItemManager.ensureItemTitlesInInstanceConfig(ds);
+				await dsItemManager.prepareItems(ds);
+
+				this.log.info('Data-SOLECTRUS formula engine started');
+				dsTickRunner.scheduleNextTick(ds);
+			},
+			'Data-SOLECTRUS initialization',
+		);
+	}
+
+	/* =====================================================
+	 * DELEGATED METHODS (called by lib modules via adapter.xxx)
+	 * ===================================================== */
+
+	scheduleNextFlush(delayMs) {
+		scheduleNextFlush(this, delayMs);
 	}
 
 	disableSensorByFieldTypeConflict(err) {
-		const conflict = this.parseFieldTypeConflictError(err);
-		if (!conflict) {
-			return;
-		}
-
-		const { measurement, field } = conflict;
-		const sensor = this.config.sensors.find(s => s && s.measurement === measurement && s.field === field);
-
-		if (!sensor) {
-			this.log.warn(`No sensor found for measurement "${measurement}" and field "${field}".`);
-			return;
-		}
-
-		sensor.enabled = false;
-
-		const msg = `Sensor "${sensor.SensorName}" was deactivated because of Field-Type-Conflict (measurement: ${measurement}, field: ${field})`;
-		this.log.error(msg);
-		this.setState('info.lastError', msg, true);
+		disableSensorByFieldTypeConflict(this, err);
 	}
 
 	/* =====================================================
@@ -1332,7 +236,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		// Button handling (do NOT rely on state.val)
 		if (id === `${this.namespace}.info.buffer.clear`) {
 			this.log.info('Manual buffer clear triggered');
-			this.clearBuffer().catch(() => {});
+			clearBuffer(this).catch(() => {});
 			// Optional reset for UI convenience (even though read:false)
 			this.setState('info.buffer.clear', false, true);
 			return;
@@ -1345,12 +249,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 				// JSON sensors: extract only the relevant fields for each mapping
 				const mappings = this.jsonSourceMap[id];
 				for (const mapping of mappings) {
-					const mId = this.getSensorStateId({ SensorName: mapping.sensorName });
+					const mId = getSensorStateId({ SensorName: mapping.sensorName });
 					let filtered;
 					if (mapping.autoDetect) {
-						filtered = this.extractJsonSensorValuesAuto(state.val, mapping.tsField);
+						filtered = extractJsonSensorValuesAuto(this, state.val, mapping.tsField);
 					} else {
-						filtered = this.extractJsonSensorValues(state.val, mapping.tsField, mapping.valField);
+						filtered = extractJsonSensorValues(this, state.val, mapping.tsField, mapping.valField);
 					}
 					if (filtered) {
 						this.setState(mId, filtered, true);
@@ -1366,16 +270,16 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 		// Forecast JSON source updates (legacy)
 		if (this.forecastSourceMap[id]) {
-			this.processForecastJson(id, state.val);
+			processForecastJson(this, id, state.val);
 		}
 
 		// JSON sensor source updates
 		if (this.jsonSourceMap[id]) {
-			this.processJsonSensorData(id, state.val);
+			processJsonSensorData(this, id, state.val);
 			// Refresh alive timestamp for each JSON sensor backed by this source
 			const tsNow = typeof state.ts === 'number' ? state.ts : Date.now();
 			for (const mapping of this.jsonSourceMap[id]) {
-				const mId = this.getSensorStateId({ SensorName: mapping.sensorName });
+				const mId = getSensorStateId({ SensorName: mapping.sensorName });
 				this.lastUpdateTs.set(mId, tsNow);
 			}
 		}
@@ -1466,262 +370,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 	}
 
 	/* =====================================================
-	 * COLLECT
-	 * ===================================================== */
-
-	async collectPoints() {
-		const now = Date.now();
-
-		for (const sensor of this.config.sensors) {
-			if (!sensor || !sensor.enabled) {
-				continue;
-			}
-
-			const id = this.getSensorStateId(sensor);
-
-			// Check alive timeout (throttle: warn at most once per timeout period per sensor)
-			const sensorAliveTimeoutMs = sensor.aliveTimeoutMinutes > 0 ? sensor.aliveTimeoutMinutes * 60_000 : 0;
-			if (sensorAliveTimeoutMs > 0) {
-				const lastTs = this.lastUpdateTs.get(id);
-				if (lastTs > 0 && now - lastTs > sensorAliveTimeoutMs) {
-					const lastWarnTs = this.aliveWarnedAt.get(id) || 0;
-					if (now - lastWarnTs >= sensorAliveTimeoutMs) {
-						this.aliveWarnedAt.set(id, now);
-						const lastTsStr = new Date(lastTs).toLocaleString();
-						this.log.warn(
-							`Sensor "${sensor.SensorName}": no update since ${lastTsStr} (longer than ${sensor.aliveTimeoutMinutes} minute(s))`,
-						);
-					}
-				}
-			}
-
-			// JSON sensors are event-driven (written on source state change), not polled
-			if (sensor.type === 'json') {
-				continue;
-			}
-
-			const value = this.cache[id];
-
-			if (value === undefined || value === null) {
-				continue;
-			}
-
-			// Warn once per sensor when a negative value is collected
-			if (typeof value === 'number' && value < 0 && !this.negativeValueWarned.has(id)) {
-				this.negativeValueWarned.add(id);
-				this.log.warn(
-					`Sensor "${sensor.SensorName}" delivers negative value (${value}). Negative values will be sent to InfluxDB.`,
-				);
-			}
-
-			// Validate against configured maximum value (for numeric-type sensors)
-			// Uses parseInt for 'int' type, parseFloat for 'float'/standard – consistent with flushBuffer.
-			// Non-numeric types (bool, string, json) are skipped.
-			// Per-sensor maxValue takes precedence; default is 10000 W.
-			// Non-finite maxVal (NaN, Infinity) is treated as "not configured".
-			const rawMax = sensor.maxValue != null ? sensor.maxValue : 10000;
-			const maxVal = rawMax != null ? Number(rawMax) : NaN;
-			let valueToSend = value;
-			if (
-				Number.isFinite(maxVal) &&
-				sensor.type !== 'bool' &&
-				sensor.type !== 'string' &&
-				sensor.type !== 'json'
-			) {
-				const numValue = sensor.type === 'int' ? parseInt(value, 10) : parseFloat(value);
-				if (Number.isFinite(numValue)) {
-					if (numValue > maxVal) {
-						const lastValid = this.lastValidValue.get(id);
-						if (lastValid === undefined) {
-							this.log.warn(
-								`Sensor "${sensor.SensorName}" delivers implausible value (${numValue} > max ${maxVal}). No last valid value available, skipping point.`,
-							);
-							continue;
-						}
-						this.log.warn(
-							`Sensor "${sensor.SensorName}" delivers implausible value (${numValue} > max ${maxVal}). Using last valid value (${lastValid}) instead.`,
-						);
-						valueToSend = lastValid;
-					} else {
-						this.lastValidValue.set(id, numValue);
-					}
-				}
-			}
-
-			this.log.debug(`Collect point: ${id} : ${valueToSend} to: ${sensor.measurement} : ${sensor.field}`);
-			this.buffer.push({
-				id: sensor.SensorName,
-				measurement: sensor.measurement,
-				field: sensor.field,
-				type: sensor.type,
-				value: valueToSend,
-				ts: now,
-			});
-
-			if (this.buffer.length > this.maxBufferSize) {
-				this.log.warn('Buffer limit reached – dropping oldest entries');
-				this.buffer.splice(0, this.buffer.length - this.maxBufferSize);
-			}
-		}
-
-		this.saveBuffer();
-		this.updateBufferStates();
-
-		// Trigger flush immediately after collect (if not already running)
-		if (this.buffer.length > 0 && !this.isFlushing) {
-			this.scheduleNextFlush(0);
-		}
-	}
-
-	/* =====================================================
-	 * FLUSH
-	 * ===================================================== */
-
-	scheduleNextFlush(delayMs) {
-		const delay = this.clampDelay(delayMs, this.getFlushIntervalMs());
-
-		if (this.flushTimer) {
-			this.clearTimeout(this.flushTimer);
-		}
-
-		this.flushTimer = this.setTimeout(() => {
-			this.flushBuffer().catch(() => {});
-		}, delay);
-	}
-
-	async flushBuffer() {
-		if (this.isUnloading) {
-			return;
-		}
-
-		// Guard against overlapping flushes
-		if (this.isFlushing) {
-			this.scheduleNextFlush(this.getFlushIntervalMs());
-			return;
-		}
-
-		const influxReady = await this.ensureInflux();
-		if (!influxReady) {
-			return this.handleFlushFailure();
-		}
-
-		/* --- No active sensors → do not write, but connection is known-good --- */
-		if (!this.hasEnabledSensors()) {
-			this.log.debug('Flush skipped: no enabled sensors');
-			this.flushFailures = 0;
-			this.setState('info.connection', true, true);
-			this.scheduleNextFlush(this.getFlushIntervalMs());
-			return;
-		}
-
-		/* --- Buffer empty → nothing to write, but connection ok --- */
-		if (this.buffer.length === 0) {
-			this.flushFailures = 0;
-			this.setState('info.connection', true, true);
-			this.scheduleNextFlush(this.getFlushIntervalMs());
-			return;
-		}
-
-		const writeApi = this.writeApi;
-		if (!writeApi) {
-			// Should not happen if ensureInflux() returned true, but stay safe
-			return this.handleFlushFailure();
-		}
-
-		// Snapshot-and-swap: take current buffer, replace with empty array.
-		// Collects during the async flush write to the new empty buffer,
-		// so the batch being flushed is never modified concurrently.
-		const batch = this.buffer;
-		this.buffer = [];
-		this.isFlushing = true;
-
-		try {
-			for (const entry of batch) {
-				const point = new Point(entry.measurement).timestamp(entry.ts);
-				let fieldValue;
-
-				switch (entry.type) {
-					case 'int':
-						fieldValue = parseInt(entry.value, 10);
-						if (Number.isNaN(fieldValue)) {
-							this.log.warn(`Skip NaN int value for ${entry.measurement}.${entry.field}`);
-							continue;
-						}
-						point.intField(entry.field, fieldValue);
-						break;
-					case 'float':
-						fieldValue = parseFloat(entry.value);
-						if (Number.isNaN(fieldValue)) {
-							this.log.warn(`Skip NaN float value for ${entry.measurement}.${entry.field}`);
-							continue;
-						}
-						point.floatField(entry.field, fieldValue);
-						break;
-					case 'bool':
-						point.booleanField(entry.field, Boolean(entry.value));
-						break;
-					default:
-						if (entry.value === undefined || entry.value === null) {
-							this.log.warn(`Skip empty string value for ${entry.measurement}.${entry.field}`);
-							continue;
-						}
-						point.stringField(entry.field, String(entry.value));
-				}
-
-				this.log.debug(`Write point: ${entry.id} : ${entry.value} to: ${entry.measurement} : ${entry.field}`);
-				writeApi.writePoint(point);
-			}
-
-			await writeApi.flush();
-
-			// Success: batch is done, save buffer (may contain new entries from concurrent collects)
-			this.saveBuffer();
-			this.updateBufferStates();
-
-			this.flushFailures = 0;
-			this.setState('info.connection', true, true);
-			this.scheduleNextFlush(this.getFlushIntervalMs());
-		} catch (err) {
-			// If adapter is shutting down, just save the batch and bail out
-			if (this.isUnloading) {
-				this.buffer = batch.concat(this.buffer);
-				this.saveBuffer();
-				this.isFlushing = false;
-				return;
-			}
-
-			this.log.error(`Flush failed: ${err.message}`);
-			await this.closeWriteApi();
-
-			// Merge failed batch back: prepend to current buffer to preserve chronological order
-			this.buffer = batch.concat(this.buffer);
-			this.saveBuffer();
-			this.updateBufferStates();
-
-			if (this.isFieldTypeConflict(err)) {
-				this.log.error('Field type conflict detected – disabling affected sensor');
-				this.disableSensorByFieldTypeConflict(err);
-				await this.clearBuffer();
-			}
-
-			this.handleFlushFailure();
-		} finally {
-			this.isFlushing = false;
-		}
-	}
-
-	handleFlushFailure() {
-		this.flushFailures++;
-		this.setState('info.connection', false, true);
-
-		const base = this.getFlushIntervalMs();
-		const delay = Math.min(base * this.flushFailures, this.maxFlushInterval);
-
-		this.log.warn(`Retry flush in ${Math.round(delay / 1000)}s`);
-		this.scheduleNextFlush(delay);
-	}
-
-	/* =====================================================
 	 * UNLOAD
 	 * ===================================================== */
 
@@ -1752,8 +400,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 				await new Promise(resolve => setTimeout(resolve, 50));
 			}
 
-			this.saveBuffer();
-			await this.closeWriteApi();
+			saveBuffer(this);
+			await closeWriteApi(this);
 
 			this.setState('info.connection', false, true);
 			callback();
