@@ -13,7 +13,13 @@ const { retryOnConnectionError, getSensorStateId, getCollectIntervalMs, hasEnabl
 const { loadBuffer, saveBuffer, updateBufferStates, clearBuffer } = require('./lib/bufferManager');
 const { validateInfluxConfig, verifyInfluxConnection, closeWriteApi } = require('./lib/influxManager');
 const { ensureObjectTree, createInfoStates, ensureDefaultSensorsAndTitles } = require('./lib/objectManager');
-const { prepareSensors, processJsonSensorData, extractJsonSensorValues, extractJsonSensorValuesAuto, disableSensorByFieldTypeConflict } = require('./lib/sensorManager');
+const {
+	prepareSensors,
+	processJsonSensorData,
+	extractJsonSensorValues,
+	extractJsonSensorValuesAuto,
+	disableSensorByFieldTypeConflict,
+} = require('./lib/sensorManager');
 const { prepareForecastSources, processForecastJson } = require('./lib/forecastManager');
 const { collectPoints, scheduleNextFlush } = require('./lib/collectFlush');
 const dsStateRegistry = require('./lib/data-solectrus/services/stateRegistry');
