@@ -68,6 +68,11 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 * (copilot) Zero-value alive monitoring: when a sensor timeout fires and the current value is 0, log info instead of warn and retry after 60 minutes
 * (copilot) Sensor overview: numeric value row shows current value with unit (W) left-aligned and max value with unit (W) right-aligned
 * (copilot) Sensor overview: timestamp row shows last timestamp left-aligned and auto-computed next expected update timestamp right-aligned (no manual input needed)
+* (copilot) Sensor overview: datatype badge moved to measurement/field meta row (same line)
+* (copilot) Sensor overview: sensor name centered in card header
+* (copilot) Sensor overview: when timeout is exceeded, both timestamp text and timeout badge turn orange
+* (copilot) Sensor overview: when current value exceeds max value, value and max badge are highlighted red
+* (copilot) Formula Engine overview: mode badge moved to state-id meta row (same line), name centered
 
 ### 1.6.0 (2026-04-06)
 
