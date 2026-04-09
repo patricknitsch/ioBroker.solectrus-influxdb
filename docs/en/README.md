@@ -71,7 +71,7 @@ Click **Add** (Expert Mode) or select an existing sensor to configure:
 | ioBroker Source State | The source state to read values from. Use the **Select** button to browse the object tree. | Standard + Expert |
 | Sensor Name | Display name (also used for the ioBroker state ID under `sensors.*`) | Expert |
 | Max Value in W | Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. Default: 15000 W. | Expert |
-| Alive Timeout (min, 0 = disabled) | Logs a warning and marks the timestamp in the tab in **orange** if no new value is received within this timespan. Default: `60`. Must be greater than the update interval of the source adapter. | Expert |
+| Alive Timeout (min, 0 = disabled) | When no new value is received within this timespan: if the current value is **non-zero**, a warning is logged and the timestamp turns **orange** in the overview tab; if the current value is **0**, an info message is logged instead and the next check runs after **60 minutes**. Default: `60`. Must be greater than the update interval of the source adapter. | Expert |
 | Datatype | `int`, `float`, `bool`, `string`, or `json` (JSON Array) | Expert |
 | Influx Measurement | The InfluxDB measurement name (e.g. `inverter`) | Expert |
 | Influx Field | The InfluxDB field name (e.g. `power`) | Expert |
@@ -152,10 +152,10 @@ The **SOLECTRUS Overview** tab (accessible via the tab bar in the adapter sectio
 
 - **InfluxDB Sensors grid**: Shows all enabled sensors as compact cards in a responsive grid. Each card shows:
   - **Sensor name** and **data type badge** (`int`, `float`, `bool`, `string`, `json`)
-  - **Current value** — live reading; *n/a* if no value has been received yet. The value is always shown without line wrapping; the font size does not change with text length. JSON values are rendered compactly in a monospace font.
+  - **Current value / max value** — live reading compared to the configured maximum (e.g. `42 / max: 15000`); *n/a* if no value has been received yet. Shown only for numeric sensors. JSON values are rendered compactly in a monospace font.
   - **Measurement: field** — the target location in InfluxDB (separated by a colon)
   - **Source state** — the ioBroker state ID being read (truncated, full path shown on hover)
-  - **Last timestamp** — when the sensor last received a new value. Shown in **orange** when the sensor's configured alive timeout has been exceeded.
+  - **Last timestamp + interval** — when the sensor last received a new value, followed by the active timeout interval (e.g. `· Interval: 60 min`). Shown only when the alive timeout is configured. When the current value is 0 and the 60-minute fallback monitoring is active, the interval is shown as **60 min** regardless of the configured timeout. The timestamp is shown in **orange** when the alive timeout has been exceeded.
 - **Formula Engine grid** (only shown when Data-SOLECTRUS is enabled): Shows all active computed items in the same card layout, with mode badge, current value, state ID, and formula/expression. Font sizes remain constant in all device orientations.
 - **JSON Array preview**: For sensors with data type `json`, the value displays the **first array entry** followed by a count of additional entries (e.g. `{"t":1710000000000,"y":1250} (+543 more entries)`).
 - **Auto-refresh**: The tab updates automatically every 5 seconds.
