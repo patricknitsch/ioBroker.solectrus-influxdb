@@ -51,7 +51,7 @@ Standardmäßig läuft der Adapter im **Standardmodus**. Die Sensorliste zeigt a
 - **Nur lesen**: Sensorname, Datentyp, Measurement, Field, JSON-Vorlage
 - **Ausgeblendet**: Hinzufügen-, Löschen-, Duplizieren-Buttons, Maximalwert, Alive-Timeout
 
-So wird sichergestellt, dass Anfänger einfach Sensoren aktivieren und Quell-States zuweisen können, ohne versehentlich das InfluxDB-Mapping zu ändern. Im Standardmodus wird automatisch mit den Standardwerten überwacht: **10000 W** Maximalwert (nur numerische Sensoren) und **60 Minuten** Alive-Timeout. Die genaue Konfiguration ist im Expertenmodus möglich.
+So wird sichergestellt, dass Anfänger einfach Sensoren aktivieren und Quell-States zuweisen können, ohne versehentlich das InfluxDB-Mapping zu ändern. Im Standardmodus wird automatisch mit den Standardwerten überwacht: **15000 W** Maximalwert (nur numerische Sensoren) und **60 Minuten** Alive-Timeout. Die genaue Konfiguration ist im Expertenmodus möglich.
 
 Für volle Kontrolle den **Expertenmodus** auf der InfluxDB-Einstellungsseite aktivieren. Im Expertenmodus:
 
@@ -70,8 +70,8 @@ Auf **Add** klicken (Expertenmodus) oder einen bestehenden Sensor auswählen und
 | Enabled | Sensor aktivieren/deaktivieren | Standard + Experte |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. | Standard + Experte |
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) | Experte |
-| Maximalwert in W | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. Standard: 10000 W. | Experte |
-| Alive-Timeout (min, 0 = deaktiviert) | Meldet eine Warnung und markiert den Zeitstempel im Tab **orange**, wenn kein neuer Wert innerhalb dieser Zeitspanne empfangen wurde. Standard: `60`. Muss größer sein als das Aktualisierungsintervall des Quelladapters. | Experte |
+| Maximalwert in W | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. Standard: 15000 W. | Experte |
+| Alive-Timeout (min, 0 = deaktiviert) | Wenn innerhalb dieser Zeitspanne kein neuer Wert empfangen wird: bei einem **Wert ungleich 0** wird eine Warnung ins Log geschrieben und der Zeitstempel im Übersicht-Tab **orange** markiert; bei einem **Wert von 0** wird stattdessen eine Info-Meldung ausgegeben und der nächste Prüfzyklus erst nach **60 Minuten** durchgeführt. Standard: `60`. Muss größer sein als das Aktualisierungsintervall des Quelladapters. | Experte |
 | Datatype | `int`, `float`, `bool`, `string` oder `json` (JSON-Array) | Experte |
 | Influx Measurement | InfluxDB Measurement-Name (z.B. `inverter`) | Experte |
 | Influx Field | InfluxDB Feldname (z.B. `power`) | Experte |
@@ -132,9 +132,9 @@ Jeder numerische Sensor (`int`, `float` oder Standardtyp) unterstützt ein **Max
 
 Dadurch werden kurzzeitige Sensor-Ausreißer (z.B. kurze Burst-Lesungen von 99999 W) verhindert, die die Zeitreihendaten verfälschen würden.
 
-Für alle Sensoren ohne eigenen Maximalwert gilt ein Standardlimit von **10000 W**. Der sensor-spezifische Maximalwert hat immer Vorrang vor diesem Standardwert.
+Für alle Sensoren ohne eigenen Maximalwert gilt ein Standardlimit von **15000 W**. Der sensor-spezifische Maximalwert hat immer Vorrang vor diesem Standardwert.
 
-**Beispiel:** Individuelle Sensor-Maximalwerte im Standardmodus verwenden automatisch das Standard-Limit von `10000` W. Im Expertenmodus können einzelne Sensoren überschrieben werden (z.B. `5000` W für einen Zweitwechselrichter).
+**Beispiel:** Individuelle Sensor-Maximalwerte im Standardmodus verwenden automatisch das Standard-Limit von `15000` W. Im Expertenmodus können einzelne Sensoren überschrieben werden (z.B. `5000` W für einen Zweitwechselrichter).
 
 ### Field-Type-Konflikte
 
@@ -152,10 +152,10 @@ Der Tab **SOLECTRUS Overview** (erreichbar über die Tab-Leiste im Adapter-Berei
 
 - **InfluxDB-Sensoren Raster**: Zeigt alle aktivierten Sensoren als kompakte Karten in einem responsiven Raster. Jede Karte zeigt:
   - **Sensorname** und **Datentyp-Badge** (`int`, `float`, `bool`, `string`, `json`)
-  - **Aktueller Wert** — Live-Messwert; *k.A.* wenn noch kein Wert empfangen wurde. Der Wert wird immer ohne Zeilenumbruch angezeigt; die Schriftgröße ändert sich nicht mit der Textlänge. JSON-Werte werden kompakt in Monospace-Schrift dargestellt.
+  - **Wert-Zeile** (nur numerische Sensoren): linksbündig **aktueller Wert mit Einheit** (z.B. `2697 W`); rechtsbündig **Maximalwert mit Einheit** (z.B. `max: 15000 W`). Zeigt *k.A.* an, wenn noch kein Wert empfangen wurde. JSON-Werte werden kompakt in Monospace-Schrift ohne Maximalwert dargestellt.
   - **Measurement: Field** — das Ziel in InfluxDB (getrennt durch einen Doppelpunkt)
   - **Quell-State** — die gelesene ioBroker-State-ID (gekürzt, voller Pfad als Tooltip)
-  - **Letzter Zeitstempel** — Zeitpunkt der letzten Wertaktualisierung. Wird **orange** angezeigt, wenn der konfigurierte Alive-Timeout für diesen Sensor überschritten wurde.
+  - **Zeitstempel-Zeile** (wird nur angezeigt, wenn ein Alive-Timeout konfiguriert ist): linksbündig **letzter Zeitstempel** (Zeitpunkt der letzten Wertaktualisierung); rechtsbündig **nächster erwarteter Zeitstempel** (automatisch berechnet als letzter Zeitstempel + Timeout-Intervall – keine manuelle Eingabe nötig). Bei einem aktuellen Wert von 0 wird das 60-Minuten-Fallback-Intervall für die Berechnung verwendet. Die Zeile wird **orange** dargestellt, wenn der Alive-Timeout überschritten wurde.
 - **Formel-Engine Raster** (wird nur angezeigt, wenn Data-SOLECTRUS aktiviert ist): Zeigt alle aktiven berechneten Items in der gleichen Kartendarstellung mit Modus-Badge, aktuellem Wert, State-ID und Formel/Ausdruck. Schriftgrößen bleiben in allen Gerätedrehungen konstant.
 - **JSON-Array Vorschau**: Bei Sensoren mit Datentyp `json` zeigt der Wert den **ersten Array-Eintrag** gefolgt von der Anzahl weiterer Einträge (z.B. `{"t":1710000000000,"y":1250} (+543 weitere Einträge)`).
 - **Automatische Aktualisierung**: Der Tab aktualisiert sich alle 5 Sekunden selbstständig.

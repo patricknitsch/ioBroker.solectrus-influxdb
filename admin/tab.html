@@ -16,6 +16,8 @@
             --code-bg: rgba(0,0,0,0.06);
             --shadow: 0 1px 3px rgba(0,0,0,0.15);
             --radius: 8px;
+            --color-warning: #e67e22;
+            --color-error: #e53935;
         }
         body.dark {
             --bg: #121212;
@@ -175,7 +177,7 @@
         }
         .sensor-card-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: flex-start;
             gap: 6px;
             margin-bottom: 5px;
@@ -186,10 +188,12 @@
             color: var(--text);
             white-space: nowrap;
             line-height: 1.3;
+            text-align: center;
         }
         .sensor-type-badge {
             font-size: 10px;
             font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-weight: 700;
             background: var(--code-bg);
             padding: 2px 5px;
             border-radius: 3px;
@@ -220,6 +224,14 @@
             margin-bottom: 2px;
             overflow-wrap: break-word;
             word-break: break-word;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+        }
+        .sensor-card-meta-text {
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
         .sensor-card-source {
             font-size: 10px;
@@ -234,6 +246,19 @@
             padding: 24px;
             font-size: 13px;
             grid-column: 1 / -1;
+        }
+        .sensor-val-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+        .sensor-ts-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
         }
 
         /* ── LAYOUT TOGGLE ── */
@@ -397,6 +422,8 @@
             connected:      'Connected',
             disconnected:   'Disconnected',
             lastUpdate:     'Last update:',
+            maxOf:          'max:',
+            timeout:        'Timeout:',
         },
         de: {
             loading:        'Lade…',
@@ -431,6 +458,8 @@
             connected:      'Verbunden',
             disconnected:   'Getrennt',
             lastUpdate:     'Letzter Zeitstempel:',
+            maxOf:          'max:',
+            timeout:        'Timeout:',
         }
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
@@ -691,19 +720,13 @@
             var card = document.createElement('div');
             card.className = 'sensor-card';
 
-            /* header: name + type badge */
+            /* header: name (centered) */
             var header = document.createElement('div');
             header.className = 'sensor-card-header';
             var nameEl = document.createElement('span');
             nameEl.className = 'sensor-card-name';
             nameEl.textContent = sensor.SensorName;
             header.appendChild(nameEl);
-            if (sensor.type) {
-                var badge = document.createElement('span');
-                badge.className = 'sensor-type-badge';
-                badge.textContent = sensor.type;
-                header.appendChild(badge);
-            }
             card.appendChild(header);
 
             /* value */
@@ -715,14 +738,43 @@
                 valCls += ' json-val';
             }
             valEl.className = valCls;
-            valEl.textContent = valText;
+            var isNumeric = sensor.type !== 'bool' && sensor.type !== 'string' && sensor.type !== 'json';
+            if (hasVal && isNumeric) {
+                /* 15000 matches DEFAULT_MAX_VALUE in lib/constants.js */
+                var maxVal = sensor.maxValue != null ? sensor.maxValue : 15000;
+                valEl.className = valCls + ' sensor-val-row';
+                var curSpan = document.createElement('span');
+                curSpan.textContent = valText + ' W';
+                var maxSpan = document.createElement('span');
+                maxSpan.className = 'sensor-type-badge';
+                maxSpan.textContent = maxVal + ' W';
+                var numVal = parseFloat(state.val);
+                if (!isNaN(numVal) && numVal > maxVal) {
+                    curSpan.style.color = '#e53935';
+                    maxSpan.style.color = '#e53935';
+                }
+                valEl.appendChild(curSpan);
+                valEl.appendChild(maxSpan);
+            } else {
+                valEl.textContent = valText;
+            }
             card.appendChild(valEl);
 
-            /* measurement: field */
-            if (sensor.measurement || sensor.field) {
+            /* measurement: field [type] */
+            if (sensor.measurement || sensor.field || sensor.type) {
                 var metaEl = document.createElement('div');
                 metaEl.className = 'sensor-card-meta';
-                metaEl.textContent = (sensor.measurement || '') + (sensor.field ? ': ' + sensor.field : '');
+                var metaText = (sensor.measurement || '') + (sensor.field ? ': ' + sensor.field : '');
+                var metaTextSpan = document.createElement('span');
+                metaTextSpan.className = 'sensor-card-meta-text';
+                metaTextSpan.textContent = metaText;
+                metaEl.appendChild(metaTextSpan);
+                if (sensor.type) {
+                    var typeBadge = document.createElement('span');
+                    typeBadge.className = 'sensor-type-badge';
+                    typeBadge.textContent = sensor.type;
+                    metaEl.appendChild(typeBadge);
+                }
                 card.appendChild(metaEl);
             }
 
@@ -739,10 +791,25 @@
             if (state && state.ts) {
                 var tsEl = document.createElement('div');
                 tsEl.className = 'sensor-card-source';
-                var aliveMs = sensor.aliveTimeoutMinutes > 0 ? sensor.aliveTimeoutMinutes * 60000 : 0;
-                var isStale = aliveMs > 0 && (Date.now() - state.ts) > aliveMs;
-                if (isStale) tsEl.style.color = '#e67e22';
-                tsEl.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
+                if (sensor.aliveTimeoutMinutes > 0) {
+                    tsEl.className += ' sensor-ts-row';
+                    var isZeroVal = state.val === 0 || state.val === '0';
+                    var displayMin = isZeroVal ? 60 : sensor.aliveTimeoutMinutes;
+                    var aliveMs = displayMin * 60000;
+                    var isStale = (Date.now() - state.ts) > aliveMs;
+                    if (isStale) tsEl.style.color = '#e67e22';
+                    var leftSpan = document.createElement('span');
+                    leftSpan.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
+                    var nextTs = new Date(state.ts + displayMin * 60000);
+                    var rightSpan = document.createElement('span');
+                    rightSpan.className = 'sensor-type-badge';
+                    rightSpan.textContent = T.timeout + ' ' + nextTs.toLocaleString();
+                    if (isStale) rightSpan.style.color = '#e67e22';
+                    tsEl.appendChild(leftSpan);
+                    tsEl.appendChild(rightSpan);
+                } else {
+                    tsEl.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
+                }
                 card.appendChild(tsEl);
             }
 
@@ -773,17 +840,13 @@
             var card = document.createElement('div');
             card.className = 'sensor-card';
 
-            /* header: name + mode badge */
+            /* header: name (centered) */
             var header = document.createElement('div');
             header.className = 'sensor-card-header';
             var nameEl = document.createElement('span');
             nameEl.className = 'sensor-card-name';
             nameEl.textContent = item.name || item.targetId;
             header.appendChild(nameEl);
-            var badge = document.createElement('span');
-            badge.className = 'sensor-type-badge';
-            badge.textContent = dsModeLabel(item);
-            header.appendChild(badge);
             card.appendChild(header);
 
             /* value */
@@ -796,11 +859,18 @@
             valEl.textContent = valText;
             card.appendChild(valEl);
 
-            /* state id */
+            /* state id + mode badge */
             var metaEl = document.createElement('div');
             metaEl.className = 'sensor-card-meta';
-            metaEl.textContent = sid;
             metaEl.title = sid;
+            var metaTextSpan = document.createElement('span');
+            metaTextSpan.className = 'sensor-card-meta-text';
+            metaTextSpan.textContent = sid;
+            var modeBadge = document.createElement('span');
+            modeBadge.className = 'sensor-type-badge';
+            modeBadge.textContent = dsModeLabel(item);
+            metaEl.appendChild(metaTextSpan);
+            metaEl.appendChild(modeBadge);
             card.appendChild(metaEl);
 
             /* formula / expression */

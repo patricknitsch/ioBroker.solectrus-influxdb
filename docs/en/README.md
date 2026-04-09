@@ -51,7 +51,7 @@ By default, the adapter runs in **Standard Mode**. The sensor list shows all pre
 - **Read-only**: Sensor Name, Datatype, Measurement, Field, JSON Preset
 - **Hidden**: Add, Delete, Duplicate buttons, Max Value, Alive Timeout
 
-This ensures that beginners can simply enable sensors and assign source states without accidentally changing the InfluxDB mapping. In standard mode, monitoring runs automatically with default values: **10000 W** max value (numeric sensors only) and **60 minutes** alive timeout. Precise configuration is available in Expert Mode.
+This ensures that beginners can simply enable sensors and assign source states without accidentally changing the InfluxDB mapping. In standard mode, monitoring runs automatically with default values: **15000 W** max value (numeric sensors only) and **60 minutes** alive timeout. Precise configuration is available in Expert Mode.
 
 To unlock full control, enable **Expert Mode** on the InfluxDB settings page. In expert mode:
 
@@ -70,8 +70,8 @@ Click **Add** (Expert Mode) or select an existing sensor to configure:
 | Enabled | Activate/deactivate the sensor | Standard + Expert |
 | ioBroker Source State | The source state to read values from. Use the **Select** button to browse the object tree. | Standard + Expert |
 | Sensor Name | Display name (also used for the ioBroker state ID under `sensors.*`) | Expert |
-| Max Value in W | Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. Default: 10000 W. | Expert |
-| Alive Timeout (min, 0 = disabled) | Logs a warning and marks the timestamp in the tab in **orange** if no new value is received within this timespan. Default: `60`. Must be greater than the update interval of the source adapter. | Expert |
+| Max Value in W | Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. Default: 15000 W. | Expert |
+| Alive Timeout (min, 0 = disabled) | When no new value is received within this timespan: if the current value is **non-zero**, a warning is logged and the timestamp turns **orange** in the overview tab; if the current value is **0**, an info message is logged instead and the next check runs after **60 minutes**. Default: `60`. Must be greater than the update interval of the source adapter. | Expert |
 | Datatype | `int`, `float`, `bool`, `string`, or `json` (JSON Array) | Expert |
 | Influx Measurement | The InfluxDB measurement name (e.g. `inverter`) | Expert |
 | Influx Field | The InfluxDB field name (e.g. `power`) | Expert |
@@ -132,9 +132,9 @@ Each numeric sensor (`int`, `float`, or default type) supports a **Max Value in 
 
 This prevents temporary sensor spikes (e.g. a brief burst reading of 99999 W) from corrupting the time-series data.
 
-A default limit of **10000 W** applies to all sensors that do not have their own Max Value in W configured. The per-sensor Max Value always takes precedence over this default.
+A default limit of **15000 W** applies to all sensors that do not have their own Max Value in W configured. The per-sensor Max Value always takes precedence over this default.
 
-**Example:** Sensors in Standard Mode automatically use the default `10000` W limit. In Expert Mode, individual sensors can be overridden (e.g. set `5000` W for a secondary inverter).
+**Example:** Sensors in Standard Mode automatically use the default `15000` W limit. In Expert Mode, individual sensors can be overridden (e.g. set `5000` W for a secondary inverter).
 
 ### Field type conflicts
 
@@ -152,10 +152,10 @@ The **SOLECTRUS Overview** tab (accessible via the tab bar in the adapter sectio
 
 - **InfluxDB Sensors grid**: Shows all enabled sensors as compact cards in a responsive grid. Each card shows:
   - **Sensor name** and **data type badge** (`int`, `float`, `bool`, `string`, `json`)
-  - **Current value** — live reading; *n/a* if no value has been received yet. The value is always shown without line wrapping; the font size does not change with text length. JSON values are rendered compactly in a monospace font.
+  - **Value row** (numeric sensors only): left-aligned **current value with unit** (e.g. `2697 W`); right-aligned **max value with unit** (e.g. `max: 15000 W`). Shows *n/a* if no value has been received yet. JSON values are rendered compactly in a monospace font without a max value.
   - **Measurement: field** — the target location in InfluxDB (separated by a colon)
   - **Source state** — the ioBroker state ID being read (truncated, full path shown on hover)
-  - **Last timestamp** — when the sensor last received a new value. Shown in **orange** when the sensor's configured alive timeout has been exceeded.
+  - **Timestamp row** (shown when alive timeout is configured): left-aligned **last timestamp** (when the sensor last received a new value); right-aligned **next expected update** (auto-computed as last timestamp + timeout interval — no manual input needed). When the current value is 0 the 60-minute fallback interval is used for the next-update calculation. The row is shown in **orange** when the alive timeout has been exceeded.
 - **Formula Engine grid** (only shown when Data-SOLECTRUS is enabled): Shows all active computed items in the same card layout, with mode badge, current value, state ID, and formula/expression. Font sizes remain constant in all device orientations.
 - **JSON Array preview**: For sensors with data type `json`, the value displays the **first array entry** followed by a count of additional entries (e.g. `{"t":1710000000000,"y":1250} (+543 more entries)`).
 - **Auto-refresh**: The tab updates automatically every 5 seconds.
