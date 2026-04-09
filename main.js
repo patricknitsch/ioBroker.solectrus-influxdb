@@ -387,7 +387,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 			if (this.dsProxy) {
 				this.dsProxy.isUnloading = true;
 				if (this.dsProxy.tickTimer) {
-					this.dsProxy.clearTimeout(this.dsProxy.tickTimer);
+					clearTimeout(this.dsProxy.tickTimer);
 					this.dsProxy.tickTimer = null;
 				}
 			}
