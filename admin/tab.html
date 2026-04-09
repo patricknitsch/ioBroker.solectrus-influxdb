@@ -397,6 +397,8 @@
             connected:      'Connected',
             disconnected:   'Disconnected',
             lastUpdate:     'Last update:',
+            maxOf:          'max:',
+            timeoutInterval: 'Interval:',
         },
         de: {
             loading:        'Lade…',
@@ -431,6 +433,8 @@
             connected:      'Verbunden',
             disconnected:   'Getrennt',
             lastUpdate:     'Letzter Zeitstempel:',
+            maxOf:          'max:',
+            timeoutInterval: 'Intervall:',
         }
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
@@ -715,7 +719,14 @@
                 valCls += ' json-val';
             }
             valEl.className = valCls;
-            valEl.textContent = valText;
+            var isNumeric = sensor.type !== 'bool' && sensor.type !== 'string' && sensor.type !== 'json';
+            if (hasVal && isNumeric) {
+                /* 15000 matches DEFAULT_MAX_VALUE in lib/constants.js */
+                var maxVal = sensor.maxValue != null ? sensor.maxValue : 15000;
+                valEl.textContent = valText + ' / ' + T.maxOf + ' ' + maxVal;
+            } else {
+                valEl.textContent = valText;
+            }
             card.appendChild(valEl);
 
             /* measurement: field */
@@ -742,7 +753,13 @@
                 var aliveMs = sensor.aliveTimeoutMinutes > 0 ? sensor.aliveTimeoutMinutes * 60000 : 0;
                 var isStale = aliveMs > 0 && (Date.now() - state.ts) > aliveMs;
                 if (isStale) tsEl.style.color = '#e67e22';
-                tsEl.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
+                var tsText = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
+                if (sensor.aliveTimeoutMinutes > 0) {
+                    var isZeroVal = state.val === 0 || state.val === '0';
+                    var displayMin = isZeroVal ? 60 : sensor.aliveTimeoutMinutes;
+                    tsText += ' · ' + T.timeoutInterval + ' ' + displayMin + ' min';
+                }
+                tsEl.textContent = tsText;
                 card.appendChild(tsEl);
             }
 
