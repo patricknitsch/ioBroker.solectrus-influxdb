@@ -238,26 +238,15 @@
         .sensor-val-row {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: center;
             gap: 8px;
-        }
-        .sensor-val-max {
-            font-size: 11px;
-            font-weight: 400;
-            color: var(--text-muted);
-            white-space: nowrap;
         }
         .sensor-ts-row {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: center;
             gap: 4px;
             flex-wrap: wrap;
-        }
-        .sensor-ts-next {
-            font-size: 10px;
-            color: var(--text-muted);
-            white-space: nowrap;
         }
 
         /* ── LAYOUT TOGGLE ── */
@@ -422,7 +411,7 @@
             disconnected:   'Disconnected',
             lastUpdate:     'Last update:',
             maxOf:          'max:',
-            nextUpdate:     'Next:',
+            timeout:        'Timeout:',
         },
         de: {
             loading:        'Lade…',
@@ -458,7 +447,7 @@
             disconnected:   'Getrennt',
             lastUpdate:     'Letzter Zeitstempel:',
             maxOf:          'max:',
-            nextUpdate:     'Nächste:',
+            timeout:        'Timeout:',
         }
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
@@ -751,8 +740,8 @@
                 var curSpan = document.createElement('span');
                 curSpan.textContent = valText + ' W';
                 var maxSpan = document.createElement('span');
-                maxSpan.className = 'sensor-val-max';
-                maxSpan.textContent = T.maxOf + ' ' + maxVal + ' W';
+                maxSpan.className = 'sensor-type-badge';
+                maxSpan.textContent = maxVal + ' W';
                 valEl.appendChild(curSpan);
                 valEl.appendChild(maxSpan);
             } else {
@@ -792,8 +781,8 @@
                     leftSpan.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
                     var nextTs = new Date(state.ts + displayMin * 60000);
                     var rightSpan = document.createElement('span');
-                    rightSpan.className = 'sensor-ts-next';
-                    rightSpan.textContent = T.nextUpdate + ' ' + nextTs.toLocaleString();
+                    rightSpan.className = 'sensor-type-badge';
+                    rightSpan.textContent = T.timeout + ' ' + nextTs.toLocaleString();
                     tsEl.appendChild(leftSpan);
                     tsEl.appendChild(rightSpan);
                 } else {
