@@ -66,8 +66,8 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 ### **WORK IN PROGRESS**
 
 * (copilot) Zero-value alive monitoring: when a sensor timeout fires and the current value is 0, log info instead of warn and retry after 60 minutes
-* (copilot) Sensor overview: show configured max value alongside current value for numeric sensors
-* (copilot) Sensor overview: show timeout interval in the timestamp row (displays 60 min when value is 0 and monitoring is active)
+* (copilot) Sensor overview: numeric value row shows current value with unit (W) left-aligned and max value with unit (W) right-aligned
+* (copilot) Sensor overview: timestamp row shows last timestamp left-aligned and auto-computed next expected update timestamp right-aligned (no manual input needed)
 
 ### 1.6.0 (2026-04-06)
 

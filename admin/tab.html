@@ -235,6 +235,30 @@
             font-size: 13px;
             grid-column: 1 / -1;
         }
+        .sensor-val-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .sensor-val-max {
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .sensor-ts-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .sensor-ts-next {
+            font-size: 10px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
 
         /* ── LAYOUT TOGGLE ── */
         .sensor-grid.layout-full .sensor-card {
@@ -398,7 +422,7 @@
             disconnected:   'Disconnected',
             lastUpdate:     'Last update:',
             maxOf:          'max:',
-            timeoutInterval: 'Interval:',
+            nextUpdate:     'Next:',
         },
         de: {
             loading:        'Lade…',
@@ -434,7 +458,7 @@
             disconnected:   'Getrennt',
             lastUpdate:     'Letzter Zeitstempel:',
             maxOf:          'max:',
-            timeoutInterval: 'Intervall:',
+            nextUpdate:     'Nächste:',
         }
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
@@ -723,7 +747,14 @@
             if (hasVal && isNumeric) {
                 /* 15000 matches DEFAULT_MAX_VALUE in lib/constants.js */
                 var maxVal = sensor.maxValue != null ? sensor.maxValue : 15000;
-                valEl.textContent = valText + ' / ' + T.maxOf + ' ' + maxVal;
+                valEl.className = valCls + ' sensor-val-row';
+                var curSpan = document.createElement('span');
+                curSpan.textContent = valText + ' W';
+                var maxSpan = document.createElement('span');
+                maxSpan.className = 'sensor-val-max';
+                maxSpan.textContent = T.maxOf + ' ' + maxVal + ' W';
+                valEl.appendChild(curSpan);
+                valEl.appendChild(maxSpan);
             } else {
                 valEl.textContent = valText;
             }
@@ -753,13 +784,21 @@
                 var aliveMs = sensor.aliveTimeoutMinutes > 0 ? sensor.aliveTimeoutMinutes * 60000 : 0;
                 var isStale = aliveMs > 0 && (Date.now() - state.ts) > aliveMs;
                 if (isStale) tsEl.style.color = '#e67e22';
-                var tsText = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
                 if (sensor.aliveTimeoutMinutes > 0) {
+                    tsEl.className += ' sensor-ts-row';
                     var isZeroVal = state.val === 0 || state.val === '0';
                     var displayMin = isZeroVal ? 60 : sensor.aliveTimeoutMinutes;
-                    tsText += ' · ' + T.timeoutInterval + ' ' + displayMin + ' min';
+                    var leftSpan = document.createElement('span');
+                    leftSpan.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
+                    var nextTs = new Date(state.ts + displayMin * 60000);
+                    var rightSpan = document.createElement('span');
+                    rightSpan.className = 'sensor-ts-next';
+                    rightSpan.textContent = T.nextUpdate + ' ' + nextTs.toLocaleString();
+                    tsEl.appendChild(leftSpan);
+                    tsEl.appendChild(rightSpan);
+                } else {
+                    tsEl.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
                 }
-                tsEl.textContent = tsText;
                 card.appendChild(tsEl);
             }
 

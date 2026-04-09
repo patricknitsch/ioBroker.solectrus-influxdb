@@ -152,10 +152,10 @@ The **SOLECTRUS Overview** tab (accessible via the tab bar in the adapter sectio
 
 - **InfluxDB Sensors grid**: Shows all enabled sensors as compact cards in a responsive grid. Each card shows:
   - **Sensor name** and **data type badge** (`int`, `float`, `bool`, `string`, `json`)
-  - **Current value / max value** — live reading compared to the configured maximum (e.g. `42 / max: 15000`); *n/a* if no value has been received yet. Shown only for numeric sensors. JSON values are rendered compactly in a monospace font.
+  - **Value row** (numeric sensors only): left-aligned **current value with unit** (e.g. `2697 W`); right-aligned **max value with unit** (e.g. `max: 15000 W`). Shows *n/a* if no value has been received yet. JSON values are rendered compactly in a monospace font without a max value.
   - **Measurement: field** — the target location in InfluxDB (separated by a colon)
   - **Source state** — the ioBroker state ID being read (truncated, full path shown on hover)
-  - **Last timestamp + interval** — when the sensor last received a new value, followed by the active timeout interval (e.g. `· Interval: 60 min`). Shown only when the alive timeout is configured. When the current value is 0 and the 60-minute fallback monitoring is active, the interval is shown as **60 min** regardless of the configured timeout. The timestamp is shown in **orange** when the alive timeout has been exceeded.
+  - **Timestamp row** (shown when alive timeout is configured): left-aligned **last timestamp** (when the sensor last received a new value); right-aligned **next expected update** (auto-computed as last timestamp + timeout interval — no manual input needed). When the current value is 0 the 60-minute fallback interval is used for the next-update calculation. The row is shown in **orange** when the alive timeout has been exceeded.
 - **Formula Engine grid** (only shown when Data-SOLECTRUS is enabled): Shows all active computed items in the same card layout, with mode badge, current value, state ID, and formula/expression. Font sizes remain constant in all device orientations.
 - **JSON Array preview**: For sensors with data type `json`, the value displays the **first array entry** followed by a count of additional entries (e.g. `{"t":1710000000000,"y":1250} (+543 more entries)`).
 - **Auto-refresh**: The tab updates automatically every 5 seconds.
