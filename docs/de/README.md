@@ -226,7 +226,7 @@ Der pvforecast-Adapter unterstützt zwei Backends:
 | Backend | Verfügbare Felder | Beschreibung |
 |---------|-------------------|--------------|
 | **Standard** | `y` (Prognoseleistung) | Nur einfache PV-Leistungsprognose |
-| **pvnode** | `y`, `clearsky`, `temp` | Vollständige Prognose mit Clearsky-Einstrahlung und Temperatur |
+| **pvnode: ab V6.0.0** | `y`, `clearsky`, `temp` | Vollständige Prognose mit Clearsky-Einstrahlung und Temperatur |
 
 > **Wichtig:** Die Felder `clearsky` (watt_clearsky) und `temp` sind **nur mit pvnode** als Backend verfügbar. Das Standard-pvForecast-Backend liefert nur das Feld `y` (Prognoseleistung).
 
