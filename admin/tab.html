@@ -421,7 +421,7 @@
             connecting:     'Connecting…',
             connected:      'Connected',
             disconnected:   'Disconnected',
-            lastUpdate:     'Last update:',
+            lastUpdate:     'Timestamp:',
             maxOf:          'max:',
             timeout:        'Timeout:',
         },
@@ -457,7 +457,7 @@
             connecting:     'Verbinde…',
             connected:      'Verbunden',
             disconnected:   'Getrennt',
-            lastUpdate:     'Letzter Zeitstempel:',
+            lastUpdate:     'Zeitstempel:',
             maxOf:          'max:',
             timeout:        'Timeout:',
         }
@@ -803,7 +803,7 @@
                     var nextTs = new Date(state.ts + displayMin * 60000);
                     var rightSpan = document.createElement('span');
                     rightSpan.className = 'sensor-type-badge';
-                    rightSpan.textContent = T.timeout + ' ' + nextTs.toLocaleString();
+                    rightSpan.textContent = T.timeout + ' ' + nextTs.toLocaleTimeString();
                     if (isStale) rightSpan.style.color = '#e67e22';
                     tsEl.appendChild(leftSpan);
                     tsEl.appendChild(rightSpan);
