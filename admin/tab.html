@@ -423,7 +423,6 @@
             disconnected:   'Disconnected',
             lastUpdate:     'Timestamp:',
             maxOf:          'max:',
-            timeout:        'Timeout:',
         },
         de: {
             loading:        'Lade…',
@@ -459,7 +458,6 @@
             disconnected:   'Getrennt',
             lastUpdate:     'Zeitstempel:',
             maxOf:          'max:',
-            timeout:        'Timeout:',
         }
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
@@ -803,7 +801,7 @@
                     var nextTs = new Date(state.ts + displayMin * 60000);
                     var rightSpan = document.createElement('span');
                     rightSpan.className = 'sensor-type-badge';
-                    rightSpan.textContent = T.timeout + ' ' + nextTs.toLocaleTimeString();
+                    rightSpan.textContent = nextTs.toLocaleTimeString();
                     if (isStale) rightSpan.style.color = '#e67e22';
                     tsEl.appendChild(leftSpan);
                     tsEl.appendChild(rightSpan);
