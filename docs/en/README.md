@@ -226,7 +226,7 @@ The pvforecast adapter supports two backends:
 | Backend | Available Fields | Description |
 |---------|-----------------|-------------|
 | **Standard** | `y` (forecast power) | Basic PV power forecast only |
-| **pvnode** | `y`, `clearsky`, `temp` | Full forecast with clearsky irradiance and temperature |
+| **pvnode: at V6.0.0** | `y`, `clearsky`, `temp` | Full forecast with clearsky irradiance and temperature |
 
 > **Important:** The fields `clearsky` (watt_clearsky) and `temp` are **only available with pvnode** as backend. The standard pvforecast backend only provides the `y` (forecast power) field.
 
