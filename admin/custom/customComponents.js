@@ -797,7 +797,7 @@
 													min: '0',
 													step: 'any',
 													value: editSensor.maxValue !== undefined && editSensor.maxValue !== null ? editSensor.maxValue : '',
-													placeholder: t('e.g. 15000'),
+													placeholder: t('e.g. 0'),
 													onChange: e => {
 														var raw = e.target.value;
 														var parsed = Number(raw);
@@ -942,15 +942,29 @@
 													(editSensor.measurement || '?') + ':' + (editSensor.field || '?');
 												var sensorType = editSensor.type || '';
 												var timeoutMin = editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : 60;
+												var timeoutDisabled = timeoutMin === 0;
 												var monitoringInfo;
 												if (sensorType !== 'bool' && sensorType !== 'string') {
-													var maxW = editSensor.maxValue != null ? editSensor.maxValue : 15000;
-													monitoringInfo = t('nonExpertMonitoringInfoFull')
-														.replace('%MAXW%', maxW)
-														.replace('%TIMEOUTMIN%', timeoutMin);
+													var maxW = editSensor.maxValue != null ? editSensor.maxValue : 0;
+													var maxDisabled = maxW === 0;
+													if (maxDisabled && timeoutDisabled) {
+														monitoringInfo = t('nonExpertMonitoringDisabled');
+													} else if (maxDisabled) {
+														monitoringInfo = t('nonExpertMonitoringInfo')
+															.replace('%TIMEOUTSTR%', timeoutMin + ' min');
+													} else {
+														var timeoutStr = timeoutDisabled ? t('nonExpertTimeoutDisabledShort') : timeoutMin + ' min';
+														monitoringInfo = t('nonExpertMonitoringInfoFull')
+															.replace('%MAXWSTR%', maxW + ' W')
+															.replace('%TIMEOUTSTR%', timeoutStr);
+													}
 												} else {
-													monitoringInfo = t('nonExpertMonitoringInfo')
-														.replace('%TIMEOUTMIN%', timeoutMin);
+													if (timeoutDisabled) {
+														monitoringInfo = t('nonExpertMonitoringDisabled');
+													} else {
+														monitoringInfo = t('nonExpertMonitoringInfo')
+															.replace('%TIMEOUTSTR%', timeoutMin + ' min');
+													}
 												}
 												return (
 													t('nonExpertSensorInfo')
@@ -996,12 +1010,15 @@
 												var matchingLine =
 													p.valField + ' \u2192 ' + m + ':' + f + ' (' + t(p.valDesc) + ')';
 												var timeoutMin = editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : 60;
+												var timeoutPart = timeoutMin === 0
+													? t('nonExpertMonitoringDisabled')
+													: t('nonExpertMonitoringInfo').replace('%TIMEOUTSTR%', timeoutMin + ' min');
 												return (
 													t('nonExpertJsonInfo').replace('%MAPPING%', matchingLine) +
 													'\n' +
 													t('nonExpertExpertHint') +
 													'\n' +
-													t('nonExpertMonitoringInfo').replace('%TIMEOUTMIN%', timeoutMin)
+													timeoutPart
 												);
 											})(),
 										)

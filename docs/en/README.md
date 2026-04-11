@@ -51,7 +51,7 @@ By default, the adapter runs in **Standard Mode**. The sensor list shows all pre
 - **Read-only**: Sensor Name, Datatype, Measurement, Field, JSON Preset
 - **Hidden**: Add, Delete, Duplicate buttons, Max Value, Alive Timeout
 
-This ensures that beginners can simply enable sensors and assign source states without accidentally changing the InfluxDB mapping. In standard mode, monitoring runs automatically with default values: **15000 W** max value (numeric sensors only) and **60 minutes** alive timeout. Precise configuration is available in Expert Mode.
+This ensures that beginners can simply enable sensors and assign source states without accidentally changing the InfluxDB mapping. In standard mode, the following defaults apply: **value monitoring disabled** (max value = 0) and **60 minutes** alive timeout. Precise configuration is available in Expert Mode.
 
 To unlock full control, enable **Expert Mode** on the InfluxDB settings page. In expert mode:
 
@@ -70,8 +70,8 @@ Click **Add** (Expert Mode) or select an existing sensor to configure:
 | Enabled | Activate/deactivate the sensor | Standard + Expert |
 | ioBroker Source State | The source state to read values from. Use the **Select** button to browse the object tree. | Standard + Expert |
 | Sensor Name | Display name (also used for the ioBroker state ID under `sensors.*`) | Expert |
-| Max Value in W | Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. Default: 15000 W. | Expert |
-| Alive Timeout (min, 0 = disabled) | When no new value is received within this timespan: if the current value is **non-zero**, a warning is logged and the timestamp turns **orange** in the overview tab; if the current value is **0**, an info message is logged instead and the next check runs after **60 minutes**. Default: `60`. Must be greater than the update interval of the source adapter. | Expert |
+| Max Value in W | Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. **0 = disabled** (default). | Expert |
+| Alive Timeout (min, 0 = disabled) | When no new value is received within this timespan: if the current value is **non-zero**, a warning is logged and the timestamp turns **orange** in the overview tab; if the current value is **0**, an info message is logged instead and the next check runs after **60 minutes**. **0 = disabled**. Default: `60`. Must be greater than the update interval of the source adapter. | Expert |
 | Datatype | `int`, `float`, `bool`, `string`, or `json` (JSON Array) | Expert |
 | Influx Measurement | The InfluxDB measurement name (e.g. `inverter`) | Expert |
 | Influx Field | The InfluxDB field name (e.g. `power`) | Expert |
@@ -132,9 +132,7 @@ Each numeric sensor (`int`, `float`, or default type) supports a **Max Value in 
 
 This prevents temporary sensor spikes (e.g. a brief burst reading of 99999 W) from corrupting the time-series data.
 
-A default limit of **15000 W** applies to all sensors that do not have their own Max Value in W configured. The per-sensor Max Value always takes precedence over this default.
-
-**Example:** Sensors in Standard Mode automatically use the default `15000` W limit. In Expert Mode, individual sensors can be overridden (e.g. set `5000` W for a secondary inverter).
+The default value is **0 (disabled)** — value monitoring is off for new sensors by default. In Expert Mode, an individual limit can be set per sensor (e.g. `15000` W or `5000` W for a secondary inverter). When the max value is set to `0`, value monitoring is disabled for that sensor.
 
 ### Field type conflicts
 
@@ -152,7 +150,7 @@ The **SOLECTRUS Overview** tab (accessible via the tab bar in the adapter sectio
 
 - **InfluxDB Sensors grid**: Shows all enabled sensors as compact cards in a responsive grid. Each card shows:
   - **Sensor name** and **data type badge** (`int`, `float`, `bool`, `string`, `json`)
-  - **Value row** (numeric sensors only): left-aligned **current value with unit** (e.g. `2697 W`); right-aligned **max value with unit** (e.g. `max: 15000 W`). Shows *n/a* if no value has been received yet. JSON values are rendered compactly in a monospace font without a max value.
+  - **Value row** (numeric sensors only): left-aligned **current value with unit** (e.g. `2697 W`); right-aligned **max value badge** — only shown when max value > 0 (value monitoring active). Shows *n/a* if no value has been received yet. JSON values are rendered compactly in a monospace font.
   - **Measurement: field** — the target location in InfluxDB (separated by a colon)
   - **Source state** — the ioBroker state ID being read (truncated, full path shown on hover)
   - **Timestamp row** (shown when alive timeout is configured): left-aligned **timestamp** (date and time when the sensor last received a new value); right-aligned **next expected update** as a badge (time only, no label, auto-computed as timestamp + timeout interval — no manual input needed). When the current value is 0 the 60-minute fallback interval is used for the next-update calculation. The row is shown in **orange** when the alive timeout has been exceeded.
@@ -424,7 +422,7 @@ On the **Data Runtime** tab:
 
 ### Alive Monitoring
 
-The adapter automatically monitors whether sensor values are still being updated regularly. The **Alive Timeout (min, 0 = disabled)** field is configurable individually for each sensor in **Expert Mode** (default: 60 minutes).
+The adapter automatically monitors whether sensor values are still being updated regularly. The **Alive Timeout (min, 0 = disabled)** field is configurable individually for each sensor in **Expert Mode** (default: 60 minutes). When the timeout is set to `0`, alive monitoring is completely disabled for that sensor — the timestamp row is hidden in the sensor overview.
 
 If a sensor has not received a new value for longer than the configured timeout, the adapter logs a warning:
 
@@ -435,6 +433,10 @@ Sensor "INVERTER_POWER": no update since 4/5/2026, 6:30:00 PM (longer than 60 mi
 In addition, the last timestamp of the affected sensor is shown in **orange** in the **tab view**, so you can spot stale sensors at a glance without opening the log.
 
 The warning is repeated at most once per timeout period per sensor to avoid log flooding. Set the timeout to `0` to disable the check for an individual sensor (Expert Mode only). Newly created sensors default to a timeout of `60` minutes. The timeout must be greater than the update interval of the respective source adapter.
+
+### Value Monitoring (Max Value)
+
+Value monitoring is **disabled by default** (max value = 0). In **Expert Mode**, an individual max value in W can be set per numeric sensor. When the max value is > 0, it is shown as a badge next to the current value in the sensor overview. When value monitoring is disabled (max value = 0), the badge is hidden.
 
 ### Adapter states
 

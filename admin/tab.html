@@ -738,21 +738,25 @@
             valEl.className = valCls;
             var isNumeric = sensor.type !== 'bool' && sensor.type !== 'string' && sensor.type !== 'json';
             if (hasVal && isNumeric) {
-                /* 15000 matches DEFAULT_MAX_VALUE in lib/constants.js */
-                var maxVal = sensor.maxValue != null ? sensor.maxValue : 15000;
-                valEl.className = valCls + ' sensor-val-row';
-                var curSpan = document.createElement('span');
-                curSpan.textContent = valText + ' W';
-                var maxSpan = document.createElement('span');
-                maxSpan.className = 'sensor-type-badge';
-                maxSpan.textContent = maxVal + ' W';
-                var numVal = parseFloat(state.val);
-                if (!isNaN(numVal) && numVal > maxVal) {
-                    curSpan.style.color = '#e53935';
-                    maxSpan.style.color = '#e53935';
+                /* 0 = DEFAULT_MAX_VALUE in lib/constants.js (monitoring disabled) */
+                var maxVal = sensor.maxValue != null ? sensor.maxValue : 0;
+                if (maxVal > 0) {
+                    valEl.className = valCls + ' sensor-val-row';
+                    var curSpan = document.createElement('span');
+                    curSpan.textContent = valText + ' W';
+                    var maxSpan = document.createElement('span');
+                    maxSpan.className = 'sensor-type-badge';
+                    maxSpan.textContent = maxVal + ' W';
+                    var numVal = parseFloat(state.val);
+                    if (!isNaN(numVal) && numVal > maxVal) {
+                        curSpan.style.color = '#e53935';
+                        maxSpan.style.color = '#e53935';
+                    }
+                    valEl.appendChild(curSpan);
+                    valEl.appendChild(maxSpan);
+                } else {
+                    valEl.textContent = valText + ' W';
                 }
-                valEl.appendChild(curSpan);
-                valEl.appendChild(maxSpan);
             } else {
                 valEl.textContent = valText;
             }

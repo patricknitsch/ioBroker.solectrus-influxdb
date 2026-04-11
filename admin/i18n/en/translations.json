@@ -256,11 +256,14 @@
   "iframeHttpHint": "Note: The iframe is only visible when accessing the ioBroker admin via HTTP (not HTTPS).",
   "iframeCertHint": "Page not loading? SOLECTRUS blocks iframe embedding by default – add FRAME_ANCESTORS=http://your-iobroker-host:8081 to the SOLECTRUS .env file and restart the service.",
   "e.g. 15000": "e.g. 15000",
-  "maxValueHint": "Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. Default: 15000 W.",
+  "e.g. 0": "e.g. 0",
+  "maxValueHint": "Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. Default: 0 (disabled).",
   "Max Value in W": "Max Value in W",
   "aliveTimeoutMinutesLabel": "Alive timeout in min (min, 0 = disabled)",
   "aliveTimeoutHint": "If the last timestamp of the source state exceeds the timeout, a warning is logged. Note that the timeout must be greater than the update interval of the source adapters. Default: 60 min.",
   "e.g. 60": "e.g. 60",
-  "nonExpertMonitoringInfoFull": "Monitoring active: values up to %MAXW% W · timeout up to %TIMEOUTMIN% min.\nConfigurable in Expert Mode.",
-  "nonExpertMonitoringInfo": "Monitoring active: timeout up to %TIMEOUTMIN% min.\nConfigurable in Expert Mode."
+  "nonExpertMonitoringInfoFull": "Monitoring active: values up to %MAXWSTR% · timeout %TIMEOUTSTR%.\nConfigurable in Expert Mode.",
+  "nonExpertMonitoringInfo": "Monitoring active: timeout %TIMEOUTSTR%.\nConfigurable in Expert Mode.",
+  "nonExpertMonitoringDisabled": "Monitoring disabled.\nConfigurable in Expert Mode.",
+  "nonExpertTimeoutDisabledShort": "disabled"
 }
