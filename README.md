@@ -66,7 +66,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 ### **WORK IN PROGRESS**
 
 * (patricknitsch) Default for max Values with 0W deactivated
-* (patricknitsch) Fix Information in Non-Expert if something is deactivated
+* (patricknitsch) Fix non-expert information when monitoring is disabled
 
 ### 1.7.0 (2026-04-10)
 
