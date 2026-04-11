@@ -256,11 +256,14 @@
   "iframeHttpHint": "注意：只有通过 HTTP（非 HTTPS）访问 ioBroker 管理面板时，iFrame 才可见。",
   "iframeCertHint": "页面无法加载？SOLECTRUS默认阻止iFrame嵌入 – 在SOLECTRUS的.env文件中添加 FRAME_ANCESTORS=http://您的iobroker主机:8081 并重启服务。",
   "e.g. 15000": "例如 15000",
-  "maxValueHint": "每个传感器的合理性限制。超出时发送最后一个有效值并记录警告。默认值：15000 W。",
+  "maxValueHint": "每个传感器的合理性限制。超出时发送最后一个有效值并记录警告。默认值：0（已禁用）。",
   "Max Value in W": "最大值（W）",
   "aliveTimeoutMinutesLabel": "Alive 超时（分钟，0 = 禁用）",
   "aliveTimeoutHint": "如果源状态的最后时间戳超过超时时间，将记录警告。请注意，超时时间必须大于源适配器的更新间隔。默认值：60 分钟。",
   "e.g. 60": "例如 60",
-  "nonExpertMonitoringInfoFull": "监控已激活：值上限 %MAXW% W · 超时上限 %TIMEOUTMIN% 分钟。\n可在专家模式中配置。",
-  "nonExpertMonitoringInfo": "监控已激活：超时上限 %TIMEOUTMIN% 分钟。\n可在专家模式中配置。"
+  "nonExpertMonitoringInfoFull": "监控已激活：值上限 %MAXWSTR% · 超时 %TIMEOUTSTR%。\n可在专家模式中配置。",
+  "nonExpertMonitoringInfo": "监控已激活：超时 %TIMEOUTSTR%。\n可在专家模式中配置。",
+  "e.g. 0": "例如 0",
+  "nonExpertMonitoringDisabled": "监控已禁用。\n可在专家模式中配置。",
+  "nonExpertTimeoutDisabledShort": "已禁用"
 }

@@ -51,7 +51,7 @@ Standardmäßig läuft der Adapter im **Standardmodus**. Die Sensorliste zeigt a
 - **Nur lesen**: Sensorname, Datentyp, Measurement, Field, JSON-Vorlage
 - **Ausgeblendet**: Hinzufügen-, Löschen-, Duplizieren-Buttons, Maximalwert, Alive-Timeout
 
-So wird sichergestellt, dass Anfänger einfach Sensoren aktivieren und Quell-States zuweisen können, ohne versehentlich das InfluxDB-Mapping zu ändern. Im Standardmodus wird automatisch mit den Standardwerten überwacht: **15000 W** Maximalwert (nur numerische Sensoren) und **60 Minuten** Alive-Timeout. Die genaue Konfiguration ist im Expertenmodus möglich.
+So wird sichergestellt, dass Anfänger einfach Sensoren aktivieren und Quell-States zuweisen können, ohne versehentlich das InfluxDB-Mapping zu ändern. Im Standardmodus gelten folgende Standardwerte: **Werteüberwachung deaktiviert** (Maximalwert = 0) und **60 Minuten** Alive-Timeout. Die genaue Konfiguration ist im Expertenmodus möglich.
 
 Für volle Kontrolle den **Expertenmodus** auf der InfluxDB-Einstellungsseite aktivieren. Im Expertenmodus:
 
@@ -70,8 +70,8 @@ Auf **Add** klicken (Expertenmodus) oder einen bestehenden Sensor auswählen und
 | Enabled | Sensor aktivieren/deaktivieren | Standard + Experte |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. | Standard + Experte |
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) | Experte |
-| Maximalwert in W | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. Standard: 15000 W. | Experte |
-| Alive-Timeout (min, 0 = deaktiviert) | Wenn innerhalb dieser Zeitspanne kein neuer Wert empfangen wird: bei einem **Wert ungleich 0** wird eine Warnung ins Log geschrieben und der Zeitstempel im Übersicht-Tab **orange** markiert; bei einem **Wert von 0** wird stattdessen eine Info-Meldung ausgegeben und der nächste Prüfzyklus erst nach **60 Minuten** durchgeführt. Standard: `60`. Muss größer sein als das Aktualisierungsintervall des Quelladapters. | Experte |
+| Maximalwert in W | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. **0 = deaktiviert** (Standard). | Experte |
+| Alive-Timeout (min, 0 = deaktiviert) | Wenn innerhalb dieser Zeitspanne kein neuer Wert empfangen wird: bei einem **Wert ungleich 0** wird eine Warnung ins Log geschrieben und der Zeitstempel im Übersicht-Tab **orange** markiert; bei einem **Wert von 0** wird stattdessen eine Info-Meldung ausgegeben und der nächste Prüfzyklus erst nach **60 Minuten** durchgeführt. **0 = deaktiviert**. Standard: `60`. Muss größer sein als das Aktualisierungsintervall des Quelladapters. | Experte |
 | Datatype | `int`, `float`, `bool`, `string` oder `json` (JSON-Array) | Experte |
 | Influx Measurement | InfluxDB Measurement-Name (z.B. `inverter`) | Experte |
 | Influx Field | InfluxDB Feldname (z.B. `power`) | Experte |
@@ -132,9 +132,7 @@ Jeder numerische Sensor (`int`, `float` oder Standardtyp) unterstützt ein **Max
 
 Dadurch werden kurzzeitige Sensor-Ausreißer (z.B. kurze Burst-Lesungen von 99999 W) verhindert, die die Zeitreihendaten verfälschen würden.
 
-Für alle Sensoren ohne eigenen Maximalwert gilt ein Standardlimit von **15000 W**. Der sensor-spezifische Maximalwert hat immer Vorrang vor diesem Standardwert.
-
-**Beispiel:** Individuelle Sensor-Maximalwerte im Standardmodus verwenden automatisch das Standard-Limit von `15000` W. Im Expertenmodus können einzelne Sensoren überschrieben werden (z.B. `5000` W für einen Zweitwechselrichter).
+Der Standardwert ist **0 (deaktiviert)** – die Werteüberwachung ist für neue Sensoren standardmäßig ausgeschaltet. Im Expertenmodus kann für jeden Sensor ein individuelles Limit gesetzt werden (z.B. `15000` W oder `5000` W für einen Zweitwechselrichter). Ist der Maximalwert auf `0` gesetzt, wird die Werteüberwachung für diesen Sensor deaktiviert.
 
 ### Field-Type-Konflikte
 
@@ -152,7 +150,7 @@ Der Tab **SOLECTRUS Overview** (erreichbar über die Tab-Leiste im Adapter-Berei
 
 - **InfluxDB-Sensoren Raster**: Zeigt alle aktivierten Sensoren als kompakte Karten in einem responsiven Raster. Jede Karte zeigt:
   - **Sensorname** und **Datentyp-Badge** (`int`, `float`, `bool`, `string`, `json`)
-  - **Wert-Zeile** (nur numerische Sensoren): linksbündig **aktueller Wert mit Einheit** (z.B. `2697 W`); rechtsbündig **Maximalwert mit Einheit** (z.B. `max: 15000 W`). Zeigt *k.A.* an, wenn noch kein Wert empfangen wurde. JSON-Werte werden kompakt in Monospace-Schrift ohne Maximalwert dargestellt.
+  - **Wert-Zeile** (nur numerische Sensoren): linksbündig **aktueller Wert mit Einheit** (z.B. `2697 W`); rechtsbündig **Maximalwert mit Einheit** als Badge – wird nur angezeigt, wenn der Maximalwert > 0 (Werteüberwachung aktiv). Zeigt *k.A.* an, wenn noch kein Wert empfangen wurde. JSON-Werte werden kompakt in Monospace-Schrift dargestellt.
   - **Measurement: Field** — das Ziel in InfluxDB (getrennt durch einen Doppelpunkt)
   - **Quell-State** — die gelesene ioBroker-State-ID (gekürzt, voller Pfad als Tooltip)
   - **Zeitstempel-Zeile** (wird nur angezeigt, wenn ein Alive-Timeout konfiguriert ist): linksbündig **Zeitstempel** (Datum und Uhrzeit der letzten Wertaktualisierung); rechtsbündig **nächste erwartete Aktualisierung** als Badge (nur Uhrzeit, ohne Beschriftung, automatisch berechnet als Zeitstempel + Timeout-Intervall – keine manuelle Eingabe nötig). Bei einem aktuellen Wert von 0 wird das 60-Minuten-Fallback-Intervall für die Berechnung verwendet. Die Zeile wird **orange** dargestellt, wenn der Alive-Timeout überschritten wurde.
@@ -424,7 +422,7 @@ Im Tab **Data Runtime**:
 
 ### Alive-Monitoring
 
-Der Adapter überwacht automatisch, ob Sensorwerte noch regelmäßig aktualisiert werden. Das Feld **Alive-Timeout (min, 0 = deaktiviert)** ist im **Expertenmodus** individuell für jeden Sensor konfigurierbar (Standard: 60 Minuten).
+Der Adapter überwacht automatisch, ob Sensorwerte noch regelmäßig aktualisiert werden. Das Feld **Alive-Timeout (min, 0 = deaktiviert)** ist im **Expertenmodus** individuell für jeden Sensor konfigurierbar (Standard: 60 Minuten). Ist der Timeout auf `0` gesetzt, wird die Alive-Überwachung für diesen Sensor vollständig deaktiviert – die Zeitstempel-Zeile wird in der Sensorübersicht ausgeblendet.
 
 Erhält ein Sensor länger als den konfigurierten Timeout keinen neuen Wert, gibt der Adapter eine Warnung aus:
 
@@ -435,6 +433,10 @@ Sensor "INVERTER_POWER": no update since 4/5/2026, 6:30:00 PM (longer than 60 mi
 Zusätzlich wird der letzte Zeitstempel des betroffenen Sensors im **Tab** in **orange** angezeigt, sodass du veraltete Sensoren auf einen Blick erkennst, ohne das Log zu öffnen.
 
 Die Warnung wird pro Sensor höchstens einmal pro Timeout-Periode wiederholt, damit das Log nicht überflutet wird. Setze den Timeout auf `0`, um die Prüfung für einen einzelnen Sensor zu deaktivieren (nur im Expertenmodus). Neu angelegte Sensoren haben standardmäßig einen Timeout von `60` Minuten. Der Timeout muss größer sein als das Aktualisierungsintervall des jeweiligen Quelladapters.
+
+### Werteüberwachung (Maximalwert)
+
+Die Werteüberwachung ist standardmäßig **deaktiviert** (Maximalwert = 0). Im **Expertenmodus** kann für jeden numerischen Sensor ein individueller Maximalwert in W gesetzt werden. Ist der Maximalwert > 0, wird er als Badge neben dem aktuellen Wert in der Sensorübersicht angezeigt. Bei deaktivierter Werteüberwachung (Maximalwert = 0) wird der Badge ausgeblendet.
 
 ### Adapter-States
 

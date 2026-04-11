@@ -256,11 +256,14 @@
   "iframeHttpHint": "Nota: El iFrame solo es visible cuando se accede al panel de administración de ioBroker a través de HTTP (no HTTPS).",
   "iframeCertHint": "¿La página no carga? SOLECTRUS bloquea la inserción en iFrames por defecto – añade FRAME_ANCESTORS=http://tu-host-iobroker:8081 al archivo .env de SOLECTRUS y reinicia el servicio.",
   "e.g. 15000": "p.ej. 15000",
-  "maxValueHint": "Límite de plausibilidad por sensor. Si se supera, se envía el último valor válido y se registra una advertencia. Valor predeterminado: 15000 W.",
+  "maxValueHint": "Límite de plausibilidad por sensor. Si se supera, se envía el último valor válido y se registra una advertencia. Valor predeterminado: 0 (desactivado).",
   "Max Value in W": "Valor máximo en W",
   "aliveTimeoutMinutesLabel": "Tiempo de espera Alive in min (min, 0 = desactivado)",
   "aliveTimeoutHint": "Si la última marca de tiempo del estado de origen supera el tiempo de espera, se registra una advertencia. Ten en cuenta que el tiempo de espera debe ser mayor que el intervalo de actualización de los adaptadores de origen. Valor predeterminado: 60 min.",
   "e.g. 60": "p.ej. 60",
-  "nonExpertMonitoringInfoFull": "Supervisión activa: valores hasta %MAXW% W · tiempo de espera hasta %TIMEOUTMIN% min.\nConfigurable en modo experto.",
-  "nonExpertMonitoringInfo": "Supervisión activa: tiempo de espera hasta %TIMEOUTMIN% min.\nConfigurable en modo experto."
+  "nonExpertMonitoringInfoFull": "Supervisión activa: valores hasta %MAXWSTR% · tiempo de espera %TIMEOUTSTR%.\nConfigurable en modo experto.",
+  "nonExpertMonitoringInfo": "Supervisión activa: tiempo de espera %TIMEOUTSTR%.\nConfigurable en modo experto.",
+  "e.g. 0": "p.ej. 0",
+  "nonExpertMonitoringDisabled": "Supervisión desactivada.\nConfigurable en modo experto.",
+  "nonExpertTimeoutDisabledShort": "desactivado"
 }

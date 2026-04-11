@@ -71,6 +71,9 @@
 		return Object.assign({}, sensor || {}, { _title: calcTitle(sensor || {}) });
 	}
 
+	const MONITORING_ACTIVE_COLOR = '#4caf50';
+	const MONITORING_DISABLED_COLOR = '#f44336';
+
 	const JSON_PRESETS = {
 		forecast: {
 			tsField: 't',
@@ -797,7 +800,7 @@
 													min: '0',
 													step: 'any',
 													value: editSensor.maxValue !== undefined && editSensor.maxValue !== null ? editSensor.maxValue : '',
-													placeholder: t('e.g. 15000'),
+													placeholder: t('e.g. 0'),
 													onChange: e => {
 														var raw = e.target.value;
 														var parsed = Number(raw);
@@ -938,29 +941,87 @@
 													'': t('Standard'),
 												};
 												var typeName = typeNames[editSensor.type || ''] || t('Standard');
-												var mf =
-													(editSensor.measurement || '?') + ':' + (editSensor.field || '?');
+												var measurement = editSensor.measurement || '?';
+												var field = editSensor.field || '?';
 												var sensorType = editSensor.type || '';
 												var timeoutMin = editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : 60;
-												var monitoringInfo;
+												var timeoutDisabled = timeoutMin === 0;
+												var monitoringStatusChildren;
+												var monitoringConfigHint;
+												var monitoringActive;
+												// Helper: split a template at a placeholder and return surrounding parts
+												var splitTpl = function (tpl, placeholder) {
+													var parts = tpl.split(placeholder);
+													return [parts[0] || '', parts[1] || ''];
+												};
+												// Helper: extract first line and config hint from a translation string
+												var extractLines = function (str) {
+													var lines = str.split('\n');
+													return { status: lines[0], hint: lines.slice(1).join('\n') };
+												};
 												if (sensorType !== 'bool' && sensorType !== 'string') {
-													var maxW = editSensor.maxValue != null ? editSensor.maxValue : 15000;
-													monitoringInfo = t('nonExpertMonitoringInfoFull')
-														.replace('%MAXW%', maxW)
-														.replace('%TIMEOUTMIN%', timeoutMin);
+													var maxW = editSensor.maxValue != null ? editSensor.maxValue : 0;
+													var maxDisabled = maxW <= 0;
+													if (maxDisabled && timeoutDisabled) {
+														var dl = extractLines(t('nonExpertMonitoringDisabled'));
+														monitoringStatusChildren = [dl.status];
+														monitoringConfigHint = dl.hint;
+														monitoringActive = false;
+													} else if (maxDisabled) {
+														var tl = extractLines(t('nonExpertMonitoringInfo'));
+														var tp = splitTpl(tl.status, '%TIMEOUTSTR%');
+														monitoringStatusChildren = [tp[0], React.createElement('strong', { key: 'tv' }, timeoutMin + ' min'), tp[1]];
+														monitoringConfigHint = tl.hint;
+														monitoringActive = true;
+													} else {
+														var timeoutStr = timeoutDisabled ? t('nonExpertTimeoutDisabledShort') : timeoutMin + ' min';
+														var fl = extractLines(t('nonExpertMonitoringInfoFull'));
+														var mp = splitTpl(fl.status, '%MAXWSTR%');
+														var tp2 = splitTpl(mp[1], '%TIMEOUTSTR%');
+														monitoringStatusChildren = [mp[0], React.createElement('strong', { key: 'mv' }, maxW + ' W'), tp2[0], React.createElement('strong', { key: 'tv' }, timeoutStr), tp2[1]];
+														monitoringConfigHint = fl.hint;
+														monitoringActive = true;
+													}
 												} else {
-													monitoringInfo = t('nonExpertMonitoringInfo')
-														.replace('%TIMEOUTMIN%', timeoutMin);
+													if (timeoutDisabled) {
+														var dl2 = extractLines(t('nonExpertMonitoringDisabled'));
+														monitoringStatusChildren = [dl2.status];
+														monitoringConfigHint = dl2.hint;
+														monitoringActive = false;
+													} else {
+														var tl2 = extractLines(t('nonExpertMonitoringInfo'));
+														var tp3 = splitTpl(tl2.status, '%TIMEOUTSTR%');
+														monitoringStatusChildren = [tp3[0], React.createElement('strong', { key: 'tv' }, timeoutMin + ' min'), tp3[1]];
+														monitoringConfigHint = tl2.hint;
+														monitoringActive = true;
+													}
 												}
-												return (
-													t('nonExpertSensorInfo')
-														.replace('%TYPE%', typeName)
-														.replace('%MF%', mf) +
-													'\n' +
-													t('nonExpertExpertHint') +
-													'\n' +
-													monitoringInfo
-												);
+												// Build inline-rich sensor info line: bold type, measurement, field
+												var siTemplate = t('nonExpertSensorInfo');
+												var typeSplit = siTemplate.split('%TYPE%');
+												var mfSplit = (typeSplit[1] || '').split('%MF%');
+												var monitoringColor = monitoringActive ? MONITORING_ACTIVE_COLOR : MONITORING_DISABLED_COLOR;
+												return [
+													React.createElement(
+														'span',
+														{ key: 'si' },
+														typeSplit[0],
+														React.createElement('strong', { key: 'type' }, typeName),
+														mfSplit[0],
+														React.createElement('strong', { key: 'meas' }, measurement),
+														':',
+														React.createElement('strong', { key: 'field' }, field),
+														mfSplit[1] || '',
+													),
+													'\n',
+													React.createElement('span', { key: 'hint' }, t('nonExpertExpertHint')),
+													'\n',
+													React.createElement.apply(React, ['span', { key: 'monitoring', style: { color: monitoringColor } }].concat(monitoringStatusChildren)),
+													monitoringConfigHint ? '\n' : null,
+													monitoringConfigHint
+														? React.createElement('span', { key: 'monitoringHint' }, monitoringConfigHint)
+														: null,
+												];
 											})(),
 										)
 									: null,
@@ -993,16 +1054,47 @@
 												// Show the actual sensor measurement:field, not the preset defaults
 												var m = editSensor.measurement || p.measurement;
 												var f = editSensor.field || p.field;
-												var matchingLine =
-													p.valField + ' \u2192 ' + m + ':' + f + ' (' + t(p.valDesc) + ')';
 												var timeoutMin = editSensor.aliveTimeoutMinutes != null ? editSensor.aliveTimeoutMinutes : 60;
-												return (
-													t('nonExpertJsonInfo').replace('%MAPPING%', matchingLine) +
-													'\n' +
-													t('nonExpertExpertHint') +
-													'\n' +
-													t('nonExpertMonitoringInfo').replace('%TIMEOUTMIN%', timeoutMin)
-												);
+												var timeoutActive = timeoutMin > 0;
+												var monitoringColor = timeoutActive ? MONITORING_ACTIVE_COLOR : MONITORING_DISABLED_COLOR;
+												var timeoutStatusChildren;
+												var timeoutConfigHint;
+												if (!timeoutActive) {
+													var dl = t('nonExpertMonitoringDisabled').split('\n');
+													timeoutStatusChildren = [dl[0]];
+													timeoutConfigHint = dl.slice(1).join('\n');
+												} else {
+													var tl = t('nonExpertMonitoringInfo').split('\n');
+													var tp = tl[0].split('%TIMEOUTSTR%');
+													timeoutStatusChildren = [tp[0], React.createElement('strong', { key: 'tv' }, timeoutMin + ' min'), tp[1] || ''];
+													timeoutConfigHint = tl.slice(1).join('\n');
+												}
+												// Split JSON info template at %MAPPING% to inline bold m:f
+												var jsonTemplate = t('nonExpertJsonInfo');
+												var jsonSplit = jsonTemplate.split('%MAPPING%');
+												var mappingPrefix = p.valField + ' \u2192 ';
+												var mappingDesc = ' (' + t(p.valDesc) + ')';
+												return [
+													React.createElement(
+														'span',
+														{ key: 'ji' },
+														jsonSplit[0] || '',
+														mappingPrefix,
+														React.createElement('strong', { key: 'meas' }, m),
+														':',
+														React.createElement('strong', { key: 'field' }, f),
+														mappingDesc,
+														jsonSplit[1] || '',
+													),
+													'\n',
+													React.createElement('span', { key: 'hint' }, t('nonExpertExpertHint')),
+													'\n',
+													React.createElement.apply(React, ['span', { key: 'monitoring', style: { color: monitoringColor } }].concat(timeoutStatusChildren)),
+													timeoutConfigHint ? '\n' : null,
+													timeoutConfigHint
+														? React.createElement('span', { key: 'monitoringHint' }, timeoutConfigHint)
+														: null,
+												];
 											})(),
 										)
 									: null,
