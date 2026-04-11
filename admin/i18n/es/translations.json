@@ -263,7 +263,7 @@
   "e.g. 60": "p.ej. 60",
   "nonExpertMonitoringInfoFull": "Supervisión activa: valores hasta %MAXWSTR% · tiempo de espera %TIMEOUTSTR%.\nConfigurable en modo experto.",
   "nonExpertMonitoringInfo": "Supervisión activa: tiempo de espera %TIMEOUTSTR%.\nConfigurable en modo experto.",
-  "e.g. 0": "p. ej. 0",
+  "e.g. 0": "p.ej. 0",
   "nonExpertMonitoringDisabled": "Supervisión desactivada.\nConfigurable en modo experto.",
   "nonExpertTimeoutDisabledShort": "desactivado"
 }
