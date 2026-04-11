@@ -71,6 +71,9 @@
 		return Object.assign({}, sensor || {}, { _title: calcTitle(sensor || {}) });
 	}
 
+	const MONITORING_ACTIVE_COLOR = '#4caf50';
+	const MONITORING_DISABLED_COLOR = '#f44336';
+
 	const JSON_PRESETS = {
 		forecast: {
 			tsField: 't',
@@ -976,7 +979,7 @@
 												var siTemplate = t('nonExpertSensorInfo');
 												var typeSplit = siTemplate.split('%TYPE%');
 												var mfSplit = (typeSplit[1] || '').split('%MF%');
-												var monitoringColor = monitoringActive ? '#4caf50' : '#f44336';
+												var monitoringColor = monitoringActive ? MONITORING_ACTIVE_COLOR : MONITORING_DISABLED_COLOR;
 												return [
 													React.createElement(
 														'span',
@@ -1035,7 +1038,7 @@
 												var timeoutPart = !timeoutActive
 													? t('nonExpertMonitoringDisabled')
 													: t('nonExpertMonitoringInfo').replace('%TIMEOUTSTR%', timeoutMin + ' min');
-												var monitoringColor = timeoutActive ? '#4caf50' : '#f44336';
+												var monitoringColor = timeoutActive ? MONITORING_ACTIVE_COLOR : MONITORING_DISABLED_COLOR;
 												// Split JSON info template at %MAPPING% to inline bold m:f
 												var jsonTemplate = t('nonExpertJsonInfo');
 												var jsonSplit = jsonTemplate.split('%MAPPING%');
