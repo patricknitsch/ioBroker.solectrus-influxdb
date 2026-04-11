@@ -62,6 +62,12 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* (patricknitsch) Default for max Values with 0W deactivated
+* (patricknitsch) Fix Information in Non-Expert if something is deactivated
+
 ### 1.7.0 (2026-04-10)
 
 * (patricknitsch) Increased max value from 10.000W to 15.000W
