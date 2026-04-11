@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.7.0",
+    "version": "1.7.1",
     "news": {
+      "1.7.1": {
+        "en": "Default for max Values with 0W deactivated\nFix non-expert information when monitoring is disabled",
+        "de": "Standard für max Werte mit 0W deaktiviert\nNicht-Experten-Informationen reparieren, wenn die Überwachung deaktiviert ist",
+        "ru": "Дефолт для максимальных значений с отключенным 0W\nИсправить неэкспертную информацию при отключении мониторинга",
+        "pt": "Padrão para valores máximos com 0W desativados\nCorrigir as informações não especializadas quando a monitorização estiver desactivada",
+        "nl": "Standaard voor max Waarden met 0W gedeactiveerd\nFix niet-expert informatie bij bewaking is uitgeschakeld",
+        "fr": "Valeur par défaut pour max avec 0W désactivé\nCorrection des informations non expertes lorsque la surveillance est désactivée",
+        "it": "Predefinito per valori massimi con 0W disattivato\nFissare informazioni non esperte quando il monitoraggio è disabilitato",
+        "es": "Predeterminado para valores máximos con 0W desactivado\nReparar la información no experto cuando el monitoreo es deshabilitado",
+        "pl": "Domyślnie dla wartości maksymalnych z dezaktywowanym 0W\nPoprawianie informacji niespecjalistycznych, gdy monitorowanie jest wyłączone",
+        "uk": "За замовчуванням для максимальних значень з деактивацією 0W\nВиправлення невибагливої інформації при відключенні моніторингу",
+        "zh-cn": "0W 已关闭的最大值的默认值\n停止监测时修复非专家信息"
+      },
       "1.7.0": {
         "en": "Increased max value from 10.000W to 15.000W\nZero-value alive monitoring: when a sensor timeout fires and the current value is 0, log info instead of warn and retry after 60 minutes\nSensor overview: numeric value row shows current value with unit (W) left-aligned and max value with unit (W) right-aligned\nSensor overview: timestamp row shows last timestamp left-aligned and auto-computed next expected update timestamp right-aligned (no manual input needed)\nSensor overview: change Format",
         "de": "Erhöhter Maximalwert von 10.000W auf 15.000W\nNullwert-Lebensüberwachung: wenn ein Sensor Timeout feuert und der aktuelle Wert 0 ist, log info statt warnen und nach 60 Minuten wiederkehren\nSensorübersicht: numerische Wertezeile zeigt den aktuellen Wert mit der Einheit (W) links- und max-Wert mit der Einheit (W) rechts-ausgerichtet\nSensorübersicht: Zeitstempelzeile zeigt den letzten Zeitstempel links ausgerichtet und autokomputiert nächste erwartete Update-Zeitstempel rechts ausgerichtet (keine manuelle Eingabe erforderlich)\nSensorübersicht: Format ändern",
@@ -80,19 +93,6 @@
         "pl": "Napraw DS Budżet czasu przyklejenia",
         "uk": "Фіксація DS Часовий бюджет",
         "zh-cn": "修补 DS 时间预算"
-      },
-      "1.3.0": {
-        "en": "Fix DS Tick time budget\nUpdate Admin Package\nChange Admin to easy and expert mode\nAdd information in easy mode \nAdd type json for sending json, i.e. forecast\nUpdate Readme",
-        "de": "Fix DS Tick Zeitbudget\nAdmin-Paket aktualisieren\nAdmin in einfachen und kompetenten Modus wechseln\nInformationen im einfachen Modus hinzufügen\nFügen Sie Typ json zum Senden von json, d.h. Prognose\nUpdate Reader",
-        "ru": "Исправить DS Бюджет времени Tick\nОбновление пакета Admin\nИзмените админ в простой и экспертный режим\nДобавить информацию в удобном режиме\nДобавить тип json для отправки json, т.е. прогноз\nОбновление Readme",
-        "pt": "Corrigir DS Tick time budget\nActualizar o Pacote de Administração\nAlterar o Admin para modo fácil e experiente\nAdicionar informações em modo fácil\nAdicionar o tipo json para enviar o json, ou seja, previsão\nActualizar a Leitura",
-        "nl": "DS herstellen Tick time budget\nAdmin-pakket bijwerken\nAdmin wijzigen naar eenvoudige en deskundige modus\nInformatie toevoegen in eenvoudige modus\nType json toevoegen voor het verzenden van json, d.w.z. voorspelling\nReadme bijwerken",
-        "fr": "Corriger DS Cochez le budget temps\nMettre à jour le paquet Admin\nChanger Admin en mode facile et expert\nAjouter des informations en mode facile\nAjouter le type json pour envoyer json, c.-à-d. prévision\nMettre à jour Readme",
-        "it": "Risolvere DS Bilancio di tempo di punta\nAggiorna il pacchetto Admin\nModificare Admin in modalità facile ed esperto\nAggiungi informazioni in modalità semplice\nAggiungi json tipo per l'invio di json, cioè previsioni\nAggiornamento",
-        "es": "Corrección DS Presupuesto del tiempo de marea\nPaquete de actualización\nCambiar de administrador a modo fácil y experto\nAñadir información en modo fácil\nAñadir tipo json para enviar json, i.e. previsión\nActualización Readme",
-        "pl": "Napraw DS Budżet czasu przyklejenia\nAktualizacja pakietu administracyjnego\nZmień administrację na tryb łatwy i specjalistyczny\nDodaj informacje w trybie łatwym\nDodaj typ json do wysyłania json, tj. prognozę\nAktualizacja Readme",
-        "uk": "Фіксація DS Часовий бюджет\nОновлення пакету адміністратора\nЗміна Адміністратора для легкого та експертного режиму\nДодати інформацію в простий режим\nДодати тип json для відправки json, тобто прогноз\nОновлення Readme",
-        "zh-cn": "修补 DS 时间预算\n更新管理软件包\n将管理员更改为简单和专家模式\n以简单模式添加信息\n用于发送 json 的添加类型 json, 即预测\n更新读取器"
       }
     },
     "titleLang": {
