@@ -980,6 +980,9 @@
 												var typeSplit = siTemplate.split('%TYPE%');
 												var mfSplit = (typeSplit[1] || '').split('%MF%');
 												var monitoringColor = monitoringActive ? MONITORING_ACTIVE_COLOR : MONITORING_DISABLED_COLOR;
+												var monitoringParts = monitoringInfo.split('\n');
+												var monitoringStatus = monitoringParts[0];
+												var monitoringConfigHint = monitoringParts.slice(1).join('\n');
 												return [
 													React.createElement(
 														'span',
@@ -998,8 +1001,12 @@
 													React.createElement(
 														'span',
 														{ key: 'monitoring', style: { color: monitoringColor } },
-														monitoringInfo,
+														monitoringStatus,
 													),
+													monitoringConfigHint ? '\n' : null,
+													monitoringConfigHint
+														? React.createElement('span', { key: 'monitoringHint' }, monitoringConfigHint)
+														: null,
 												];
 											})(),
 										)
@@ -1044,6 +1051,9 @@
 												var jsonSplit = jsonTemplate.split('%MAPPING%');
 												var mappingPrefix = p.valField + ' \u2192 ';
 												var mappingDesc = ' (' + t(p.valDesc) + ')';
+												var timeoutParts = timeoutPart.split('\n');
+												var timeoutStatus = timeoutParts[0];
+												var timeoutConfigHint = timeoutParts.slice(1).join('\n');
 												return [
 													React.createElement(
 														'span',
@@ -1062,8 +1072,12 @@
 													React.createElement(
 														'span',
 														{ key: 'monitoring', style: { color: monitoringColor } },
-														timeoutPart,
+														timeoutStatus,
 													),
+													timeoutConfigHint ? '\n' : null,
+													timeoutConfigHint
+														? React.createElement('span', { key: 'monitoringHint' }, timeoutConfigHint)
+														: null,
 												];
 											})(),
 										)
