@@ -265,5 +265,6 @@
   "nonExpertMonitoringInfo": "Bewaking actief: timeout %TIMEOUTSTR%.\nConfigureerbaar in expertmodus.",
   "e.g. 0": "bijv. 0",
   "nonExpertMonitoringDisabled": "Bewaking uitgeschakeld.\nConfigureerbaar in expertmodus.",
-  "nonExpertTimeoutDisabledShort": "uitgeschakeld"
+  "nonExpertTimeoutDisabledShort": "uitgeschakeld",
+  "notifyHint": "Configureer notificatieproviders om meldingen te ontvangen wanneer de InfluxDB-verbinding mislukt of sensorgegevens niet meer binnenkomen. Schakel het selectievakje in en configureer hieronder minimaal één provider."
 }

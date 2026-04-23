@@ -265,5 +265,6 @@
   "nonExpertMonitoringInfo": "Surveillance active : délai %TIMEOUTSTR%.\nConfigurable en mode expert.",
   "e.g. 0": "ex. 0",
   "nonExpertMonitoringDisabled": "Surveillance désactivée.\nConfigurable en mode expert.",
-  "nonExpertTimeoutDisabledShort": "désactivé"
+  "nonExpertTimeoutDisabledShort": "désactivé",
+  "notifyHint": "Configurez des fournisseurs de notification pour recevoir des alertes en cas d'échec de la connexion InfluxDB ou d'arrêt des données des capteurs. Activez la case à cocher et configurez au moins un fournisseur ci-dessous."
 }

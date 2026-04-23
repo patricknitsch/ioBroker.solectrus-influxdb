@@ -265,5 +265,6 @@
   "nonExpertMonitoringInfo": "监控已激活：超时 %TIMEOUTSTR%。\n可在专家模式中配置。",
   "e.g. 0": "例如 0",
   "nonExpertMonitoringDisabled": "监控已禁用。\n可在专家模式中配置。",
-  "nonExpertTimeoutDisabledShort": "已禁用"
+  "nonExpertTimeoutDisabledShort": "已禁用",
+  "notifyHint": "配置通知提供商，以便在 InfluxDB 连接失败或传感器数据停止到达时收到警报。启用复选框并在下方配置至少一个提供商。"
 }

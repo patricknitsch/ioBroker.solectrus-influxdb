@@ -265,5 +265,6 @@
   "nonExpertMonitoringInfoFull": "Überwachung aktiv: Werte bis %MAXWSTR% · Timeout %TIMEOUTSTR%.\nIm Expertenmodus konfigurierbar.",
   "nonExpertMonitoringInfo": "Überwachung aktiv: Timeout %TIMEOUTSTR%.\nIm Expertenmodus konfigurierbar.",
   "nonExpertMonitoringDisabled": "Überwachung deaktiviert.\nIm Expertenmodus konfigurierbar.",
-  "nonExpertTimeoutDisabledShort": "deaktiviert"
+  "nonExpertTimeoutDisabledShort": "deaktiviert",
+  "notifyHint": "Konfiguriere Benachrichtigungsanbieter, um Meldungen zu erhalten, wenn die InfluxDB-Verbindung fehlschlägt oder Sensordaten ausbleiben. Aktiviere die Checkbox und konfiguriere mindestens einen Anbieter unten."
 }

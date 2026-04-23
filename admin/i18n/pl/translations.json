@@ -265,5 +265,6 @@
   "nonExpertMonitoringInfo": "Monitorowanie aktywne: limit czasu %TIMEOUTSTR%.\nKonfigurowalne w trybie eksperta.",
   "e.g. 0": "np. 0",
   "nonExpertMonitoringDisabled": "Monitorowanie wyłączone.\nKonfigurowalne w trybie eksperta.",
-  "nonExpertTimeoutDisabledShort": "wyłączone"
+  "nonExpertTimeoutDisabledShort": "wyłączone",
+  "notifyHint": "Skonfiguruj dostawców powiadomień, aby otrzymywać alerty, gdy połączenie z InfluxDB zawiedzie lub dane czujnika przestaną napływać. Włącz pole wyboru i skonfiguruj przynajmniej jednego dostawcę poniżej."
 }

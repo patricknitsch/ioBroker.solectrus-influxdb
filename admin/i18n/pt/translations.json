@@ -265,5 +265,6 @@
   "nonExpertMonitoringInfo": "Monitorização ativa: timeout %TIMEOUTSTR%.\nConfigurável no modo especialista.",
   "e.g. 0": "ex. 0",
   "nonExpertMonitoringDisabled": "Monitorização desativada.\nConfigurável no modo especialista.",
-  "nonExpertTimeoutDisabledShort": "desativado"
+  "nonExpertTimeoutDisabledShort": "desativado",
+  "notifyHint": "Configure provedores de notificação para receber alertas quando a conexão InfluxDB falhar ou os dados do sensor pararem de chegar. Ative a caixa de seleção e configure pelo menos um provedor abaixo."
 }

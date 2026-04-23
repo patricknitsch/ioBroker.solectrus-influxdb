@@ -265,5 +265,6 @@
   "nonExpertMonitoringInfoFull": "Monitoring active: values up to %MAXWSTR% · timeout %TIMEOUTSTR%.\nConfigurable in Expert Mode.",
   "nonExpertMonitoringInfo": "Monitoring active: timeout %TIMEOUTSTR%.\nConfigurable in Expert Mode.",
   "nonExpertMonitoringDisabled": "Monitoring disabled.\nConfigurable in Expert Mode.",
-  "nonExpertTimeoutDisabledShort": "disabled"
+  "nonExpertTimeoutDisabledShort": "disabled",
+  "notifyHint": "Configure notification providers to receive alerts when InfluxDB connection fails or sensor data stops arriving. Enable the checkbox and configure at least one provider below."
 }

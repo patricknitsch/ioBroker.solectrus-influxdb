@@ -295,6 +295,347 @@
 					"xl": 12
 				}
 			}
+		},
+		"notifications": {
+			"type": "panel",
+			"label": "Notifications",
+			"items": {
+				"_notifyHint": {
+					"type": "staticText",
+					"text": "notifyHint",
+					"newLine": true,
+					"style": {
+						"fontSize": "0.85em",
+						"color": "#888",
+						"marginTop": 4,
+						"whiteSpace": "pre-line"
+					},
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"notifyEnabled": {
+					"type": "checkbox",
+					"label": "Enable notifications",
+					"default": false,
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"notifyOnConnectionFail": {
+					"type": "checkbox",
+					"label": "Notify on InfluxDB connection failure / restore",
+					"default": true,
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"notifyOnSensorTimeout": {
+					"type": "checkbox",
+					"label": "Notify on sensor alive timeout",
+					"default": true,
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"_notifyTelegramHeader": {
+					"type": "staticText",
+					"text": "─── Telegram ───",
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"style": {
+						"fontWeight": "bold",
+						"marginTop": 12
+					},
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"notifyInstanceTelegram": {
+					"type": "instanceSelect",
+					"adapter": "telegram",
+					"label": "Telegram instance",
+					"allowDeactivate": true,
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"notifyUserTelegram": {
+					"type": "text",
+					"label": "Telegram user / chat ID (optional)",
+					"hidden": "!data.notifyEnabled",
+					"newLine": false,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"_notifyPushoverHeader": {
+					"type": "staticText",
+					"text": "─── Pushover ───",
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"style": {
+						"fontWeight": "bold",
+						"marginTop": 12
+					},
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"notifyInstancePushover": {
+					"type": "instanceSelect",
+					"adapter": "pushover",
+					"label": "Pushover instance",
+					"allowDeactivate": true,
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"notifyTitlePushover": {
+					"type": "text",
+					"label": "Pushover title",
+					"hidden": "!data.notifyEnabled",
+					"newLine": false,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"notifyDevicePushover": {
+					"type": "text",
+					"label": "Pushover device (optional)",
+					"hidden": "!data.notifyEnabled",
+					"newLine": false,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"_notifyWhatsappHeader": {
+					"type": "staticText",
+					"text": "─── WhatsApp ───",
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"style": {
+						"fontWeight": "bold",
+						"marginTop": 12
+					},
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"notifyInstanceWhatsapp": {
+					"type": "instanceSelect",
+					"adapter": "whatsapp-cmb",
+					"label": "WhatsApp instance",
+					"allowDeactivate": true,
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"notifyPhoneWhatsapp": {
+					"type": "text",
+					"label": "WhatsApp phone (optional)",
+					"hidden": "!data.notifyEnabled",
+					"newLine": false,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"_notifyEmailHeader": {
+					"type": "staticText",
+					"text": "─── Email ───",
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"style": {
+						"fontWeight": "bold",
+						"marginTop": 12
+					},
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"notifyInstanceEmail": {
+					"type": "instanceSelect",
+					"adapter": "email",
+					"label": "Email instance",
+					"allowDeactivate": true,
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"notifyToEmail": {
+					"type": "text",
+					"label": "Email recipient",
+					"hidden": "!data.notifyEnabled",
+					"newLine": false,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"notifySubjectEmail": {
+					"type": "text",
+					"label": "Email subject",
+					"hidden": "!data.notifyEnabled",
+					"newLine": false,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"_notifySignalHeader": {
+					"type": "staticText",
+					"text": "─── Signal ───",
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"style": {
+						"fontWeight": "bold",
+						"marginTop": 12
+					},
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"notifyInstanceSignal": {
+					"type": "instanceSelect",
+					"adapter": "signal-cmb",
+					"label": "Signal instance",
+					"allowDeactivate": true,
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"notifyPhoneSignal": {
+					"type": "text",
+					"label": "Signal phone (optional)",
+					"hidden": "!data.notifyEnabled",
+					"newLine": false,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"_notifyMatrixHeader": {
+					"type": "staticText",
+					"text": "─── Matrix ───",
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"style": {
+						"fontWeight": "bold",
+						"marginTop": 12
+					},
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"notifyInstanceMatrix": {
+					"type": "instanceSelect",
+					"adapter": "matrix-org",
+					"label": "Matrix instance",
+					"allowDeactivate": true,
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"_notifySynochatHeader": {
+					"type": "staticText",
+					"text": "─── Synology Chat ───",
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"style": {
+						"fontWeight": "bold",
+						"marginTop": 12
+					},
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"notifyInstanceSynochat": {
+					"type": "instanceSelect",
+					"adapter": "synochat",
+					"label": "Synology Chat instance",
+					"allowDeactivate": true,
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
+				"notifyChannelSynochat": {
+					"type": "text",
+					"label": "Synology Chat channel name",
+					"hidden": "!data.notifyEnabled",
+					"newLine": false,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				}
+			}
 		}
 	}
 }

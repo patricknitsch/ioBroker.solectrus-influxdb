@@ -265,5 +265,6 @@
   "nonExpertMonitoringInfo": "Supervisión activa: tiempo de espera %TIMEOUTSTR%.\nConfigurable en modo experto.",
   "e.g. 0": "p.ej. 0",
   "nonExpertMonitoringDisabled": "Supervisión desactivada.\nConfigurable en modo experto.",
-  "nonExpertTimeoutDisabledShort": "desactivado"
+  "nonExpertTimeoutDisabledShort": "desactivado",
+  "notifyHint": "Configura proveedores de notificación para recibir alertas cuando falle la conexión a InfluxDB o dejen de llegar datos del sensor. Activa la casilla y configura al menos un proveedor a continuación."
 }

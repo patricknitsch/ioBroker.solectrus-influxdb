@@ -22,6 +22,7 @@ const {
 } = require('./lib/sensorManager');
 const { prepareForecastSources, processForecastJson } = require('./lib/forecastManager');
 const { collectPoints, scheduleNextFlush } = require('./lib/collectFlush');
+const { sendNotification } = require('./lib/notificationManager');
 const dsStateRegistry = require('./lib/data-solectrus/services/stateRegistry');
 const dsItemManager = require('./lib/data-solectrus/services/itemManager');
 const dsTickRunner = require('./lib/data-solectrus/services/tickRunner');
@@ -73,6 +74,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		/* ---------- Retry ---------- */
 		this.flushFailures = 0;
 		this.maxFlushInterval = 300_000; // 5 min
+		this.influxWasDisconnected = false;
 
 		/* ---------- Persistence ---------- */
 		this.bufferFile = path.join(this.adapterDir, 'buffer.json');
@@ -114,7 +116,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 		/* --- Always check Influx Connection once at startup --- */
 		const influxOk = await verifyInfluxConnection(this);
 		if (!influxOk) {
-			this.setState('info.lastError', 'InfluxDB connection failed – check URL, Token, Org and Bucket', true);
+			const errMsg = 'InfluxDB connection failed – check URL, Token, Org and Bucket';
+			this.setState('info.lastError', errMsg, true);
+			if (this.config.notifyOnConnectionFail) {
+				sendNotification(this, errMsg).catch(() => {});
+			}
 			// Adapter continues running; flush loop will retry
 		}
 
