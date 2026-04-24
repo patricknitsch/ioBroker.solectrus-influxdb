@@ -58,8 +58,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.lastUpdateTs = new Map();
 		// Maps sensor state id → timestamp (ms) when last alive warning was logged
 		this.aliveWarnedAt = new Map();
-		// Set of sensor state ids currently in zero-value fallback mode (60 min retry)
-		this.aliveZeroAt = new Map();
 		// Maps sensor state id → timestamp (ms) when last alive-timeout notification was sent
 		this.aliveNotifyAt = new Map();
 		// Maps sensor state id → timestamp (ms) when last max-value-exceeded notification was sent
