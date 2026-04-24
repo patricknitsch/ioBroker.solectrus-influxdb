@@ -526,6 +526,6 @@ Mehrere Anbieter können gleichzeitig konfiguriert werden. Der Adapter prüft vo
 
 ### Hinweise
 
-- Die Benachrichtigungen werden in Englisch gesendet.
-- Bei InfluxDB-Verbindungsfehlern wird **nur beim ersten** Ausfall eine Benachrichtigung gesendet, um Spam zu vermeiden.
-- Sensor-Timeout-Benachrichtigungen werden entsprechend dem konfigurierten Alive-Timeout (Expertenmodus) gedrosselt.
+- Die Benachrichtigungen werden über `getNotificationMessage()` anhand der `systemLanguage` lokalisiert gesendet.
+- Bei InfluxDB-Verbindungsfehlern wird eine Benachrichtigung gesendet; bei anhaltenden Problemen kann sie nach `notifyRepeatMinutes` erneut gesendet werden.
+- Sensor-Timeout-Benachrichtigungen setzen das konfigurierte Alive-Timeout (Expertenmodus) voraus und sind zusätzlich über `notifyRepeatMinutes` gedrosselt.
