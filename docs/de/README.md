@@ -498,7 +498,7 @@ Der Adapter kann bei wichtigen Ereignissen Meldungen über konfigurierbare Benac
 
 Im Tab **Benachrichtigungen** der Adapter-Einstellungen:
 
-1. Checkbox **Enable notifications** aktivieren
+1. Checkbox **Benachrichtigungen aktivieren** aktivieren (bzw. die entsprechend lokalisierte Beschriftung, abhängig von der Admin-Sprache)
 2. Gewünschte Ereignisse auswählen
 3. Mindestens einen Benachrichtigungsanbieter konfigurieren
 
