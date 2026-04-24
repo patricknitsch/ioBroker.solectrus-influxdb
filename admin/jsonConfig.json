@@ -339,19 +339,6 @@
           "lg": 12,
           "xl": 12
         },
-        "notifyRepeatMinutes": {
-          "type": "number",
-          "label": "notifyRepeatMinutesLabel",
-          "default": 60,
-          "min": 1,
-          "hidden": "!data.notifyEnabled",
-          "newLine": true,
-          "xs": 12,
-          "sm": 12,
-          "md": 6,
-          "lg": 4,
-          "xl": 4
-        },
         "notifyOnSensorTimeout": {
           "type": "checkbox",
           "label": "notifyOnSensorTimeoutLabel",
@@ -375,6 +362,19 @@
           "md": 12,
           "lg": 12,
           "xl": 12
+        },
+        "notifyRepeatMinutes": {
+          "type": "number",
+          "label": "notifyRepeatMinutesLabel",
+          "default": 60,
+          "min": 1,
+          "hidden": "!data.notifyEnabled",
+          "newLine": true,
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "xl": 4
         },
         "_notifyTelegramHeader": {
           "type": "staticText",
