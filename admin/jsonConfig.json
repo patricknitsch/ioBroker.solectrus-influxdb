@@ -298,7 +298,7 @@
 		},
 		"notifications": {
 			"type": "panel",
-			"label": "Notifications",
+			"label": "notificationsTabLabel",
 			"items": {
 				"_notifyHint": {
 					"type": "staticText",
@@ -318,7 +318,7 @@
 				},
 				"notifyEnabled": {
 					"type": "checkbox",
-					"label": "Enable notifications",
+					"label": "notifyEnabledLabel",
 					"default": false,
 					"newLine": true,
 					"xs": 12,
@@ -329,7 +329,7 @@
 				},
 				"notifyOnConnectionFail": {
 					"type": "checkbox",
-					"label": "Notify on InfluxDB connection failure / restore",
+					"label": "notifyOnConnectionFailLabel",
 					"default": true,
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
@@ -341,7 +341,7 @@
 				},
 				"notifyOnSensorTimeout": {
 					"type": "checkbox",
-					"label": "Notify on sensor alive timeout",
+					"label": "notifyOnSensorTimeoutLabel",
 					"default": true,
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
@@ -367,10 +367,9 @@
 					"xl": 12
 				},
 				"notifyInstanceTelegram": {
-					"type": "instanceSelect",
-					"adapter": "telegram",
-					"label": "Telegram instance",
-					"allowDeactivate": true,
+					"type": "text",
+					"label": "notifyInstanceTelegramLabel",
+					"placeholder": "telegram.0",
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
@@ -381,7 +380,7 @@
 				},
 				"notifyUserTelegram": {
 					"type": "text",
-					"label": "Telegram user / chat ID (optional)",
+					"label": "notifyUserTelegramLabel",
 					"hidden": "!data.notifyEnabled",
 					"newLine": false,
 					"xs": 12,
@@ -406,10 +405,9 @@
 					"xl": 12
 				},
 				"notifyInstancePushover": {
-					"type": "instanceSelect",
-					"adapter": "pushover",
-					"label": "Pushover instance",
-					"allowDeactivate": true,
+					"type": "text",
+					"label": "notifyInstancePushoverLabel",
+					"placeholder": "pushover.0",
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
@@ -420,7 +418,7 @@
 				},
 				"notifyTitlePushover": {
 					"type": "text",
-					"label": "Pushover title",
+					"label": "notifyTitlePushoverLabel",
 					"hidden": "!data.notifyEnabled",
 					"newLine": false,
 					"xs": 12,
@@ -431,7 +429,7 @@
 				},
 				"notifyDevicePushover": {
 					"type": "text",
-					"label": "Pushover device (optional)",
+					"label": "notifyDevicePushoverLabel",
 					"hidden": "!data.notifyEnabled",
 					"newLine": false,
 					"xs": 12,
@@ -456,10 +454,9 @@
 					"xl": 12
 				},
 				"notifyInstanceWhatsapp": {
-					"type": "instanceSelect",
-					"adapter": "whatsapp-cmb",
-					"label": "WhatsApp instance",
-					"allowDeactivate": true,
+					"type": "text",
+					"label": "notifyInstanceWhatsappLabel",
+					"placeholder": "whatsapp-cmb.0",
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
@@ -470,7 +467,7 @@
 				},
 				"notifyPhoneWhatsapp": {
 					"type": "text",
-					"label": "WhatsApp phone (optional)",
+					"label": "notifyPhoneWhatsappLabel",
 					"hidden": "!data.notifyEnabled",
 					"newLine": false,
 					"xs": 12,
@@ -495,10 +492,9 @@
 					"xl": 12
 				},
 				"notifyInstanceEmail": {
-					"type": "instanceSelect",
-					"adapter": "email",
-					"label": "Email instance",
-					"allowDeactivate": true,
+					"type": "text",
+					"label": "notifyInstanceEmailLabel",
+					"placeholder": "email.0",
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
@@ -509,7 +505,7 @@
 				},
 				"notifyToEmail": {
 					"type": "text",
-					"label": "Email recipient",
+					"label": "notifyToEmailLabel",
 					"hidden": "!data.notifyEnabled",
 					"newLine": false,
 					"xs": 12,
@@ -520,7 +516,7 @@
 				},
 				"notifySubjectEmail": {
 					"type": "text",
-					"label": "Email subject",
+					"label": "notifySubjectEmailLabel",
 					"hidden": "!data.notifyEnabled",
 					"newLine": false,
 					"xs": 12,
@@ -545,10 +541,9 @@
 					"xl": 12
 				},
 				"notifyInstanceSignal": {
-					"type": "instanceSelect",
-					"adapter": "signal-cmb",
-					"label": "Signal instance",
-					"allowDeactivate": true,
+					"type": "text",
+					"label": "notifyInstanceSignalLabel",
+					"placeholder": "signal-cmb.0",
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
@@ -559,7 +554,7 @@
 				},
 				"notifyPhoneSignal": {
 					"type": "text",
-					"label": "Signal phone (optional)",
+					"label": "notifyPhoneSignalLabel",
 					"hidden": "!data.notifyEnabled",
 					"newLine": false,
 					"xs": 12,
@@ -584,10 +579,9 @@
 					"xl": 12
 				},
 				"notifyInstanceMatrix": {
-					"type": "instanceSelect",
-					"adapter": "matrix-org",
-					"label": "Matrix instance",
-					"allowDeactivate": true,
+					"type": "text",
+					"label": "notifyInstanceMatrixLabel",
+					"placeholder": "matrix-org.0",
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
@@ -612,10 +606,9 @@
 					"xl": 12
 				},
 				"notifyInstanceSynochat": {
-					"type": "instanceSelect",
-					"adapter": "synochat",
-					"label": "Synology Chat instance",
-					"allowDeactivate": true,
+					"type": "text",
+					"label": "notifyInstanceSynochatLabel",
+					"placeholder": "synochat.0",
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
@@ -626,7 +619,7 @@
 				},
 				"notifyChannelSynochat": {
 					"type": "text",
-					"label": "Synology Chat channel name",
+					"label": "notifyChannelSynochatLabel",
 					"hidden": "!data.notifyEnabled",
 					"newLine": false,
 					"xs": 12,
