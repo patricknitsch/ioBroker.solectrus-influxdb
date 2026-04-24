@@ -286,5 +286,7 @@
   "notifyUseSignalLabel": "Signal gebruiken",
   "notifyUseMatrixLabel": "Matrix gebruiken",
   "notifyUseSynochatLabel": "Synology Chat gebruiken",
-  "notifyOnMaxValueExceededLabel": "Melding als sensorwaarde het maximum overschrijdt"
+  "notifyOnMaxValueExceededLabel": "Melding als sensorwaarde het maximum overschrijdt",
+  "notifyConnectionFailRepeatMinutesLabel": "Melding herhalen elke (min)",
+  "notifyAliveTimeoutRepeatMinutesLabel": "Melding herhalen elke (min)"
 }

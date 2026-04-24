@@ -23,6 +23,7 @@ const {
 const { prepareForecastSources, processForecastJson } = require('./lib/forecastManager');
 const { collectPoints, scheduleNextFlush } = require('./lib/collectFlush');
 const { sendNotification } = require('./lib/notificationManager');
+const { getNotificationMessage } = require('./lib/notificationMessages');
 const dsStateRegistry = require('./lib/data-solectrus/services/stateRegistry');
 const dsItemManager = require('./lib/data-solectrus/services/itemManager');
 const dsTickRunner = require('./lib/data-solectrus/services/tickRunner');
@@ -59,6 +60,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.aliveWarnedAt = new Map();
 		// Set of sensor state ids currently in zero-value fallback mode (60 min retry)
 		this.aliveZeroAt = new Map();
+		// Maps sensor state id → timestamp (ms) when last alive-timeout notification was sent
+		this.aliveNotifyAt = new Map();
 		// Maps sensor state id → timestamp (ms) when last max-value-exceeded notification was sent
 		this.maxValueWarnedAt = new Map();
 
@@ -77,6 +80,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.flushFailures = 0;
 		this.maxFlushInterval = 300_000; // 5 min
 		this.influxWasDisconnected = false;
+		// Timestamp (ms) of the last InfluxDB connection-failure notification sent
+		this.lastConnectionFailNotifyTs = 0;
+		// System language read from system.config at startup (e.g. 'de', 'en')
+		this.systemLanguage = 'en';
 
 		/* ---------- Persistence ---------- */
 		this.bufferFile = path.join(this.adapterDir, 'buffer.json');
@@ -109,6 +116,14 @@ class SolectrusInfluxdb extends utils.Adapter {
 		loadBuffer(this);
 		updateBufferStates(this);
 
+		/* --- Read system language for localized notifications --- */
+		try {
+			const sysConfig = await this.getForeignObjectAsync('system.config');
+			this.systemLanguage = sysConfig?.common?.language || 'en';
+		} catch {
+			this.systemLanguage = 'en';
+		}
+
 		if (!validateInfluxConfig(this)) {
 			this.log.error('InfluxDB configuration incomplete');
 			this.setState('info.lastError', 'InfluxDB configuration incomplete (URL/Token/Org/Bucket missing)', true);
@@ -122,7 +137,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.setState('info.lastError', errMsg, true);
 			this.influxWasDisconnected = true;
 			if (this.config.notifyOnConnectionFail) {
-				sendNotification(this, errMsg).catch(() => {});
+				this.lastConnectionFailNotifyTs = Date.now();
+				sendNotification(this, getNotificationMessage(this, 'influxConnectionFailed')).catch(() => {});
 			}
 			// Adapter continues running; flush loop will retry
 		}

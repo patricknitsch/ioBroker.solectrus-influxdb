@@ -286,5 +286,7 @@
   "notifyUseSignalLabel": "Usar Signal",
   "notifyUseMatrixLabel": "Usar Matrix",
   "notifyUseSynochatLabel": "Usar Synology Chat",
-  "notifyOnMaxValueExceededLabel": "Notificar cuando el valor del sensor supera el máximo"
+  "notifyOnMaxValueExceededLabel": "Notificar cuando el valor del sensor supera el máximo",
+  "notifyConnectionFailRepeatMinutesLabel": "Repetir notificación cada (min)",
+  "notifyAliveTimeoutRepeatMinutesLabel": "Repetir notificación cada (min)"
 }
