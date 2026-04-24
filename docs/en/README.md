@@ -526,6 +526,6 @@ Multiple providers can be configured simultaneously. Before sending, the adapter
 
 ### Notes
 
-- Notifications are sent in English.
-- For InfluxDB connection failures, a notification is sent only on the **first** failure to avoid spam.
-- Sensor timeout notifications are throttled according to the configured alive timeout (Expert Mode).
+- Notification messages are localized via `getNotificationMessage()` using the configured `systemLanguage`.
+- For InfluxDB connection failures, a notification is sent on the **first** failure and can repeat after `notifyRepeatMinutes` while the connection remains down.
+- Sensor timeout notifications are sent when the configured alive-timeout condition is met (Expert Mode) and are throttled by `notifyRepeatMinutes`.
