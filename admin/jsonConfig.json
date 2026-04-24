@@ -339,13 +339,13 @@
           "lg": 12,
           "xl": 12
         },
-        "notifyConnectionFailRepeatMinutes": {
+        "notifyRepeatMinutes": {
           "type": "number",
-          "label": "notifyConnectionFailRepeatMinutesLabel",
+          "label": "notifyRepeatMinutesLabel",
           "default": 60,
           "min": 1,
-          "hidden": "!data.notifyEnabled || !data.notifyOnConnectionFail",
-          "newLine": false,
+          "hidden": "!data.notifyEnabled",
+          "newLine": true,
           "xs": 12,
           "sm": 12,
           "md": 6,
@@ -363,19 +363,6 @@
           "md": 12,
           "lg": 12,
           "xl": 12
-        },
-        "notifyAliveTimeoutRepeatMinutes": {
-          "type": "number",
-          "label": "notifyAliveTimeoutRepeatMinutesLabel",
-          "default": 60,
-          "min": 1,
-          "hidden": "!data.notifyEnabled || !data.notifyOnSensorTimeout",
-          "newLine": false,
-          "xs": 12,
-          "sm": 12,
-          "md": 6,
-          "lg": 4,
-          "xl": 4
         },
         "notifyOnMaxValueExceeded": {
           "type": "checkbox",

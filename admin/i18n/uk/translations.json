@@ -287,6 +287,5 @@
   "notifyUseMatrixLabel": "Використовувати Matrix",
   "notifyUseSynochatLabel": "Використовувати Synology Chat",
   "notifyOnMaxValueExceededLabel": "Сповіщати при перевищенні максимального значення датчика",
-  "notifyConnectionFailRepeatMinutesLabel": "Повторювати сповіщення кожні (хв)",
-  "notifyAliveTimeoutRepeatMinutesLabel": "Повторювати сповіщення кожні (хв)"
+  "notifyRepeatMinutesLabel": "Повторювати сповіщення кожні (хв)"
 }

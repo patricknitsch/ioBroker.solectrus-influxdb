@@ -287,6 +287,5 @@
   "notifyUseMatrixLabel": "Matrix verwenden",
   "notifyUseSynochatLabel": "Synology Chat verwenden",
   "notifyOnMaxValueExceededLabel": "Benachrichtigung bei Überschreitung des Maximalwerts",
-  "notifyConnectionFailRepeatMinutesLabel": "Benachrichtigung wiederholen alle (min)",
-  "notifyAliveTimeoutRepeatMinutesLabel": "Benachrichtigung wiederholen alle (min)"
+  "notifyRepeatMinutesLabel": "Benachrichtigung wiederholen alle (min)"
 }
