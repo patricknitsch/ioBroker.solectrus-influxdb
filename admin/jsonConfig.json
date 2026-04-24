@@ -366,22 +366,22 @@
 					"lg": 12,
 					"xl": 12
 				},
-				"notifyInstanceTelegram": {
-					"type": "text",
-					"label": "notifyInstanceTelegramLabel",
-					"placeholder": "telegram.0",
+				"notifyUseTelegram": {
+					"type": "checkbox",
+					"label": "notifyUseTelegramLabel",
+					"default": false,
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
 					"sm": 12,
-					"md": 6,
-					"lg": 4,
-					"xl": 4
+					"md": 12,
+					"lg": 12,
+					"xl": 12
 				},
 				"notifyUserTelegram": {
 					"type": "text",
 					"label": "notifyUserTelegramLabel",
-					"hidden": "!data.notifyEnabled",
+					"hidden": "!data.notifyEnabled || !data.notifyUseTelegram",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
@@ -404,22 +404,22 @@
 					"lg": 12,
 					"xl": 12
 				},
-				"notifyInstancePushover": {
-					"type": "text",
-					"label": "notifyInstancePushoverLabel",
-					"placeholder": "pushover.0",
+				"notifyUsePushover": {
+					"type": "checkbox",
+					"label": "notifyUsePushoverLabel",
+					"default": false,
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
 					"sm": 12,
-					"md": 6,
-					"lg": 4,
-					"xl": 4
+					"md": 12,
+					"lg": 12,
+					"xl": 12
 				},
 				"notifyTitlePushover": {
 					"type": "text",
 					"label": "notifyTitlePushoverLabel",
-					"hidden": "!data.notifyEnabled",
+					"hidden": "!data.notifyEnabled || !data.notifyUsePushover",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
@@ -430,7 +430,7 @@
 				"notifyDevicePushover": {
 					"type": "text",
 					"label": "notifyDevicePushoverLabel",
-					"hidden": "!data.notifyEnabled",
+					"hidden": "!data.notifyEnabled || !data.notifyUsePushover",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
@@ -453,22 +453,22 @@
 					"lg": 12,
 					"xl": 12
 				},
-				"notifyInstanceWhatsapp": {
-					"type": "text",
-					"label": "notifyInstanceWhatsappLabel",
-					"placeholder": "whatsapp-cmb.0",
+				"notifyUseWhatsapp": {
+					"type": "checkbox",
+					"label": "notifyUseWhatsappLabel",
+					"default": false,
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
 					"sm": 12,
-					"md": 6,
-					"lg": 4,
-					"xl": 4
+					"md": 12,
+					"lg": 12,
+					"xl": 12
 				},
 				"notifyPhoneWhatsapp": {
 					"type": "text",
 					"label": "notifyPhoneWhatsappLabel",
-					"hidden": "!data.notifyEnabled",
+					"hidden": "!data.notifyEnabled || !data.notifyUseWhatsapp",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
@@ -491,22 +491,22 @@
 					"lg": 12,
 					"xl": 12
 				},
-				"notifyInstanceEmail": {
-					"type": "text",
-					"label": "notifyInstanceEmailLabel",
-					"placeholder": "email.0",
+				"notifyUseEmail": {
+					"type": "checkbox",
+					"label": "notifyUseEmailLabel",
+					"default": false,
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
 					"sm": 12,
-					"md": 6,
-					"lg": 4,
-					"xl": 4
+					"md": 12,
+					"lg": 12,
+					"xl": 12
 				},
 				"notifyToEmail": {
 					"type": "text",
 					"label": "notifyToEmailLabel",
-					"hidden": "!data.notifyEnabled",
+					"hidden": "!data.notifyEnabled || !data.notifyUseEmail",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
@@ -517,7 +517,7 @@
 				"notifySubjectEmail": {
 					"type": "text",
 					"label": "notifySubjectEmailLabel",
-					"hidden": "!data.notifyEnabled",
+					"hidden": "!data.notifyEnabled || !data.notifyUseEmail",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
@@ -540,22 +540,22 @@
 					"lg": 12,
 					"xl": 12
 				},
-				"notifyInstanceSignal": {
-					"type": "text",
-					"label": "notifyInstanceSignalLabel",
-					"placeholder": "signal-cmb.0",
+				"notifyUseSignal": {
+					"type": "checkbox",
+					"label": "notifyUseSignalLabel",
+					"default": false,
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
 					"sm": 12,
-					"md": 6,
-					"lg": 4,
-					"xl": 4
+					"md": 12,
+					"lg": 12,
+					"xl": 12
 				},
 				"notifyPhoneSignal": {
 					"type": "text",
 					"label": "notifyPhoneSignalLabel",
-					"hidden": "!data.notifyEnabled",
+					"hidden": "!data.notifyEnabled || !data.notifyUseSignal",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
@@ -578,17 +578,17 @@
 					"lg": 12,
 					"xl": 12
 				},
-				"notifyInstanceMatrix": {
-					"type": "text",
-					"label": "notifyInstanceMatrixLabel",
-					"placeholder": "matrix-org.0",
+				"notifyUseMatrix": {
+					"type": "checkbox",
+					"label": "notifyUseMatrixLabel",
+					"default": false,
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
 					"sm": 12,
-					"md": 6,
-					"lg": 4,
-					"xl": 4
+					"md": 12,
+					"lg": 12,
+					"xl": 12
 				},
 				"_notifySynochatHeader": {
 					"type": "staticText",
@@ -605,22 +605,22 @@
 					"lg": 12,
 					"xl": 12
 				},
-				"notifyInstanceSynochat": {
-					"type": "text",
-					"label": "notifyInstanceSynochatLabel",
-					"placeholder": "synochat.0",
+				"notifyUseSynochat": {
+					"type": "checkbox",
+					"label": "notifyUseSynochatLabel",
+					"default": false,
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,
 					"xs": 12,
 					"sm": 12,
-					"md": 6,
-					"lg": 4,
-					"xl": 4
+					"md": 12,
+					"lg": 12,
+					"xl": 12
 				},
 				"notifyChannelSynochat": {
 					"type": "text",
 					"label": "notifyChannelSynochatLabel",
-					"hidden": "!data.notifyEnabled",
+					"hidden": "!data.notifyEnabled || !data.notifyUseSynochat",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
