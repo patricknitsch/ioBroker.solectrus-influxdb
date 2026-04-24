@@ -496,7 +496,7 @@ Der Adapter kann bei wichtigen Ereignissen Meldungen über konfigurierbare Benac
 
 ### Aktivierung
 
-Im Tab **Notifications** der Adapter-Einstellungen:
+Im Tab **Benachrichtigungen** der Adapter-Einstellungen:
 
 1. Checkbox **Enable notifications** aktivieren
 2. Gewünschte Ereignisse auswählen

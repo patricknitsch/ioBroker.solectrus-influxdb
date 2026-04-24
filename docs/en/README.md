@@ -508,6 +508,7 @@ In the **Notifications** tab of the adapter settings:
 |-------|-------------|
 | **InfluxDB connection failure / restore** | Sent on the first connection failure and again when the connection is restored |
 | **Sensor alive timeout** | Sent when a sensor does not deliver an update within the configured timeout (only for non-zero values) |
+| **Max value exceeded** (`notifyOnMaxValueExceeded`) | Sent when a sensor value exceeds its configured maximum; throttled to at most once per hour per sensor |
 
 ### Supported Providers
 
