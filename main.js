@@ -120,6 +120,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		if (!influxOk) {
 			const errMsg = 'InfluxDB connection failed – check URL, Token, Org and Bucket';
 			this.setState('info.lastError', errMsg, true);
+			this.influxWasDisconnected = true;
 			if (this.config.notifyOnConnectionFail) {
 				sendNotification(this, errMsg).catch(() => {});
 			}
