@@ -351,6 +351,18 @@
 					"lg": 12,
 					"xl": 12
 				},
+				"notifyOnMaxValueExceeded": {
+					"type": "checkbox",
+					"label": "notifyOnMaxValueExceededLabel",
+					"default": true,
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
 				"_notifyTelegramHeader": {
 					"type": "staticText",
 					"text": "─── Telegram ───",

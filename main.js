@@ -59,6 +59,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.aliveWarnedAt = new Map();
 		// Set of sensor state ids currently in zero-value fallback mode (60 min retry)
 		this.aliveZeroAt = new Map();
+		// Maps sensor state id → timestamp (ms) when last max-value-exceeded notification was sent
+		this.maxValueWarnedAt = new Map();
 
 		/* ---------- Forecast ---------- */
 		// Maps sourceState → array of forecast config entries that use it

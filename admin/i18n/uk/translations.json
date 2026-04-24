@@ -285,5 +285,6 @@
   "notifyUseEmailLabel": "Використовувати Email",
   "notifyUseSignalLabel": "Використовувати Signal",
   "notifyUseMatrixLabel": "Використовувати Matrix",
-  "notifyUseSynochatLabel": "Використовувати Synology Chat"
+  "notifyUseSynochatLabel": "Використовувати Synology Chat",
+  "notifyOnMaxValueExceededLabel": "Сповіщати при перевищенні максимального значення датчика"
 }

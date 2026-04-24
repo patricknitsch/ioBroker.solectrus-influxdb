@@ -284,5 +284,6 @@
   "notifyUseEmailLabel": "Usa Email",
   "notifyUseSignalLabel": "Usa Signal",
   "notifyUseMatrixLabel": "Usa Matrix",
-  "notifyUseSynochatLabel": "Usa Synology Chat"
+  "notifyUseSynochatLabel": "Usa Synology Chat",
+  "notifyOnMaxValueExceededLabel": "Notifica quando il valore del sensore supera il massimo"
 }

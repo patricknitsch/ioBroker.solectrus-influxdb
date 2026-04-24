@@ -195,6 +195,7 @@
     "notifyEnabled": false,
     "notifyOnConnectionFail": true,
     "notifyOnSensorTimeout": true,
+    "notifyOnMaxValueExceeded": true,
     "notifyUseTelegram": false,
     "notifyUserTelegram": "",
     "notifyUsePushover": false,

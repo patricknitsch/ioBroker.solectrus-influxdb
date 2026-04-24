@@ -285,5 +285,6 @@
   "notifyUseEmailLabel": "Utiliser l'e-mail",
   "notifyUseSignalLabel": "Utiliser Signal",
   "notifyUseMatrixLabel": "Utiliser Matrix",
-  "notifyUseSynochatLabel": "Utiliser Synology Chat"
+  "notifyUseSynochatLabel": "Utiliser Synology Chat",
+  "notifyOnMaxValueExceededLabel": "Notifier lorsque la valeur du capteur dépasse le maximum"
 }

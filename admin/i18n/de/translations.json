@@ -285,5 +285,6 @@
   "notifyUseEmailLabel": "E-Mail verwenden",
   "notifyUseSignalLabel": "Signal verwenden",
   "notifyUseMatrixLabel": "Matrix verwenden",
-  "notifyUseSynochatLabel": "Synology Chat verwenden"
+  "notifyUseSynochatLabel": "Synology Chat verwenden",
+  "notifyOnMaxValueExceededLabel": "Benachrichtigung bei Überschreitung des Maximalwerts"
 }
