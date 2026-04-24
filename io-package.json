@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.7.1",
+    "version": "1.8.0",
     "news": {
+      "1.8.0": {
+        "en": "Update Dependencies\nAdd Notification function, to send warnings and errors to selectable providers\nUpdate Documentation",
+        "de": "Anpassungsabhängigkeiten\nBenachrichtigungsfunktion hinzufügen, Warnungen und Fehler an wählbare Anbieter senden\nDokumentation aktualisieren",
+        "ru": "Обновление зависимостей\nДобавьте функцию уведомлений, чтобы отправлять предупреждения и ошибки выбранным поставщикам\nОбновление документации",
+        "pt": "Atualizar dependências\nAdicionar função de notificação, para enviar avisos e erros para provedores selecionáveis\nAtualizar documentação",
+        "nl": "Afhankelijkheden bijwerken\nNotificatiefunctie toevoegen om waarschuwingen en fouten naar selecteerbare providers te sturen\nDocumentatie bijwerken",
+        "fr": "Mettre à jour les dépendances\nAjouter la fonction Notification, pour envoyer des avertissements et des erreurs aux fournisseurs sélectionnables\nMettre à jour la documentation",
+        "it": "Dipendenze di aggiornamento\nAggiungi la funzione di notifica, per inviare avvisi ed errori ai provider selezionabili\nDocumentazione di aggiornamento",
+        "es": "Dependencias de actualización\nAgregar función de notificación, para enviar advertencias y errores a proveedores seleccionables\nDocumentación actualizada",
+        "pl": "Aktualizuj zależności\nDodaj funkcję powiadamiania, aby wysłać ostrzeżenia i błędy do wybranych dostawców\nAktualizacja dokumentacji",
+        "uk": "Оновлення залежності\nДодати функцію сповіщення, щоб надсилати попередження та помилки для вибору постачальників\nДокументація",
+        "zh-cn": "更新依赖关系\n添加通知功能, 向可选择的提供者发送警告和错误\n更新文档"
+      },
       "1.7.1": {
         "en": "Default for max Values with 0W deactivated\nFix non-expert information when monitoring is disabled",
         "de": "Standard für max Werte mit 0W deaktiviert\nNicht-Experten-Informationen reparieren, wenn die Überwachung deaktiviert ist",
@@ -80,19 +93,6 @@
         "pl": "Napraw obsługę strun w silniku formuły\nPopraw wzór Silnik przy użyciu wzorów stanu\nNowa strona dla inteligentnego przeglądu czujników\nAktualizuj Readme i Doc",
         "uk": "Фіксація String Обробка в двигуні Формула\nФіксована формула Двигун при використанні державних формул\nНова сторінка для Smart Sensor Огляд\nОновлення Readme і Doc",
         "zh-cn": "在公式引擎中修正字符串处理\n修正公式 使用状态公式时的引擎\n智能传感器概览的新页面\n更新 Readme 和 Doc"
-      },
-      "1.3.1": {
-        "en": "Fix DS Tick time budget",
-        "de": "Fix DS Tick Zeitbudget",
-        "ru": "Исправить DS Бюджет времени Tick",
-        "pt": "Corrigir DS Tick time budget",
-        "nl": "DS herstellen Tick time budget",
-        "fr": "Corriger DS Cochez le budget temps",
-        "it": "Risolvere DS Bilancio di tempo di punta",
-        "es": "Corrección DS Presupuesto del tiempo de marea",
-        "pl": "Napraw DS Budżet czasu przyklejenia",
-        "uk": "Фіксація DS Часовий бюджет",
-        "zh-cn": "修补 DS 时间预算"
       }
     },
     "titleLang": {

@@ -62,8 +62,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.8.0 (2026-04-24)
 
 * (copilot) Update Dependencies
 * (copilot) Add Notification function, to send warnings and errors to selectable providers
