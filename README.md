@@ -66,7 +66,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 ### **WORK IN PROGRESS**
 
 * (copilot) Update Dependencies
-* (copilot) Add Notification function, to send warnings and errors to selectable provider
+* (copilot) Add Notification function, to send warnings and errors to selectable providers
 * (copilot) Update Documentation
 
 ### 1.7.1 (2026-04-11)
