@@ -15,6 +15,7 @@
 11. [Monitoring & Buffer](#11-monitoring--buffer)
 12. [Using Computed Values as Sensor Sources](#12-using-computed-values-as-sensor-sources)
 13. [Debugging](#13-debugging)
+14. [Notifications](#14-notifications)
 
 ---
 
@@ -486,3 +487,45 @@ Set the adapter log level to **Debug** for detailed output including:
 - Formula evaluation details
 - State machine rule matching
 - Buffer operations
+
+---
+
+## 14. Notifications
+
+The adapter can send messages via configurable notification providers when important events occur.
+
+### Activation
+
+In the **Notifications** tab of the adapter settings:
+
+1. Enable the **Enable notifications** checkbox
+2. Select the desired trigger events
+3. Configure at least one notification provider
+
+### Triggers
+
+| Event | Description |
+|-------|-------------|
+| **InfluxDB connection failure / restore** | Sent on the first connection failure and again when the connection is restored |
+| **Sensor alive timeout** | Sent when a sensor does not deliver an update within the configured timeout (only for non-zero values) |
+| **Max value exceeded** (`notifyOnMaxValueExceeded`) | Sent when a sensor value exceeds its configured maximum; throttled to at most once per hour per sensor |
+
+### Supported Providers
+
+| Provider | Requirement |
+|----------|-------------|
+| **Telegram** | ioBroker Telegram adapter installed and configured |
+| **Pushover** | ioBroker Pushover adapter installed and configured |
+| **WhatsApp** | ioBroker whatsapp-cmb adapter installed and configured |
+| **Email** | ioBroker Email adapter installed and configured |
+| **Signal** | ioBroker signal-cmb adapter installed and configured |
+| **Matrix** | ioBroker matrix-org adapter installed and configured |
+| **Synology Chat** | ioBroker synochat adapter installed and configured |
+
+Multiple providers can be configured simultaneously. Before sending, the adapter checks whether the respective adapter instance is active and logs a warning if the instance is not running.
+
+### Notes
+
+- Notification messages are localized via `getNotificationMessage()` using the configured `systemLanguage`.
+- For InfluxDB connection failures, a notification is sent on the **first** failure and can repeat after `notifyRepeatMinutes` while the connection remains down.
+- Sensor timeout notifications are sent when the configured alive-timeout condition is met (Expert Mode) and are throttled by `notifyRepeatMinutes`.

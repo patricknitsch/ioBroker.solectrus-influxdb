@@ -15,6 +15,7 @@
 11. [Monitoring & Buffer](#11-monitoring--buffer)
 12. [Berechnete Werte als Sensor-Quellen verwenden](#12-berechnete-werte-als-sensor-quellen-verwenden)
 13. [Debugging](#13-debugging)
+14. [Benachrichtigungen](#14-benachrichtigungen)
 
 ---
 
@@ -486,3 +487,45 @@ Loglevel des Adapters auf **Debug** setzen für detaillierte Ausgaben zu:
 - Formelauswertungs-Details
 - State Machine Regelabgleich
 - Buffer-Operationen
+
+---
+
+## 14. Benachrichtigungen
+
+Der Adapter kann bei wichtigen Ereignissen Meldungen über konfigurierbare Benachrichtigungsanbieter senden.
+
+### Aktivierung
+
+Im Tab **Benachrichtigungen** der Adapter-Einstellungen:
+
+1. Checkbox **Benachrichtigungen aktivieren** aktivieren (bzw. die entsprechend lokalisierte Beschriftung, abhängig von der Admin-Sprache)
+2. Gewünschte Ereignisse auswählen
+3. Mindestens einen Benachrichtigungsanbieter konfigurieren
+
+### Auslöser
+
+| Ereignis | Beschreibung |
+|----------|--------------|
+| **InfluxDB connection failure / restore** | Wird beim ersten Verbindungsfehlschlag gesendet sowie bei Wiederherstellung der Verbindung |
+| **Sensor alive timeout** | Wird gesendet, wenn ein Sensor innerhalb des konfigurierten Timeouts keine Aktualisierung liefert (nur bei Nicht-Null-Werten) |
+| **Max value exceeded** (`notifyOnMaxValueExceeded`) | Wird gesendet, wenn ein Sensor den konfigurierten Maximalwert überschreitet; gedrosselt auf max. 1×/Stunde je Sensor |
+
+### Unterstützte Anbieter
+
+| Anbieter | Voraussetzung |
+|---------|---------------|
+| **Telegram** | ioBroker Telegram-Adapter installiert und konfiguriert |
+| **Pushover** | ioBroker Pushover-Adapter installiert und konfiguriert |
+| **WhatsApp** | ioBroker whatsapp-cmb-Adapter installiert und konfiguriert |
+| **Email** | ioBroker Email-Adapter installiert und konfiguriert |
+| **Signal** | ioBroker signal-cmb-Adapter installiert und konfiguriert |
+| **Matrix** | ioBroker matrix-org-Adapter installiert und konfiguriert |
+| **Synology Chat** | ioBroker synochat-Adapter installiert und konfiguriert |
+
+Mehrere Anbieter können gleichzeitig konfiguriert werden. Der Adapter prüft vor dem Senden, ob die jeweilige Adapterinstanz aktiv ist, und gibt bei inaktiver Instanz eine Warnung ins Log.
+
+### Hinweise
+
+- Die Benachrichtigungen werden über `getNotificationMessage()` anhand der `systemLanguage` lokalisiert gesendet.
+- Bei InfluxDB-Verbindungsfehlern wird eine Benachrichtigung gesendet; bei anhaltenden Problemen kann sie nach `notifyRepeatMinutes` erneut gesendet werden.
+- Sensor-Timeout-Benachrichtigungen setzen das konfigurierte Alive-Timeout (Expertenmodus) voraus und sind zusätzlich über `notifyRepeatMinutes` gedrosselt.

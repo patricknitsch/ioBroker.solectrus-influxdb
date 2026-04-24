@@ -62,6 +62,13 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+
+* (copilot) Update Dependencies
+* (copilot) Add Notification function, to send warnings and errors to selectable providers
+* (copilot) Update Documentation
+
 ### 1.7.1 (2026-04-11)
 
 * (patricknitsch) Default for max Values with 0W deactivated
