@@ -188,22 +188,62 @@
 
 			// Auto-detect unit from ioBroker state object's common.unit.
 			// Calls the socket's getObject, updates the sensor's unit field with the detected value.
-			const autoDetectUnit = (stateId, capturedSensorIndex) => {
-				if (!stateId || !socket || typeof socket.getObject !== 'function') return;
+			const getObjectCompat = stateId => {
+				if (!stateId || !socket) {
+					return null;
+				}
 				try {
-					var p = socket.getObject(stateId);
-					if (p && typeof p.then === 'function') {
-						p.then(function (obj) {
-							var detectedUnit = obj && obj.common && obj.common.unit != null ? String(obj.common.unit) : '';
-							if (capturedSensorIndex === undefined || selectedIndex === capturedSensorIndex) {
-								setDraftField('unit', detectedUnit);
-								updateSelected('unit', detectedUnit);
-							}
-						}).catch(function () { /* silently ignore */ });
+					if (typeof socket.getObject === 'function') {
+						var p = socket.getObject(stateId);
+						if (p && typeof p.then === 'function') {
+							return p;
+						}
 					}
-				} catch (_) { /* ignore */ }
+				} catch (_) {
+					// ignore and try callback-based fallbacks
+				}
+
+				return new Promise(function (resolve, reject) {
+					try {
+						if (typeof socket.getObject === 'function') {
+							socket.getObject(stateId, function (err, obj) {
+								if (err) {
+									reject(err);
+								} else {
+									resolve(obj);
+								}
+							});
+							return;
+						}
+						if (typeof socket.emit === 'function') {
+							socket.emit('getObject', stateId, function (err, obj) {
+								if (err) {
+									reject(err);
+								} else {
+									resolve(obj);
+								}
+							});
+							return;
+						}
+					} catch (e) {
+						reject(e);
+						return;
+					}
+					resolve(null);
+				});
 			};
 
+			const autoDetectUnit = (stateId, capturedSensorIndex) => {
+				var p = getObjectCompat(stateId);
+				if (!p || typeof p.then !== 'function') return;
+				p.then(function (obj) {
+					var detectedUnit = obj && obj.common && obj.common.unit != null ? String(obj.common.unit) : '';
+					if (capturedSensorIndex === undefined || selectedIndex === capturedSensorIndex) {
+						setDraftField('unit', detectedUnit);
+						updateSelected('unit', detectedUnit);
+					}
+				}).catch(function () { /* silently ignore */ });
+			};
 			const t = text => {
 				try {
 					if (props && typeof props.t === 'function') {
