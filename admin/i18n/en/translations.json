@@ -258,7 +258,6 @@
   "e.g. 15000": "e.g. 15000",
   "e.g. 0": "e.g. 0",
   "maxValueHint": "Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. Default: 0 (disabled).",
-  "Max Value in W": "Max Value in W",
   "aliveTimeoutMinutesLabel": "Alive timeout in min (min, 0 = disabled)",
   "aliveTimeoutHint": "If the last timestamp of the source state exceeds the timeout, a warning is logged. Note that the timeout must be greater than the update interval of the source adapters. Default: 60 min.",
   "e.g. 60": "e.g. 60",
@@ -287,5 +286,6 @@
   "notifyUseMatrixLabel": "Use Matrix",
   "notifyUseSynochatLabel": "Use Synology Chat",
   "notifyOnMaxValueExceededLabel": "Notify when sensor value exceeds maximum",
-  "notifyRepeatMinutesLabel": "Repeat notification every (min)"
+  "notifyRepeatMinutesLabel": "Repeat notification every (min)",
+  "Max Value": "Max Value"
 }

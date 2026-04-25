@@ -256,7 +256,6 @@
   "iframeCertHint": "La pagina non si carica? SOLECTRUS blocca l'incorporamento nei iFrame per impostazione predefinita – aggiungi FRAME_ANCESTORS=http://tuo-host-iobroker:8081 al file .env di SOLECTRUS e riavvia il servizio.",
   "e.g. 15000": "es. 15000",
   "maxValueHint": "Limite di plausibilità per sensore. Se superato, viene inviato l'ultimo valore valido e viene registrato un avviso. Predefinito: 0 (disabilitato).",
-  "Max Value in W": "Valore massimo in W",
   "aliveTimeoutMinutesLabel": "Timeout Alive in min (min, 0 = disabilitato)",
   "aliveTimeoutHint": "Se l'ultimo timestamp dello stato sorgente supera il timeout, viene registrato un avviso. Tieni presente che il timeout deve essere maggiore dell'intervallo di aggiornamento degli adattatori sorgente. Predefinito: 60 min.",
   "e.g. 60": "es. 60",
@@ -286,5 +285,6 @@
   "notifyUseMatrixLabel": "Usa Matrix",
   "notifyUseSynochatLabel": "Usa Synology Chat",
   "notifyOnMaxValueExceededLabel": "Notifica quando il valore del sensore supera il massimo",
-  "notifyRepeatMinutesLabel": "Ripeti notifica ogni (min)"
+  "notifyRepeatMinutesLabel": "Ripeti notifica ogni (min)",
+  "Max Value": "Valore massimo"
 }

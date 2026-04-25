@@ -257,7 +257,6 @@
   "iframeCertHint": "Strona nie ładuje się? SOLECTRUS domyślnie blokuje osadzanie w iFrame – dodaj FRAME_ANCESTORS=http://twój-host-iobroker:8081 do pliku .env SOLECTRUS i uruchom ponownie usługę.",
   "e.g. 15000": "np. 15000",
   "maxValueHint": "Limit wiarygodności dla czujnika. Jeśli przekroczony, wysyłana jest ostatnia prawidłowa wartość i rejestrowane jest ostrzeżenie. Domyślnie: 0 (wyłączone).",
-  "Max Value in W": "Wartość maksymalna w W",
   "aliveTimeoutMinutesLabel": "Limit czasu Alive in min (min, 0 = wyłączone)",
   "aliveTimeoutHint": "Jeśli ostatni znacznik czasu stanu źródłowego przekroczy limit czasu, zostanie zalogowane ostrzeżenie. Należy pamiętać, że limit czasu musi być większy niż interwał aktualizacji adapterów źródłowych. Domyślnie: 60 min.",
   "e.g. 60": "np. 60",
@@ -287,5 +286,6 @@
   "notifyUseMatrixLabel": "Użyj Matrix",
   "notifyUseSynochatLabel": "Użyj Synology Chat",
   "notifyOnMaxValueExceededLabel": "Powiadom, gdy wartość czujnika przekroczy maksimum",
-  "notifyRepeatMinutesLabel": "Powtarzaj powiadomienie co (min)"
+  "notifyRepeatMinutesLabel": "Powtarzaj powiadomienie co (min)",
+  "Max Value": "Wartość maksymalna"
 }

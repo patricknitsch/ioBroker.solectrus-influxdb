@@ -793,7 +793,7 @@
 											React.createElement(
 												'div',
 												null,
-												React.createElement('label', { style: labelStyle }, t('Max Value in W')),
+												React.createElement('label', { style: labelStyle }, t('Max Value')),
 												React.createElement('input', {
 													style: inputStyle,
 													type: 'number',
@@ -811,6 +811,15 @@
 														var parsed = Number(raw);
 														updateSelected('maxValue', raw === '' || !Number.isFinite(parsed) ? undefined : parsed);
 													},
+												}),
+												React.createElement('label', { style: labelStyle }, t('Unit')),
+												React.createElement('input', {
+													style: Object.assign({}, inputStyle, { maxWidth: 120 }),
+													type: 'text',
+													value: editSensor.unit || '',
+													placeholder: 'W',
+													onChange: e => setDraftField('unit', e.target.value),
+													onBlur: e => updateSelected('unit', e.target.value),
 												}),
 												React.createElement(
 													'div',
@@ -978,7 +987,8 @@
 														var fl = extractLines(t('nonExpertMonitoringInfoFull'));
 														var mp = splitTpl(fl.status, '%MAXWSTR%');
 														var tp2 = splitTpl(mp[1], '%TIMEOUTSTR%');
-														monitoringStatusChildren = [mp[0], React.createElement('strong', { key: 'mv' }, maxW + ' W'), tp2[0], React.createElement('strong', { key: 'tv' }, timeoutStr), tp2[1]];
+														var unitStr = editSensor.unit ? (' ' + editSensor.unit) : '';
+														monitoringStatusChildren = [mp[0], React.createElement('strong', { key: 'mv' }, maxW + unitStr), tp2[0], React.createElement('strong', { key: 'tv' }, timeoutStr), tp2[1]];
 														monitoringConfigHint = fl.hint;
 														monitoringActive = true;
 													}
