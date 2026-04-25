@@ -743,10 +743,10 @@
                 if (maxVal > 0) {
                     valEl.className = valCls + ' sensor-val-row';
                     var curSpan = document.createElement('span');
-                    curSpan.textContent = valText + ' W';
+                    curSpan.textContent = valText + ' ' + (sensor.unit || 'W');
                     var maxSpan = document.createElement('span');
                     maxSpan.className = 'sensor-type-badge';
-                    maxSpan.textContent = maxVal + ' W';
+                    maxSpan.textContent = maxVal + ' ' + (sensor.unit || 'W');
                     var numVal = parseFloat(state.val);
                     if (!isNaN(numVal) && numVal > maxVal) {
                         curSpan.style.color = '#e53935';
@@ -755,7 +755,7 @@
                     valEl.appendChild(curSpan);
                     valEl.appendChild(maxSpan);
                 } else {
-                    valEl.textContent = valText + ' W';
+                    valEl.textContent = valText + ' ' + (sensor.unit || 'W');
                 }
             } else {
                 valEl.textContent = valText;

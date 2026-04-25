@@ -186,6 +186,74 @@
 			const socket = (props && props.socket) || globalThis.socket || globalThis._socket || null;
 			const theme = (props && props.theme) || null;
 
+			// Compatibility wrapper: returns a Promise for socket.getObject(), supporting both
+			// promise-based (Admin v7+) and callback-based (older Admin) socket APIs.
+			const getObjectCompat = stateId => {
+				if (!stateId || !socket) {
+					return null;
+				}
+				try {
+					if (typeof socket.getObject === 'function') {
+						var p = socket.getObject(stateId);
+						if (p && typeof p.then === 'function') {
+							return p;
+						}
+					}
+				} catch (_) {
+					// ignore and try callback-based fallbacks
+				}
+
+				return new Promise(function (resolve, reject) {
+					try {
+						if (typeof socket.getObject === 'function') {
+							socket.getObject(stateId, function (err, obj) {
+								if (err) {
+									reject(err);
+								} else {
+									resolve(obj);
+								}
+							});
+							return;
+						}
+						if (typeof socket.emit === 'function') {
+							socket.emit('getObject', stateId, function (err, obj) {
+								if (err) {
+									reject(err);
+								} else {
+									resolve(obj);
+								}
+							});
+							return;
+						}
+					} catch (e) {
+						reject(e);
+						return;
+					}
+					resolve(null);
+				});
+			};
+
+			// Auto-detect unit from ioBroker state object's common.unit.
+			// Uses refs (selectedIndexRef, sensorsRef) so the async callback always reads the
+			// latest index/sensors rather than a stale closure snapshot.
+			const autoDetectUnit = (stateId, capturedSensorIndex) => {
+				var p = getObjectCompat(stateId);
+				if (!p || typeof p.then !== 'function') return;
+				p.then(function (obj) {
+					var detectedUnit = obj && obj.common && obj.common.unit != null ? String(obj.common.unit) : '';
+					if (capturedSensorIndex === undefined || selectedIndexRef.current === capturedSensorIndex) {
+						var currentIndex = selectedIndexRef.current;
+						var currentSensors = sensorsRef.current;
+						setDraftField('unit', detectedUnit);
+						var nextSensors = currentSensors.map(function (s, i) {
+							if (i !== currentIndex) return s;
+							return Object.assign({}, s || {}, { unit: detectedUnit });
+						});
+						updateSensors(nextSensors);
+					}
+				}).catch(function () { /* silently ignore */ });
+			};
+
 			const t = text => {
 				try {
 					if (props && typeof props.t === 'function') {
@@ -223,6 +291,13 @@
 
 			const [selectedIndex, setSelectedIndex] = React.useState(0);
 			const [showSelectStateId, setShowSelectStateId] = React.useState(false);
+
+			// Refs that always hold the latest sensors/selectedIndex so async callbacks
+			// (e.g. autoDetectUnit) never close over a stale snapshot.
+			const selectedIndexRef = React.useRef(selectedIndex);
+			selectedIndexRef.current = selectedIndex;
+			const sensorsRef = React.useRef(sensors);
+			sensorsRef.current = sensors;
 
 			const cloneForDraft = item => {
 				if (!item || typeof item !== 'object') return null;
@@ -744,7 +819,11 @@
 										type: 'text',
 										value: editSensor.sourceState || '',
 										onChange: e => setDraftField('sourceState', e.target.value),
-										onBlur: e => updateSelected('sourceState', e.target.value),
+										onBlur: e => {
+											var stateId = e.target.value;
+											updateSelected('sourceState', stateId);
+											autoDetectUnit(stateId, selectedIndex);
+										},
 										placeholder: t('e.g. some.adapter.0.channel.state'),
 									}),
 									React.createElement(
@@ -789,11 +868,20 @@
 										? React.createElement(
 											'div',
 											{ style: rowStyle },
-											// Left column: max value
+											// Left column: unit + max value
 											React.createElement(
 												'div',
 												null,
-												React.createElement('label', { style: labelStyle }, t('Max Value in W')),
+												React.createElement('label', { style: labelStyle }, t('Unit')),
+												React.createElement('input', {
+													style: Object.assign({}, inputStyle, { maxWidth: 120 }),
+													type: 'text',
+													value: editSensor.unit || '',
+													placeholder: 'W',
+													onChange: e => setDraftField('unit', e.target.value),
+													onBlur: e => updateSelected('unit', e.target.value),
+												}),
+												React.createElement('label', { style: labelStyle }, t('Max Value')),
 												React.createElement('input', {
 													style: inputStyle,
 													type: 'number',
@@ -978,7 +1066,8 @@
 														var fl = extractLines(t('nonExpertMonitoringInfoFull'));
 														var mp = splitTpl(fl.status, '%MAXWSTR%');
 														var tp2 = splitTpl(mp[1], '%TIMEOUTSTR%');
-														monitoringStatusChildren = [mp[0], React.createElement('strong', { key: 'mv' }, maxW + ' W'), tp2[0], React.createElement('strong', { key: 'tv' }, timeoutStr), tp2[1]];
+														var unitStr = ' ' + (editSensor.unit || 'W');
+														monitoringStatusChildren = [mp[0], React.createElement('strong', { key: 'mv' }, maxW + unitStr), tp2[0], React.createElement('strong', { key: 'tv' }, timeoutStr), tp2[1]];
 														monitoringConfigHint = fl.hint;
 														monitoringActive = true;
 													}
@@ -1294,6 +1383,7 @@
 												if (selectedStr) {
 													setDraftField('sourceState', selectedStr);
 													updateSelected('sourceState', selectedStr);
+													autoDetectUnit(selectedStr, selectedIndex);
 												}
 											},
 										})

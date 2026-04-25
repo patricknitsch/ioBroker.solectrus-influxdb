@@ -258,7 +258,6 @@
   "e.g. 15000": "z.B. 15000",
   "e.g. 0": "z.B. 0",
   "maxValueHint": "Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. Standard: 0 (deaktiviert).",
-  "Max Value in W": "Maximalwert in W",
   "aliveTimeoutMinutesLabel": "Alive-Timeout in min (min, 0 = deaktiviert)",
   "aliveTimeoutHint": "Überschreitet der letzte Zeitstempel des Quellstatus den Alive-Timeout, wird eine Warnung ausgegeben. Bitte beachte, dass der Timeout größer als das Aktualisierungsintervall der Quelladapter sein muss. Standard: 60 Min.",
   "e.g. 60": "z.B. 60",
@@ -287,5 +286,6 @@
   "notifyUseMatrixLabel": "Matrix verwenden",
   "notifyUseSynochatLabel": "Synology Chat verwenden",
   "notifyOnMaxValueExceededLabel": "Benachrichtigung bei Überschreitung des Maximalwerts",
-  "notifyRepeatMinutesLabel": "Benachrichtigung wiederholen alle (min)"
+  "notifyRepeatMinutesLabel": "Benachrichtigung wiederholen alle (min)",
+  "Max Value": "Maximalwert"
 }

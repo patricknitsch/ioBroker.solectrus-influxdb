@@ -257,7 +257,6 @@
   "iframeCertHint": "页面无法加载？SOLECTRUS默认阻止iFrame嵌入 – 在SOLECTRUS的.env文件中添加 FRAME_ANCESTORS=http://您的iobroker主机:8081 并重启服务。",
   "e.g. 15000": "例如 15000",
   "maxValueHint": "每个传感器的合理性限制。超出时发送最后一个有效值并记录警告。默认值：0（已禁用）。",
-  "Max Value in W": "最大值（W）",
   "aliveTimeoutMinutesLabel": "Alive 超时（分钟，0 = 禁用）",
   "aliveTimeoutHint": "如果源状态的最后时间戳超过超时时间，将记录警告。请注意，超时时间必须大于源适配器的更新间隔。默认值：60 分钟。",
   "e.g. 60": "例如 60",
@@ -287,5 +286,6 @@
   "notifyUseMatrixLabel": "使用 Matrix",
   "notifyUseSynochatLabel": "使用 Synology Chat",
   "notifyOnMaxValueExceededLabel": "传感器值超过最大值时通知",
-  "notifyRepeatMinutesLabel": "通知重复间隔（分钟）"
+  "notifyRepeatMinutesLabel": "通知重复间隔（分钟）",
+  "Max Value": "最大值"
 }

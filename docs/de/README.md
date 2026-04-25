@@ -50,7 +50,7 @@ Standardmäßig läuft der Adapter im **Standardmodus**. Die Sensorliste zeigt a
 
 - **Editierbar**: Source State (ioBroker-Datenpunkt), Aktiviert-Checkbox
 - **Nur lesen**: Sensorname, Datentyp, Measurement, Field, JSON-Vorlage
-- **Ausgeblendet**: Hinzufügen-, Löschen-, Duplizieren-Buttons, Maximalwert, Alive-Timeout
+- **Ausgeblendet**: Hinzufügen-, Löschen-, Duplizieren-Buttons, Einheit, Maximalwert, Alive-Timeout
 
 So wird sichergestellt, dass Anfänger einfach Sensoren aktivieren und Quell-States zuweisen können, ohne versehentlich das InfluxDB-Mapping zu ändern. Im Standardmodus gelten folgende Standardwerte: **Werteüberwachung deaktiviert** (Maximalwert = 0) und **60 Minuten** Alive-Timeout. Die genaue Konfiguration ist im Expertenmodus möglich.
 
@@ -71,7 +71,8 @@ Auf **Add** klicken (Expertenmodus) oder einen bestehenden Sensor auswählen und
 | Enabled | Sensor aktivieren/deaktivieren | Standard + Experte |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. | Standard + Experte |
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) | Experte |
-| Maximalwert in W | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. **0 = deaktiviert** (Standard). | Experte |
+| Einheit | Physikalische Einheit des Sensorwerts (z.B. `W`, `°C`, `%`, `A`). Wird automatisch aus `common.unit` des ioBroker-Objekts übernommen, wenn ein Quell-Datenpunkt ausgewählt wird. Standardmäßig `W`, falls keine Einheit konfiguriert ist. Im Expertenmodus manuell überschreibbar. | Experte |
+| Maximalwert | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. **0 = deaktiviert** (Standard). | Experte |
 | Alive-Timeout (min, 0 = deaktiviert) | Wenn innerhalb dieser Zeitspanne kein neuer Wert empfangen wird: bei einem **Wert ungleich 0** wird eine Warnung ins Log geschrieben und der Zeitstempel im Übersicht-Tab **orange** markiert; bei einem **Wert von 0** wird stattdessen eine Info-Meldung ausgegeben und der nächste Prüfzyklus erst nach **60 Minuten** durchgeführt. **0 = deaktiviert**. Standard: `60`. Muss größer sein als das Aktualisierungsintervall des Quelladapters. | Experte |
 | Datatype | `int`, `float`, `bool`, `string` oder `json` (JSON-Array) | Experte |
 | Influx Measurement | InfluxDB Measurement-Name (z.B. `inverter`) | Experte |
@@ -123,9 +124,13 @@ Ungültige Werte (`NaN` bei int/float, `null`/`undefined` bei Strings) werden au
 
 SOLECTRUS akzeptiert keine negativen Werte. Liefert ein Sensor nach dem Adapterstart einen negativen Wert, wird **einmalig** eine Warnung im Log ausgegeben. Die Werte werden trotzdem an InfluxDB gesendet, können dort aber zu fehlerhaften Auswertungen führen. Abhilfe: Quell-Datenpunkte prüfen oder die Data-SOLECTRUS Formel-Engine mit der Option **Negative Werte auf 0 begrenzen** (Clamp negative to 0) verwenden.
 
+### Einheit – automatische Erkennung
+
+Wenn ein Quell-Datenpunkt ausgewählt wird (über den **Select**-Dialog oder per Texteingabe), liest die Admin-UI beim Auswählen bzw. Verlassen des Source-State-Felds das `common.unit`-Attribut des ioBroker-Objekts aus und trägt es in das Feld **Einheit** ein. Ist keine Einheit am Datenpunkt hinterlegt, bleibt das Feld leer und in der Übersicht wird `W` als Standard angezeigt. Die Einheit kann im **Expertenmodus** jederzeit manuell geändert werden.
+
 ### Maximalwert-Validierung
 
-Jeder numerische Sensor (`int`, `float` oder Standardtyp) unterstützt ein **Maximalwert in W**-Feld (im Expertenmodus konfigurierbar). Wird dieser Wert überschritten:
+Jeder numerische Sensor (`int`, `float` oder Standardtyp) unterstützt ein **Maximalwert**-Feld (im Expertenmodus konfigurierbar). Wird dieser Wert überschritten:
 
 1. Es wird eine Warnung ins Log geschrieben: `Sensor "..." delivers implausible value (X > max Y). Using last valid value (Z) instead.`
 2. Stattdessen wird der **zuletzt gültige Wert** (der zuletzt gemessene Wert unterhalb des Limits) an InfluxDB gesendet.
@@ -133,7 +138,7 @@ Jeder numerische Sensor (`int`, `float` oder Standardtyp) unterstützt ein **Max
 
 Dadurch werden kurzzeitige Sensor-Ausreißer (z.B. kurze Burst-Lesungen von 99999 W) verhindert, die die Zeitreihendaten verfälschen würden.
 
-Der Standardwert ist **0 (deaktiviert)** – die Werteüberwachung ist für neue Sensoren standardmäßig ausgeschaltet. Im Expertenmodus kann für jeden Sensor ein individuelles Limit gesetzt werden (z.B. `15000` W oder `5000` W für einen Zweitwechselrichter). Ist der Maximalwert auf `0` gesetzt, wird die Werteüberwachung für diesen Sensor deaktiviert.
+Der Standardwert ist **0 (deaktiviert)** – die Werteüberwachung ist für neue Sensoren standardmäßig ausgeschaltet. Im Expertenmodus kann für jeden Sensor ein individuelles Limit gesetzt werden (z.B. `15000` oder `5000` für einen Zweitwechselrichter). Ist der Maximalwert auf `0` gesetzt, wird die Werteüberwachung für diesen Sensor deaktiviert.
 
 ### Field-Type-Konflikte
 
@@ -437,7 +442,7 @@ Die Warnung wird pro Sensor höchstens einmal pro Timeout-Periode wiederholt, da
 
 ### Werteüberwachung (Maximalwert)
 
-Die Werteüberwachung ist standardmäßig **deaktiviert** (Maximalwert = 0). Im **Expertenmodus** kann für jeden numerischen Sensor ein individueller Maximalwert in W gesetzt werden. Ist der Maximalwert > 0, wird er als Badge neben dem aktuellen Wert in der Sensorübersicht angezeigt. Bei deaktivierter Werteüberwachung (Maximalwert = 0) wird der Badge ausgeblendet.
+Die Werteüberwachung ist standardmäßig **deaktiviert** (Maximalwert = 0). Im **Expertenmodus** kann für jeden numerischen Sensor ein individueller Maximalwert gesetzt werden. Die Einheit wird neben dem Maximalwert-Badge in der Sensorübersicht angezeigt (Standard: `W`, falls keine Einheit konfiguriert). Ist der Maximalwert > 0, wird er als Badge neben dem aktuellen Wert in der Sensorübersicht angezeigt. Bei deaktivierter Werteüberwachung (Maximalwert = 0) wird der Badge ausgeblendet.
 
 ### Adapter-States
 

@@ -62,6 +62,11 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+
+* (copilot) Auto-detect sensor unit from ioBroker state `common.unit`; unit field configurable in Expert Mode; display defaults to `W` when no unit is set
+* (copilot) Update Documentation
+
 ### 1.8.0 (2026-04-24)
 
 * (copilot) Update Dependencies
