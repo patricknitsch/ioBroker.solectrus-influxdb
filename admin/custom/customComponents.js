@@ -186,8 +186,8 @@
 			const socket = (props && props.socket) || globalThis.socket || globalThis._socket || null;
 			const theme = (props && props.theme) || null;
 
-			// Auto-detect unit from ioBroker state object's common.unit.
-			// Calls the socket's getObject, updates the sensor's unit field with the detected value.
+			// Compatibility wrapper: returns a Promise for socket.getObject(), supporting both
+			// promise-based (Admin v7+) and callback-based (older Admin) socket APIs.
 			const getObjectCompat = stateId => {
 				if (!stateId || !socket) {
 					return null;
@@ -233,17 +233,27 @@
 				});
 			};
 
+			// Auto-detect unit from ioBroker state object's common.unit.
+			// Uses refs (selectedIndexRef, sensorsRef) so the async callback always reads the
+			// latest index/sensors rather than a stale closure snapshot.
 			const autoDetectUnit = (stateId, capturedSensorIndex) => {
 				var p = getObjectCompat(stateId);
 				if (!p || typeof p.then !== 'function') return;
 				p.then(function (obj) {
 					var detectedUnit = obj && obj.common && obj.common.unit != null ? String(obj.common.unit) : '';
-					if (capturedSensorIndex === undefined || selectedIndex === capturedSensorIndex) {
+					if (capturedSensorIndex === undefined || selectedIndexRef.current === capturedSensorIndex) {
+						var currentIndex = selectedIndexRef.current;
+						var currentSensors = sensorsRef.current;
 						setDraftField('unit', detectedUnit);
-						updateSelected('unit', detectedUnit);
+						var nextSensors = currentSensors.map(function (s, i) {
+							if (i !== currentIndex) return s;
+							return Object.assign({}, s || {}, { unit: detectedUnit });
+						});
+						updateSensors(nextSensors);
 					}
 				}).catch(function () { /* silently ignore */ });
 			};
+
 			const t = text => {
 				try {
 					if (props && typeof props.t === 'function') {
@@ -281,6 +291,13 @@
 
 			const [selectedIndex, setSelectedIndex] = React.useState(0);
 			const [showSelectStateId, setShowSelectStateId] = React.useState(false);
+
+			// Refs that always hold the latest sensors/selectedIndex so async callbacks
+			// (e.g. autoDetectUnit) never close over a stale snapshot.
+			const selectedIndexRef = React.useRef(selectedIndex);
+			selectedIndexRef.current = selectedIndex;
+			const sensorsRef = React.useRef(sensors);
+			sensorsRef.current = sensors;
 
 			const cloneForDraft = item => {
 				if (!item || typeof item !== 'object') return null;
