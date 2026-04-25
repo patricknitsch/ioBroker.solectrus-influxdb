@@ -126,7 +126,7 @@ SOLECTRUS does not accept negative values. If a sensor delivers a negative value
 
 ### Unit auto-detection
 
-When a source state is selected (via the **Select** dialog or by typing the state ID and leaving the field), the adapter automatically reads the `common.unit` property of the ioBroker object and fills in the **Unit** field. If the state has no unit defined, the field is left empty and `W` is used as the display default in the overview tab. The unit can always be changed manually in **Expert Mode**.
+When a source state is selected in the Admin UI (via the **Select** dialog or by typing the state ID and leaving the field), the Admin UI reads the `common.unit` property of the ioBroker object and fills in the **Unit** field. If the state has no unit defined, the field is left empty and `W` is used as the display default in the overview tab. The unit can always be changed manually in **Expert Mode**.
 
 ### Maximum value validation
 
