@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.8.0",
+    "version": "1.8.1",
     "news": {
+      "1.8.1": {
+        "en": "Auto-detect sensor unit from ioBroker state `common.unit`; unit field configurable in Expert Mode; display defaults to `W` when no unit is set\nUpdate Documentation",
+        "de": "Auto-Detekt-Sensoreinheit aus ioBroker state `common.unit`; Einheitsfeld konfigurierbar im Expertenmodus; Display-Standards zu `W`, wenn keine Einheit gesetzt ist\nDokumentation aktualisieren",
+        "ru": "Устройство автоматического обнаружения датчика из состояния ioBroker «common.unit»; поле блока, настраиваемое в режиме эксперта; отображение по умолчанию до «W», когда не установлено устройство\nОбновление документации",
+        "pt": "Detectar automaticamente a unidade de sensor do estado do ioBroker `common.unit'; campo unitário configurável no modo Expert; exibir padrão para `W` quando nenhuma unidade está definida\nAtualizar documentação",
+        "nl": "Auto-detect sensor unit van joBroker state common.unit\nDocumentatie bijwerken",
+        "fr": "Unité de détection automatique de l'état ioBroker `common.unit`; champ d'unité configurable en mode expert; affiche par défaut à `W` lorsqu'aucune unité n'est définie\nMettre à jour la documentation",
+        "it": "Unità sensore di rilevamento automatico da stato ioBroker `common.unit`; campo unità configurabile in modalità esperto; impostazione predefinita del display a `W` quando nessuna unità è impostata\nDocumentazione di aggiornamento",
+        "es": "Unidad de sensor de auto-detecto del estado de ioBroker `common.unit`; campo de unidad configurable en modo de experto; mostrar defectos a `W` cuando no se establece una unidad\nDocumentación actualizada",
+        "pl": "Automatyczne wykrywanie czujników ze stanu joBroker 'common.unit'; pole jednostki konfigurowalne w trybie Expert; wyświetlanie domyślnych wartości 'W', gdy nie jest ustawiona żadna jednostka\nAktualizacja dokumentacji",
+        "uk": "Автодетектурний сенсорний блок від ioBroker State `common.unit`; блок поле настроєний в експертному режимі; відображення за замовчуванням до `W`, коли не встановлено блок\nДокументація",
+        "zh-cn": "从 ioBroker 状态“ common.unit” 自动检测传感器单元; 专家模式下可配置的单元字段; 未设置单元时显示默认为“ W”\n更新文档"
+      },
       "1.8.0": {
         "en": "Update Dependencies\nAdd Notification function, to send warnings and errors to selectable providers\nUpdate Documentation",
         "de": "Anpassungsabhängigkeiten\nBenachrichtigungsfunktion hinzufügen, Warnungen und Fehler an wählbare Anbieter senden\nDokumentation aktualisieren",
@@ -80,19 +93,6 @@
         "pl": "Aktualizuj format karty\nAktualizacja Readme\nAktualizacja pakietów",
         "uk": "Статус на сервери\nОновлення Readme\nОновлення пакетів",
         "zh-cn": "更新标签格式\n更新读取器\n更新软件包"
-      },
-      "1.4.0": {
-        "en": "Fix String Handling in Formula Engine\nFix Formula Engine when using state formulas\nNew Page for smart Sensor Overview\nUpdate Readme and Doc",
-        "de": "Fix String Handling in Formelmotor\nDie Formel Motor bei Verwendung von Zustandsformeln\nNeue Seite für smart Sensor Übersicht\nUpdate Readme und Doc",
-        "ru": "Исправьте струнную обработку в двигателе Формулы\nФормула Фикс Двигатель при использовании формул состояния\nНовая страница для Smart Sensor\nОбновление Readme и Doc",
-        "pt": "Corrigir manuseamento de cordas no motor de fórmula\nCorrigir a Fórmula Motor ao usar fórmulas de estado\nNova Página para Visão Geral do Sensor Inteligente\nAtualizar o Readme e o Doc",
-        "nl": "Fix String Handling in Formule Motor\nFix Formule Motor bij gebruik van statusformules\nNieuwe pagina voor slimme sensor overzicht\nReadme en Doc bijwerken",
-        "fr": "Correction de la manipulation des chaînes dans le moteur Formula\nCorrection de la formule Moteur en utilisant des formules d'état\nNouvelle page pour le capteur intelligent Aperçu\nMettre à jour Readme et Doc",
-        "it": "Fissare la gestione delle stringhe in Formula Engine\nFormula di correzione Motore quando si utilizzano formule di stato\nNuova pagina per la panoramica dei sensori intelligenti\nAggiornamento Readme e Doc",
-        "es": "Manejo de cuerda fija en el motor de Fórmula\nFórmula fija Motor al usar fórmulas estatales\nNueva página para un sensor inteligente\nActualización Readme y Doc",
-        "pl": "Napraw obsługę strun w silniku formuły\nPopraw wzór Silnik przy użyciu wzorów stanu\nNowa strona dla inteligentnego przeglądu czujników\nAktualizuj Readme i Doc",
-        "uk": "Фіксація String Обробка в двигуні Формула\nФіксована формула Двигун при використанні державних формул\nНова сторінка для Smart Sensor Огляд\nОновлення Readme і Doc",
-        "zh-cn": "在公式引擎中修正字符串处理\n修正公式 使用状态公式时的引擎\n智能传感器概览的新页面\n更新 Readme 和 Doc"
       }
     },
     "titleLang": {
