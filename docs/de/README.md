@@ -126,7 +126,7 @@ SOLECTRUS akzeptiert keine negativen Werte. Liefert ein Sensor nach dem Adapters
 
 ### Einheit – automatische Erkennung
 
-Wenn ein Quell-Datenpunkt ausgewählt wird (über den **Select**-Dialog oder per Texteingabe), liest der Adapter automatisch das `common.unit`-Attribut des ioBroker-Objekts aus und trägt es in das Feld **Einheit** ein. Ist keine Einheit am Datenpunkt hinterlegt, bleibt das Feld leer und in der Übersicht wird `W` als Standard angezeigt. Die Einheit kann im **Expertenmodus** jederzeit manuell geändert werden.
+Wenn ein Quell-Datenpunkt ausgewählt wird (über den **Select**-Dialog oder per Texteingabe), liest die Admin-UI beim Auswählen bzw. Verlassen des Source-State-Felds das `common.unit`-Attribut des ioBroker-Objekts aus und trägt es in das Feld **Einheit** ein. Ist keine Einheit am Datenpunkt hinterlegt, bleibt das Feld leer und in der Übersicht wird `W` als Standard angezeigt. Die Einheit kann im **Expertenmodus** jederzeit manuell geändert werden.
 
 ### Maximalwert-Validierung
 
