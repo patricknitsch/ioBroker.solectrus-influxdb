@@ -186,6 +186,24 @@
 			const socket = (props && props.socket) || globalThis.socket || globalThis._socket || null;
 			const theme = (props && props.theme) || null;
 
+			// Auto-detect unit from ioBroker state object's common.unit.
+			// Calls the socket's getObject, updates the sensor's unit field with the detected value.
+			const autoDetectUnit = (stateId, capturedSensorIndex) => {
+				if (!stateId || !socket || typeof socket.getObject !== 'function') return;
+				try {
+					var p = socket.getObject(stateId);
+					if (p && typeof p.then === 'function') {
+						p.then(function (obj) {
+							var detectedUnit = obj && obj.common && obj.common.unit != null ? String(obj.common.unit) : '';
+							if (capturedSensorIndex === undefined || selectedIndex === capturedSensorIndex) {
+								setDraftField('unit', detectedUnit);
+								updateSelected('unit', detectedUnit);
+							}
+						}).catch(function () { /* silently ignore */ });
+					}
+				} catch (_) { /* ignore */ }
+			};
+
 			const t = text => {
 				try {
 					if (props && typeof props.t === 'function') {
@@ -744,7 +762,11 @@
 										type: 'text',
 										value: editSensor.sourceState || '',
 										onChange: e => setDraftField('sourceState', e.target.value),
-										onBlur: e => updateSelected('sourceState', e.target.value),
+										onBlur: e => {
+											var stateId = e.target.value;
+											updateSelected('sourceState', stateId);
+											autoDetectUnit(stateId, selectedIndex);
+										},
 										placeholder: t('e.g. some.adapter.0.channel.state'),
 									}),
 									React.createElement(
@@ -987,7 +1009,7 @@
 														var fl = extractLines(t('nonExpertMonitoringInfoFull'));
 														var mp = splitTpl(fl.status, '%MAXWSTR%');
 														var tp2 = splitTpl(mp[1], '%TIMEOUTSTR%');
-														var unitStr = editSensor.unit ? (' ' + editSensor.unit) : '';
+														var unitStr = ' ' + (editSensor.unit || 'W');
 														monitoringStatusChildren = [mp[0], React.createElement('strong', { key: 'mv' }, maxW + unitStr), tp2[0], React.createElement('strong', { key: 'tv' }, timeoutStr), tp2[1]];
 														monitoringConfigHint = fl.hint;
 														monitoringActive = true;
@@ -1304,6 +1326,7 @@
 												if (selectedStr) {
 													setDraftField('sourceState', selectedStr);
 													updateSelected('sourceState', selectedStr);
+													autoDetectUnit(selectedStr, selectedIndex);
 												}
 											},
 										})
