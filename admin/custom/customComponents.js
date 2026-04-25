@@ -811,10 +811,19 @@
 										? React.createElement(
 											'div',
 											{ style: rowStyle },
-											// Left column: max value
+											// Left column: unit + max value
 											React.createElement(
 												'div',
 												null,
+												React.createElement('label', { style: labelStyle }, t('Unit')),
+												React.createElement('input', {
+													style: Object.assign({}, inputStyle, { maxWidth: 120 }),
+													type: 'text',
+													value: editSensor.unit || '',
+													placeholder: 'W',
+													onChange: e => setDraftField('unit', e.target.value),
+													onBlur: e => updateSelected('unit', e.target.value),
+												}),
 												React.createElement('label', { style: labelStyle }, t('Max Value')),
 												React.createElement('input', {
 													style: inputStyle,
@@ -833,15 +842,6 @@
 														var parsed = Number(raw);
 														updateSelected('maxValue', raw === '' || !Number.isFinite(parsed) ? undefined : parsed);
 													},
-												}),
-												React.createElement('label', { style: labelStyle }, t('Unit')),
-												React.createElement('input', {
-													style: Object.assign({}, inputStyle, { maxWidth: 120 }),
-													type: 'text',
-													value: editSensor.unit || '',
-													placeholder: 'W',
-													onChange: e => setDraftField('unit', e.target.value),
-													onBlur: e => updateSelected('unit', e.target.value),
 												}),
 												React.createElement(
 													'div',

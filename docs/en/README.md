@@ -50,7 +50,7 @@ By default, the adapter runs in **Standard Mode**. The sensor list shows all pre
 
 - **Editable**: Source State (ioBroker state), Enabled checkbox
 - **Read-only**: Sensor Name, Datatype, Measurement, Field, JSON Preset
-- **Hidden**: Add, Delete, Duplicate buttons, Max Value, Alive Timeout
+- **Hidden**: Add, Delete, Duplicate buttons, Unit, Max Value, Alive Timeout
 
 This ensures that beginners can simply enable sensors and assign source states without accidentally changing the InfluxDB mapping. In standard mode, the following defaults apply: **value monitoring disabled** (max value = 0) and **60 minutes** alive timeout. Precise configuration is available in Expert Mode.
 
@@ -71,7 +71,8 @@ Click **Add** (Expert Mode) or select an existing sensor to configure:
 | Enabled | Activate/deactivate the sensor | Standard + Expert |
 | ioBroker Source State | The source state to read values from. Use the **Select** button to browse the object tree. | Standard + Expert |
 | Sensor Name | Display name (also used for the ioBroker state ID under `sensors.*`) | Expert |
-| Max Value in W | Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. **0 = disabled** (default). | Expert |
+| Unit | Physical unit of the sensor value (e.g. `W`, `°C`, `%`, `A`). Auto-detected from the ioBroker state's `common.unit` when a source state is selected. Defaults to `W` if no unit is configured. Can be overridden manually in Expert Mode. | Expert |
+| Max Value | Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. **0 = disabled** (default). | Expert |
 | Alive Timeout (min, 0 = disabled) | When no new value is received within this timespan: if the current value is **non-zero**, a warning is logged and the timestamp turns **orange** in the overview tab; if the current value is **0**, an info message is logged instead and the next check runs after **60 minutes**. **0 = disabled**. Default: `60`. Must be greater than the update interval of the source adapter. | Expert |
 | Datatype | `int`, `float`, `bool`, `string`, or `json` (JSON Array) | Expert |
 | Influx Measurement | The InfluxDB measurement name (e.g. `inverter`) | Expert |
@@ -123,9 +124,13 @@ Invalid values (`NaN` for int/float, `null`/`undefined` for strings) are automat
 
 SOLECTRUS does not accept negative values. If a sensor delivers a negative value after adapter start, a warning is logged **once**. The values are still sent to InfluxDB but may cause incorrect evaluations there. To fix this, check your source states or use the Data-SOLECTRUS formula engine with the **Clamp negative to 0** option.
 
+### Unit auto-detection
+
+When a source state is selected (via the **Select** dialog or by typing the state ID and leaving the field), the adapter automatically reads the `common.unit` property of the ioBroker object and fills in the **Unit** field. If the state has no unit defined, the field is left empty and `W` is used as the display default in the overview tab. The unit can always be changed manually in **Expert Mode**.
+
 ### Maximum value validation
 
-Each numeric sensor (`int`, `float`, or default type) supports a **Max Value in W** field (configurable in Expert Mode). If a collected value exceeds this limit:
+Each numeric sensor (`int`, `float`, or default type) supports a **Max Value** field (configurable in Expert Mode). If a collected value exceeds this limit:
 
 1. A warning is logged: `Sensor "..." delivers implausible value (X > max Y). Using last valid value (Z) instead.`
 2. The **last valid value** (the most recent value at or below the limit) is sent to InfluxDB instead.
@@ -133,7 +138,7 @@ Each numeric sensor (`int`, `float`, or default type) supports a **Max Value in 
 
 This prevents temporary sensor spikes (e.g. a brief burst reading of 99999 W) from corrupting the time-series data.
 
-The default value is **0 (disabled)** — value monitoring is off for new sensors by default. In Expert Mode, an individual limit can be set per sensor (e.g. `15000` W or `5000` W for a secondary inverter). When the max value is set to `0`, value monitoring is disabled for that sensor.
+The default value is **0 (disabled)** — value monitoring is off for new sensors by default. In Expert Mode, an individual limit can be set per sensor (e.g. `15000` or `5000` for a secondary inverter). When the max value is set to `0`, value monitoring is disabled for that sensor.
 
 ### Field type conflicts
 
@@ -437,7 +442,7 @@ The warning is repeated at most once per timeout period per sensor to avoid log 
 
 ### Value Monitoring (Max Value)
 
-Value monitoring is **disabled by default** (max value = 0). In **Expert Mode**, an individual max value in W can be set per numeric sensor. When the max value is > 0, it is shown as a badge next to the current value in the sensor overview. When value monitoring is disabled (max value = 0), the badge is hidden.
+Value monitoring is **disabled by default** (max value = 0). In **Expert Mode**, an individual max value can be set per numeric sensor. The unit is shown alongside the max value badge in the sensor overview (defaulting to `W` if no unit is configured). When the max value is > 0, it is shown as a badge next to the current value in the sensor overview. When value monitoring is disabled (max value = 0), the badge is hidden.
 
 ### Adapter states
 
