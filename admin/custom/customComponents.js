@@ -8,7 +8,7 @@
 	'use strict';
 
 	const REMOTE_NAME = 'SolectrusSensors';
-	const UI_VERSION = '2026-04-06 20260406-1';
+	const UI_VERSION = '2026-05-03 20260503-2';
 	const DEBUG = false;
 	let shareScope;
 
@@ -538,6 +538,27 @@
 				nextSensors[from] = nextSensors[to];
 				nextSensors[to] = tmp;
 
+				// Swap draft cache entries so the moved sensor keeps its unsaved draft at the
+				// new index and the displaced sensor keeps its draft at the old index.
+				const keyFrom = attr + '_' + from;
+				const keyTo = attr + '_' + to;
+				const draftFrom = _draftCache[keyFrom];
+				const draftTo = _draftCache[keyTo];
+				if (draftTo !== undefined) {
+					_draftCache[keyFrom] = draftTo;
+				} else {
+					delete _draftCache[keyFrom];
+				}
+				if (draftFrom !== undefined) {
+					_draftCache[keyTo] = draftFrom;
+				} else {
+					delete _draftCache[keyTo];
+				}
+
+				// Synchronously update the draft so the detail panel shows the moved sensor's
+				// own data immediately, without waiting for the [selectedIndex] effect.
+				_setSelectedDraft(_draftCache[keyTo] || cloneForDraft(nextSensors[to]));
+
 				updateSensors(nextSensors);
 				setSelectedIndex(to);
 			};
@@ -553,6 +574,27 @@
 				const clone = ensureTitle(Object.assign({}, selectedSensor));
 				const nextSensors = sensors.slice();
 				nextSensors.splice(selectedIndex + 1, 0, clone);
+				// Shift draft cache entries up for all sensors displaced by the insertion so
+				// that previously-edited sensors keep their unsaved drafts at the correct key.
+				// Then seed the new slot with the clone's own data so the detail panel shows
+				// the correct content instead of whatever was cached at that index before.
+				for (let i = sensors.length - 1; i >= selectedIndex + 1; i--) {
+					const src = attr + '_' + i;
+					const dst = attr + '_' + (i + 1);
+					if (_draftCache[src] !== undefined) {
+						_draftCache[dst] = _draftCache[src];
+					} else {
+						delete _draftCache[dst];
+					}
+					delete _draftCache[src];
+				}
+				const cloneDraft = cloneForDraft(clone);
+				_draftCache[attr + '_' + (selectedIndex + 1)] = cloneDraft;
+
+				// Synchronously update the draft state so the detail panel immediately shows
+				// the clone's data without waiting for the [selectedIndex] effect.
+				_setSelectedDraft(cloneDraft);
+
 				updateSensors(nextSensors);
 				setSelectedIndex(selectedIndex + 1);
 			};
@@ -561,8 +603,29 @@
 				if (!selectedSensor) return;
 				const nextSensors = sensors.slice();
 				nextSensors.splice(selectedIndex, 1);
+				// Remove the deleted sensor's cache entry and shift remaining entries down so
+				// that sensors which moved to a lower index still use their correct drafts.
+				delete _draftCache[attr + '_' + selectedIndex];
+				for (let i = selectedIndex + 1; i < sensors.length; i++) {
+					const src = attr + '_' + i;
+					const dst = attr + '_' + (i - 1);
+					if (_draftCache[src] !== undefined) {
+						_draftCache[dst] = _draftCache[src];
+					} else {
+						delete _draftCache[dst];
+					}
+					delete _draftCache[src];
+				}
+
+				// Determine the index that will be selected after deletion and synchronously
+				// load its draft so the detail panel shows the right sensor immediately.
+				const nextIndex = Math.max(0, selectedIndex - 1);
+				const nextSensor = nextSensors[nextIndex] || null;
+				const nextDraft = _draftCache[attr + '_' + nextIndex] || cloneForDraft(nextSensor);
+				_setSelectedDraft(nextDraft || null);
+
 				updateSensors(nextSensors);
-				setSelectedIndex(Math.max(0, selectedIndex - 1));
+				setSelectedIndex(nextIndex);
 			};
 
 			const rootStyle = {
