@@ -23,7 +23,7 @@
     "url": "https://github.com/patricknitsch/ioBroker.solectrus-influxdb"
   },
   "engines": {
-    "node": ">= 20"
+    "node": ">= 22"
   },
   "dependencies": {
     "@influxdata/influxdb-client": "^1.35.0",
