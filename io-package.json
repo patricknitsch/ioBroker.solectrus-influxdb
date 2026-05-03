@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.8.1",
+    "version": "1.8.2",
     "news": {
+      "1.8.2": {
+        "en": "Adapter requires node.js >= 22 now\nFix sensor duplicate: stale draft cache caused wrong sensor data to appear in the detail panel after duplicating or deleting a sensor\nUpdate Dependencies",
+        "de": "Adapter benötigt node.js >= 22 jetzt\nFix-Sensor-Duplikat: Stale-Entwurf-Cache verursachte falsche Sensordaten, um in der Detail-Panel nach dem Duplizieren oder Löschen eines Sensors erscheinen\nAnpassungsabhängigkeiten",
+        "ru": "Адаптер требует node.js >= 22 сейчас\nУстранение дубликата датчика: устаревший проект кэша вызвал появление неправильных данных датчика на панели деталей после дублирования или удаления датчика\nОбновление зависимостей",
+        "pt": "Adaptador requer nod.js >= 22 agora\nCorrigir duplicata do sensor: cache de rascunho velho fez com que dados errados do sensor aparecessem no painel de detalhes após duplicar ou excluir um sensor\nAtualizar dependências",
+        "nl": "Voor de adapter zijn node.js < 22 nu nodig\nFix sensor duplicate: oude ontwerp cache veroorzaakt verkeerde sensorgegevens te verschijnen in het detailpaneel na het dupliceren of verwijderen van een sensor\nAfhankelijkheden bijwerken",
+        "fr": "Adaptateur nécessite node.js >= 22 maintenant\nCorrection du duplicata du capteur: le cache à brouillon a causé l'apparition de données erronées du capteur dans le panneau de détails après duplicata ou suppression d'un capteur\nMettre à jour les dépendances",
+        "it": "Adattatore richiede node.js >= 22 ora\nRisolvere il duplicato del sensore: la cache della bozza di stante ha causato i dati del sensore errato per apparire nel pannello di dettaglio dopo la duplicazione o la cancellazione di un sensore\nDipendenze di aggiornamento",
+        "es": "Adaptador requiere node.js ю= 22 ahora\nCorregir el duplicado del sensor: el borrador de caché hizo que los datos incorrectos del sensor aparecieran en el panel de detalles después de duplicar o eliminar un sensor\nDependencias de actualización",
+        "pl": "Adapter wymaga node.js > = 22\nNapraw duplikat czujnika: nieświeży szkic pamięci podręcznej spowodował, że błędne dane czujnika pojawiły się w panelu szczegółowości po powieleniu lub usunięciu czujnika\nAktualizuj zależności",
+        "uk": "Адаптер вимагає node.js >= 22 тепер\nФіксований сенсорний дублікат: застібка проекту кешу викликала неправильні дані датчика, які з'являються в докладній панелі після видалення або видалення датчика\nОновлення залежності",
+        "zh-cn": "适配器需要节点.js 现在22\n固定传感器复制:过时的草稿缓存导致在复制或删除传感器后在细节面板中出现错误的传感器数据\n更新依赖关系"
+      },
       "1.8.1": {
         "en": "Auto-detect sensor unit from ioBroker state `common.unit`; unit field configurable in Expert Mode; display defaults to `W` when no unit is set\nUpdate Documentation",
         "de": "Auto-Detekt-Sensoreinheit aus ioBroker state `common.unit`; Einheitsfeld konfigurierbar im Expertenmodus; Display-Standards zu `W`, wenn keine Einheit gesetzt ist\nDokumentation aktualisieren",
@@ -80,19 +93,6 @@
         "pl": "Napraw repoChecker problemów\nDodaj kartę dla SOLECTRUS iFrame",
         "uk": "Виправлення питань РепоЧекер\nДодати вкладку для SOLECTRUS ІФраме",
         "zh-cn": "修复问题复检器\n为 SOLECTRUS 添加标签 iFrame 图像"
-      },
-      "1.4.1": {
-        "en": "Update Tab Format\nUpdate Readme\nUpdate Packages",
-        "de": "Update Tab Format\nUpdate Reader\nPakete aktualisieren",
-        "ru": "Обновление формата Tab\nОбновление Readme\nОбновление пакетов",
-        "pt": "Actualizar o Formato da Página\nActualizar a Leitura\nAtualizar pacotes",
-        "nl": "Tab-formaat bijwerken\nReadme bijwerken\nPakketten bijwerken",
-        "fr": "Mettre à jour le format de l'onglet\nMettre à jour Readme\nMettre à jour les paquets",
-        "it": "Formato della scheda di aggiornamento\nAggiornamento\nPacchetti di aggiornamento",
-        "es": "Formato de actualización de pestañas\nActualización Readme\nPaquetes de actualización",
-        "pl": "Aktualizuj format karty\nAktualizacja Readme\nAktualizacja pakietów",
-        "uk": "Статус на сервери\nОновлення Readme\nОновлення пакетів",
-        "zh-cn": "更新标签格式\n更新读取器\n更新软件包"
       }
     },
     "titleLang": {

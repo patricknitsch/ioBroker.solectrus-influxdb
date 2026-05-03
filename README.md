@@ -62,10 +62,10 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 1.8.2 (2026-05-03)
 * (copilot) Adapter requires node.js >= 22 now
 * (copilot) Fix sensor duplicate: stale draft cache caused wrong sensor data to appear in the detail panel after duplicating or deleting a sensor
-* (copilot) Update Dependencies 
+* (copilot) Update Dependencies
 
 ### 1.8.1 (2026-04-25)
 
