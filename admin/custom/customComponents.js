@@ -8,7 +8,7 @@
 	'use strict';
 
 	const REMOTE_NAME = 'SolectrusSensors';
-	const UI_VERSION = '2026-04-06 20260406-1';
+	const UI_VERSION = '2026-05-03 20260503-1';
 	const DEBUG = false;
 	let shareScope;
 
@@ -553,6 +553,21 @@
 				const clone = ensureTitle(Object.assign({}, selectedSensor));
 				const nextSensors = sensors.slice();
 				nextSensors.splice(selectedIndex + 1, 0, clone);
+				// Shift draft cache entries up for all sensors displaced by the insertion so
+				// that previously-edited sensors keep their unsaved drafts at the correct key.
+				// Then seed the new slot with the clone's own data so the detail panel shows
+				// the correct content instead of whatever was cached at that index before.
+				for (let i = sensors.length - 1; i >= selectedIndex + 1; i--) {
+					const src = attr + '_' + i;
+					const dst = attr + '_' + (i + 1);
+					if (_draftCache[src] !== undefined) {
+						_draftCache[dst] = _draftCache[src];
+					} else {
+						delete _draftCache[dst];
+					}
+					delete _draftCache[src];
+				}
+				_draftCache[attr + '_' + (selectedIndex + 1)] = cloneForDraft(clone);
 				updateSensors(nextSensors);
 				setSelectedIndex(selectedIndex + 1);
 			};
@@ -561,6 +576,19 @@
 				if (!selectedSensor) return;
 				const nextSensors = sensors.slice();
 				nextSensors.splice(selectedIndex, 1);
+				// Remove the deleted sensor's cache entry and shift remaining entries down so
+				// that sensors which moved to a lower index still use their correct drafts.
+				delete _draftCache[attr + '_' + selectedIndex];
+				for (let i = selectedIndex + 1; i < sensors.length; i++) {
+					const src = attr + '_' + i;
+					const dst = attr + '_' + (i - 1);
+					if (_draftCache[src] !== undefined) {
+						_draftCache[dst] = _draftCache[src];
+					} else {
+						delete _draftCache[dst];
+					}
+					delete _draftCache[src];
+				}
 				updateSensors(nextSensors);
 				setSelectedIndex(Math.max(0, selectedIndex - 1));
 			};
