@@ -222,6 +222,8 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 ### 0.1.0 (2026-01-14)
 * (patricknitsch) initial release
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 
 MIT License
