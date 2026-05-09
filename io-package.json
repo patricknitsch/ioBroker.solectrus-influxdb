@@ -158,6 +158,10 @@
                 "admin": ">=7.6.20"
             }
         ],
+        "supportedMessages": {
+            "custom": true,
+            "deviceManager": true
+        },
         "adminTab": {
             "singleton": false,
             "name": {
@@ -174,10 +178,6 @@
                 "zh-cn": "传感器概览"
             },
             "link": ""
-        },
-        "supportedMessages": {
-            "custom": true,
-            "deviceManager": true
         }
     },
     "native": {
