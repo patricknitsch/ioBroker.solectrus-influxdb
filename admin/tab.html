@@ -13,11 +13,8 @@
             --text: #212121;
             --text-muted: #757575;
             --border: #e0e0e0;
-            --code-bg: rgba(0,0,0,0.06);
             --shadow: 0 1px 3px rgba(0,0,0,0.15);
             --radius: 8px;
-            --color-warning: #e67e22;
-            --color-error: #e53935;
         }
         body.dark {
             --bg: #121212;
@@ -25,7 +22,6 @@
             --text: #e0e0e0;
             --text-muted: #888;
             --border: #333;
-            --code-bg: rgba(255,255,255,0.08);
             --shadow: 0 1px 4px rgba(0,0,0,0.5);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -113,159 +109,18 @@
         /* ── CONTENT ── */
         #content { display: none; }
 
-        /* ── TAB BAR ── */
-        .tab-bar {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 16px;
-            border-bottom: 2px solid var(--border);
-        }
-        .tab-btn {
-            background: transparent;
-            border: none;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
-            padding: 8px 18px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            color: var(--text-muted);
-            border-radius: 4px 4px 0 0;
-            transition: color .15s, border-color .15s;
-            font-family: inherit;
-        }
-        .tab-btn:hover { color: var(--primary); }
-        .tab-btn.active {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-        .tab-panel { display: none; }
-        .tab-panel.active { display: block; }
-
-        /* ── SECTION HEADER ── */
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--primary);
-        }
-        .section-header .icon { font-size: 18px; }
-
-        /* ── SENSOR GRID ── */
-        .sensor-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 12px;
+        /* ── TAB DISABLED ── */
+        #tab-disabled {
             background: var(--surface);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            overflow-x: auto;
-        }
-        .sensor-card {
-            background: var(--bg);
-            border-radius: 6px;
-            border-left: 3px solid var(--primary);
-            padding: 10px 12px;
-            flex: 1 1 auto;
-            min-width: max-content;
-        }
-        .sensor-card-header {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 6px;
-            margin-bottom: 5px;
-        }
-        .sensor-card-name {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text);
-            white-space: nowrap;
-            line-height: 1.3;
+            padding: 32px 24px;
             text-align: center;
-        }
-        .sensor-type-badge {
-            font-size: 10px;
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-            font-weight: 700;
-            background: var(--code-bg);
-            padding: 2px 5px;
-            border-radius: 3px;
-            color: var(--text-muted);
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .sensor-card-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary);
-            white-space: nowrap;
-            margin-bottom: 4px;
-            min-height: 1.3em;
-        }
-        .sensor-card-value.na {
             color: var(--text-muted);
             font-size: 14px;
-            font-weight: 400;
+            line-height: 1.6;
         }
-        .sensor-card-value.json-val {
-            font-size: 11px;
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-        }
-        .sensor-card-meta {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-            overflow-wrap: break-word;
-            word-break: break-word;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 6px;
-        }
-        .sensor-card-meta-text {
-            overflow-wrap: break-word;
-            word-break: break-word;
-        }
-        .sensor-card-source {
-            font-size: 10px;
-            color: var(--text-muted);
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-            overflow-wrap: break-word;
-            word-break: break-all;
-        }
-        .sensor-grid-empty {
-            text-align: center;
-            color: var(--text-muted);
-            padding: 24px;
-            font-size: 13px;
-            grid-column: 1 / -1;
-        }
-        .sensor-val-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-        }
-        .sensor-ts-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
-
-        /* ── LAYOUT TOGGLE ── */
-        .sensor-grid.layout-full .sensor-card {
-            flex: 1 1 100%;
-            min-width: 0;
-        }
+        #tab-disabled p { margin-bottom: 16px; }
 
         /* ── IFRAME PANEL ── */
         .iframe-panel {
@@ -328,7 +183,6 @@
 <div id="toolbar">
     <div class="logo">⚡ SOLECTRUS InfluxDB</div>
     <div class="spacer"></div>
-    <button class="btn-toolbar" id="layout-btn"></button>
     <button class="btn-toolbar" id="config-btn"></button>
     <div id="connStatus">
         <span class="conn-dot"></span>
@@ -341,33 +195,14 @@
     <div id="error-msg"></div>
     <div id="loading">…</div>
     <div id="content">
-        <!-- TAB BAR -->
-        <div class="tab-bar">
-            <button class="tab-btn active" data-tab="influx" id="tab-influx-btn"></button>
-            <button class="tab-btn" data-tab="ds" id="tab-ds-btn" style="display:none"></button>
-            <button class="tab-btn" data-tab="iframe" id="tab-iframe-btn" style="display:none"></button>
+
+        <!-- Shown when showAdminTab is disabled in config -->
+        <div id="tab-disabled" style="display:none">
+            <p id="tab-disabled-msg"></p>
         </div>
 
-        <!-- InfluxDB Sensors Tab -->
-        <div class="tab-panel active" id="tab-influx">
-            <div class="section-header">
-                <span class="icon">📊</span>
-                <span id="h-influx"></span>
-            </div>
-            <div id="sensor-grid" class="sensor-grid"></div>
-        </div>
-
-        <!-- Formula Engine Tab -->
-        <div class="tab-panel" id="tab-ds">
-            <div class="section-header">
-                <span class="icon">🧮</span>
-                <span id="h-ds"></span>
-            </div>
-            <div id="ds-grid" class="sensor-grid"></div>
-        </div>
-
-        <!-- iFrame Tab -->
-        <div class="tab-panel" id="tab-iframe">
+        <!-- iFrame panel (shown when showAdminTab is enabled) -->
+        <div id="iframe-wrap">
             <div class="iframe-panel">
                 <div id="iframe-toolbar" class="iframe-toolbar" style="display:none">
                     <span id="iframe-cert-hint" class="iframe-cert-hint"></span>
@@ -379,7 +214,6 @@
             </div>
         </div>
 
-        <div id="refresh-info"></div>
     </div>
 </div>
 
@@ -390,89 +224,42 @@
     /* ── i18n ── */
     var STRINGS = {
         en: {
-            loading:        'Loading…',
-            hInflux:        'InfluxDB Sensors',
-            hDs:            'Formula Engine (Data-SOLECTRUS)',
-            tabInflux:      'InfluxDB Sensors',
-            tabDs:          'Formula Engine',
-            tabIframe:      'Dashboard',
-            iframePlaceholder: 'No dashboard URL configured. Open the configuration and enter a URL in the iFrame tab.',
-            iframeCertHint: 'Page not loading? SOLECTRUS blocks iframe embedding by default – add FRAME_ANCESTORS=http://your-iobroker-host:8081 to the SOLECTRUS .env file and restart the service.',
-            iframeHttpHint: 'Note: The iframe is only visible when accessing the ioBroker admin via HTTP (not HTTPS).',
-            iframeOpenBtn:  'Open in new tab',
-            name:           'Name',
-            stateId:        'Source State',
-            type:           'Type',
-            value:          'Current Value',
-            measurement:    'Measurement',
-            field:          'Field',
-            mode:           'Mode',
-            formula:        'Formula',
-            na:             'n/a',
-            noSensors:      'No active sensors configured.',
-            noItems:        'No active items configured.',
-            refreshed:      'Last updated: ',
-            error:          'Error: ',
-            noConn:         'Cannot connect to ioBroker socket.',
-            moreEntries:    'more entries',
-            configBtn:      'Open Configuration',
-            layoutFlex:     'Flexible',
-            layoutFull:     'Full Width',
-            connecting:     'Connecting…',
-            connected:      'Connected',
-            disconnected:   'Disconnected',
-            lastUpdate:     'Timestamp:',
-            maxOf:          'max:',
+            loading:            'Loading…',
+            iframePlaceholder:  'No dashboard URL configured. Open the configuration and enter a URL in the iFrame tab.',
+            iframeCertHint:     'Page not loading? SOLECTRUS blocks iframe embedding by default – add FRAME_ANCESTORS=http://your-iobroker-host:8081 to the SOLECTRUS .env file and restart the service.',
+            iframeHttpHint:     'Note: The iframe is only visible when accessing the ioBroker admin via HTTP (not HTTPS).',
+            iframeOpenBtn:      'Open in new tab',
+            tabDisabledMsg:     'The Admin Tab is disabled in the adapter configuration. Open the configuration and enable "Show Admin Tab" to use the iFrame dashboard.',
+            error:              'Error: ',
+            noConn:             'Cannot connect to ioBroker socket.',
+            configBtn:          'Open Configuration',
+            connecting:         'Connecting…',
+            connected:          'Connected',
+            disconnected:       'Disconnected',
         },
         de: {
-            loading:        'Lade…',
-            hInflux:        'InfluxDB-Sensoren',
-            hDs:            'Formel-Engine (Data-SOLECTRUS)',
-            tabInflux:      'InfluxDB-Sensoren',
-            tabDs:          'Formel-Engine',
-            tabIframe:      'Dashboard',
-            iframePlaceholder: 'Keine Dashboard-URL konfiguriert. Öffne die Konfiguration und gib eine URL im iFrame-Tab ein.',
-            iframeCertHint: 'Seite lädt nicht? SOLECTRUS blockiert das Einbetten in iFrames standardmäßig – füge FRAME_ANCESTORS=http://dein-iobroker-host:8081 in die SOLECTRUS-.env-Datei ein und starte den Dienst neu.',
-            iframeHttpHint: 'Hinweis: Das iFrame ist nur sichtbar, wenn das ioBroker-Admin-Panel über HTTP (nicht HTTPS) aufgerufen wird.',
-            iframeOpenBtn:  'In neuem Tab öffnen',
-            name:           'Name',
-            stateId:        'Quell-State',
-            type:           'Typ',
-            value:          'Aktueller Wert',
-            measurement:    'Measurement',
-            field:          'Field',
-            mode:           'Modus',
-            formula:        'Formel',
-            na:             'k.A.',
-            noSensors:      'Keine aktiven Sensoren konfiguriert.',
-            noItems:        'Keine aktiven Elemente konfiguriert.',
-            refreshed:      'Zuletzt aktualisiert: ',
-            error:          'Fehler: ',
-            noConn:         'Verbindung zum ioBroker-Socket nicht möglich.',
-            moreEntries:    'weitere Einträge',
-            configBtn:      'Konfiguration öffnen',
-            layoutFlex:     'Flexibel',
-            layoutFull:     'Ganze Breite',
-            connecting:     'Verbinde…',
-            connected:      'Verbunden',
-            disconnected:   'Getrennt',
-            lastUpdate:     'Zeitstempel:',
-            maxOf:          'max:',
+            loading:            'Lade…',
+            iframePlaceholder:  'Keine Dashboard-URL konfiguriert. Öffne die Konfiguration und gib eine URL im iFrame-Tab ein.',
+            iframeCertHint:     'Seite lädt nicht? SOLECTRUS blockiert das Einbetten in iFrames standardmäßig – füge FRAME_ANCESTORS=http://dein-iobroker-host:8081 in die SOLECTRUS-.env-Datei ein und starte den Dienst neu.',
+            iframeHttpHint:     'Hinweis: Das iFrame ist nur sichtbar, wenn das ioBroker-Admin-Panel über HTTP (nicht HTTPS) aufgerufen wird.',
+            iframeOpenBtn:      'In neuem Tab öffnen',
+            tabDisabledMsg:     'Der Admin-Tab ist in der Adapterkonfiguration deaktiviert. Öffne die Konfiguration und aktiviere „Admin-Tab anzeigen", um das iFrame-Dashboard zu verwenden.',
+            error:              'Fehler: ',
+            noConn:             'Verbindung zum ioBroker-Socket nicht möglich.',
+            configBtn:          'Konfiguration öffnen',
+            connecting:         'Verbinde…',
+            connected:          'Verbunden',
+            disconnected:       'Getrennt',
         }
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
     var T = STRINGS[lang] || STRINGS.en;
 
     /* ── constants ── */
-    var SOCKET_TIMEOUT_MS   = 8000;  /* ms to wait for socket.io to connect  */
-    var REFRESH_INTERVAL_MS = 5000;  /* ms between data refreshes             */
-    var TRUNCATE_VAL_LEN    = 60;    /* max chars for JSON value preview      */
+    var SOCKET_TIMEOUT_MS   = 8000;
+    var REFRESH_INTERVAL_MS = 5000;
 
-    /* ── iframe state ── */
-    /* Track the URL we last loaded into the iframe.  We cannot compare against
-       iframeEl.src directly because the browser normalises the DOM property
-       (e.g. trailing slash is added), causing the comparison to always fail and
-       the iframe to reload on every REFRESH_INTERVAL_MS tick. */
+    /* Track the last iframe URL to avoid reloading on every refresh tick */
     var iframeLoadedUrl = '';
 
     /* ── instance from URL ── */
@@ -485,17 +272,15 @@
     var DARK_THEME_NAMES = ['dark', 'blue'];
 
     function resolveTheme() {
-        /* 1. localStorage keys written by ioBroker Admin Utils.setThemeName() */
         try {
             var t = localStorage.getItem('App.theme');
             if (t) return t === 'dark';
             var n = localStorage.getItem('App.themeName');
             if (n) return DARK_THEME_NAMES.indexOf(n) !== -1;
-        } catch (_) { /* storage blocked */ }
-        /* 2. DOM class / data-theme attributes of parent Admin frame */
+        } catch (_) {}
         try {
-            var body = window.parent && window.parent.document && window.parent.document.body;
-            var html = window.parent && window.parent.document && window.parent.document.documentElement;
+            var body = window.parent && window.parent !== window && window.parent.document && window.parent.document.body;
+            var html = window.parent && window.parent !== window && window.parent.document && window.parent.document.documentElement;
             if (body) {
                 if ((body.className  || '').toLowerCase().indexOf('dark') !== -1) return true;
                 if (html && (html.className || '').toLowerCase().indexOf('dark') !== -1) return true;
@@ -503,7 +288,7 @@
                 if (html && html.getAttribute('data-theme') === 'dark') return true;
                 if (body.getAttribute('data-bs-theme') === 'dark') return true;
             }
-        } catch (_) { /* cross-origin */ }
+        } catch (_) {}
         return false;
     }
 
@@ -512,53 +297,19 @@
     }
 
     function detectTheme() {
-        /* Admin 7 appends &react=dark|light|blue|colored to the tab URL */
         try {
             var urlTheme = new URLSearchParams(window.location.search).get('react');
             if (urlTheme) { applyTheme(DARK_THEME_NAMES.indexOf(urlTheme) !== -1); return; }
-        } catch (_) { /* ignore */ }
+        } catch (_) {}
         applyTheme(resolveTheme());
     }
 
     detectTheme();
 
-    /* Listen for theme changes from parent Admin (same-origin localStorage events) */
     window.addEventListener('storage', function (e) {
         if (e.key === 'App.theme' || e.key === 'App.themeName') {
             applyTheme(resolveTheme());
         }
-    });
-
-    /* ── tabs ── */
-    function switchTab(tab) {
-        document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
-        document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
-        document.querySelector('.tab-btn[data-tab="' + tab + '"]').classList.add('active');
-        document.getElementById('tab-' + tab).classList.add('active');
-    }
-
-    document.querySelectorAll('.tab-btn').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            switchTab(btn.getAttribute('data-tab'));
-        });
-    });
-
-    /* ── layout toggle ── */
-    var LAYOUT_KEY = NS + '.layout';
-    var _layoutFull = false;
-
-    function applyLayout(full) {
-        _layoutFull = !!full;
-        document.querySelectorAll('.sensor-grid').forEach(function (g) {
-            g.classList.toggle('layout-full', _layoutFull);
-        });
-        var btn = document.getElementById('layout-btn');
-        if (btn) btn.textContent = _layoutFull ? T.layoutFlex : T.layoutFull;
-        try { localStorage.setItem(LAYOUT_KEY, _layoutFull ? 'full' : 'flex'); } catch (_) {}
-    }
-
-    document.getElementById('layout-btn').addEventListener('click', function () {
-        applyLayout(!_layoutFull);
     });
 
     /* ── connection status ── */
@@ -571,72 +322,6 @@
                           : T.connecting;
     }
 
-    /* ── DOM helpers ── */
-    function el(tag, opts) {
-        var e = document.createElement(tag);
-        if (opts) {
-            if (opts.text)  e.textContent   = opts.text;
-            if (opts.html)  e.innerHTML     = opts.html;
-            if (opts.cls)   e.className     = opts.cls;
-            if (opts.span)  e.colSpan       = opts.span;
-            if (opts.style) e.style.cssText = opts.style;
-        }
-        return e;
-    }
-    function setText(id, txt) { document.getElementById(id).textContent = txt; }
-
-    /* ── state-ID helpers ── */
-    function sensorStateId(sensor) {
-        var name = (sensor.SensorName || '').toLowerCase().replace(/[^a-z0-9]+/g, '_');
-        return NS + '.sensors.' + name;
-    }
-    function dsItemStateId(item) {
-        var group = (item.group || '').trim();
-        var tid   = (item.targetId || '').trim();
-        if (!tid) return null;
-        return NS + '.ds.' + (group ? group + '.' + tid : tid);
-    }
-    function dsFormulaText(item) {
-        var mode = item.mode || 'formula';
-        if (mode === 'formula')                      return item.formula || '';
-        if (mode === 'source' || mode === 'sourceState') return item.sourceState || '';
-        if (mode === 'jsonPath')  return (item.sourceState || '') + (item.jsonPath ? ' → ' + item.jsonPath : '');
-        if (mode === 'state-machine') return '[state-machine]';
-        return '';
-    }
-    function dsModeLabel(item) {
-        var m = { formula: 'Formula', source: 'Source', sourceState: 'Source',
-                  jsonPath: 'JSONPath', 'state-machine': 'State Machine' };
-        return m[item.mode || 'formula'] || (item.mode || 'formula');
-    }
-    function fmtVal(val) {
-        if (val === null || val === undefined) return T.na;
-        if (typeof val === 'boolean') return val ? 'true' : 'false';
-        if (typeof val === 'object')  return JSON.stringify(val).slice(0, TRUNCATE_VAL_LEN);
-        return String(val);
-    }
-    /* Compact formatter for sensor values: JSON arrays show first entry + "+N more" */
-    function fmtSensorVal(val, isJson) {
-        if (val === null || val === undefined) return T.na;
-        if (isJson) {
-            /* val may be a raw JSON string from ioBroker */
-            var parsed = val;
-            if (typeof val === 'string') {
-                try { parsed = JSON.parse(val); } catch (_) { /* keep as string */ }
-            }
-            if (Array.isArray(parsed)) {
-                if (parsed.length === 0) return '[]';
-                var firstStr = JSON.stringify(parsed[0]);
-                if (firstStr.length > TRUNCATE_VAL_LEN) {
-                    firstStr = firstStr.slice(0, TRUNCATE_VAL_LEN) + '…';
-                }
-                if (parsed.length === 1) return firstStr;
-                return firstStr + ' (+' + (parsed.length - 1) + '\u00a0' + T.moreEntries + ')';
-            }
-        }
-        return fmtVal(val);
-    }
-
     /* ── socket abstraction ── */
     var _sock = null;
 
@@ -647,37 +332,26 @@
             ps.emit('getObject', id, function (err, obj) { err ? rej(new Error(err)) : res(obj); });
         });
     }
-    function _getStates(pattern) {
-        var ps = _sock;
-        if (ps && typeof ps.getStates === 'function') return ps.getStates(pattern);
-        return new Promise(function (res, rej) {
-            ps.emit('getForeignStates', pattern, function (err, states) { err ? rej(new Error(err)) : res(states || {}); });
-        });
-    }
 
     function initSocket() {
-        /* Strategy 1 – reuse parent admin socket (admin v7+) */
         try {
             var ps = window.parent && window.parent !== window && window.parent.socket;
             if (ps && (typeof ps.getObject === 'function' || typeof ps.emit === 'function')) {
                 _sock = ps;
                 return Promise.resolve();
             }
-        } catch (_) { /* cross-origin – ignore */ }
+        } catch (_) {}
 
-        /* Strategy 2 – create a fresh socket.io connection */
         if (typeof io === 'undefined') {
             return Promise.reject(new Error(T.noConn));
         }
         return new Promise(function (resolve, reject) {
             try {
                 var s = io.connect();
-                /* ioBroker Admin v7 socket client exposes .on() but not .once() */
                 var addListener = typeof s.once === 'function' ? s.once.bind(s)
                                 : typeof s.on   === 'function' ? s.on.bind(s)
                                 : null;
                 if (!addListener) { return reject(new Error(T.noConn)); }
-                /* socket might already be connected (no 'connect' event will fire) */
                 if (s.connected) { _sock = s; return resolve(); }
                 var done = false;
                 addListener('connect', function () {
@@ -686,7 +360,6 @@
                 addListener('connect_error', function (e) {
                     if (done) return; done = true; reject(e);
                 });
-                /* timeout fallback */
                 setTimeout(function () {
                     if (!done) { done = true; reject(new Error('Socket timeout')); }
                 }, SOCKET_TIMEOUT_MS);
@@ -695,243 +368,34 @@
     }
 
     /* ── render ── */
-    function renderInflux(sensors, states) {
-        setText('h-influx', T.hInflux);
-
-        var grid = document.getElementById('sensor-grid');
-        grid.innerHTML = '';
-        var active = (sensors || []).filter(function (s) { return s && s.enabled && s.SensorName; });
-        if (!active.length) {
-            var empty = document.createElement('div');
-            empty.className = 'sensor-grid-empty';
-            empty.textContent = T.noSensors;
-            grid.appendChild(empty);
-            return;
-        }
-        active.forEach(function (sensor) {
-            var sid    = sensorStateId(sensor);
-            var state  = states && states[sid];
-            var hasVal = state && state.val !== null && state.val !== undefined;
-            var isJson = sensor.type === 'json';
-            var valText = fmtSensorVal(hasVal ? state.val : null, isJson);
-
-            var card = document.createElement('div');
-            card.className = 'sensor-card';
-
-            /* header: name (centered) */
-            var header = document.createElement('div');
-            header.className = 'sensor-card-header';
-            var nameEl = document.createElement('span');
-            nameEl.className = 'sensor-card-name';
-            nameEl.textContent = sensor.SensorName;
-            header.appendChild(nameEl);
-            card.appendChild(header);
-
-            /* value */
-            var valEl = document.createElement('div');
-            var valCls = 'sensor-card-value';
-            if (!hasVal) {
-                valCls += ' na';
-            } else if (isJson) {
-                valCls += ' json-val';
-            }
-            valEl.className = valCls;
-            var isNumeric = sensor.type !== 'bool' && sensor.type !== 'string' && sensor.type !== 'json';
-            if (hasVal && isNumeric) {
-                /* 0 = DEFAULT_MAX_VALUE in lib/constants.js (monitoring disabled) */
-                var maxVal = sensor.maxValue != null ? sensor.maxValue : 0;
-                if (maxVal > 0) {
-                    valEl.className = valCls + ' sensor-val-row';
-                    var curSpan = document.createElement('span');
-                    curSpan.textContent = valText + ' ' + (sensor.unit || 'W');
-                    var maxSpan = document.createElement('span');
-                    maxSpan.className = 'sensor-type-badge';
-                    maxSpan.textContent = maxVal + ' ' + (sensor.unit || 'W');
-                    var numVal = parseFloat(state.val);
-                    if (!isNaN(numVal) && numVal > maxVal) {
-                        curSpan.style.color = '#e53935';
-                        maxSpan.style.color = '#e53935';
-                    }
-                    valEl.appendChild(curSpan);
-                    valEl.appendChild(maxSpan);
-                } else {
-                    valEl.textContent = valText + ' ' + (sensor.unit || 'W');
-                }
-            } else {
-                valEl.textContent = valText;
-            }
-            card.appendChild(valEl);
-
-            /* measurement: field [type] */
-            if (sensor.measurement || sensor.field || sensor.type) {
-                var metaEl = document.createElement('div');
-                metaEl.className = 'sensor-card-meta';
-                var metaText = (sensor.measurement || '') + (sensor.field ? ': ' + sensor.field : '');
-                var metaTextSpan = document.createElement('span');
-                metaTextSpan.className = 'sensor-card-meta-text';
-                metaTextSpan.textContent = metaText;
-                metaEl.appendChild(metaTextSpan);
-                if (sensor.type) {
-                    var typeBadge = document.createElement('span');
-                    typeBadge.className = 'sensor-type-badge';
-                    typeBadge.textContent = sensor.type;
-                    metaEl.appendChild(typeBadge);
-                }
-                card.appendChild(metaEl);
-            }
-
-            /* source state */
-            if (sensor.sourceState) {
-                var srcEl = document.createElement('div');
-                srcEl.className = 'sensor-card-source';
-                srcEl.textContent = sensor.sourceState;
-                srcEl.title = sensor.sourceState;
-                card.appendChild(srcEl);
-            }
-
-            /* last update timestamp */
-            if (state && state.ts) {
-                var tsEl = document.createElement('div');
-                tsEl.className = 'sensor-card-source';
-                if (sensor.aliveTimeoutMinutes > 0) {
-                    tsEl.className += ' sensor-ts-row';
-                    var isZeroVal = state.val === 0 || state.val === '0';
-                    var displayMin = isZeroVal ? 60 : sensor.aliveTimeoutMinutes;
-                    var aliveMs = displayMin * 60000;
-                    var isStale = (Date.now() - state.ts) > aliveMs;
-                    if (isStale) tsEl.style.color = '#e67e22';
-                    var leftSpan = document.createElement('span');
-                    leftSpan.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
-                    var nextTs = new Date(state.ts + displayMin * 60000);
-                    var rightSpan = document.createElement('span');
-                    rightSpan.className = 'sensor-type-badge';
-                    rightSpan.textContent = nextTs.toLocaleTimeString();
-                    if (isStale) rightSpan.style.color = '#e67e22';
-                    tsEl.appendChild(leftSpan);
-                    tsEl.appendChild(rightSpan);
-                } else {
-                    tsEl.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
-                }
-                card.appendChild(tsEl);
-            }
-
-            grid.appendChild(card);
-        });
-    }
-
-    function renderDs(items, states) {
-        setText('h-ds', T.hDs);
-
-        var grid = document.getElementById('ds-grid');
-        grid.innerHTML = '';
-        var active = (items || []).filter(function (it) { return it && it.enabled && it.targetId; });
-        if (!active.length) {
-            var empty = document.createElement('div');
-            empty.className = 'sensor-grid-empty';
-            empty.textContent = T.noItems;
-            grid.appendChild(empty);
-            return;
-        }
-        active.forEach(function (item) {
-            var sid    = dsItemStateId(item);
-            if (!sid) return;
-            var state  = states && states[sid];
-            var hasVal = state && state.val !== null && state.val !== undefined;
-            var valText = fmtVal(hasVal ? state.val : null);
-
-            var card = document.createElement('div');
-            card.className = 'sensor-card';
-
-            /* header: name (centered) */
-            var header = document.createElement('div');
-            header.className = 'sensor-card-header';
-            var nameEl = document.createElement('span');
-            nameEl.className = 'sensor-card-name';
-            nameEl.textContent = item.name || item.targetId;
-            header.appendChild(nameEl);
-            card.appendChild(header);
-
-            /* value */
-            var valEl = document.createElement('div');
-            var valCls = 'sensor-card-value';
-            if (!hasVal) {
-                valCls += ' na';
-            }
-            valEl.className = valCls;
-            valEl.textContent = valText;
-            card.appendChild(valEl);
-
-            /* state id + mode badge */
-            var metaEl = document.createElement('div');
-            metaEl.className = 'sensor-card-meta';
-            metaEl.title = sid;
-            var metaTextSpan = document.createElement('span');
-            metaTextSpan.className = 'sensor-card-meta-text';
-            metaTextSpan.textContent = sid;
-            var modeBadge = document.createElement('span');
-            modeBadge.className = 'sensor-type-badge';
-            modeBadge.textContent = dsModeLabel(item);
-            metaEl.appendChild(metaTextSpan);
-            metaEl.appendChild(modeBadge);
-            card.appendChild(metaEl);
-
-            /* formula / expression */
-            var expr = dsFormulaText(item);
-            if (expr) {
-                var srcEl = document.createElement('div');
-                srcEl.className = 'sensor-card-source';
-                srcEl.textContent = expr;
-                srcEl.title = expr;
-                card.appendChild(srcEl);
-            }
-
-            /* last update timestamp */
-            if (state && state.ts) {
-                var tsEl = document.createElement('div');
-                tsEl.className = 'sensor-card-source';
-                tsEl.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
-                card.appendChild(tsEl);
-            }
-
-            grid.appendChild(card);
-        });
-    }
-
-    function render(config, states) {
+    function render(config) {
         document.getElementById('loading').style.display = 'none';
         document.getElementById('content').style.display = 'block';
 
-        /* update tab labels */
-        setText('tab-influx-btn', T.tabInflux);
-        setText('tab-ds-btn',     T.tabDs);
-        setText('tab-iframe-btn', T.tabIframe);
+        /* showAdminTab defaults to true when not set */
+        var showTab = config.showAdminTab !== false;
 
-        renderInflux(config.sensors, states);
-
-        if (config.enableDataSolectrus) {
-            document.getElementById('tab-ds-btn').style.display = '';
-            renderDs(config.dsItems, states);
-        } else {
-            document.getElementById('tab-ds-btn').style.display = 'none';
-            /* if Formula Engine tab was active, switch back to InfluxDB tab */
-            if (document.getElementById('tab-ds').classList.contains('active')) {
-                switchTab('influx');
-            }
+        if (!showTab) {
+            document.getElementById('tab-disabled').style.display = 'block';
+            document.getElementById('tab-disabled-msg').textContent = T.tabDisabledMsg;
+            document.getElementById('iframe-wrap').style.display = 'none';
+            return;
         }
 
+        document.getElementById('tab-disabled').style.display = 'none';
+        document.getElementById('iframe-wrap').style.display = '';
+
         var iframeUrl = (config.iframeUrl || '').trim();
-        /* Only allow http/https to prevent javascript: / data: injection */
         var iframeUrlSafe = /^https?:\/\//i.test(iframeUrl) ? iframeUrl : '';
-        var iframeEl = document.getElementById('dashboard-iframe');
+        var iframeEl          = document.getElementById('dashboard-iframe');
         var iframePlaceholder = document.getElementById('iframe-placeholder');
-        var iframeToolbar = document.getElementById('iframe-toolbar');
+        var iframeToolbar     = document.getElementById('iframe-toolbar');
+
         if (iframeUrlSafe) {
-            document.getElementById('tab-iframe-btn').style.display = '';
             if (iframeLoadedUrl !== iframeUrlSafe) {
                 iframeEl.src = iframeUrlSafe;
                 iframeLoadedUrl = iframeUrlSafe;
             }
-            /* toolbar: cert hint + http hint + open-in-new-tab link */
             document.getElementById('iframe-cert-hint').textContent = T.iframeCertHint;
             document.getElementById('iframe-http-hint').textContent = T.iframeHttpHint;
             var openLink = document.getElementById('iframe-open-link');
@@ -941,20 +405,12 @@
             iframeEl.style.display = 'block';
             iframePlaceholder.style.display = 'none';
         } else {
-            document.getElementById('tab-iframe-btn').style.display = 'none';
             iframeToolbar.style.display = 'none';
             iframePlaceholder.textContent = T.iframePlaceholder;
             iframePlaceholder.style.display = 'block';
             iframeEl.style.display = 'none';
-            iframeLoadedUrl = '';  /* reset so re-enabling the URL loads fresh */
-            /* if iFrame tab was active, switch back to InfluxDB tab */
-            if (document.getElementById('tab-iframe').classList.contains('active')) {
-                switchTab('influx');
-            }
+            iframeLoadedUrl = '';
         }
-
-        document.getElementById('refresh-info').textContent =
-            T.refreshed + new Date().toLocaleTimeString();
     }
 
     function showError(msg) {
@@ -973,7 +429,6 @@
             var base = target.location.href.split('#')[0];
             target.location.href = base + '#' + hash;
         } catch (_) {
-            /* cross-origin fallback: open in new tab */
             window.open('/index.html#' + hash, '_blank');
         }
     }
@@ -986,10 +441,8 @@
                 if (!obj || !obj.native) {
                     throw new Error('Adapter object not found: system.adapter.' + NS);
                 }
-                return _getStates(NS + '.*').then(function (states) {
-                    setConnStatus('online');
-                    render(obj.native, states || {});
-                });
+                setConnStatus('online');
+                render(obj.native);
             })
             .catch(function (err) {
                 showError(err && err.message ? err.message : String(err));
@@ -997,13 +450,9 @@
     }
 
     /* ── init ── */
-    setText('loading',    T.loading);
-    setText('config-btn', T.configBtn);
+    document.getElementById('loading').textContent = T.loading;
+    document.getElementById('config-btn').textContent = T.configBtn;
     setConnStatus('');
-
-    var _savedLayout = 'flex';
-    try { _savedLayout = localStorage.getItem(LAYOUT_KEY) || 'flex'; } catch (_) {}
-    applyLayout(_savedLayout === 'full');
 
     initSocket()
         .then(function () {

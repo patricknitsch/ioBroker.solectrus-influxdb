@@ -1,627 +1,631 @@
 {
-  "common": {
-    "name": "solectrus-influxdb",
-    "version": "1.8.2",
-    "news": {
-      "1.8.2": {
-        "en": "Adapter requires node.js >= 22 now\nFix sensor duplicate: stale draft cache caused wrong sensor data to appear in the detail panel after duplicating or deleting a sensor\nUpdate Dependencies",
-        "de": "Adapter benötigt node.js >= 22 jetzt\nFix-Sensor-Duplikat: Stale-Entwurf-Cache verursachte falsche Sensordaten, um in der Detail-Panel nach dem Duplizieren oder Löschen eines Sensors erscheinen\nAnpassungsabhängigkeiten",
-        "ru": "Адаптер требует node.js >= 22 сейчас\nУстранение дубликата датчика: устаревший проект кэша вызвал появление неправильных данных датчика на панели деталей после дублирования или удаления датчика\nОбновление зависимостей",
-        "pt": "Adaptador requer nod.js >= 22 agora\nCorrigir duplicata do sensor: cache de rascunho velho fez com que dados errados do sensor aparecessem no painel de detalhes após duplicar ou excluir um sensor\nAtualizar dependências",
-        "nl": "Voor de adapter zijn node.js < 22 nu nodig\nFix sensor duplicate: oude ontwerp cache veroorzaakt verkeerde sensorgegevens te verschijnen in het detailpaneel na het dupliceren of verwijderen van een sensor\nAfhankelijkheden bijwerken",
-        "fr": "Adaptateur nécessite node.js >= 22 maintenant\nCorrection du duplicata du capteur: le cache à brouillon a causé l'apparition de données erronées du capteur dans le panneau de détails après duplicata ou suppression d'un capteur\nMettre à jour les dépendances",
-        "it": "Adattatore richiede node.js >= 22 ora\nRisolvere il duplicato del sensore: la cache della bozza di stante ha causato i dati del sensore errato per apparire nel pannello di dettaglio dopo la duplicazione o la cancellazione di un sensore\nDipendenze di aggiornamento",
-        "es": "Adaptador requiere node.js ю= 22 ahora\nCorregir el duplicado del sensor: el borrador de caché hizo que los datos incorrectos del sensor aparecieran en el panel de detalles después de duplicar o eliminar un sensor\nDependencias de actualización",
-        "pl": "Adapter wymaga node.js > = 22\nNapraw duplikat czujnika: nieświeży szkic pamięci podręcznej spowodował, że błędne dane czujnika pojawiły się w panelu szczegółowości po powieleniu lub usunięciu czujnika\nAktualizuj zależności",
-        "uk": "Адаптер вимагає node.js >= 22 тепер\nФіксований сенсорний дублікат: застібка проекту кешу викликала неправильні дані датчика, які з'являються в докладній панелі після видалення або видалення датчика\nОновлення залежності",
-        "zh-cn": "适配器需要节点.js 现在22\n固定传感器复制:过时的草稿缓存导致在复制或删除传感器后在细节面板中出现错误的传感器数据\n更新依赖关系"
-      },
-      "1.8.1": {
-        "en": "Auto-detect sensor unit from ioBroker state `common.unit`; unit field configurable in Expert Mode; display defaults to `W` when no unit is set\nUpdate Documentation",
-        "de": "Auto-Detekt-Sensoreinheit aus ioBroker state `common.unit`; Einheitsfeld konfigurierbar im Expertenmodus; Display-Standards zu `W`, wenn keine Einheit gesetzt ist\nDokumentation aktualisieren",
-        "ru": "Устройство автоматического обнаружения датчика из состояния ioBroker «common.unit»; поле блока, настраиваемое в режиме эксперта; отображение по умолчанию до «W», когда не установлено устройство\nОбновление документации",
-        "pt": "Detectar automaticamente a unidade de sensor do estado do ioBroker `common.unit'; campo unitário configurável no modo Expert; exibir padrão para `W` quando nenhuma unidade está definida\nAtualizar documentação",
-        "nl": "Auto-detect sensor unit van joBroker state common.unit\nDocumentatie bijwerken",
-        "fr": "Unité de détection automatique de l'état ioBroker `common.unit`; champ d'unité configurable en mode expert; affiche par défaut à `W` lorsqu'aucune unité n'est définie\nMettre à jour la documentation",
-        "it": "Unità sensore di rilevamento automatico da stato ioBroker `common.unit`; campo unità configurabile in modalità esperto; impostazione predefinita del display a `W` quando nessuna unità è impostata\nDocumentazione di aggiornamento",
-        "es": "Unidad de sensor de auto-detecto del estado de ioBroker `common.unit`; campo de unidad configurable en modo de experto; mostrar defectos a `W` cuando no se establece una unidad\nDocumentación actualizada",
-        "pl": "Automatyczne wykrywanie czujników ze stanu joBroker 'common.unit'; pole jednostki konfigurowalne w trybie Expert; wyświetlanie domyślnych wartości 'W', gdy nie jest ustawiona żadna jednostka\nAktualizacja dokumentacji",
-        "uk": "Автодетектурний сенсорний блок від ioBroker State `common.unit`; блок поле настроєний в експертному режимі; відображення за замовчуванням до `W`, коли не встановлено блок\nДокументація",
-        "zh-cn": "从 ioBroker 状态“ common.unit” 自动检测传感器单元; 专家模式下可配置的单元字段; 未设置单元时显示默认为“ W”\n更新文档"
-      },
-      "1.8.0": {
-        "en": "Update Dependencies\nAdd Notification function, to send warnings and errors to selectable providers\nUpdate Documentation",
-        "de": "Anpassungsabhängigkeiten\nBenachrichtigungsfunktion hinzufügen, Warnungen und Fehler an wählbare Anbieter senden\nDokumentation aktualisieren",
-        "ru": "Обновление зависимостей\nДобавьте функцию уведомлений, чтобы отправлять предупреждения и ошибки выбранным поставщикам\nОбновление документации",
-        "pt": "Atualizar dependências\nAdicionar função de notificação, para enviar avisos e erros para provedores selecionáveis\nAtualizar documentação",
-        "nl": "Afhankelijkheden bijwerken\nNotificatiefunctie toevoegen om waarschuwingen en fouten naar selecteerbare providers te sturen\nDocumentatie bijwerken",
-        "fr": "Mettre à jour les dépendances\nAjouter la fonction Notification, pour envoyer des avertissements et des erreurs aux fournisseurs sélectionnables\nMettre à jour la documentation",
-        "it": "Dipendenze di aggiornamento\nAggiungi la funzione di notifica, per inviare avvisi ed errori ai provider selezionabili\nDocumentazione di aggiornamento",
-        "es": "Dependencias de actualización\nAgregar función de notificación, para enviar advertencias y errores a proveedores seleccionables\nDocumentación actualizada",
-        "pl": "Aktualizuj zależności\nDodaj funkcję powiadamiania, aby wysłać ostrzeżenia i błędy do wybranych dostawców\nAktualizacja dokumentacji",
-        "uk": "Оновлення залежності\nДодати функцію сповіщення, щоб надсилати попередження та помилки для вибору постачальників\nДокументація",
-        "zh-cn": "更新依赖关系\n添加通知功能, 向可选择的提供者发送警告和错误\n更新文档"
-      },
-      "1.7.1": {
-        "en": "Default for max Values with 0W deactivated\nFix non-expert information when monitoring is disabled",
-        "de": "Standard für max Werte mit 0W deaktiviert\nNicht-Experten-Informationen reparieren, wenn die Überwachung deaktiviert ist",
-        "ru": "Дефолт для максимальных значений с отключенным 0W\nИсправить неэкспертную информацию при отключении мониторинга",
-        "pt": "Padrão para valores máximos com 0W desativados\nCorrigir as informações não especializadas quando a monitorização estiver desactivada",
-        "nl": "Standaard voor max Waarden met 0W gedeactiveerd\nFix niet-expert informatie bij bewaking is uitgeschakeld",
-        "fr": "Valeur par défaut pour max avec 0W désactivé\nCorrection des informations non expertes lorsque la surveillance est désactivée",
-        "it": "Predefinito per valori massimi con 0W disattivato\nFissare informazioni non esperte quando il monitoraggio è disabilitato",
-        "es": "Predeterminado para valores máximos con 0W desactivado\nReparar la información no experto cuando el monitoreo es deshabilitado",
-        "pl": "Domyślnie dla wartości maksymalnych z dezaktywowanym 0W\nPoprawianie informacji niespecjalistycznych, gdy monitorowanie jest wyłączone",
-        "uk": "За замовчуванням для максимальних значень з деактивацією 0W\nВиправлення невибагливої інформації при відключенні моніторингу",
-        "zh-cn": "0W 已关闭的最大值的默认值\n停止监测时修复非专家信息"
-      },
-      "1.7.0": {
-        "en": "Increased max value from 10.000W to 15.000W\nZero-value alive monitoring: when a sensor timeout fires and the current value is 0, log info instead of warn and retry after 60 minutes\nSensor overview: numeric value row shows current value with unit (W) left-aligned and max value with unit (W) right-aligned\nSensor overview: timestamp row shows last timestamp left-aligned and auto-computed next expected update timestamp right-aligned (no manual input needed)\nSensor overview: change Format",
-        "de": "Erhöhter Maximalwert von 10.000W auf 15.000W\nNullwert-Lebensüberwachung: wenn ein Sensor Timeout feuert und der aktuelle Wert 0 ist, log info statt warnen und nach 60 Minuten wiederkehren\nSensorübersicht: numerische Wertezeile zeigt den aktuellen Wert mit der Einheit (W) links- und max-Wert mit der Einheit (W) rechts-ausgerichtet\nSensorübersicht: Zeitstempelzeile zeigt den letzten Zeitstempel links ausgerichtet und autokomputiert nächste erwartete Update-Zeitstempel rechts ausgerichtet (keine manuelle Eingabe erforderlich)\nSensorübersicht: Format ändern",
-        "ru": "Увеличение максимального значения с 10 000 Вт до 15 000 Вт\nМониторинг жизни с нулевым значением: когда датчик выключает тайм-аут и текущее значение составляет 0, введите информацию вместо предупреждения и повторного использования через 60 минут\nОбзор датчика: числовой ряд значений показывает текущее значение с единицей (W) левого выравнивания и максимальное значение с единицей (W) правого выравнивания\nОбзор датчика: строка временных меток показывает последнюю временную метку с левым расположением и автоматически вычисляемую следующую ожидаемую временную метку обновления с правым расположением (не требуется ручной ввод)\nОбзор сенсора: изменение формата",
-        "pt": "Valor máximo aumentado de 10.000W para 15.000W\nMonitorização viva com valor zero: quando um tempo limite do sensor dispara e o valor atual é 0, log info em vez de avisar e repetir após 60 minutos\nVisão geral do sensor: a linha de valor numérico mostra o valor atual com o valor de unidade (W) alinhado à esquerda e máximo com o valor de unidade (W) alinhado à direita\nVisão geral do sensor: a linha timestamp mostra a última linha timestamp alinhada à esquerda e computada automaticamente a próxima atualização esperada timestamp alinhada à direita (sem necessidade de entrada manual)\nVisão geral do sensor: formato de mudança",
-        "nl": "Verhoogde maximale waarde van 10.000W naar 15.000W\nZero-value live monitoring: wanneer een sensor timeout brandt en de huidige waarde 0 is, log info in plaats van waarschuwen en opnieuw proberen na 60 minuten\nSensoroverzicht: numerieke waarde rij toont de huidige waarde met eenheid (W) links-gebonden en maximale waarde met eenheid (W) rechts-gebonden\nSensor overzicht: tijdstempel rij toont laatste tijdstempel links-gebonden en automatisch-berekend volgende verwachte update tijdstempel rechts-gelijnd (geen handmatige invoer nodig)\nOverzicht sensor: formaat wijzigen",
-        "fr": "Valeur maximale augmentée de 10.000W à 15.000W\nSurveillance vivante de valeur zéro : lorsqu'un capteur s'allume et que la valeur actuelle est 0, log info au lieu de prévenir et de réessayer après 60 minutes\nAperçu du capteur : la ligne de valeur numérique affiche la valeur courante avec unité (W) alignée à gauche et la valeur maximale avec unité (W) alignée à droite\nAperçu du capteur : la ligne horodatage montre la dernière horodatage aligné à gauche et calculé automatiquement la prochaine mise à jour attendue horodatage aligné à droite (pas d'entrée manuelle nécessaire)\nAperçu du capteur : changement Format",
-        "it": "Valore massimo aumentato da 10.000W a 15.000W\nMonitoraggio vivo a valore zero: quando un timeout del sensore spara e il valore corrente è 0, log info invece di avvertire e riprovare dopo 60 minuti\nPanoramica del sensore: la riga del valore numerico mostra il valore corrente con unità (W) sinistra-allineata e il valore massimo con unità (W) destra allineata\nPanoramica del sensore: la riga del timestamp mostra l'ultimo timestamp allineato a sinistra e automatizzato il prossimo timestamp di aggiornamento previsto allineato a destra (nessun ingresso manuale necessario)\nPanoramica del sensore: cambiare Formato",
-        "es": "Mayor valor máximo de 10.000W a 15.000W\nMonitoreo vivo de valor cero: cuando un temporizador de sensores dispara y el valor actual es 0, información de registro en lugar de advertir y reingresar después de 60 minutos\nResumen del sensor: la fila de valor numérico muestra el valor actual con unidad (W) alineado izquierdo y valor máximo con unidad (W) alineado derecho\nResumen del sensor: timetamp row shows last timestamp left-aligned and auto-computed next expected update timestamp right-aligned (no se necesita entrada manual)\nResumen del sensor: cambio de formato",
-        "pl": "Zwiększona wartość maksymalna z 10.000 W do 15.000 W\nMonitorowanie żywej wartości zero-: gdy czujnik wyłącza ogień i bieżąca wartość wynosi 0, zaloguj informacje zamiast ostrzegać i ponownie spróbować po 60 minutach\nPrzegląd czujników: numeryczny wiersz wartości pokazuje bieżącą wartość z jednostkami (W) wyrównanymi w lewo i wartością maksymalną z jednostkami (W) wyrównanymi w prawo\nPrzegląd czujnika: wiersz timestamp pokazuje ostatni znacznik czasu left- wyrównany i auto- obliczony następny oczekiwany znacznik czasu aktualizacji praw- wyrównany (nie wymaga ręcznego wprowadzania)\nPrzegląd czujników: zmień format",
-        "uk": "Підвищена максимальна вартість від 10.000 Вт до 15.000 Вт\nЗеро-значення живого моніторингу: коли датчик випливає вогонь і струм значення 0, log info замість попередження і птиця після 60 хвилин\nОгляд датчика: нумеричне значення рядка показує поточне значення з блоком (W) вирівнюється і максимальне значення з блоком (W) правого вирівнювання\nОгляд датчика: часовий ряд показує останні часові затиски, що вирівнюються і автоматично зібрані наступні очікувані терміни оновлення, вирівнювані (не потрібно вручну)\nОгляд датчика: формат змін",
-        "zh-cn": "最大值从10 000瓦提高到15 000瓦\n零值活性监测:当传感器超时起火和当前值为 0时,记录信息而不是警告,并在60分钟后重试\n传感器概览:数字值行以单位(W)左对齐显示当前值,以单位(W)右对齐显示最大值\n传感器概览: 时间戳行显示上次时间戳左对齐和自动计算 下一个预期更新时间戳右对齐(不需要手动输入)\n传感器概览: 更改格式"
-      },
-      "1.6.0": {
-        "en": "Catch max. Values - settable in Config\nIncrease Version from 20 to 24 becauso of deploy error\nAdd Alive monitoring: configurable timeout warns when sensor values are not updated",
-        "de": "Fang max. Werte - in Config einstellbar\nErhöhen Sie die Version von 20 auf 24 becauso des Bereitstellungsfehlers\nAlive Überwachung hinzufügen: konfigurierbare Timeout-Warnungen, wenn Sensorwerte nicht aktualisiert werden",
-        "ru": "Поймай Макса. Значения - settable in Config\nУвеличить версию с 20 до 24 becauso ошибки развертывания\nНастройка тайм-аута предупреждает, когда значения датчиков не обновляются",
-        "pt": "Apanhar o máximo. Valores - definido na configuração\nAumentar a versão de 20 para 24 por causa do erro de implantação\nAdicionar monitoramento vivo: tempo limite configurável avisa quando os valores do sensor não são atualizados",
-        "nl": "Vang max. Waarden - instellen in configuratie\nVerhoog Versie van 20 naar 24 becauso van implementatie fout\nAlive monitoring toevoegen: configureerbare timeout waarschuwt wanneer sensorwaarden niet worden bijgewerkt",
-        "fr": "Attrapez max. Valeurs - settable dans Config\nAugmenter la version de 20 à 24 becauso d'erreur de déploiement\nAjouter la surveillance Alive : un timeout configurable avertit lorsque les valeurs du capteur ne sont pas mises à jour",
-        "it": "Prendi max. Valori - impostabili in Configurazione\nAumentare la versione da 20 a 24 becauso di errore di distribuzione\nAdd Alive monitoring: il timeout configurabile avverte quando i valori dei sensori non vengono aggiornati",
-        "es": "Coge max. Valores -tablecido en Config\nAumento de la versión de 20 a 24 becauso de error de despliegue\nAñada Monitorización Alive: timeout configurable advierte cuando los valores de sensor no se actualizan",
-        "pl": "Łap maks. Wartości - można ustawić w konfiguratorze\nZwiększ wersję z 20 do 24 becaso błędu rozmieszczenia\nDodaj monitoring Alive: konfigurowalny timeout ostrzega, gdy wartości czujników nie są aktualizowane",
-        "uk": "Кетч макс. Цінності - розклад на Конфіг\nЗбільшення версії від 20 до 24 becauso помилки розгортання\nДодавання Alive моніторингу: Налаштування часу попереджає, коли значення датчика не оновлено",
-        "zh-cn": "抓得最多一点。 数值 - 在配置中设置\n将部署错误的版本从20个增加到24个\n添加活性监视: 当传感器值没有更新时可配置的超时警告"
-      },
-      "1.5.0": {
-        "en": "Fix Issues RepoChecker\nAdd Tab for SOLECTRUS iFrame",
-        "de": "Probleme beheben RepoChecker\nTab hinzufügen für SOLECTRUS iFrame",
-        "ru": "Обсуждение RepoChecker\nДобавить вкладку для SolecTRUS iFrame",
-        "pt": "Corrigir o RepoChecker de Problemas\nAdicionar aba para o SOLECTRUS iFrame",
-        "nl": "Kwesties repochecker oplossen\nTabblad voor SOLECTRUS toevoegen iFrame",
-        "fr": "Correction des problèmes RepoChecker\nAjouter un onglet pour SOLECTRUS iFrame",
-        "it": "Riparare i problemi RepoChecker\nAggiungi scheda per SOLECTRUS IFrame",
-        "es": "Problemas fijos RepoChecker\nAñadir Tab para SOLECTRUS iFrame",
-        "pl": "Napraw repoChecker problemów\nDodaj kartę dla SOLECTRUS iFrame",
-        "uk": "Виправлення питань РепоЧекер\nДодати вкладку для SOLECTRUS ІФраме",
-        "zh-cn": "修复问题复检器\n为 SOLECTRUS 添加标签 iFrame 图像"
-      }
+    "common": {
+        "name": "solectrus-influxdb",
+        "version": "1.8.2",
+        "news": {
+            "1.8.2": {
+                "en": "Adapter requires node.js >= 22 now\nFix sensor duplicate: stale draft cache caused wrong sensor data to appear in the detail panel after duplicating or deleting a sensor\nUpdate Dependencies",
+                "de": "Adapter benötigt node.js >= 22 jetzt\nFix-Sensor-Duplikat: Stale-Entwurf-Cache verursachte falsche Sensordaten, um in der Detail-Panel nach dem Duplizieren oder Löschen eines Sensors erscheinen\nAnpassungsabhängigkeiten",
+                "ru": "Адаптер требует node.js >= 22 сейчас\nУстранение дубликата датчика: устаревший проект кэша вызвал появление неправильных данных датчика на панели деталей после дублирования или удаления датчика\nОбновление зависимостей",
+                "pt": "Adaptador requer nod.js >= 22 agora\nCorrigir duplicata do sensor: cache de rascunho velho fez com que dados errados do sensor aparecessem no painel de detalhes após duplicar ou excluir um sensor\nAtualizar dependências",
+                "nl": "Voor de adapter zijn node.js < 22 nu nodig\nFix sensor duplicate: oude ontwerp cache veroorzaakt verkeerde sensorgegevens te verschijnen in het detailpaneel na het dupliceren of verwijderen van een sensor\nAfhankelijkheden bijwerken",
+                "fr": "Adaptateur nécessite node.js >= 22 maintenant\nCorrection du duplicata du capteur: le cache à brouillon a causé l'apparition de données erronées du capteur dans le panneau de détails après duplicata ou suppression d'un capteur\nMettre à jour les dépendances",
+                "it": "Adattatore richiede node.js >= 22 ora\nRisolvere il duplicato del sensore: la cache della bozza di stante ha causato i dati del sensore errato per apparire nel pannello di dettaglio dopo la duplicazione o la cancellazione di un sensore\nDipendenze di aggiornamento",
+                "es": "Adaptador requiere node.js ю= 22 ahora\nCorregir el duplicado del sensor: el borrador de caché hizo que los datos incorrectos del sensor aparecieran en el panel de detalles después de duplicar o eliminar un sensor\nDependencias de actualización",
+                "pl": "Adapter wymaga node.js > = 22\nNapraw duplikat czujnika: nieświeży szkic pamięci podręcznej spowodował, że błędne dane czujnika pojawiły się w panelu szczegółowości po powieleniu lub usunięciu czujnika\nAktualizuj zależności",
+                "uk": "Адаптер вимагає node.js >= 22 тепер\nФіксований сенсорний дублікат: застібка проекту кешу викликала неправильні дані датчика, які з'являються в докладній панелі після видалення або видалення датчика\nОновлення залежності",
+                "zh-cn": "适配器需要节点.js 现在22\n固定传感器复制:过时的草稿缓存导致在复制或删除传感器后在细节面板中出现错误的传感器数据\n更新依赖关系"
+            },
+            "1.8.1": {
+                "en": "Auto-detect sensor unit from ioBroker state `common.unit`; unit field configurable in Expert Mode; display defaults to `W` when no unit is set\nUpdate Documentation",
+                "de": "Auto-Detekt-Sensoreinheit aus ioBroker state `common.unit`; Einheitsfeld konfigurierbar im Expertenmodus; Display-Standards zu `W`, wenn keine Einheit gesetzt ist\nDokumentation aktualisieren",
+                "ru": "Устройство автоматического обнаружения датчика из состояния ioBroker «common.unit»; поле блока, настраиваемое в режиме эксперта; отображение по умолчанию до «W», когда не установлено устройство\nОбновление документации",
+                "pt": "Detectar automaticamente a unidade de sensor do estado do ioBroker `common.unit'; campo unitário configurável no modo Expert; exibir padrão para `W` quando nenhuma unidade está definida\nAtualizar documentação",
+                "nl": "Auto-detect sensor unit van joBroker state common.unit\nDocumentatie bijwerken",
+                "fr": "Unité de détection automatique de l'état ioBroker `common.unit`; champ d'unité configurable en mode expert; affiche par défaut à `W` lorsqu'aucune unité n'est définie\nMettre à jour la documentation",
+                "it": "Unità sensore di rilevamento automatico da stato ioBroker `common.unit`; campo unità configurabile in modalità esperto; impostazione predefinita del display a `W` quando nessuna unità è impostata\nDocumentazione di aggiornamento",
+                "es": "Unidad de sensor de auto-detecto del estado de ioBroker `common.unit`; campo de unidad configurable en modo de experto; mostrar defectos a `W` cuando no se establece una unidad\nDocumentación actualizada",
+                "pl": "Automatyczne wykrywanie czujników ze stanu joBroker 'common.unit'; pole jednostki konfigurowalne w trybie Expert; wyświetlanie domyślnych wartości 'W', gdy nie jest ustawiona żadna jednostka\nAktualizacja dokumentacji",
+                "uk": "Автодетектурний сенсорний блок від ioBroker State `common.unit`; блок поле настроєний в експертному режимі; відображення за замовчуванням до `W`, коли не встановлено блок\nДокументація",
+                "zh-cn": "从 ioBroker 状态“ common.unit” 自动检测传感器单元; 专家模式下可配置的单元字段; 未设置单元时显示默认为“ W”\n更新文档"
+            },
+            "1.8.0": {
+                "en": "Update Dependencies\nAdd Notification function, to send warnings and errors to selectable providers\nUpdate Documentation",
+                "de": "Anpassungsabhängigkeiten\nBenachrichtigungsfunktion hinzufügen, Warnungen und Fehler an wählbare Anbieter senden\nDokumentation aktualisieren",
+                "ru": "Обновление зависимостей\nДобавьте функцию уведомлений, чтобы отправлять предупреждения и ошибки выбранным поставщикам\nОбновление документации",
+                "pt": "Atualizar dependências\nAdicionar função de notificação, para enviar avisos e erros para provedores selecionáveis\nAtualizar documentação",
+                "nl": "Afhankelijkheden bijwerken\nNotificatiefunctie toevoegen om waarschuwingen en fouten naar selecteerbare providers te sturen\nDocumentatie bijwerken",
+                "fr": "Mettre à jour les dépendances\nAjouter la fonction Notification, pour envoyer des avertissements et des erreurs aux fournisseurs sélectionnables\nMettre à jour la documentation",
+                "it": "Dipendenze di aggiornamento\nAggiungi la funzione di notifica, per inviare avvisi ed errori ai provider selezionabili\nDocumentazione di aggiornamento",
+                "es": "Dependencias de actualización\nAgregar función de notificación, para enviar advertencias y errores a proveedores seleccionables\nDocumentación actualizada",
+                "pl": "Aktualizuj zależności\nDodaj funkcję powiadamiania, aby wysłać ostrzeżenia i błędy do wybranych dostawców\nAktualizacja dokumentacji",
+                "uk": "Оновлення залежності\nДодати функцію сповіщення, щоб надсилати попередження та помилки для вибору постачальників\nДокументація",
+                "zh-cn": "更新依赖关系\n添加通知功能, 向可选择的提供者发送警告和错误\n更新文档"
+            },
+            "1.7.1": {
+                "en": "Default for max Values with 0W deactivated\nFix non-expert information when monitoring is disabled",
+                "de": "Standard für max Werte mit 0W deaktiviert\nNicht-Experten-Informationen reparieren, wenn die Überwachung deaktiviert ist",
+                "ru": "Дефолт для максимальных значений с отключенным 0W\nИсправить неэкспертную информацию при отключении мониторинга",
+                "pt": "Padrão para valores máximos com 0W desativados\nCorrigir as informações não especializadas quando a monitorização estiver desactivada",
+                "nl": "Standaard voor max Waarden met 0W gedeactiveerd\nFix niet-expert informatie bij bewaking is uitgeschakeld",
+                "fr": "Valeur par défaut pour max avec 0W désactivé\nCorrection des informations non expertes lorsque la surveillance est désactivée",
+                "it": "Predefinito per valori massimi con 0W disattivato\nFissare informazioni non esperte quando il monitoraggio è disabilitato",
+                "es": "Predeterminado para valores máximos con 0W desactivado\nReparar la información no experto cuando el monitoreo es deshabilitado",
+                "pl": "Domyślnie dla wartości maksymalnych z dezaktywowanym 0W\nPoprawianie informacji niespecjalistycznych, gdy monitorowanie jest wyłączone",
+                "uk": "За замовчуванням для максимальних значень з деактивацією 0W\nВиправлення невибагливої інформації при відключенні моніторингу",
+                "zh-cn": "0W 已关闭的最大值的默认值\n停止监测时修复非专家信息"
+            },
+            "1.7.0": {
+                "en": "Increased max value from 10.000W to 15.000W\nZero-value alive monitoring: when a sensor timeout fires and the current value is 0, log info instead of warn and retry after 60 minutes\nSensor overview: numeric value row shows current value with unit (W) left-aligned and max value with unit (W) right-aligned\nSensor overview: timestamp row shows last timestamp left-aligned and auto-computed next expected update timestamp right-aligned (no manual input needed)\nSensor overview: change Format",
+                "de": "Erhöhter Maximalwert von 10.000W auf 15.000W\nNullwert-Lebensüberwachung: wenn ein Sensor Timeout feuert und der aktuelle Wert 0 ist, log info statt warnen und nach 60 Minuten wiederkehren\nSensorübersicht: numerische Wertezeile zeigt den aktuellen Wert mit der Einheit (W) links- und max-Wert mit der Einheit (W) rechts-ausgerichtet\nSensorübersicht: Zeitstempelzeile zeigt den letzten Zeitstempel links ausgerichtet und autokomputiert nächste erwartete Update-Zeitstempel rechts ausgerichtet (keine manuelle Eingabe erforderlich)\nSensorübersicht: Format ändern",
+                "ru": "Увеличение максимального значения с 10 000 Вт до 15 000 Вт\nМониторинг жизни с нулевым значением: когда датчик выключает тайм-аут и текущее значение составляет 0, введите информацию вместо предупреждения и повторного использования через 60 минут\nОбзор датчика: числовой ряд значений показывает текущее значение с единицей (W) левого выравнивания и максимальное значение с единицей (W) правого выравнивания\nОбзор датчика: строка временных меток показывает последнюю временную метку с левым расположением и автоматически вычисляемую следующую ожидаемую временную метку обновления с правым расположением (не требуется ручной ввод)\nОбзор сенсора: изменение формата",
+                "pt": "Valor máximo aumentado de 10.000W para 15.000W\nMonitorização viva com valor zero: quando um tempo limite do sensor dispara e o valor atual é 0, log info em vez de avisar e repetir após 60 minutos\nVisão geral do sensor: a linha de valor numérico mostra o valor atual com o valor de unidade (W) alinhado à esquerda e máximo com o valor de unidade (W) alinhado à direita\nVisão geral do sensor: a linha timestamp mostra a última linha timestamp alinhada à esquerda e computada automaticamente a próxima atualização esperada timestamp alinhada à direita (sem necessidade de entrada manual)\nVisão geral do sensor: formato de mudança",
+                "nl": "Verhoogde maximale waarde van 10.000W naar 15.000W\nZero-value live monitoring: wanneer een sensor timeout brandt en de huidige waarde 0 is, log info in plaats van waarschuwen en opnieuw proberen na 60 minuten\nSensoroverzicht: numerieke waarde rij toont de huidige waarde met eenheid (W) links-gebonden en maximale waarde met eenheid (W) rechts-gebonden\nSensor overzicht: tijdstempel rij toont laatste tijdstempel links-gebonden en automatisch-berekend volgende verwachte update tijdstempel rechts-gelijnd (geen handmatige invoer nodig)\nOverzicht sensor: formaat wijzigen",
+                "fr": "Valeur maximale augmentée de 10.000W à 15.000W\nSurveillance vivante de valeur zéro : lorsqu'un capteur s'allume et que la valeur actuelle est 0, log info au lieu de prévenir et de réessayer après 60 minutes\nAperçu du capteur : la ligne de valeur numérique affiche la valeur courante avec unité (W) alignée à gauche et la valeur maximale avec unité (W) alignée à droite\nAperçu du capteur : la ligne horodatage montre la dernière horodatage aligné à gauche et calculé automatiquement la prochaine mise à jour attendue horodatage aligné à droite (pas d'entrée manuelle nécessaire)\nAperçu du capteur : changement Format",
+                "it": "Valore massimo aumentato da 10.000W a 15.000W\nMonitoraggio vivo a valore zero: quando un timeout del sensore spara e il valore corrente è 0, log info invece di avvertire e riprovare dopo 60 minuti\nPanoramica del sensore: la riga del valore numerico mostra il valore corrente con unità (W) sinistra-allineata e il valore massimo con unità (W) destra allineata\nPanoramica del sensore: la riga del timestamp mostra l'ultimo timestamp allineato a sinistra e automatizzato il prossimo timestamp di aggiornamento previsto allineato a destra (nessun ingresso manuale necessario)\nPanoramica del sensore: cambiare Formato",
+                "es": "Mayor valor máximo de 10.000W a 15.000W\nMonitoreo vivo de valor cero: cuando un temporizador de sensores dispara y el valor actual es 0, información de registro en lugar de advertir y reingresar después de 60 minutos\nResumen del sensor: la fila de valor numérico muestra el valor actual con unidad (W) alineado izquierdo y valor máximo con unidad (W) alineado derecho\nResumen del sensor: timetamp row shows last timestamp left-aligned and auto-computed next expected update timestamp right-aligned (no se necesita entrada manual)\nResumen del sensor: cambio de formato",
+                "pl": "Zwiększona wartość maksymalna z 10.000 W do 15.000 W\nMonitorowanie żywej wartości zero-: gdy czujnik wyłącza ogień i bieżąca wartość wynosi 0, zaloguj informacje zamiast ostrzegać i ponownie spróbować po 60 minutach\nPrzegląd czujników: numeryczny wiersz wartości pokazuje bieżącą wartość z jednostkami (W) wyrównanymi w lewo i wartością maksymalną z jednostkami (W) wyrównanymi w prawo\nPrzegląd czujnika: wiersz timestamp pokazuje ostatni znacznik czasu left- wyrównany i auto- obliczony następny oczekiwany znacznik czasu aktualizacji praw- wyrównany (nie wymaga ręcznego wprowadzania)\nPrzegląd czujników: zmień format",
+                "uk": "Підвищена максимальна вартість від 10.000 Вт до 15.000 Вт\nЗеро-значення живого моніторингу: коли датчик випливає вогонь і струм значення 0, log info замість попередження і птиця після 60 хвилин\nОгляд датчика: нумеричне значення рядка показує поточне значення з блоком (W) вирівнюється і максимальне значення з блоком (W) правого вирівнювання\nОгляд датчика: часовий ряд показує останні часові затиски, що вирівнюються і автоматично зібрані наступні очікувані терміни оновлення, вирівнювані (не потрібно вручну)\nОгляд датчика: формат змін",
+                "zh-cn": "最大值从10 000瓦提高到15 000瓦\n零值活性监测:当传感器超时起火和当前值为 0时,记录信息而不是警告,并在60分钟后重试\n传感器概览:数字值行以单位(W)左对齐显示当前值,以单位(W)右对齐显示最大值\n传感器概览: 时间戳行显示上次时间戳左对齐和自动计算 下一个预期更新时间戳右对齐(不需要手动输入)\n传感器概览: 更改格式"
+            },
+            "1.6.0": {
+                "en": "Catch max. Values - settable in Config\nIncrease Version from 20 to 24 becauso of deploy error\nAdd Alive monitoring: configurable timeout warns when sensor values are not updated",
+                "de": "Fang max. Werte - in Config einstellbar\nErhöhen Sie die Version von 20 auf 24 becauso des Bereitstellungsfehlers\nAlive Überwachung hinzufügen: konfigurierbare Timeout-Warnungen, wenn Sensorwerte nicht aktualisiert werden",
+                "ru": "Поймай Макса. Значения - settable in Config\nУвеличить версию с 20 до 24 becauso ошибки развертывания\nНастройка тайм-аута предупреждает, когда значения датчиков не обновляются",
+                "pt": "Apanhar o máximo. Valores - definido na configuração\nAumentar a versão de 20 para 24 por causa do erro de implantação\nAdicionar monitoramento vivo: tempo limite configurável avisa quando os valores do sensor não são atualizados",
+                "nl": "Vang max. Waarden - instellen in configuratie\nVerhoog Versie van 20 naar 24 becauso van implementatie fout\nAlive monitoring toevoegen: configureerbare timeout waarschuwt wanneer sensorwaarden niet worden bijgewerkt",
+                "fr": "Attrapez max. Valeurs - settable dans Config\nAugmenter la version de 20 à 24 becauso d'erreur de déploiement\nAjouter la surveillance Alive : un timeout configurable avertit lorsque les valeurs du capteur ne sont pas mises à jour",
+                "it": "Prendi max. Valori - impostabili in Configurazione\nAumentare la versione da 20 a 24 becauso di errore di distribuzione\nAdd Alive monitoring: il timeout configurabile avverte quando i valori dei sensori non vengono aggiornati",
+                "es": "Coge max. Valores -tablecido en Config\nAumento de la versión de 20 a 24 becauso de error de despliegue\nAñada Monitorización Alive: timeout configurable advierte cuando los valores de sensor no se actualizan",
+                "pl": "Łap maks. Wartości - można ustawić w konfiguratorze\nZwiększ wersję z 20 do 24 becaso błędu rozmieszczenia\nDodaj monitoring Alive: konfigurowalny timeout ostrzega, gdy wartości czujników nie są aktualizowane",
+                "uk": "Кетч макс. Цінності - розклад на Конфіг\nЗбільшення версії від 20 до 24 becauso помилки розгортання\nДодавання Alive моніторингу: Налаштування часу попереджає, коли значення датчика не оновлено",
+                "zh-cn": "抓得最多一点。 数值 - 在配置中设置\n将部署错误的版本从20个增加到24个\n添加活性监视: 当传感器值没有更新时可配置的超时警告"
+            },
+            "1.5.0": {
+                "en": "Fix Issues RepoChecker\nAdd Tab for SOLECTRUS iFrame",
+                "de": "Probleme beheben RepoChecker\nTab hinzufügen für SOLECTRUS iFrame",
+                "ru": "Обсуждение RepoChecker\nДобавить вкладку для SolecTRUS iFrame",
+                "pt": "Corrigir o RepoChecker de Problemas\nAdicionar aba para o SOLECTRUS iFrame",
+                "nl": "Kwesties repochecker oplossen\nTabblad voor SOLECTRUS toevoegen iFrame",
+                "fr": "Correction des problèmes RepoChecker\nAjouter un onglet pour SOLECTRUS iFrame",
+                "it": "Riparare i problemi RepoChecker\nAggiungi scheda per SOLECTRUS IFrame",
+                "es": "Problemas fijos RepoChecker\nAñadir Tab para SOLECTRUS iFrame",
+                "pl": "Napraw repoChecker problemów\nDodaj kartę dla SOLECTRUS iFrame",
+                "uk": "Виправлення питань РепоЧекер\nДодати вкладку для SOLECTRUS ІФраме",
+                "zh-cn": "修复问题复检器\n为 SOLECTRUS 添加标签 iFrame 图像"
+            }
+        },
+        "titleLang": {
+            "en": "SOLECTRUS InfluxDB",
+            "de": "SOLECTRUS InfluxDB",
+            "ru": "SOLECTRUS InfluxDB",
+            "pt": "SOLECTRUS InfluxDB",
+            "nl": "SOLECTRUS InfluxDB",
+            "fr": "SOLECTRUS InfluxDB",
+            "it": "SOLECTRUS InfluxDB",
+            "es": "SOLECTRUS InfluxDB",
+            "pl": "SOLECTRUS InfluxDB",
+            "uk": "SOLECTRUS InfluxDB",
+            "zh-cn": "SOLECTRUS InfluxDB"
+        },
+        "desc": {
+            "en": "Writes configurable ioBroker states to InfluxDB",
+            "de": "Schreibt konfigurierbare ioBroker-Datenpunkte in eine InfluxDB",
+            "ru": "Записывает настраиваемые состояния ioBroker в InfluxDB.",
+            "pt": "Grava estados configuráveis ​​do ioBroker no InfluxDB",
+            "nl": "Schrijft configureerbare ioBroker-statussen naar InfluxDB",
+            "fr": "Écrit les états ioBroker configurables dans InfluxDB",
+            "it": "Scrive stati ioBroker configurabili su InfluxDB",
+            "es": "Escribe estados configurables de ioBroker en InfluxDB",
+            "pl": "Zapisuje konfigurowalne stany ioBroker w InfluxDB",
+            "uk": "Записує настроювані стани ioBroker до InfluxDB",
+            "zh-cn": "将可配置的 ioBroker 状态写入 InfluxDB"
+        },
+        "authors": [
+            "patricknitsch <patricknitsch@web.de>"
+        ],
+        "keywords": [
+            "SOLECTRUS",
+            "influxdb"
+        ],
+        "licenseInformation": {
+            "type": "free",
+            "license": "MIT"
+        },
+        "platform": "Javascript/Node.js",
+        "icon": "solectrus-influxdb.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/patricknitsch/ioBroker.solectrus-influxdb/main/admin/solectrus-influxdb.png",
+        "readme": "https://github.com/patricknitsch/ioBroker.solectrus-influxdb/blob/main/README.md",
+        "loglevel": "info",
+        "tier": 3,
+        "mode": "daemon",
+        "type": "communication",
+        "compact": true,
+        "connectionType": "local",
+        "dataSource": "push",
+        "adminUI": {
+            "config": "json",
+            "deviceManager": true
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=6.0.11"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=7.6.20"
+            }
+        ],
+        "adminTab": {
+            "singleton": false,
+            "name": {
+                "en": "Sensors Overview",
+                "de": "Sensorübersicht",
+                "ru": "Обзор сенсоров",
+                "pt": "Visão geral dos sensores",
+                "nl": "Sensorenoverzicht",
+                "fr": "Aperçu des capteurs",
+                "it": "Panoramica dei sensori",
+                "es": "Resumen de sensores",
+                "pl": "Przegląd czujników",
+                "uk": "Огляд датчиків",
+                "zh-cn": "传感器概览"
+            },
+            "link": ""
+        },
+        "supportedMessages": {
+            "custom": true,
+            "deviceManager": true
+        }
     },
-    "titleLang": {
-      "en": "SOLECTRUS InfluxDB",
-      "de": "SOLECTRUS InfluxDB",
-      "ru": "SOLECTRUS InfluxDB",
-      "pt": "SOLECTRUS InfluxDB",
-      "nl": "SOLECTRUS InfluxDB",
-      "fr": "SOLECTRUS InfluxDB",
-      "it": "SOLECTRUS InfluxDB",
-      "es": "SOLECTRUS InfluxDB",
-      "pl": "SOLECTRUS InfluxDB",
-      "uk": "SOLECTRUS InfluxDB",
-      "zh-cn": "SOLECTRUS InfluxDB"
+    "native": {
+        "influxUrl": "http://localhost:8086",
+        "influxOrg": "solectrus",
+        "influxBucket": "solectrus",
+        "influxInterval": 5,
+        "aliveTimeoutMinutes": 0,
+        "influxToken": "",
+        "enableExpertMode": false,
+        "enableDataSolectrus": false,
+        "enableForecast": false,
+        "dsPollIntervalSeconds": 5,
+        "dsSnapshotInputs": false,
+        "dsSnapshotDelayMs": 0,
+        "dsItems": [],
+        "forecasts": [],
+        "iframeUrl": "",
+        "notifyEnabled": false,
+        "notifyOnConnectionFail": true,
+        "notifyRepeatMinutes": 60,
+        "notifyOnSensorTimeout": true,
+        "notifyOnMaxValueExceeded": true,
+        "notifyUseTelegram": false,
+        "notifyUserTelegram": "",
+        "notifyUsePushover": false,
+        "notifyTitlePushover": "SOLECTRUS",
+        "notifyDevicePushover": "",
+        "notifyUseWhatsapp": false,
+        "notifyPhoneWhatsapp": "",
+        "notifyUseEmail": false,
+        "notifyToEmail": "",
+        "notifySubjectEmail": "SOLECTRUS ioBroker",
+        "notifyUseSignal": false,
+        "notifyPhoneSignal": "",
+        "notifyUseMatrix": false,
+        "notifyUseSynochat": false,
+        "notifyChannelSynochat": "",
+        "sensors": [
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "inverter",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_1",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "inverter_1",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_2",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "inverter_2",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_3",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "inverter_3",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_4",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "inverter_4",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_5",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "inverter_5",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "GRID_IMPORT_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "grid",
+                "field": "import_power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "GRID_EXPORT_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "grid",
+                "field": "export_power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "GRID_EXPORT_LIMIT",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "grid",
+                "field": "export_limit"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CASE_TEMP",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "case",
+                "field": "temperature"
+            },
+            {
+                "enabled": false,
+                "SensorName": "SYSTEM_STATUS",
+                "sourceState": "",
+                "type": "string",
+                "measurement": "system",
+                "field": "status"
+            },
+            {
+                "enabled": false,
+                "SensorName": "SYSTEM_STATUS_OK",
+                "sourceState": "",
+                "type": "bool",
+                "measurement": "system",
+                "field": "status_ok"
+            },
+            {
+                "enabled": false,
+                "SensorName": "BATTERY_SOC",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "battery",
+                "field": "soc"
+            },
+            {
+                "enabled": false,
+                "SensorName": "BATTERY_CHARGING_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "battery",
+                "field": "charging_power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "BATTERY_DISCHARGING_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "battery",
+                "field": "discharging_power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "HOUSE_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "house",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "HEATPUMP_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "heatpump",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_01",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_01",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_02",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_02",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_03",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "custom_03",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_04",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "custom_04",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_05",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "custom_05",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_06",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_06",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_07",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_07",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_08",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_08",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_09",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_09",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_10",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_10",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_11",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_11",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_12",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_12",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_13",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_13",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_14",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_14",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_15",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_15",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_16",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_16",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_17",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_17",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_18",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_18",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_19",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_19",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CUSTOM_POWER_20",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "custom_20",
+                "field": "value"
+            },
+            {
+                "enabled": false,
+                "SensorName": "WALLBOX_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "wallbox",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "WALLBOX_CONNECTED",
+                "sourceState": "",
+                "type": "bool",
+                "measurement": "wallbox",
+                "field": "connected"
+            },
+            {
+                "enabled": false,
+                "SensorName": "CAR_BATTERY_SOC",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "car",
+                "field": "battery_soc"
+            },
+            {
+                "enabled": false,
+                "SensorName": "HEATPUMP_HEATING_POWER",
+                "sourceState": "",
+                "type": "int",
+                "measurement": "heatpump",
+                "field": "heating_power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "HEATPUMP_TANK_TEMP",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "heatpump",
+                "field": "tank_temp"
+            },
+            {
+                "enabled": false,
+                "SensorName": "HEATPUMP_STATUS",
+                "sourceState": "",
+                "type": "string",
+                "measurement": "heatpump",
+                "field": "status"
+            },
+            {
+                "enabled": false,
+                "SensorName": "OUTDOOR_TEMP",
+                "sourceState": "",
+                "type": "float",
+                "measurement": "outdoor",
+                "field": "temperature"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_FORECAST",
+                "sourceState": "",
+                "type": "json",
+                "jsonPreset": "auto",
+                "measurement": "inverter_forecast",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "INVERTER_POWER_FORECAST_CLEARSKY",
+                "sourceState": "",
+                "type": "json",
+                "jsonPreset": "auto",
+                "measurement": "inverter_forecast_clearsky",
+                "field": "power"
+            },
+            {
+                "enabled": false,
+                "SensorName": "OUTDOOR_TEMP_FORECAST",
+                "sourceState": "",
+                "type": "json",
+                "jsonPreset": "auto",
+                "measurement": "outdoor_forecast",
+                "field": "temperature"
+            }
+        ]
     },
-    "desc": {
-      "en": "Writes configurable ioBroker states to InfluxDB",
-      "de": "Schreibt konfigurierbare ioBroker-Datenpunkte in eine InfluxDB",
-      "ru": "Записывает настраиваемые состояния ioBroker в InfluxDB.",
-      "pt": "Grava estados configuráveis ​​do ioBroker no InfluxDB",
-      "nl": "Schrijft configureerbare ioBroker-statussen naar InfluxDB",
-      "fr": "Écrit les états ioBroker configurables dans InfluxDB",
-      "it": "Scrive stati ioBroker configurabili su InfluxDB",
-      "es": "Escribe estados configurables de ioBroker en InfluxDB",
-      "pl": "Zapisuje konfigurowalne stany ioBroker w InfluxDB",
-      "uk": "Записує настроювані стани ioBroker до InfluxDB",
-      "zh-cn": "将可配置的 ioBroker 状态写入 InfluxDB"
-    },
-    "authors": [
-      "patricknitsch <patricknitsch@web.de>"
+    "encryptedNative": [
+        "influxToken"
     ],
-    "keywords": [
-      "SOLECTRUS",
-      "influxdb"
+    "protectedNative": [
+        "influxToken"
     ],
-    "licenseInformation": {
-      "type": "free",
-      "license": "MIT"
-    },
-    "platform": "Javascript/Node.js",
-    "icon": "solectrus-influxdb.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/patricknitsch/ioBroker.solectrus-influxdb/main/admin/solectrus-influxdb.png",
-    "readme": "https://github.com/patricknitsch/ioBroker.solectrus-influxdb/blob/main/README.md",
-    "loglevel": "info",
-    "tier": 3,
-    "mode": "daemon",
-    "type": "communication",
-    "compact": true,
-    "messagebox": true,
-    "connectionType": "local",
-    "dataSource": "push",
-    "adminUI": {
-      "config": "json"
-    },
-    "dependencies": [
-      {
-        "js-controller": ">=6.0.11"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=7.6.20"
-      }
-    ],
-    "adminTab": {
-      "singleton": false,
-      "name": {
-        "en": "Sensors Overview",
-        "de": "Sensorübersicht",
-        "ru": "Обзор сенсоров",
-        "pt": "Visão geral dos sensores",
-        "nl": "Sensorenoverzicht",
-        "fr": "Aperçu des capteurs",
-        "it": "Panoramica dei sensori",
-        "es": "Resumen de sensores",
-        "pl": "Przegląd czujników",
-        "uk": "Огляд датчиків",
-        "zh-cn": "传感器概览"
-      },
-      "link": ""
-    }
-  },
-  "native": {
-    "influxUrl": "http://localhost:8086",
-    "influxOrg": "solectrus",
-    "influxBucket": "solectrus",
-    "influxInterval": 5,
-    "aliveTimeoutMinutes": 0,
-    "influxToken": "",
-    "enableExpertMode": false,
-    "enableDataSolectrus": false,
-    "enableForecast": false,
-    "dsPollIntervalSeconds": 5,
-    "dsSnapshotInputs": false,
-    "dsSnapshotDelayMs": 0,
-    "dsItems": [],
-    "forecasts": [],
-    "iframeUrl": "",
-    "notifyEnabled": false,
-    "notifyOnConnectionFail": true,
-    "notifyRepeatMinutes": 60,
-    "notifyOnSensorTimeout": true,
-    "notifyOnMaxValueExceeded": true,
-    "notifyUseTelegram": false,
-    "notifyUserTelegram": "",
-    "notifyUsePushover": false,
-    "notifyTitlePushover": "SOLECTRUS",
-    "notifyDevicePushover": "",
-    "notifyUseWhatsapp": false,
-    "notifyPhoneWhatsapp": "",
-    "notifyUseEmail": false,
-    "notifyToEmail": "",
-    "notifySubjectEmail": "SOLECTRUS ioBroker",
-    "notifyUseSignal": false,
-    "notifyPhoneSignal": "",
-    "notifyUseMatrix": false,
-    "notifyUseSynochat": false,
-    "notifyChannelSynochat": "",
-    "sensors": [
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "inverter",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_1",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "inverter_1",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_2",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "inverter_2",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_3",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "inverter_3",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_4",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "inverter_4",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_5",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "inverter_5",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "GRID_IMPORT_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "grid",
-        "field": "import_power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "GRID_EXPORT_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "grid",
-        "field": "export_power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "GRID_EXPORT_LIMIT",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "grid",
-        "field": "export_limit"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CASE_TEMP",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "case",
-        "field": "temperature"
-      },
-      {
-        "enabled": false,
-        "SensorName": "SYSTEM_STATUS",
-        "sourceState": "",
-        "type": "string",
-        "measurement": "system",
-        "field": "status"
-      },
-      {
-        "enabled": false,
-        "SensorName": "SYSTEM_STATUS_OK",
-        "sourceState": "",
-        "type": "bool",
-        "measurement": "system",
-        "field": "status_ok"
-      },
-      {
-        "enabled": false,
-        "SensorName": "BATTERY_SOC",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "battery",
-        "field": "soc"
-      },
-      {
-        "enabled": false,
-        "SensorName": "BATTERY_CHARGING_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "battery",
-        "field": "charging_power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "BATTERY_DISCHARGING_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "battery",
-        "field": "discharging_power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "HOUSE_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "house",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "HEATPUMP_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "heatpump",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_01",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_01",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_02",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_02",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_03",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "custom_03",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_04",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "custom_04",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_05",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "custom_05",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_06",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_06",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_07",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_07",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_08",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_08",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_09",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_09",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_10",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_10",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_11",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_11",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_12",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_12",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_13",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_13",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_14",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_14",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_15",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_15",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_16",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_16",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_17",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_17",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_18",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_18",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_19",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_19",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CUSTOM_POWER_20",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "custom_20",
-        "field": "value"
-      },
-      {
-        "enabled": false,
-        "SensorName": "WALLBOX_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "wallbox",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "WALLBOX_CONNECTED",
-        "sourceState": "",
-        "type": "bool",
-        "measurement": "wallbox",
-        "field": "connected"
-      },
-      {
-        "enabled": false,
-        "SensorName": "CAR_BATTERY_SOC",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "car",
-        "field": "battery_soc"
-      },
-      {
-        "enabled": false,
-        "SensorName": "HEATPUMP_HEATING_POWER",
-        "sourceState": "",
-        "type": "int",
-        "measurement": "heatpump",
-        "field": "heating_power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "HEATPUMP_TANK_TEMP",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "heatpump",
-        "field": "tank_temp"
-      },
-      {
-        "enabled": false,
-        "SensorName": "HEATPUMP_STATUS",
-        "sourceState": "",
-        "type": "string",
-        "measurement": "heatpump",
-        "field": "status"
-      },
-      {
-        "enabled": false,
-        "SensorName": "OUTDOOR_TEMP",
-        "sourceState": "",
-        "type": "float",
-        "measurement": "outdoor",
-        "field": "temperature"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_FORECAST",
-        "sourceState": "",
-        "type": "json",
-        "jsonPreset": "auto",
-        "measurement": "inverter_forecast",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "INVERTER_POWER_FORECAST_CLEARSKY",
-        "sourceState": "",
-        "type": "json",
-        "jsonPreset": "auto",
-        "measurement": "inverter_forecast_clearsky",
-        "field": "power"
-      },
-      {
-        "enabled": false,
-        "SensorName": "OUTDOOR_TEMP_FORECAST",
-        "sourceState": "",
-        "type": "json",
-        "jsonPreset": "auto",
-        "measurement": "outdoor_forecast",
-        "field": "temperature"
-      }
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "Device or service connected",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
     ]
-  },
-  "encryptedNative": [
-    "influxToken"
-  ],
-  "protectedNative": [
-    "influxToken"
-  ],
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": "Information"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.connected",
-        "name": "Device or service connected",
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    }
-  ]
 }

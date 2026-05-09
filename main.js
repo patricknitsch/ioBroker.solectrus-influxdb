@@ -27,6 +27,7 @@ const { getNotificationMessage } = require('./lib/notificationMessages');
 const dsStateRegistry = require('./lib/data-solectrus/services/stateRegistry');
 const dsItemManager = require('./lib/data-solectrus/services/itemManager');
 const dsTickRunner = require('./lib/data-solectrus/services/tickRunner');
+const { SolectrusDeviceManagement } = require('./lib/deviceManagement');
 
 class SolectrusInfluxdb extends utils.Adapter {
 	constructor(options) {
@@ -91,6 +92,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.on('unload', this.onUnload.bind(this));
 		this.on('stateChange', this.onStateChange.bind(this));
 		this.on('message', this.onMessage.bind(this));
+
+		/* ---------- Device Manager ---------- */
+		this.deviceManagement = new SolectrusDeviceManagement(this);
 	}
 
 	/* =====================================================
@@ -329,6 +333,10 @@ class SolectrusInfluxdb extends utils.Adapter {
 	onMessage(obj) {
 		try {
 			if (!obj || !obj.command) {
+				return;
+			}
+			/* dm: messages are handled exclusively by the DeviceManagement instance */
+			if (obj.command.startsWith('dm:')) {
 				return;
 			}
 			if (obj.command !== 'evalFormulaPreview') {
