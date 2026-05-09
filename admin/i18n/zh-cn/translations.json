@@ -288,6 +288,6 @@
     "notifyOnMaxValueExceededLabel": "传感器值超过最大值时通知",
     "notifyRepeatMinutesLabel": "通知重复间隔（分钟）",
     "Max Value": "最大值",
-    "showAdminTabLabel": "显示管理员标签（iFrame）",
+    "showAdminTabLabel": "显示管理员标签 (iFrame)",
     "tabDisabledMsg": "管理员标签在适配器配置中已禁用。请打开配置并启用\"显示管理员标签\"以使用 iFrame 仪表板。"
 }
