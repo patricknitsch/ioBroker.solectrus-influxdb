@@ -289,5 +289,7 @@
     "notifyRepeatMinutesLabel": "Répéter la notification toutes les (min)",
     "Max Value": "Valeur maximale",
     "showAdminTabLabel": "Afficher l'onglet Admin (iFrame)",
-    "tabDisabledMsg": "L'onglet Admin est désactivé dans la configuration de l'adaptateur. Ouvrez la configuration et activez « Afficher l'onglet Admin » pour utiliser le tableau de bord iFrame."
+    "tabDisabledMsg": "L'onglet Admin est désactivé dans la configuration de l'adaptateur. Ouvrez la configuration et activez « Afficher l'onglet Admin » pour utiliser le tableau de bord iFrame.",
+    "heliosUrlLabel": "URL HELIOS (iFrame)",
+    "heliosHint": "Entrez l’URL de votre page HELIOS SOLECTRUS (ex. : http://solectrus:3000/helios). Laissez vide pour masquer le panneau iFrame HELIOS."
 }

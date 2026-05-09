@@ -289,5 +289,7 @@
     "notifyRepeatMinutesLabel": "Повторять уведомление каждые (мин)",
     "Max Value": "Максимальное значение",
     "showAdminTabLabel": "Показать вкладку Admin (iFrame)",
-    "tabDisabledMsg": "Вкладка Admin отключена в конфигурации адаптера. Откройте конфигурацию и включите «Показать вкладку Admin», чтобы использовать панель iFrame."
+    "tabDisabledMsg": "Вкладка Admin отключена в конфигурации адаптера. Откройте конфигурацию и включите «Показать вкладку Admin», чтобы использовать панель iFrame.",
+    "heliosUrlLabel": "URL HELIOS (iFrame)",
+    "heliosHint": "Введите URL страницы HELIOS вашего SOLECTRUS (например http://solectrus:3000/helios). Оставьте пустым, чтобы скрыть панель iFrame HELIOS."
 }

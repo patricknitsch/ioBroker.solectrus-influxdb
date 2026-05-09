@@ -289,5 +289,7 @@
     "notifyRepeatMinutesLabel": "通知重复间隔（分钟）",
     "Max Value": "最大值",
     "showAdminTabLabel": "显示管理员标签 (iFrame)",
-    "tabDisabledMsg": "管理员标签在适配器配置中已禁用。请打开配置并启用\"显示管理员标签\"以使用 iFrame 仪表板。"
+    "tabDisabledMsg": "管理员标签在适配器配置中已禁用。请打开配置并启用\"显示管理员标签\"以使用 iFrame 仪表板。",
+    "heliosUrlLabel": "HELIOS 地址 (iFrame)",
+    "heliosHint": "输入你的 SOLECTRUS HELIOS 页面地址（例如 http://solectrus:3000/helios）。留空则隐藏 HELIOS iFrame 面板。"
 }

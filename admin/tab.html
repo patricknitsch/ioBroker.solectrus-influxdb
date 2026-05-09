@@ -170,6 +170,16 @@
             height: calc(100vh - 140px);
             min-height: 400px;
         }
+        #helios-iframe {
+            display: block;
+            width: 100%;
+            border: none;
+            height: calc(100vh - 140px);
+            min-height: 400px;
+        }
+        .iframe-section-gap {
+            height: 16px;
+        }
 
         /* ── RESPONSIVE ── */
         @media (max-width: 480px) {
@@ -212,6 +222,17 @@
                 <div id="iframe-placeholder" class="iframe-placeholder"></div>
                 <iframe id="dashboard-iframe" style="display:none" sandbox="allow-scripts allow-forms allow-popups allow-same-origin allow-popups-to-escape-sandbox"></iframe>
             </div>
+            <!-- HELIOS iFrame panel -->
+            <div id="helios-wrap">
+                <div class="iframe-section-gap"></div>
+                <div class="iframe-panel">
+                    <div id="helios-toolbar" class="iframe-toolbar" style="display:none">
+                        <span id="helios-cert-hint" class="iframe-cert-hint"></span>
+                        <a id="helios-open-link" class="iframe-open-btn" target="_blank" rel="noopener noreferrer"></a>
+                    </div>
+                    <iframe id="helios-iframe" style="display:none" sandbox="allow-scripts allow-forms allow-popups allow-same-origin allow-popups-to-escape-sandbox"></iframe>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -229,6 +250,8 @@
             iframeCertHint:     'Page not loading? SOLECTRUS blocks iframe embedding by default – add FRAME_ANCESTORS=http://your-iobroker-host:8081 to the SOLECTRUS .env file and restart the service.',
             iframeHttpHint:     'Note: The iframe is only visible when accessing the ioBroker admin via HTTP (not HTTPS).',
             iframeOpenBtn:      'Open in new tab',
+            heliosOpenBtn:      'Open HELIOS in new tab',
+            heliosCertHint:     'Page not loading? SOLECTRUS blocks iframe embedding by default – add FRAME_ANCESTORS=http://your-iobroker-host:8081 to the SOLECTRUS .env file and restart the service.',
             tabDisabledMsg:     'The Admin Tab is disabled in the adapter configuration. Open the configuration and enable "Show Admin Tab" to use the iFrame dashboard.',
             error:              'Error: ',
             noConn:             'Cannot connect to ioBroker socket.',
@@ -243,6 +266,8 @@
             iframeCertHint:     'Seite lädt nicht? SOLECTRUS blockiert das Einbetten in iFrames standardmäßig – füge FRAME_ANCESTORS=http://dein-iobroker-host:8081 in die SOLECTRUS-.env-Datei ein und starte den Dienst neu.',
             iframeHttpHint:     'Hinweis: Das iFrame ist nur sichtbar, wenn das ioBroker-Admin-Panel über HTTP (nicht HTTPS) aufgerufen wird.',
             iframeOpenBtn:      'In neuem Tab öffnen',
+            heliosOpenBtn:      'HELIOS in neuem Tab öffnen',
+            heliosCertHint:     'Seite lädt nicht? SOLECTRUS blockiert das Einbetten in iFrames standardmäßig – füge FRAME_ANCESTORS=http://dein-iobroker-host:8081 in die SOLECTRUS-.env-Datei ein und starte den Dienst neu.',
             tabDisabledMsg:     'Der Admin-Tab ist in der Adapterkonfiguration deaktiviert. Öffne die Konfiguration und aktiviere „Admin-Tab anzeigen", um das iFrame-Dashboard zu verwenden.',
             error:              'Fehler: ',
             noConn:             'Verbindung zum ioBroker-Socket nicht möglich.',
@@ -261,6 +286,7 @@
 
     /* Track the last iframe URL to avoid reloading on every refresh tick */
     var iframeLoadedUrl = '';
+    var heliosLoadedUrl = '';
 
     /* ── instance from URL ── */
     var params = new URLSearchParams(window.location.search);
@@ -385,6 +411,7 @@
         document.getElementById('tab-disabled').style.display = 'none';
         document.getElementById('iframe-wrap').style.display = '';
 
+        /* ── SOLECTRUS Dashboard iframe ── */
         var iframeUrl = (config.iframeUrl || '').trim();
         var iframeUrlSafe = /^https?:\/\//i.test(iframeUrl) ? iframeUrl : '';
         var iframeEl          = document.getElementById('dashboard-iframe');
@@ -410,6 +437,31 @@
             iframePlaceholder.style.display = 'block';
             iframeEl.style.display = 'none';
             iframeLoadedUrl = '';
+        }
+
+        /* ── HELIOS iframe ── */
+        var heliosUrl = (config.heliosUrl || '').trim();
+        var heliosUrlSafe = /^https?:\/\//i.test(heliosUrl) ? heliosUrl : '';
+        var heliosWrap   = document.getElementById('helios-wrap');
+        var heliosEl     = document.getElementById('helios-iframe');
+        var heliosToolbar = document.getElementById('helios-toolbar');
+
+        if (heliosUrlSafe) {
+            heliosWrap.style.display = '';
+            if (heliosLoadedUrl !== heliosUrlSafe) {
+                heliosEl.src = heliosUrlSafe;
+                heliosLoadedUrl = heliosUrlSafe;
+            }
+            document.getElementById('helios-cert-hint').textContent = T.heliosCertHint;
+            var heliosOpenLink = document.getElementById('helios-open-link');
+            heliosOpenLink.textContent = T.heliosOpenBtn;
+            heliosOpenLink.href = heliosUrlSafe;
+            heliosToolbar.style.display = '';
+            heliosEl.style.display = 'block';
+        } else {
+            heliosWrap.style.display = 'none';
+            heliosEl.style.display = 'none';
+            heliosLoadedUrl = '';
         }
     }
 

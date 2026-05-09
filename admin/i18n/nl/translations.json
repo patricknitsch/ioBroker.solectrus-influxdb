@@ -289,5 +289,7 @@
     "notifyRepeatMinutesLabel": "Melding herhalen elke (min)",
     "Max Value": "Maximale waarde",
     "showAdminTabLabel": "Admin-tabblad tonen (iFrame)",
-    "tabDisabledMsg": "Het Admin-tabblad is uitgeschakeld in de adapterconfiguratie. Open de configuratie en schakel \"Admin-tabblad tonen\" in om het iFrame-dashboard te gebruiken."
+    "tabDisabledMsg": "Het Admin-tabblad is uitgeschakeld in de adapterconfiguratie. Open de configuratie en schakel \"Admin-tabblad tonen\" in om het iFrame-dashboard te gebruiken.",
+    "heliosUrlLabel": "HELIOS-URL (iFrame)",
+    "heliosHint": "Voer de URL van je SOLECTRUS HELIOS-pagina in (bijv. http://solectrus:3000/helios). Laat leeg om het HELIOS iFrame-paneel te verbergen."
 }

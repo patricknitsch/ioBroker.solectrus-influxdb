@@ -288,5 +288,7 @@
     "notifyRepeatMinutesLabel": "Ripeti notifica ogni (min)",
     "Max Value": "Valore massimo",
     "showAdminTabLabel": "Mostra scheda Admin (iFrame)",
-    "tabDisabledMsg": "La scheda Admin è disabilitata nella configurazione dell'adattatore. Apri la configurazione e abilita \"Mostra scheda Admin\" per utilizzare la dashboard iFrame."
+    "tabDisabledMsg": "La scheda Admin è disabilitata nella configurazione dell'adattatore. Apri la configurazione e abilita \"Mostra scheda Admin\" per utilizzare la dashboard iFrame.",
+    "heliosUrlLabel": "URL HELIOS (iFrame)",
+    "heliosHint": "Inserisci l’URL della pagina HELIOS di SOLECTRUS (es. http://solectrus:3000/helios). Lascia vuoto per nascondere il pannello iFrame HELIOS."
 }

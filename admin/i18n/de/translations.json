@@ -289,5 +289,7 @@
     "notifyRepeatMinutesLabel": "Benachrichtigung wiederholen alle (min)",
     "Max Value": "Maximalwert",
     "showAdminTabLabel": "Admin-Tab anzeigen (iFrame-Dashboard)",
-    "tabDisabledMsg": "Der Admin-Tab ist in der Adapterkonfiguration deaktiviert. Öffne die Konfiguration und aktiviere „Admin-Tab anzeigen\", um das iFrame-Dashboard zu verwenden."
+    "tabDisabledMsg": "Der Admin-Tab ist in der Adapterkonfiguration deaktiviert. Öffne die Konfiguration und aktiviere „Admin-Tab anzeigen\", um das iFrame-Dashboard zu verwenden.",
+    "heliosUrlLabel": "HELIOS-URL (iFrame)",
+    "heliosHint": "Gib die URL deiner SOLECTRUS-HELIOS-Seite ein (z. B. http://solectrus:3000/helios). Leer lassen, um das HELIOS-iFrame-Panel auszublenden."
 }

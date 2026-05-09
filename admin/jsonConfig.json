@@ -294,6 +294,31 @@
                     "lg": 12,
                     "xl": 12
                 },
+                "heliosUrl": {
+                    "type": "text",
+                    "label": "heliosUrlLabel",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 8,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "_heliosHint": {
+                    "type": "staticText",
+                    "text": "heliosHint",
+                    "newLine": true,
+                    "style": {
+                        "fontSize": "0.85em",
+                        "color": "#888",
+                        "marginTop": 4
+                    },
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
+                },
                 "showAdminTab": {
                     "type": "checkbox",
                     "label": "showAdminTabLabel",

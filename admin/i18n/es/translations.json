@@ -289,5 +289,7 @@
     "notifyRepeatMinutesLabel": "Repetir notificación cada (min)",
     "Max Value": "Valor máximo",
     "showAdminTabLabel": "Mostrar pestaña de administración (iFrame)",
-    "tabDisabledMsg": "La pestaña de administración está desactivada en la configuración del adaptador. Abra la configuración y habilite \"Mostrar pestaña de administración\" para usar el panel iFrame."
+    "tabDisabledMsg": "La pestaña de administración está desactivada en la configuración del adaptador. Abra la configuración y habilite \"Mostrar pestaña de administración\" para usar el panel iFrame.",
+    "heliosUrlLabel": "URL de HELIOS (iFrame)",
+    "heliosHint": "Introduce la URL de tu página HELIOS de SOLECTRUS (p. ej. http://solectrus:3000/helios). Déjalo vacío para ocultar el panel iFrame de HELIOS."
 }

@@ -289,5 +289,7 @@
     "notifyRepeatMinutesLabel": "Powtarzaj powiadomienie co (min)",
     "Max Value": "Wartość maksymalna",
     "showAdminTabLabel": "Pokaż kartę administratora (iFrame)",
-    "tabDisabledMsg": "Karta administratora jest wyłączona w konfiguracji adaptera. Otwórz konfigurację i włącz „Pokaż kartę administratora\", aby korzystać z pulpitu nawigacyjnego iFrame."
+    "tabDisabledMsg": "Karta administratora jest wyłączona w konfiguracji adaptera. Otwórz konfigurację i włącz „Pokaż kartę administratora\", aby korzystać z pulpitu nawigacyjnego iFrame.",
+    "heliosUrlLabel": "URL HELIOS (iFrame)",
+    "heliosHint": "Wpisz adres URL swojej strony HELIOS w SOLECTRUS (np. http://solectrus:3000/helios). Pozostaw puste, aby ukryć panel iFrame HELIOS."
 }

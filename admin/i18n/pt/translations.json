@@ -289,5 +289,7 @@
     "notifyRepeatMinutesLabel": "Repetir notificação a cada (min)",
     "Max Value": "Valor máximo",
     "showAdminTabLabel": "Mostrar aba Admin (iFrame)",
-    "tabDisabledMsg": "A aba Admin está desativada na configuração do adaptador. Abra a configuração e ative \"Mostrar aba Admin\" para usar o painel iFrame."
+    "tabDisabledMsg": "A aba Admin está desativada na configuração do adaptador. Abra a configuração e ative \"Mostrar aba Admin\" para usar o painel iFrame.",
+    "heliosUrlLabel": "URL do HELIOS (iFrame)",
+    "heliosHint": "Insira o URL da página HELIOS do SOLECTRUS (ex.: http://solectrus:3000/helios). Deixe vazio para ocultar o painel iFrame HELIOS."
 }
