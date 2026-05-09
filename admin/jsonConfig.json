@@ -297,6 +297,7 @@
                 "heliosUrl": {
                     "type": "text",
                     "label": "heliosUrlLabel",
+                    "default": "",
                     "newLine": true,
                     "xs": 12,
                     "sm": 12,
