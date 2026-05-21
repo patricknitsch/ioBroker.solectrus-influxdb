@@ -456,7 +456,7 @@
 				"notifyInstancePushover": {
 					"type": "text",
 					"label": "notifyInstancePushoverLabel",
-					"placeholder": "e.g. telegram.0",
+					"placeholder": "e.g. pushover.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUsePushover",
 					"newLine": false,
 					"xs": 12,
@@ -517,7 +517,7 @@
 				"notifyInstanceWhatsapp": {
 					"type": "text",
 					"label": "notifyInstanceWhatsappLabel",
-					"placeholder": "e.g. telegram.0",
+					"placeholder": "e.g. whatsapp-cmb.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUseWhatsapp",
 					"newLine": false,
 					"xs": 12,
@@ -567,7 +567,7 @@
 				"notifyInstanceEmail": {
 					"type": "text",
 					"label": "notifyInstanceEmailLabel",
-					"placeholder": "e.g. telegram.0",
+					"placeholder": "e.g. email.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUseEmail",
 					"newLine": false,
 					"xs": 12,
@@ -628,7 +628,7 @@
 				"notifyInstanceSignal": {
 					"type": "text",
 					"label": "notifyInstanceSignalLabel",
-					"placeholder": "e.g. telegram.0",
+					"placeholder": "e.g. signal-cmb.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUseSignal",
 					"newLine": false,
 					"xs": 12,
@@ -678,7 +678,7 @@
 				"notifyInstanceMatrix": {
 					"type": "text",
 					"label": "notifyInstanceMatrixLabel",
-					"placeholder": "e.g. telegram.0",
+					"placeholder": "e.g. matrix-org.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUseMatrix",
 					"newLine": false,
 					"xs": 12,
@@ -717,7 +717,7 @@
 				"notifyInstanceSynochat": {
 					"type": "text",
 					"label": "notifyInstanceSynochatLabel",
-					"placeholder": "e.g. telegram.0",
+					"placeholder": "e.g. synochat.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUseSynochat",
 					"newLine": false,
 					"xs": 12,
