@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.8.2",
+    "version": "1.8.3",
     "news": {
+      "1.8.3": {
+        "en": "Modify notification manager to work with instances\nUpdate Dependencies",
+        "de": "Benachrichtigungsmanager ändern, um mit Instanzen zu arbeiten\nAnpassungsabhängigkeiten",
+        "ru": "Изменить менеджер уведомлений для работы с экземплярами\nОбновление зависимостей",
+        "pt": "Modificar o gerenciador de notificações para trabalhar com instâncias\nAtualizar dependências",
+        "nl": "Notificatiebeheer aanpassen om met instanties te werken\nAfhankelijkheden bijwerken",
+        "fr": "Modifier le gestionnaire de notification pour travailler avec les instances\nMettre à jour les dépendances",
+        "it": "Modificare il gestore di notifiche per lavorare con le istanze\nDipendenze di aggiornamento",
+        "es": "Modificar el administrador de notificación para trabajar con casos\nDependencias de actualización",
+        "pl": "Zmień menedżera powiadomień do pracy z instancjami\nAktualizuj zależności",
+        "uk": "Зміна диспетчера повідомлень для роботи з екземплярами\nОновлення залежності",
+        "zh-cn": "修改通知管理器以配合实例\n更新依赖关系"
+      },
       "1.8.2": {
         "en": "Adapter requires node.js >= 22 now\nFix sensor duplicate: stale draft cache caused wrong sensor data to appear in the detail panel after duplicating or deleting a sensor\nUpdate Dependencies",
         "de": "Adapter benötigt node.js >= 22 jetzt\nFix-Sensor-Duplikat: Stale-Entwurf-Cache verursachte falsche Sensordaten, um in der Detail-Panel nach dem Duplizieren oder Löschen eines Sensors erscheinen\nAnpassungsabhängigkeiten",
@@ -80,19 +93,6 @@
         "pl": "Łap maks. Wartości - można ustawić w konfiguratorze\nZwiększ wersję z 20 do 24 becaso błędu rozmieszczenia\nDodaj monitoring Alive: konfigurowalny timeout ostrzega, gdy wartości czujników nie są aktualizowane",
         "uk": "Кетч макс. Цінності - розклад на Конфіг\nЗбільшення версії від 20 до 24 becauso помилки розгортання\nДодавання Alive моніторингу: Налаштування часу попереджає, коли значення датчика не оновлено",
         "zh-cn": "抓得最多一点。 数值 - 在配置中设置\n将部署错误的版本从20个增加到24个\n添加活性监视: 当传感器值没有更新时可配置的超时警告"
-      },
-      "1.5.0": {
-        "en": "Fix Issues RepoChecker\nAdd Tab for SOLECTRUS iFrame",
-        "de": "Probleme beheben RepoChecker\nTab hinzufügen für SOLECTRUS iFrame",
-        "ru": "Обсуждение RepoChecker\nДобавить вкладку для SolecTRUS iFrame",
-        "pt": "Corrigir o RepoChecker de Problemas\nAdicionar aba para o SOLECTRUS iFrame",
-        "nl": "Kwesties repochecker oplossen\nTabblad voor SOLECTRUS toevoegen iFrame",
-        "fr": "Correction des problèmes RepoChecker\nAjouter un onglet pour SOLECTRUS iFrame",
-        "it": "Riparare i problemi RepoChecker\nAggiungi scheda per SOLECTRUS IFrame",
-        "es": "Problemas fijos RepoChecker\nAñadir Tab para SOLECTRUS iFrame",
-        "pl": "Napraw repoChecker problemów\nDodaj kartę dla SOLECTRUS iFrame",
-        "uk": "Виправлення питань РепоЧекер\nДодати вкладку для SOLECTRUS ІФраме",
-        "zh-cn": "修复问题复检器\n为 SOLECTRUS 添加标签 iFrame 图像"
       }
     },
     "titleLang": {
