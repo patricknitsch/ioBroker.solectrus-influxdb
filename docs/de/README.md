@@ -529,6 +529,10 @@ Im Tab **Benachrichtigungen** der Adapter-Einstellungen:
 
 Mehrere Anbieter können gleichzeitig konfiguriert werden. Der Adapter prüft vor dem Senden, ob die jeweilige Adapterinstanz aktiv ist, und gibt bei inaktiver Instanz eine Warnung ins Log.
 
+### Instanz-Auswahl
+
+Für jeden Anbieter gibt es eine **Instanz**-Dropdown-Liste. Verfügbare Adapter-Instanzen werden automatisch ausgelesen und zur Auswahl angeboten. So kann bei mehreren Instanzen desselben Adapters gezielt die gewünschte Instanz ausgewählt werden.
+
 ### Hinweise
 
 - Die Benachrichtigungen werden über `getNotificationMessage()` anhand der `systemLanguage` lokalisiert gesendet.

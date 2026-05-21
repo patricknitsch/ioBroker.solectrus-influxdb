@@ -529,6 +529,10 @@ In the **Notifications** tab of the adapter settings:
 
 Multiple providers can be configured simultaneously. Before sending, the adapter checks whether the respective adapter instance is active and logs a warning if the instance is not running.
 
+### Instance Selection
+
+Each provider has an **Instance** dropdown list. Available adapter instances are read automatically and offered for selection. This makes it easy to target a specific instance when multiple instances of the same adapter are running.
+
 ### Notes
 
 - Notification messages are localized via `getNotificationMessage()` using the configured `systemLanguage`.
