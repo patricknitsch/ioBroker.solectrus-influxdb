@@ -529,6 +529,10 @@ In the **Notifications** tab of the adapter settings:
 
 Multiple providers can be configured simultaneously. Before sending, the adapter checks whether the respective adapter instance is active and logs a warning if the instance is not running.
 
+### Instance Selection
+
+Each provider has an optional **Instance** field (e.g. `telegram.0`). Leave it empty to let the adapter automatically detect the first running instance of that provider. Set it to a specific instance ID when multiple instances of the same adapter are running and you want to target a particular one.
+
 ### Notes
 
 - Notification messages are localized via `getNotificationMessage()` using the configured `systemLanguage`.

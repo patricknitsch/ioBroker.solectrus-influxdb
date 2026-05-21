@@ -529,6 +529,10 @@ Im Tab **Benachrichtigungen** der Adapter-Einstellungen:
 
 Mehrere Anbieter können gleichzeitig konfiguriert werden. Der Adapter prüft vor dem Senden, ob die jeweilige Adapterinstanz aktiv ist, und gibt bei inaktiver Instanz eine Warnung ins Log.
 
+### Instanz-Auswahl
+
+Für jeden Anbieter gibt es ein optionales Feld **Instanz** (z. B. `telegram.0`). Wird es leer gelassen, erkennt der Adapter automatisch die erste laufende Instanz des jeweiligen Adapters. Sind mehrere Instanzen desselben Adapters aktiv und soll eine bestimmte angesprochen werden, kann hier die konkrete Instanz-ID eingetragen werden.
+
 ### Hinweise
 
 - Die Benachrichtigungen werden über `getNotificationMessage()` anhand der `systemLanguage` lokalisiert gesendet.
