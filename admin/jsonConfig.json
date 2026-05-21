@@ -404,16 +404,17 @@
 					"xl": 12
 				},
 				"notifyInstanceTelegram": {
-					"type": "text",
+					"type": "instance",
 					"label": "notifyInstanceTelegramLabel",
-					"placeholder": "e.g. telegram.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUseTelegram",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
 					"md": 6,
 					"lg": 4,
-					"xl": 4
+					"xl": 4,
+					"adapter": "telegram",
+					"allowDeactivate": true
 				},
 				"notifyUserTelegram": {
 					"type": "text",
@@ -454,16 +455,17 @@
 					"xl": 12
 				},
 				"notifyInstancePushover": {
-					"type": "text",
+					"type": "instance",
 					"label": "notifyInstancePushoverLabel",
-					"placeholder": "e.g. pushover.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUsePushover",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
 					"md": 6,
 					"lg": 4,
-					"xl": 4
+					"xl": 4,
+					"adapter": "pushover",
+					"allowDeactivate": true
 				},
 				"notifyTitlePushover": {
 					"type": "text",
@@ -515,16 +517,17 @@
 					"xl": 12
 				},
 				"notifyInstanceWhatsapp": {
-					"type": "text",
+					"type": "instance",
 					"label": "notifyInstanceWhatsappLabel",
-					"placeholder": "e.g. whatsapp-cmb.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUseWhatsapp",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
 					"md": 6,
 					"lg": 4,
-					"xl": 4
+					"xl": 4,
+					"adapter": "whatsapp-cmb",
+					"allowDeactivate": true
 				},
 				"notifyPhoneWhatsapp": {
 					"type": "text",
@@ -565,16 +568,17 @@
 					"xl": 12
 				},
 				"notifyInstanceEmail": {
-					"type": "text",
+					"type": "instance",
 					"label": "notifyInstanceEmailLabel",
-					"placeholder": "e.g. email.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUseEmail",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
 					"md": 6,
 					"lg": 4,
-					"xl": 4
+					"xl": 4,
+					"adapter": "email",
+					"allowDeactivate": true
 				},
 				"notifyToEmail": {
 					"type": "text",
@@ -626,16 +630,17 @@
 					"xl": 12
 				},
 				"notifyInstanceSignal": {
-					"type": "text",
+					"type": "instance",
 					"label": "notifyInstanceSignalLabel",
-					"placeholder": "e.g. signal-cmb.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUseSignal",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
 					"md": 6,
 					"lg": 4,
-					"xl": 4
+					"xl": 4,
+					"adapter": "signal-cmb",
+					"allowDeactivate": true
 				},
 				"notifyPhoneSignal": {
 					"type": "text",
@@ -676,16 +681,17 @@
 					"xl": 12
 				},
 				"notifyInstanceMatrix": {
-					"type": "text",
+					"type": "instance",
 					"label": "notifyInstanceMatrixLabel",
-					"placeholder": "e.g. matrix-org.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUseMatrix",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
 					"md": 6,
 					"lg": 4,
-					"xl": 4
+					"xl": 4,
+					"adapter": "matrix-org",
+					"allowDeactivate": true
 				},
 				"_notifySynochatHeader": {
 					"type": "staticText",
@@ -715,16 +721,17 @@
 					"xl": 12
 				},
 				"notifyInstanceSynochat": {
-					"type": "text",
+					"type": "instance",
 					"label": "notifyInstanceSynochatLabel",
-					"placeholder": "e.g. synochat.0",
 					"hidden": "!data.notifyEnabled || !data.notifyUseSynochat",
 					"newLine": false,
 					"xs": 12,
 					"sm": 12,
 					"md": 6,
 					"lg": 4,
-					"xl": 4
+					"xl": 4,
+					"adapter": "synochat",
+					"allowDeactivate": true
 				},
 				"notifyChannelSynochat": {
 					"type": "text",

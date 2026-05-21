@@ -531,7 +531,7 @@ Multiple providers can be configured simultaneously. Before sending, the adapter
 
 ### Instance Selection
 
-Each provider has an optional **Instance** field (e.g. `telegram.0`). Leave it empty to let the adapter automatically detect the first running instance of that provider. Set it to a specific instance ID when multiple instances of the same adapter are running and you want to target a particular one.
+Each provider has an **Instance** dropdown list. Available adapter instances are read automatically and offered for selection. This makes it easy to target a specific instance when multiple instances of the same adapter are running.
 
 ### Notes
 

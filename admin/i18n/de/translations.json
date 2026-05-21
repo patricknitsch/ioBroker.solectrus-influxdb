@@ -265,7 +265,7 @@
 	"nonExpertMonitoringInfo": "Überwachung aktiv: Timeout %TIMEOUTSTR%.\nIm Expertenmodus konfigurierbar.",
 	"nonExpertMonitoringDisabled": "Überwachung deaktiviert.\nIm Expertenmodus konfigurierbar.",
 	"nonExpertTimeoutDisabledShort": "deaktiviert",
-	"notifyHint": "Benachrichtigungen aktivieren und die gewünschten Anbieter auswählen. Das Instanzfeld leer lassen, um eine laufende Instanz automatisch zu erkennen, oder eine bestimmte Instanz angeben (z. B. telegram.0).",
+	"notifyHint": "Benachrichtigungen aktivieren und die gewünschten Anbieter auswählen. Verfügbare Adapter-Instanzen werden automatisch ausgelesen und in Dropdown-Listen angeboten.",
 	"notificationsTabLabel": "Benachrichtigungen",
 	"notifyEnabledLabel": "Benachrichtigungen aktivieren",
 	"notifyOnConnectionFailLabel": "Benachrichtigung bei InfluxDB-Verbindungsausfall / Wiederherstellung",
@@ -288,11 +288,11 @@
 	"notifyOnMaxValueExceededLabel": "Benachrichtigung bei Überschreitung des Maximalwerts",
 	"notifyRepeatMinutesLabel": "Benachrichtigung wiederholen alle (min)",
 	"Max Value": "Maximalwert",
-	"notifyInstanceTelegramLabel": "Telegram-Instanz (optional, z. B. telegram.0)",
-	"notifyInstancePushoverLabel": "Pushover-Instanz (optional, z. B. pushover.0)",
-	"notifyInstanceWhatsappLabel": "WhatsApp-Instanz (optional, z. B. whatsapp-cmb.0)",
-	"notifyInstanceEmailLabel": "E-Mail-Instanz (optional, z. B. email.0)",
-	"notifyInstanceSignalLabel": "Signal-Instanz (optional, z. B. signal-cmb.0)",
-	"notifyInstanceMatrixLabel": "Matrix-Instanz (optional, z. B. matrix-org.0)",
-	"notifyInstanceSynochatLabel": "Synology-Chat-Instanz (optional, z. B. synochat.0)"
+	"notifyInstanceTelegramLabel": "Telegram-Instanz",
+	"notifyInstancePushoverLabel": "Pushover-Instanz",
+	"notifyInstanceWhatsappLabel": "WhatsApp-Instanz",
+	"notifyInstanceEmailLabel": "E-Mail-Instanz",
+	"notifyInstanceSignalLabel": "Signal-Instanz",
+	"notifyInstanceMatrixLabel": "Matrix-Instanz",
+	"notifyInstanceSynochatLabel": "Synology-Chat-Instanz"
 }

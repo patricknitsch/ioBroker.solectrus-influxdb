@@ -265,7 +265,7 @@
 	"nonExpertMonitoringInfo": "Monitoring active: timeout %TIMEOUTSTR%.\nConfigurable in Expert Mode.",
 	"nonExpertMonitoringDisabled": "Monitoring disabled.\nConfigurable in Expert Mode.",
 	"nonExpertTimeoutDisabledShort": "disabled",
-	"notifyHint": "Enable notifications and select the providers you want to use. Leave the instance field empty to auto-detect a running instance, or enter a specific instance (e.g. telegram.0).",
+	"notifyHint": "Enable notifications and select the providers you want to use. Available adapter instances are automatically read and offered in dropdown lists.",
 	"notificationsTabLabel": "Notifications",
 	"notifyEnabledLabel": "Enable notifications",
 	"notifyOnConnectionFailLabel": "Notify on InfluxDB connection failure / restore",
@@ -288,11 +288,11 @@
 	"notifyOnMaxValueExceededLabel": "Notify when sensor value exceeds maximum",
 	"notifyRepeatMinutesLabel": "Repeat notification every (min)",
 	"Max Value": "Max Value",
-	"notifyInstanceTelegramLabel": "Telegram instance (optional, e.g. telegram.0)",
-	"notifyInstancePushoverLabel": "Pushover instance (optional, e.g. pushover.0)",
-	"notifyInstanceWhatsappLabel": "WhatsApp instance (optional, e.g. whatsapp-cmb.0)",
-	"notifyInstanceEmailLabel": "Email instance (optional, e.g. email.0)",
-	"notifyInstanceSignalLabel": "Signal instance (optional, e.g. signal-cmb.0)",
-	"notifyInstanceMatrixLabel": "Matrix instance (optional, e.g. matrix-org.0)",
-	"notifyInstanceSynochatLabel": "Synology Chat instance (optional, e.g. synochat.0)"
+	"notifyInstanceTelegramLabel": "Telegram instance",
+	"notifyInstancePushoverLabel": "Pushover instance",
+	"notifyInstanceWhatsappLabel": "WhatsApp instance",
+	"notifyInstanceEmailLabel": "Email instance",
+	"notifyInstanceSignalLabel": "Signal instance",
+	"notifyInstanceMatrixLabel": "Matrix instance",
+	"notifyInstanceSynochatLabel": "Synology Chat instance"
 }

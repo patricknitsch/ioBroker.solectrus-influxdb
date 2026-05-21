@@ -531,7 +531,7 @@ Mehrere Anbieter können gleichzeitig konfiguriert werden. Der Adapter prüft vo
 
 ### Instanz-Auswahl
 
-Für jeden Anbieter gibt es ein optionales Feld **Instanz** (z. B. `telegram.0`). Wird es leer gelassen, erkennt der Adapter automatisch die erste laufende Instanz des jeweiligen Adapters. Sind mehrere Instanzen desselben Adapters aktiv und soll eine bestimmte angesprochen werden, kann hier die konkrete Instanz-ID eingetragen werden.
+Für jeden Anbieter gibt es eine **Instanz**-Dropdown-Liste. Verfügbare Adapter-Instanzen werden automatisch ausgelesen und zur Auswahl angeboten. So kann bei mehreren Instanzen desselben Adapters gezielt die gewünschte Instanz ausgewählt werden.
 
 ### Hinweise
 
