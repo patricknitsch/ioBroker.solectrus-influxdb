@@ -62,6 +62,10 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (patricknitsch) Fix missing unit in Formula Engine Dashboard
+
 ### 1.8.3 (2026-05-21)
 * (copilot) Modify notification manager to work with instances
 * (copilot) Update Dependencies
