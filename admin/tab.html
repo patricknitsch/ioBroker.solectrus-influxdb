@@ -858,7 +858,11 @@
                 valCls += ' na';
             }
             valEl.className = valCls;
-            valEl.textContent = valText;
+            if (hasVal && item.unit) {
+                valEl.textContent = valText + ' ' + item.unit;
+            } else {
+                valEl.textContent = valText;
+            }
             card.appendChild(valEl);
 
             /* state id + mode badge */
