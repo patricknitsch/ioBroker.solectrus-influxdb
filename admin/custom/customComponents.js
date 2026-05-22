@@ -64,8 +64,7 @@
 	function calcTitle(sensor) {
 		const sensorName = sensor && sensor.SensorName ? sensor.SensorName : 'Sensor';
 		const enabled = !!(sensor && sensor.enabled);
-		const unit = sensor && sensor.unit ? ` [${sensor.unit}]` : '';
-		return `${enabled ? '🟢 ' : '⚪ '}${sensorName}${unit}`;
+		return `${enabled ? '🟢 ' : '⚪ '}${sensorName}`;
 	}
 
 	function ensureTitle(sensor) {
@@ -815,9 +814,9 @@
 													textOverflow: 'ellipsis',
 													whiteSpace: 'nowrap',
 												},
-												title: (s.SensorName || t('Unnamed')) + (s.unit ? ' [' + s.unit + ']' : ''),
+												title: s.SensorName || t('Unnamed'),
 											},
-											(s.SensorName || t('Unnamed')) + (s.unit ? ' [' + s.unit + ']' : ''),
+											s.SensorName || t('Unnamed'),
 										),
 									),
 								)
