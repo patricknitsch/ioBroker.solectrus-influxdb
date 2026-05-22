@@ -3029,9 +3029,9 @@
 																		textOverflow: 'ellipsis',
 																		whiteSpace: 'nowrap',
 																	},
-																	title: item.name || item.targetId || t('Unnamed'),
+																	title: (item.name || item.targetId || t('Unnamed')) + (item.unit ? ' [' + item.unit + ']' : ''),
 																},
-																item.name || item.targetId || t('Unnamed'),
+																(item.name || item.targetId || t('Unnamed')) + (item.unit ? ' [' + item.unit + ']' : ''),
 															),
 														),
 													)
