@@ -80,7 +80,8 @@
 		const targetId = item && item.targetId ? String(item.targetId).trim() : '';
 		const id = group && targetId ? `${group}.${targetId}` : targetId || group;
 		const name = item && (item.name || id) ? String(item.name || id) : t ? t('Item') : 'Item';
-		return `${enabled ? '🟢 ' : '⚪ '}${name}`;
+		const unit = item && item.unit ? ` [${item.unit}]` : '';
+		return `${enabled ? '🟢 ' : '⚪ '}${name}${unit}`;
 	}
 
 	function ensureTitle(item, t) {
