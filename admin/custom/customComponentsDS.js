@@ -1643,7 +1643,7 @@
 
 			const updateSelected = (field, value) => {
 				// Only update title if field affects the title
-				const titleAffectingFields = ['enabled', 'name', 'group', 'targetId'];
+				const titleAffectingFields = ['enabled', 'name', 'group', 'targetId', 'unit'];
 				const shouldUpdateTitle = titleAffectingFields.includes(field);
 
 				const nextItems = items.map((it, i) => {
