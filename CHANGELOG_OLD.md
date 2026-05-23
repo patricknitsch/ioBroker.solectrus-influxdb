@@ -1,4 +1,10 @@
 # Older changes
+## 1.8.0 (2026-04-24)
+
+* (copilot) Update Dependencies
+* (copilot) Add Notification function, to send warnings and errors to selectable providers
+* (copilot) Update Documentation
+
 ## 1.7.1 (2026-04-11)
 
 * (patricknitsch) Default for max Values with 0W deactivated
