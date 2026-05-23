@@ -80,8 +80,7 @@
 		const targetId = item && item.targetId ? String(item.targetId).trim() : '';
 		const id = group && targetId ? `${group}.${targetId}` : targetId || group;
 		const name = item && (item.name || id) ? String(item.name || id) : t ? t('Item') : 'Item';
-		const unit = item && item.unit ? ` [${item.unit}]` : '';
-		return `${enabled ? '🟢 ' : '⚪ '}${name}${unit}`;
+		return `${enabled ? '🟢 ' : '⚪ '}${name}`;
 	}
 
 	function ensureTitle(item, t) {
@@ -1643,7 +1642,7 @@
 
 			const updateSelected = (field, value) => {
 				// Only update title if field affects the title
-				const titleAffectingFields = ['enabled', 'name', 'group', 'targetId', 'unit'];
+				const titleAffectingFields = ['enabled', 'name', 'group', 'targetId'];
 				const shouldUpdateTitle = titleAffectingFields.includes(field);
 
 				const nextItems = items.map((it, i) => {
@@ -3029,9 +3028,9 @@
 																		textOverflow: 'ellipsis',
 																		whiteSpace: 'nowrap',
 																	},
-																	title: (item.name || item.targetId || t('Unnamed')) + (item.unit ? ' [' + item.unit + ']' : ''),
+																	title: item.name || item.targetId || t('Unnamed'),
 																},
-																(item.name || item.targetId || t('Unnamed')) + (item.unit ? ' [' + item.unit + ']' : ''),
+																item.name || item.targetId || t('Unnamed'),
 															),
 														),
 													)

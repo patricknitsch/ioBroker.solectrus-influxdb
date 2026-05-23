@@ -64,8 +64,7 @@
 	function calcTitle(sensor) {
 		const sensorName = sensor && sensor.SensorName ? sensor.SensorName : 'Sensor';
 		const enabled = !!(sensor && sensor.enabled);
-		const unit = sensor && sensor.unit ? ` [${sensor.unit}]` : '';
-		return `${enabled ? '🟢 ' : '⚪ '}${sensorName}${unit}`;
+		return `${enabled ? '🟢 ' : '⚪ '}${sensorName}`;
 	}
 
 	function ensureTitle(sensor) {
@@ -497,7 +496,7 @@
 
 			const updateSelected = (field, value) => {
 				// Only recalculate title for fields that affect it
-				const titleAffectingFields = ['enabled', 'SensorName', 'unit'];
+				const titleAffectingFields = ['enabled', 'SensorName'];
 				const shouldUpdateTitle = titleAffectingFields.includes(field);
 
 				const nextSensors = sensors.map((s, i) => {
@@ -512,7 +511,7 @@
 			// Batch multiple field updates into a single sensors update
 			// (avoids state overwrites when calling updateSelected() multiple times)
 			const updateSelectedMulti = updates => {
-				const titleAffectingFields = ['enabled', 'SensorName', 'unit'];
+				const titleAffectingFields = ['enabled', 'SensorName'];
 				var shouldUpdateTitle = false;
 				for (var k in updates) {
 					if (titleAffectingFields.indexOf(k) !== -1) {
@@ -815,9 +814,9 @@
 													textOverflow: 'ellipsis',
 													whiteSpace: 'nowrap',
 												},
-												title: (s.SensorName || t('Unnamed')) + (s.unit ? ' [' + s.unit + ']' : ''),
+												title: s.SensorName || t('Unnamed'),
 											},
-											(s.SensorName || t('Unnamed')) + (s.unit ? ' [' + s.unit + ']' : ''),
+											s.SensorName || t('Unnamed'),
 										),
 									),
 								)

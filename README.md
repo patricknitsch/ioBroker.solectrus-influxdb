@@ -64,7 +64,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 -->
 
 ### **WORK IN PROGRESS**
-* (patricknitsch) Fix missing unit in Formula Engine Dashboard
+* (patricknitsch) Fix missing unit in Formula-Engine
 
 ### 1.8.3 (2026-05-21)
 * (copilot) Modify notification manager to work with instances
