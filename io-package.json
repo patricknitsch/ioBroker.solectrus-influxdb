@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.8.3",
+    "version": "1.8.4",
     "news": {
+      "1.8.4": {
+        "en": "Fix missing unit in Formula-Engine",
+        "de": "Fehlende Einheit in Formel-Engine beheben",
+        "ru": "Исправьте недостающий блок в Формуле-двигателе",
+        "pt": "Corrigir a unidade em falta no motor de fórmula",
+        "nl": "Fix ontbrekende eenheid in Formule-Engine",
+        "fr": "Correction de l'unité manquante dans Formula-Engine",
+        "it": "Fissare l'unità mancante in Formula-Engine",
+        "es": "Fijar unidad perdida en Fórmula-Engine",
+        "pl": "Popraw brakującą jednostkę w Forma- Engine",
+        "uk": "Виправлено відсутній блок у формулі-Engine",
+        "zh-cn": "在公式引擎中修复缺失的单位"
+      },
       "1.8.3": {
         "en": "Modify notification manager to work with instances\nUpdate Dependencies",
         "de": "Benachrichtigungsmanager ändern, um mit Instanzen zu arbeiten\nAnpassungsabhängigkeiten",
@@ -80,19 +93,6 @@
         "pl": "Zwiększona wartość maksymalna z 10.000 W do 15.000 W\nMonitorowanie żywej wartości zero-: gdy czujnik wyłącza ogień i bieżąca wartość wynosi 0, zaloguj informacje zamiast ostrzegać i ponownie spróbować po 60 minutach\nPrzegląd czujników: numeryczny wiersz wartości pokazuje bieżącą wartość z jednostkami (W) wyrównanymi w lewo i wartością maksymalną z jednostkami (W) wyrównanymi w prawo\nPrzegląd czujnika: wiersz timestamp pokazuje ostatni znacznik czasu left- wyrównany i auto- obliczony następny oczekiwany znacznik czasu aktualizacji praw- wyrównany (nie wymaga ręcznego wprowadzania)\nPrzegląd czujników: zmień format",
         "uk": "Підвищена максимальна вартість від 10.000 Вт до 15.000 Вт\nЗеро-значення живого моніторингу: коли датчик випливає вогонь і струм значення 0, log info замість попередження і птиця після 60 хвилин\nОгляд датчика: нумеричне значення рядка показує поточне значення з блоком (W) вирівнюється і максимальне значення з блоком (W) правого вирівнювання\nОгляд датчика: часовий ряд показує останні часові затиски, що вирівнюються і автоматично зібрані наступні очікувані терміни оновлення, вирівнювані (не потрібно вручну)\nОгляд датчика: формат змін",
         "zh-cn": "最大值从10 000瓦提高到15 000瓦\n零值活性监测:当传感器超时起火和当前值为 0时,记录信息而不是警告,并在60分钟后重试\n传感器概览:数字值行以单位(W)左对齐显示当前值,以单位(W)右对齐显示最大值\n传感器概览: 时间戳行显示上次时间戳左对齐和自动计算 下一个预期更新时间戳右对齐(不需要手动输入)\n传感器概览: 更改格式"
-      },
-      "1.6.0": {
-        "en": "Catch max. Values - settable in Config\nIncrease Version from 20 to 24 becauso of deploy error\nAdd Alive monitoring: configurable timeout warns when sensor values are not updated",
-        "de": "Fang max. Werte - in Config einstellbar\nErhöhen Sie die Version von 20 auf 24 becauso des Bereitstellungsfehlers\nAlive Überwachung hinzufügen: konfigurierbare Timeout-Warnungen, wenn Sensorwerte nicht aktualisiert werden",
-        "ru": "Поймай Макса. Значения - settable in Config\nУвеличить версию с 20 до 24 becauso ошибки развертывания\nНастройка тайм-аута предупреждает, когда значения датчиков не обновляются",
-        "pt": "Apanhar o máximo. Valores - definido na configuração\nAumentar a versão de 20 para 24 por causa do erro de implantação\nAdicionar monitoramento vivo: tempo limite configurável avisa quando os valores do sensor não são atualizados",
-        "nl": "Vang max. Waarden - instellen in configuratie\nVerhoog Versie van 20 naar 24 becauso van implementatie fout\nAlive monitoring toevoegen: configureerbare timeout waarschuwt wanneer sensorwaarden niet worden bijgewerkt",
-        "fr": "Attrapez max. Valeurs - settable dans Config\nAugmenter la version de 20 à 24 becauso d'erreur de déploiement\nAjouter la surveillance Alive : un timeout configurable avertit lorsque les valeurs du capteur ne sont pas mises à jour",
-        "it": "Prendi max. Valori - impostabili in Configurazione\nAumentare la versione da 20 a 24 becauso di errore di distribuzione\nAdd Alive monitoring: il timeout configurabile avverte quando i valori dei sensori non vengono aggiornati",
-        "es": "Coge max. Valores -tablecido en Config\nAumento de la versión de 20 a 24 becauso de error de despliegue\nAñada Monitorización Alive: timeout configurable advierte cuando los valores de sensor no se actualizan",
-        "pl": "Łap maks. Wartości - można ustawić w konfiguratorze\nZwiększ wersję z 20 do 24 becaso błędu rozmieszczenia\nDodaj monitoring Alive: konfigurowalny timeout ostrzega, gdy wartości czujników nie są aktualizowane",
-        "uk": "Кетч макс. Цінності - розклад на Конфіг\nЗбільшення версії від 20 до 24 becauso помилки розгортання\nДодавання Alive моніторингу: Налаштування часу попереджає, коли значення датчика не оновлено",
-        "zh-cn": "抓得最多一点。 数值 - 在配置中设置\n将部署错误的版本从20个增加到24个\n添加活性监视: 当传感器值没有更新时可配置的超时警告"
       }
     },
     "titleLang": {

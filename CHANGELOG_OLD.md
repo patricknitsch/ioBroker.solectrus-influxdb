@@ -1,4 +1,9 @@
 # Older changes
+## 1.7.1 (2026-04-11)
+
+* (patricknitsch) Default for max Values with 0W deactivated
+* (patricknitsch) Fix non-expert information when monitoring is disabled
+
 ## 1.7.0 (2026-04-10)
 
 * (patricknitsch) Increased max value from 10.000W to 15.000W
