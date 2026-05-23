@@ -62,6 +62,10 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (copilot) Add Icons in Notification
+
 ### 1.8.4 (2026-05-23)
 * (patricknitsch) Fix missing unit in Formula-Engine
 

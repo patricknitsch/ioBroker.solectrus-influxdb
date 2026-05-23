@@ -511,9 +511,9 @@ Im Tab **Benachrichtigungen** der Adapter-Einstellungen:
 
 | Ereignis | Beschreibung |
 |----------|--------------|
-| **InfluxDB connection failure / restore** | Wird beim ersten Verbindungsfehlschlag gesendet sowie bei Wiederherstellung der Verbindung |
-| **Sensor alive timeout** | Wird gesendet, wenn ein Sensor innerhalb des konfigurierten Timeouts keine Aktualisierung liefert (nur bei Nicht-Null-Werten) |
-| **Max value exceeded** (`notifyOnMaxValueExceeded`) | Wird gesendet, wenn ein Sensor den konfigurierten Maximalwert überschreitet; gedrosselt auf max. 1×/Stunde je Sensor |
+| **InfluxDB connection failure / restore** | **❗** Wird beim ersten Verbindungsfehlschlag gesendet sowie **✅** bei Wiederherstellung der Verbindung |
+| **Sensor alive timeout** | **⚠️** Wird gesendet, wenn ein Sensor innerhalb des konfigurierten Timeouts keine Aktualisierung liefert (nur bei Nicht-Null-Werten) |
+| **Max value exceeded** (`notifyOnMaxValueExceeded`) | **⚠️** Wird gesendet, wenn ein Sensor den konfigurierten Maximalwert überschreitet; gedrosselt auf max. 1×/Stunde je Sensor |
 
 ### Unterstützte Anbieter
 
