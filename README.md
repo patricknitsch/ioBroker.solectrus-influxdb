@@ -9,7 +9,7 @@
 
 **Tests:** ![Test and Release](https://github.com/patricknitsch/ioBroker.solectrus-influxdb/workflows/Test%20and%20Release/badge.svg)
 
-# 🌞 SOLECTRUS InfluxDB Adapter for ioBroker
+## 🌞 SOLECTRUS InfluxDB Adapter for ioBroker
 
 ![ioBroker](https://img.shields.io/badge/ioBroker-Adapter-blue)
 ![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20-green)
@@ -81,6 +81,8 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 
 * (copilot) Auto-detect sensor unit from ioBroker state `common.unit`; unit field configurable in Expert Mode; display defaults to `W` when no unit is set
 * (copilot) Update Documentation
+
+**Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**
 
 ## License
 
