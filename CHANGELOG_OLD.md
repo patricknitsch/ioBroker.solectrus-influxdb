@@ -1,4 +1,9 @@
 # Older changes
+## 1.8.1 (2026-04-25)
+
+* (copilot) Auto-detect sensor unit from ioBroker state `common.unit`; unit field configurable in Expert Mode; display defaults to `W` when no unit is set
+* (copilot) Update Documentation
+
 ## 1.8.0 (2026-04-24)
 
 * (copilot) Update Dependencies

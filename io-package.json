@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.8.5",
+    "version": "1.8.6",
     "news": {
+      "1.8.6": {
+        "en": "Fixes for Repo Checker",
+        "de": "Fixes für Repo Checker",
+        "ru": "Обсуждение Repo Checker",
+        "pt": "Correcções para o Verificador de Repo",
+        "nl": "Fixes voor Repo Checker",
+        "fr": "Corrections pour Repo Checker",
+        "it": "Riparazioni per Checker Repo",
+        "es": "Fijas para el Checker Repo",
+        "pl": "Fixes for Repo Checker",
+        "uk": "Виправлення для репо-перевірки",
+        "zh-cn": "Repo 检查器的修复"
+      },
       "1.8.5": {
         "en": "Add Icons in Notification",
         "de": "Icons in Notification hinzufügen",
@@ -80,19 +93,6 @@
         "pl": "Aktualizuj zależności\nDodaj funkcję powiadamiania, aby wysłać ostrzeżenia i błędy do wybranych dostawców\nAktualizacja dokumentacji",
         "uk": "Оновлення залежності\nДодати функцію сповіщення, щоб надсилати попередження та помилки для вибору постачальників\nДокументація",
         "zh-cn": "更新依赖关系\n添加通知功能, 向可选择的提供者发送警告和错误\n更新文档"
-      },
-      "1.7.1": {
-        "en": "Default for max Values with 0W deactivated\nFix non-expert information when monitoring is disabled",
-        "de": "Standard für max Werte mit 0W deaktiviert\nNicht-Experten-Informationen reparieren, wenn die Überwachung deaktiviert ist",
-        "ru": "Дефолт для максимальных значений с отключенным 0W\nИсправить неэкспертную информацию при отключении мониторинга",
-        "pt": "Padrão para valores máximos com 0W desativados\nCorrigir as informações não especializadas quando a monitorização estiver desactivada",
-        "nl": "Standaard voor max Waarden met 0W gedeactiveerd\nFix niet-expert informatie bij bewaking is uitgeschakeld",
-        "fr": "Valeur par défaut pour max avec 0W désactivé\nCorrection des informations non expertes lorsque la surveillance est désactivée",
-        "it": "Predefinito per valori massimi con 0W disattivato\nFissare informazioni non esperte quando il monitoraggio è disabilitato",
-        "es": "Predeterminado para valores máximos con 0W desactivado\nReparar la información no experto cuando el monitoreo es deshabilitado",
-        "pl": "Domyślnie dla wartości maksymalnych z dezaktywowanym 0W\nPoprawianie informacji niespecjalistycznych, gdy monitorowanie jest wyłączone",
-        "uk": "За замовчуванням для максимальних значень з деактивацією 0W\nВиправлення невибагливої інформації при відключенні моніторингу",
-        "zh-cn": "0W 已关闭的最大值的默认值\n停止监测时修复非专家信息"
       }
     },
     "titleLang": {

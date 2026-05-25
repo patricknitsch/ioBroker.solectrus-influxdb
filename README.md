@@ -62,8 +62,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.8.6 (2026-05-25)
 * (copilot) Fixes for Repo Checker
 
 ### 1.8.5 (2026-05-23)
@@ -81,14 +80,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 * (copilot) Fix sensor duplicate: stale draft cache caused wrong sensor data to appear in the detail panel after duplicating or deleting a sensor
 * (copilot) Update Dependencies
 
-### 1.8.1 (2026-04-25)
-
-* (copilot) Auto-detect sensor unit from ioBroker state `common.unit`; unit field configurable in Expert Mode; display defaults to `W` when no unit is set
-* (copilot) Update Documentation
-
-**Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**
-
-## License
+**Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**## License
 
 MIT License
 
