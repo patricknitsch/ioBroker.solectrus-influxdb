@@ -22,9 +22,6 @@
     "type": "git",
     "url": "https://github.com/patricknitsch/ioBroker.solectrus-influxdb"
   },
-  "publishConfig": {
-    "provenance": true
-  },
   "engines": {
     "node": ">= 22"
   },
@@ -42,7 +39,7 @@
     "@iobroker/dev-server": "^0.8.0",
     "@iobroker/eslint-config": "^2.3.4",
     "@iobroker/testing": "^5.2.2",
-    "@tsconfig/node20": "^20.1.9",
+    "@tsconfig/node22": "^22.0.0",
     "@types/iobroker": "npm:@iobroker/types@^7.1.0",
     "@types/node": "^22.15.21",
     "typescript": "^5.9.3"
