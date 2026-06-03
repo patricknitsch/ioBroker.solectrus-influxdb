@@ -65,6 +65,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 
 ### **WORK IN PROGRESS**
 * (copilot) Fixes for Repo Checker
+* (patricknitsch) Add new Sensor "heatpump_tank_temp_setpoint" in io-package.json
 
 ### 1.8.6 (2026-05-25)
 * (copilot) Fixes for Repo Checker
