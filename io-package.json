@@ -558,6 +558,14 @@
       },
       {
         "enabled": false,
+        "SensorName": "HEATPUMP_TANK_TEMP_SETPOINT",
+        "sourceState": "",
+        "type": "float",
+        "measurement": "heatpump",
+        "field": "tank_temp_setpoint"
+      },
+      {
+        "enabled": false,
         "SensorName": "HEATPUMP_STATUS",
         "sourceState": "",
         "type": "string",
