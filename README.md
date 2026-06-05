@@ -85,7 +85,9 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 * (copilot) Fix sensor duplicate: stale draft cache caused wrong sensor data to appear in the detail panel after duplicating or deleting a sensor
 * (copilot) Update Dependencies
 
-**Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**## License
+**Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**
+
+## License
 
 MIT License
 
