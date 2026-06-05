@@ -62,8 +62,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.9.0 (2026-06-05)
 * (copilot) Fixes for Repo Checker
 * (patricknitsch) Add new Sensor "heatpump_tank_temp_setpoint" in io-package.json
 
@@ -80,14 +79,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 * (copilot) Modify notification manager to work with instances
 * (copilot) Update Dependencies
 
-### 1.8.2 (2026-05-03)
-* (copilot) Adapter requires node.js >= 22 now
-* (copilot) Fix sensor duplicate: stale draft cache caused wrong sensor data to appear in the detail panel after duplicating or deleting a sensor
-* (copilot) Update Dependencies
-
-**Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**
-
-## License
+**Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**## License
 
 MIT License
 

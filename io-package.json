@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.8.6",
+    "version": "1.9.0",
     "news": {
+      "1.9.0": {
+        "en": "Fixes for Repo Checker\nAdd new Sensor \"heatpump_tank_temp_setpoint\" in io-package.json",
+        "de": "Fixes für Repo Checker\nHinzufügen neuer Sensor \"heatpump tank temp setpoint\" in io-package.json",
+        "ru": "Обсуждение Repo Checker\nДобавить новый датчик \"heatpump tank temp setpoint\" в io-package.json",
+        "pt": "Correcções para o Verificador de Repo\nAdicionar novo Sensor \"heatpump tank temp setpoint\" em io-package.json",
+        "nl": "Fixes voor Repo Checker\nNieuwe sensor \"heatpump tank temp setpoint\" toevoegen in io-package.json",
+        "fr": "Corrections pour Repo Checker\nAjouter un nouveau capteur \"heatpump tank temp setpoint\" dans io-package.json",
+        "it": "Riparazioni per Checker Repo\nAggiungi il nuovo sensore \"heatpump tank temp setpoint\" in io-package.json",
+        "es": "Fijas para el Checker Repo\nAñadir nuevo Sensor \"heatpump tank temp setpoint\" en io-package.json",
+        "pl": "Fixes for Repo Checker\nDodaj nowy sensor \"heatpomp _ tank _ temp _ setpoint\" w jo- package.json",
+        "uk": "Виправлення для репо-перевірки\nДодати новий датчик \"heatpump tank temp setpoint\" в io-package.json",
+        "zh-cn": "Repo 检查器的修复\n在io-package.json中添加新的传感器“headpump tank temp setpoint”"
+      },
       "1.8.6": {
         "en": "Fixes for Repo Checker",
         "de": "Fixes für Repo Checker",
@@ -80,19 +93,6 @@
         "pl": "Automatyczne wykrywanie czujników ze stanu joBroker 'common.unit'; pole jednostki konfigurowalne w trybie Expert; wyświetlanie domyślnych wartości 'W', gdy nie jest ustawiona żadna jednostka\nAktualizacja dokumentacji",
         "uk": "Автодетектурний сенсорний блок від ioBroker State `common.unit`; блок поле настроєний в експертному режимі; відображення за замовчуванням до `W`, коли не встановлено блок\nДокументація",
         "zh-cn": "从 ioBroker 状态“ common.unit” 自动检测传感器单元; 专家模式下可配置的单元字段; 未设置单元时显示默认为“ W”\n更新文档"
-      },
-      "1.8.0": {
-        "en": "Update Dependencies\nAdd Notification function, to send warnings and errors to selectable providers\nUpdate Documentation",
-        "de": "Anpassungsabhängigkeiten\nBenachrichtigungsfunktion hinzufügen, Warnungen und Fehler an wählbare Anbieter senden\nDokumentation aktualisieren",
-        "ru": "Обновление зависимостей\nДобавьте функцию уведомлений, чтобы отправлять предупреждения и ошибки выбранным поставщикам\nОбновление документации",
-        "pt": "Atualizar dependências\nAdicionar função de notificação, para enviar avisos e erros para provedores selecionáveis\nAtualizar documentação",
-        "nl": "Afhankelijkheden bijwerken\nNotificatiefunctie toevoegen om waarschuwingen en fouten naar selecteerbare providers te sturen\nDocumentatie bijwerken",
-        "fr": "Mettre à jour les dépendances\nAjouter la fonction Notification, pour envoyer des avertissements et des erreurs aux fournisseurs sélectionnables\nMettre à jour la documentation",
-        "it": "Dipendenze di aggiornamento\nAggiungi la funzione di notifica, per inviare avvisi ed errori ai provider selezionabili\nDocumentazione di aggiornamento",
-        "es": "Dependencias de actualización\nAgregar función de notificación, para enviar advertencias y errores a proveedores seleccionables\nDocumentación actualizada",
-        "pl": "Aktualizuj zależności\nDodaj funkcję powiadamiania, aby wysłać ostrzeżenia i błędy do wybranych dostawców\nAktualizacja dokumentacji",
-        "uk": "Оновлення залежності\nДодати функцію сповіщення, щоб надсилати попередження та помилки для вибору постачальників\nДокументація",
-        "zh-cn": "更新依赖关系\n添加通知功能, 向可选择的提供者发送警告和错误\n更新文档"
       }
     },
     "titleLang": {
