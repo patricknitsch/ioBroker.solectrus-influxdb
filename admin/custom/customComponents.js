@@ -74,13 +74,17 @@
 		const enabled = !!(sensor && sensor.enabled);
 		const internal = !!(sensor && sensor.internal);
 		if (!enabled) {
-			return '#ffffff';
+			return '#f0f0f0';
 		}
 		return internal ? '#fdd835' : '#4caf50';
 	}
 
 	function sensorStateAccentColor(sensor) {
 		return sensor && sensor.enabled ? sensorStateColor(sensor) : '#9e9e9e';
+	}
+
+	function sensorStateDotBorderColor(sensor) {
+		return sensor && sensor.enabled ? 'transparent' : '#9e9e9e';
 	}
 
 	function calcTitle(sensor) {
@@ -831,7 +835,7 @@
 												height: 12,
 												borderRadius: '50%',
 												background: sensorStateColor(s),
-												border: `1px solid ${s.enabled ? 'transparent' : colors.textMuted}`,
+												border: `1px solid ${sensorStateDotBorderColor(s)}`,
 												display: 'inline-block',
 												flex: '0 0 12px',
 											},
