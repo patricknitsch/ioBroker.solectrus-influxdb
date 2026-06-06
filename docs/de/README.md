@@ -48,10 +48,10 @@ Zum Tab **Sensors** wechseln. Der Master/Detail-Editor zeigt alle konfigurierten
 
 Standardmäßig läuft der Adapter im **Standardmodus**. Die Sensorliste zeigt alle vorkonfigurierten Sensoren (INVERTER_POWER, BATTERY_SOC, HOUSE_POWER, Prognosesensoren usw.). Im Standardmodus:
 
-- Die Sensorliste kann nach **Ordnern/Gruppen** eingeklappt werden. Alle vorkonfigurierten SOLECTRUS-Sensoren liegen anfangs in der Gruppe **Standard Solectrus Sensoren**.
-- **Editierbar**: Source State (ioBroker-Datenpunkt), Aktiviert-Checkbox, Intern-Checkbox
+- Die Sensorliste kann nach **Ordnern/Gruppen** eingeklappt werden. Alle vorkonfigurierten SOLECTRUS-Sensoren liegen anfangs in der Gruppe **Standard SOLECTRUS Sensoren**. Vorhandene Sensoren aus älteren Konfigurationen, die nicht zu den Standardsensoren passen, werden automatisch der Gruppe **Benutzerdefiniert** zugeordnet.
+- **Editierbar**: Source State (ioBroker-Datenpunkt), Aktiviert-Checkbox
 - **Nur lesen**: Sensorname, Datentyp, Measurement, Field, JSON-Vorlage
-- **Ausgeblendet**: Hinzufügen-, Löschen-, Duplizieren-Buttons, Einheit, Maximalwert, Alive-Timeout
+- **Ausgeblendet**: Hinzufügen-, Löschen-, Duplizieren-Buttons, Intern-Checkbox, Ordner/Gruppe, Einheit, Maximalwert, Alive-Timeout
 
 So wird sichergestellt, dass Anfänger einfach Sensoren aktivieren und Quell-States zuweisen können, ohne versehentlich das InfluxDB-Mapping zu ändern. Im Standardmodus gelten folgende Standardwerte: **Werteüberwachung deaktiviert** (Maximalwert = 0) und **60 Minuten** Alive-Timeout. Die genaue Konfiguration ist im Expertenmodus möglich.
 
@@ -59,6 +59,7 @@ Für volle Kontrolle den **Expertenmodus** auf der InfluxDB-Einstellungsseite ak
 
 - Alle Felder sind editierbar
 - Sensoren können hinzugefügt, gelöscht, dupliziert und umsortiert werden
+- Neu angelegte Sensoren starten in der Gruppe **Benutzerdefiniert** und können dort bei Bedarf umgruppiert oder ohne Gruppe gespeichert werden
 - JSON-Vorlagen können auf Benutzerdefiniert umgestellt werden
 
 ### Sensor-Einstellungen
@@ -70,9 +71,9 @@ Auf **Add** klicken (Expertenmodus) oder einen bestehenden Sensor auswählen und
 | Einstellung | Beschreibung | Modus |
 |-------------|--------------|-------|
 | Enabled | Sensor aktivieren/deaktivieren | Standard + Experte |
-| Internal | Spiegelt den aktuellen Wert und hält das Monitoring aktiv, überspringt aber das Schreiben nach InfluxDB. Standard: `false`. | Standard + Experte |
+| Internal | Spiegelt den aktuellen Wert und hält das Monitoring aktiv, überspringt aber das Schreiben nach InfluxDB. Standard: `false`. | Experte |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. | Standard + Experte |
-| Ordner/Gruppe | Optionaler Gruppenname für die linke Sensorliste. Leere Eingabe = **Ohne Gruppe**. Alle Standard-Sensoren starten in **Standard Solectrus Sensoren**. | Experte |
+| Ordner/Gruppe | Optionaler Gruppenname für die linke Sensorliste. Leere Eingabe = **Ohne Gruppe**. Alle Standard-Sensoren starten in **Standard SOLECTRUS Sensoren**. Nicht passende Bestands- oder neue Expertenmodus-Sensoren starten in **Benutzerdefiniert**. | Experte |
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) | Experte |
 | Einheit | Physikalische Einheit des Sensorwerts (z.B. `W`, `°C`, `%`, `A`). Wird automatisch aus `common.unit` des ioBroker-Objekts übernommen, wenn ein Quell-Datenpunkt ausgewählt wird. Standardmäßig `W`, falls keine Einheit konfiguriert ist. Im Expertenmodus manuell überschreibbar. | Experte |
 | Maximalwert | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. **0 = deaktiviert** (Standard). | Experte |

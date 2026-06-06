@@ -11,6 +11,7 @@
 	const UI_VERSION = '2026-06-06 20260606-1';
 	const DEBUG = false;
 	const DEFAULT_SENSOR_GROUP_KEY = 'Default SOLECTRUS sensors';
+	const CUSTOM_SENSOR_GROUP_KEY = 'Custom sensors';
 	let shareScope;
 
 	if (DEBUG && typeof console !== 'undefined' && typeof console.debug === 'function') {
@@ -76,26 +77,52 @@
 		].some(pattern => pattern.test(sensorName));
 	}
 
+	function hasExplicitSensorGroup(sensor) {
+		return !!(
+			sensor &&
+			typeof sensor === 'object' &&
+			Object.prototype.hasOwnProperty.call(sensor, 'group') &&
+			sensor.group !== undefined &&
+			sensor.group !== null
+		);
+	}
+
+	function hasConfiguredSensor(sensor) {
+		return !!String((sensor && sensor.SensorName) || '').trim();
+	}
+
 	function canonicalizeSensorGroupName(value, t) {
 		const trimmed = String(value || '').trim();
 		if (!trimmed) {
 			return '';
 		}
-		if (trimmed === DEFAULT_SENSOR_GROUP_KEY) {
+		if (
+			trimmed === DEFAULT_SENSOR_GROUP_KEY ||
+			trimmed === 'Standard Solectrus Sensoren' ||
+			trimmed === 'Standard SOLECTRUS Sensoren'
+		) {
 			return DEFAULT_SENSOR_GROUP_KEY;
 		}
 		if (typeof t === 'function' && trimmed === t(DEFAULT_SENSOR_GROUP_KEY)) {
 			return DEFAULT_SENSOR_GROUP_KEY;
 		}
+		if (trimmed === CUSTOM_SENSOR_GROUP_KEY || trimmed === 'Benutzerdefiniert') {
+			return CUSTOM_SENSOR_GROUP_KEY;
+		}
+		if (typeof t === 'function' && trimmed === t(CUSTOM_SENSOR_GROUP_KEY)) {
+			return CUSTOM_SENSOR_GROUP_KEY;
+		}
 		return trimmed;
 	}
 
 	function getSensorGroupKey(sensor, t) {
-		const normalized = canonicalizeSensorGroupName(sensor && sensor.group, t);
-		if (normalized) {
-			return normalized;
+		if (hasExplicitSensorGroup(sensor)) {
+			return canonicalizeSensorGroupName(sensor && sensor.group, t);
 		}
-		return isDefaultSensorName(sensor && sensor.SensorName) ? DEFAULT_SENSOR_GROUP_KEY : '';
+		if (isDefaultSensorName(sensor && sensor.SensorName)) {
+			return DEFAULT_SENSOR_GROUP_KEY;
+		}
+		return hasConfiguredSensor(sensor) ? CUSTOM_SENSOR_GROUP_KEY : '';
 	}
 
 	function displaySensorGroupName(value, t) {
@@ -103,7 +130,10 @@
 		if (!normalized) {
 			return typeof t === 'function' ? t('Ungrouped') : 'Ungrouped';
 		}
-		return normalized === DEFAULT_SENSOR_GROUP_KEY && typeof t === 'function' ? t(DEFAULT_SENSOR_GROUP_KEY) : normalized;
+		if ((normalized === DEFAULT_SENSOR_GROUP_KEY || normalized === CUSTOM_SENSOR_GROUP_KEY) && typeof t === 'function') {
+			return t(normalized);
+		}
+		return normalized;
 	}
 
 	function sensorGroupInputValue(value, t) {
@@ -111,7 +141,10 @@
 		if (!normalized) {
 			return '';
 		}
-		return normalized === DEFAULT_SENSOR_GROUP_KEY && typeof t === 'function' ? t(DEFAULT_SENSOR_GROUP_KEY) : normalized;
+		if ((normalized === DEFAULT_SENSOR_GROUP_KEY || normalized === CUSTOM_SENSOR_GROUP_KEY) && typeof t === 'function') {
+			return t(normalized);
+		}
+		return normalized;
 	}
 
 	function normalizeSensors(value) {
@@ -120,11 +153,20 @@
 					.filter(v => v && typeof v === 'object')
 					.map(sensor => {
 						const next = Object.assign({}, sensor);
-						const group = getSensorGroupKey(next);
-						if (group) {
-							next.group = group;
+						if (hasExplicitSensorGroup(next)) {
+							const group = canonicalizeSensorGroupName(next.group);
+							if (group) {
+								next.group = group;
+							} else {
+								next.group = '';
+							}
 						} else {
-							delete next.group;
+							const group = getSensorGroupKey(next);
+							if (group) {
+								next.group = group;
+							} else {
+								delete next.group;
+							}
 						}
 						return next;
 					})
@@ -183,7 +225,7 @@
 		const sensor = {
 			enabled: false,
 			internal: false,
-			group: '',
+			group: CUSTOM_SENSOR_GROUP_KEY,
 			SensorName: '',
 			sourceState: '',
 			type: '',
