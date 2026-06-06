@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.9.0",
+    "version": "1.9.1",
     "news": {
+      "1.9.1": {
+        "en": "Update Readme and Timeout",
+        "de": "Update Readme und Timeout",
+        "ru": "Обновление Readme и Timeout",
+        "pt": "Actualizar o Tempo de Leitura e Tempo",
+        "nl": "Readme en timeout bijwerken",
+        "fr": "Mettre à jour Readme et timeout",
+        "it": "Aggiornamento Readme e Timeout",
+        "es": "Actualización Leame y Timeout",
+        "pl": "Aktualizacja Readme i Timeout",
+        "uk": "Update Readme і час",
+        "zh-cn": "更新读取和超时"
+      },
       "1.9.0": {
         "en": "Fixes for Repo Checker\nAdd new Sensor \"heatpump_tank_temp_setpoint\" in io-package.json",
         "de": "Fixes für Repo Checker\nHinzufügen neuer Sensor \"heatpump tank temp setpoint\" in io-package.json",
@@ -80,19 +93,6 @@
         "pl": "Adapter wymaga node.js > = 22\nNapraw duplikat czujnika: nieświeży szkic pamięci podręcznej spowodował, że błędne dane czujnika pojawiły się w panelu szczegółowości po powieleniu lub usunięciu czujnika\nAktualizuj zależności",
         "uk": "Адаптер вимагає node.js >= 22 тепер\nФіксований сенсорний дублікат: застібка проекту кешу викликала неправильні дані датчика, які з'являються в докладній панелі після видалення або видалення датчика\nОновлення залежності",
         "zh-cn": "适配器需要节点.js 现在22\n固定传感器复制:过时的草稿缓存导致在复制或删除传感器后在细节面板中出现错误的传感器数据\n更新依赖关系"
-      },
-      "1.8.1": {
-        "en": "Auto-detect sensor unit from ioBroker state `common.unit`; unit field configurable in Expert Mode; display defaults to `W` when no unit is set\nUpdate Documentation",
-        "de": "Auto-Detekt-Sensoreinheit aus ioBroker state `common.unit`; Einheitsfeld konfigurierbar im Expertenmodus; Display-Standards zu `W`, wenn keine Einheit gesetzt ist\nDokumentation aktualisieren",
-        "ru": "Устройство автоматического обнаружения датчика из состояния ioBroker «common.unit»; поле блока, настраиваемое в режиме эксперта; отображение по умолчанию до «W», когда не установлено устройство\nОбновление документации",
-        "pt": "Detectar automaticamente a unidade de sensor do estado do ioBroker `common.unit'; campo unitário configurável no modo Expert; exibir padrão para `W` quando nenhuma unidade está definida\nAtualizar documentação",
-        "nl": "Auto-detect sensor unit van joBroker state common.unit\nDocumentatie bijwerken",
-        "fr": "Unité de détection automatique de l'état ioBroker `common.unit`; champ d'unité configurable en mode expert; affiche par défaut à `W` lorsqu'aucune unité n'est définie\nMettre à jour la documentation",
-        "it": "Unità sensore di rilevamento automatico da stato ioBroker `common.unit`; campo unità configurabile in modalità esperto; impostazione predefinita del display a `W` quando nessuna unità è impostata\nDocumentazione di aggiornamento",
-        "es": "Unidad de sensor de auto-detecto del estado de ioBroker `common.unit`; campo de unidad configurable en modo de experto; mostrar defectos a `W` cuando no se establece una unidad\nDocumentación actualizada",
-        "pl": "Automatyczne wykrywanie czujników ze stanu joBroker 'common.unit'; pole jednostki konfigurowalne w trybie Expert; wyświetlanie domyślnych wartości 'W', gdy nie jest ustawiona żadna jednostka\nAktualizacja dokumentacji",
-        "uk": "Автодетектурний сенсорний блок від ioBroker State `common.unit`; блок поле настроєний в експертному режимі; відображення за замовчуванням до `W`, коли не встановлено блок\nДокументація",
-        "zh-cn": "从 ioBroker 状态“ common.unit” 自动检测传感器单元; 专家模式下可配置的单元字段; 未设置单元时显示默认为“ W”\n更新文档"
       }
     },
     "titleLang": {

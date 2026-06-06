@@ -1,4 +1,8 @@
 # Older changes
+## 1.8.3 (2026-05-21)
+* (copilot) Modify notification manager to work with instances
+* (copilot) Update Dependencies
+
 ## 1.8.2 (2026-05-03)
 * (copilot) Adapter requires node.js >= 22 now
 * (copilot) Fix sensor duplicate: stale draft cache caused wrong sensor data to appear in the detail panel after duplicating or deleting a sensor
