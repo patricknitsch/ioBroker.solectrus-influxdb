@@ -62,7 +62,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-**WORK IN PROGRESS**
+### **WORK IN PROGRESS**
 * (copilot) Update Readme and Timeout
 
 ### 1.9.0 (2026-06-05)
