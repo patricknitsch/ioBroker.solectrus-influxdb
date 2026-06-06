@@ -70,25 +70,6 @@
 		return internal ? '🟡' : '🟢';
 	}
 
-	function sensorStateColor(sensor) {
-		const enabled = !!(sensor && sensor.enabled);
-		const internal = !!(sensor && sensor.internal);
-		if (!enabled) {
-			return SENSOR_DISABLED_COLOR;
-		}
-		return internal ? SENSOR_INTERNAL_COLOR : SENSOR_ACTIVE_COLOR;
-	}
-
-	function sensorStateAccentColor(sensor) {
-		const enabled = !!(sensor && sensor.enabled);
-		// Disabled sensors keep a neutral gray accent for better list contrast.
-		return enabled ? sensorStateColor(sensor) : SENSOR_DISABLED_ACCENT_COLOR;
-	}
-
-	function sensorStateDotBorderColor(sensor) {
-		return sensor && sensor.enabled ? 'transparent' : SENSOR_DISABLED_ACCENT_COLOR;
-	}
-
 	function calcTitle(sensor) {
 		const sensorName = sensor && sensor.SensorName ? sensor.SensorName : 'Sensor';
 		return `${sensorStateIcon(sensor)} ${sensorName}`;
@@ -100,11 +81,6 @@
 
 	const MONITORING_ACTIVE_COLOR = '#4caf50';
 	const MONITORING_DISABLED_COLOR = '#f44336';
-	const SENSOR_DISABLED_COLOR = '#f0f0f0';
-	const SENSOR_INTERNAL_COLOR = '#fdd835';
-	const SENSOR_ACTIVE_COLOR = '#4caf50';
-	const SENSOR_DISABLED_ACCENT_COLOR = '#9e9e9e';
-	const SENSOR_STATUS_DOT_SIZE = 12;
 
 	const JSON_PRESETS = {
 		forecast: {
@@ -717,13 +693,12 @@
 				color: colors.text,
 			};
 
-			const listBtnStyle = (isActive, sensor) => ({
+			const listBtnStyle = isActive => ({
 				width: '100%',
 				textAlign: 'left',
 				padding: '10px 8px',
 				border: 'none',
 				borderBottom: `1px solid ${colors.rowBorder}`,
-				borderLeft: `4px solid ${sensorStateAccentColor(sensor)}`,
 				background: isActive ? colors.active : 'transparent',
 				cursor: 'pointer',
 				fontFamily: 'inherit',
@@ -833,19 +808,9 @@
 										{
 											key: i,
 											type: 'button',
-											style: listBtnStyle(i === selectedIndex, s),
+											style: listBtnStyle(i === selectedIndex),
 											onClick: () => setSelectedIndex(i),
 										},
-										React.createElement('span', {
-											style: {
-												width: SENSOR_STATUS_DOT_SIZE,
-												height: SENSOR_STATUS_DOT_SIZE,
-												borderRadius: '50%',
-												background: sensorStateColor(s),
-												border: `1px solid ${sensorStateDotBorderColor(s)}`,
-												display: 'inline-block',
-											},
-										}),
 										React.createElement(
 											'span',
 											{
@@ -859,7 +824,7 @@
 												},
 												title: s.SensorName || t('Unnamed'),
 											},
-											s.SensorName || t('Unnamed'),
+											calcTitle(s),
 										),
 									),
 								)
