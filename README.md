@@ -63,6 +63,10 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (copilot) Add internal function without sending to Influx. So you can also use the sensors for Interval- and Value Checks
+
 ### 1.9.1 (2026-06-06)
 * (copilot) Update Readme and Timeout
 
