@@ -8,7 +8,7 @@
 	'use strict';
 
 	const REMOTE_NAME = 'SolectrusSensors';
-	const UI_VERSION = '2026-06-06 20260606-1';
+	const UI_VERSION = '2026-06-06 20260606-2';
 	const DEBUG = false;
 	const DEFAULT_SENSOR_GROUP_KEY = 'Default SOLECTRUS sensors';
 	const CUSTOM_SENSOR_GROUP_KEY = 'Custom sensors';
@@ -137,7 +137,16 @@
 	}
 
 	function sensorGroupInputValue(value, t) {
-		const normalized = canonicalizeSensorGroupName(value, t);
+		const rawValue = value === undefined || value === null ? '' : String(value);
+		if (!rawValue) {
+			return '';
+		}
+		// Keep leading/trailing whitespace while the user is typing so spaces can be entered naturally.
+		// Canonicalization still runs on blur before persisting.
+		if (rawValue !== rawValue.trim()) {
+			return rawValue;
+		}
+		const normalized = canonicalizeSensorGroupName(rawValue, t);
 		if (!normalized) {
 			return '';
 		}
