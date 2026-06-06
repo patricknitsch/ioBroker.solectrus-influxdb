@@ -26,6 +26,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 ### Features
 
 - **Sensor Mapping** -- Map any ioBroker state to an InfluxDB measurement/field with configurable data type (int, float, bool, string)
+- **Internal Sensors** -- Mirror and monitor states without writing them to InfluxDB
 - **Reliable Buffering** -- Persistent write buffer (up to 100k points) survives InfluxDB outages and adapter restarts
 - **Data-SOLECTRUS Formula Engine** (optional) -- Compute derived values from multiple inputs using formulas, source mirroring, or rule-based state machines
 - **State Machine Mode** -- Generate string/boolean states from rule conditions (first-match-wins), ideal for status labels and operating modes

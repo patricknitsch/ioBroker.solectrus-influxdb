@@ -48,7 +48,7 @@ Go to the **Sensors** tab. The master/detail editor shows all configured sensors
 
 By default, the adapter runs in **Standard Mode**. The sensor list shows all preconfigured sensors (INVERTER_POWER, BATTERY_SOC, HOUSE_POWER, forecast sensors, etc.). In standard mode:
 
-- **Editable**: Source State (ioBroker state), Enabled checkbox
+- **Editable**: Source State (ioBroker state), Enabled checkbox, Internal checkbox
 - **Read-only**: Sensor Name, Datatype, Measurement, Field, JSON Preset
 - **Hidden**: Add, Delete, Duplicate buttons, Unit, Max Value, Alive Timeout
 
@@ -69,6 +69,7 @@ Click **Add** (Expert Mode) or select an existing sensor to configure:
 | Setting | Description | Mode |
 |---------|-------------|------|
 | Enabled | Activate/deactivate the sensor | Standard + Expert |
+| Internal | Mirrors the current value and keeps monitoring active, but skips writes to InfluxDB. Default: `false`. | Standard + Expert |
 | ioBroker Source State | The source state to read values from. Use the **Select** button to browse the object tree. | Standard + Expert |
 | Sensor Name | Display name (also used for the ioBroker state ID under `sensors.*`) | Expert |
 | Unit | Physical unit of the sensor value (e.g. `W`, `°C`, `%`, `A`). Auto-detected from the ioBroker state's `common.unit` when a source state is selected. Defaults to `W` if no unit is configured. Can be overridden manually in Expert Mode. | Expert |
@@ -105,6 +106,8 @@ Fields not present in the JSON are automatically skipped.
 2. Values are mirrored under `solectrus-influxdb.X.sensors.*`
 3. On each polling interval, current values are added to the write buffer (**Collect**)
 4. Immediately after collect, the buffer is flushed to InfluxDB (**Flush**)
+
+Sensors marked as **Internal** are still mirrored under `solectrus-influxdb.X.sensors.*` and remain part of alive/max monitoring, but they are excluded from InfluxDB writes.
 
 ### Collect & Flush Architecture
 

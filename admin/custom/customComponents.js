@@ -8,7 +8,7 @@
 	'use strict';
 
 	const REMOTE_NAME = 'SolectrusSensors';
-	const UI_VERSION = '2026-05-03 20260503-2';
+	const UI_VERSION = '2026-06-06 20260606-1';
 	const DEBUG = false;
 	let shareScope;
 
@@ -104,6 +104,7 @@
 	function makeNewSensor() {
 		const sensor = {
 			enabled: false,
+			internal: false,
 			SensorName: '',
 			sourceState: '',
 			type: '',
@@ -849,15 +850,41 @@
 										calcTitle(editSensor),
 									),
 									React.createElement(
-										'label',
-										{ style: { display: 'flex', alignItems: 'center', gap: 8 } },
-										React.createElement('input', {
-											type: 'checkbox',
-											checked: !!selectedSensor.enabled,
-											onChange: e => updateSelected('enabled', !!e.target.checked),
-										}),
-										React.createElement('span', null, t('Enabled')),
+										'div',
+										{ style: { display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' } },
+										React.createElement(
+											'label',
+											{ style: { display: 'flex', alignItems: 'center', gap: 8 } },
+											React.createElement('input', {
+												type: 'checkbox',
+												checked: !!selectedSensor.enabled,
+												onChange: e => updateSelected('enabled', !!e.target.checked),
+											}),
+											React.createElement('span', null, t('Enabled')),
+										),
+										React.createElement(
+											'label',
+											{ style: { display: 'flex', alignItems: 'center', gap: 8 } },
+											React.createElement('input', {
+												type: 'checkbox',
+												checked: !!editSensor.internal,
+												onChange: e => updateSelected('internal', !!e.target.checked),
+											}),
+											React.createElement('span', null, t('Internal')),
+										),
 									),
+								),
+								React.createElement(
+									'div',
+									{
+										style: {
+											marginTop: 8,
+											fontSize: 12,
+											color: colors.textMuted,
+											lineHeight: 1.5,
+										},
+									},
+									t('internalSensorHint'),
 								),
 								expertMode
 									? React.createElement(

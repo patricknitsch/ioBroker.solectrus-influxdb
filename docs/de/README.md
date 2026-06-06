@@ -48,7 +48,7 @@ Zum Tab **Sensors** wechseln. Der Master/Detail-Editor zeigt alle konfigurierten
 
 Standardmäßig läuft der Adapter im **Standardmodus**. Die Sensorliste zeigt alle vorkonfigurierten Sensoren (INVERTER_POWER, BATTERY_SOC, HOUSE_POWER, Prognosesensoren usw.). Im Standardmodus:
 
-- **Editierbar**: Source State (ioBroker-Datenpunkt), Aktiviert-Checkbox
+- **Editierbar**: Source State (ioBroker-Datenpunkt), Aktiviert-Checkbox, Intern-Checkbox
 - **Nur lesen**: Sensorname, Datentyp, Measurement, Field, JSON-Vorlage
 - **Ausgeblendet**: Hinzufügen-, Löschen-, Duplizieren-Buttons, Einheit, Maximalwert, Alive-Timeout
 
@@ -69,6 +69,7 @@ Auf **Add** klicken (Expertenmodus) oder einen bestehenden Sensor auswählen und
 | Einstellung | Beschreibung | Modus |
 |-------------|--------------|-------|
 | Enabled | Sensor aktivieren/deaktivieren | Standard + Experte |
+| Internal | Spiegelt den aktuellen Wert und hält das Monitoring aktiv, überspringt aber das Schreiben nach InfluxDB. Standard: `false`. | Standard + Experte |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. | Standard + Experte |
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) | Experte |
 | Einheit | Physikalische Einheit des Sensorwerts (z.B. `W`, `°C`, `%`, `A`). Wird automatisch aus `common.unit` des ioBroker-Objekts übernommen, wenn ein Quell-Datenpunkt ausgewählt wird. Standardmäßig `W`, falls keine Einheit konfiguriert ist. Im Expertenmodus manuell überschreibbar. | Experte |
@@ -105,6 +106,8 @@ Felder, die im JSON nicht vorhanden sind, werden automatisch übersprungen.
 2. Werte werden unter `solectrus-influxdb.X.sensors.*` gespiegelt
 3. In jedem Polling-Intervall werden aktuelle Werte in den Schreibpuffer aufgenommen (**Collect**)
 4. Direkt nach dem Collect wird der Puffer an InfluxDB gesendet (**Flush**)
+
+Sensoren mit aktivierter Option **Internal** werden weiterhin unter `solectrus-influxdb.X.sensors.*` gespiegelt und im Alive-/Maximalwert-Monitoring berücksichtigt, aber nicht an InfluxDB geschrieben.
 
 ### Collect & Flush Architektur
 

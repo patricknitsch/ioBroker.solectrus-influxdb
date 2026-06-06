@@ -9,6 +9,7 @@ type _AdapterConfig = typeof native;
 /** A single sensor mapping entry (sensors tab). */
 interface SensorEntry {
 	enabled: boolean;
+	internal?: boolean;
 	SensorName: string;
 	sourceState: string;
 	measurement: string;

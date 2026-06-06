@@ -226,7 +226,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "inverter",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -234,7 +235,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "inverter_1",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -242,7 +244,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "inverter_2",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -250,7 +253,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "inverter_3",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -258,7 +262,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "inverter_4",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -266,7 +271,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "inverter_5",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -274,7 +280,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "grid",
-        "field": "import_power"
+        "field": "import_power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -282,7 +289,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "grid",
-        "field": "export_power"
+        "field": "export_power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -290,7 +298,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "grid",
-        "field": "export_limit"
+        "field": "export_limit",
+        "internal": false
       },
       {
         "enabled": false,
@@ -298,7 +307,8 @@
         "sourceState": "",
         "type": "float",
         "measurement": "case",
-        "field": "temperature"
+        "field": "temperature",
+        "internal": false
       },
       {
         "enabled": false,
@@ -306,7 +316,8 @@
         "sourceState": "",
         "type": "string",
         "measurement": "system",
-        "field": "status"
+        "field": "status",
+        "internal": false
       },
       {
         "enabled": false,
@@ -314,7 +325,8 @@
         "sourceState": "",
         "type": "bool",
         "measurement": "system",
-        "field": "status_ok"
+        "field": "status_ok",
+        "internal": false
       },
       {
         "enabled": false,
@@ -322,7 +334,8 @@
         "sourceState": "",
         "type": "float",
         "measurement": "battery",
-        "field": "soc"
+        "field": "soc",
+        "internal": false
       },
       {
         "enabled": false,
@@ -330,7 +343,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "battery",
-        "field": "charging_power"
+        "field": "charging_power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -338,7 +352,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "battery",
-        "field": "discharging_power"
+        "field": "discharging_power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -346,7 +361,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "house",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -354,7 +370,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "heatpump",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -362,7 +379,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_01",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -370,7 +388,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_02",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -378,7 +397,8 @@
         "sourceState": "",
         "type": "float",
         "measurement": "custom_03",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -386,7 +406,8 @@
         "sourceState": "",
         "type": "float",
         "measurement": "custom_04",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -394,7 +415,8 @@
         "sourceState": "",
         "type": "float",
         "measurement": "custom_05",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -402,7 +424,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_06",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -410,7 +433,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_07",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -418,7 +442,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_08",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -426,7 +451,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_09",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -434,7 +460,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_10",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -442,7 +469,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_11",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
@@ -450,7 +478,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_12",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
@@ -458,7 +487,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_13",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
@@ -466,7 +496,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_14",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
@@ -474,7 +505,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_15",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
@@ -482,7 +514,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_16",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
@@ -490,7 +523,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_17",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
@@ -498,7 +532,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_18",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
@@ -506,7 +541,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_19",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
@@ -514,7 +550,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "custom_20",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
@@ -522,7 +559,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "wallbox",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -530,7 +568,8 @@
         "sourceState": "",
         "type": "bool",
         "measurement": "wallbox",
-        "field": "connected"
+        "field": "connected",
+        "internal": false
       },
       {
         "enabled": false,
@@ -538,7 +577,8 @@
         "sourceState": "",
         "type": "float",
         "measurement": "car",
-        "field": "battery_soc"
+        "field": "battery_soc",
+        "internal": false
       },
       {
         "enabled": false,
@@ -546,7 +586,8 @@
         "sourceState": "",
         "type": "int",
         "measurement": "heatpump",
-        "field": "heating_power"
+        "field": "heating_power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -554,7 +595,8 @@
         "sourceState": "",
         "type": "float",
         "measurement": "heatpump",
-        "field": "tank_temp"
+        "field": "tank_temp",
+        "internal": false
       },
       {
         "enabled": false,
@@ -562,7 +604,8 @@
         "sourceState": "",
         "type": "float",
         "measurement": "heatpump",
-        "field": "tank_temp_setpoint"
+        "field": "tank_temp_setpoint",
+        "internal": false
       },
       {
         "enabled": false,
@@ -570,7 +613,8 @@
         "sourceState": "",
         "type": "string",
         "measurement": "heatpump",
-        "field": "status"
+        "field": "status",
+        "internal": false
       },
       {
         "enabled": false,
@@ -578,7 +622,8 @@
         "sourceState": "",
         "type": "float",
         "measurement": "outdoor",
-        "field": "temperature"
+        "field": "temperature",
+        "internal": false
       },
       {
         "enabled": false,
@@ -587,7 +632,8 @@
         "type": "json",
         "jsonPreset": "auto",
         "measurement": "inverter_forecast",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -596,7 +642,8 @@
         "type": "json",
         "jsonPreset": "auto",
         "measurement": "inverter_forecast_clearsky",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
@@ -605,7 +652,8 @@
         "type": "json",
         "jsonPreset": "auto",
         "measurement": "outdoor_forecast",
-        "field": "temperature"
+        "field": "temperature",
+        "internal": false
       }
     ]
   },
