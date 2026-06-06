@@ -61,10 +61,18 @@
 		return Array.isArray(value) ? value.filter(v => v && typeof v === 'object') : [];
 	}
 
+	function sensorStateIcon(sensor) {
+		const enabled = !!(sensor && sensor.enabled);
+		const internal = !!(sensor && sensor.internal);
+		if (!enabled) {
+			return '⚪';
+		}
+		return internal ? '🟡' : '🟢';
+	}
+
 	function calcTitle(sensor) {
 		const sensorName = sensor && sensor.SensorName ? sensor.SensorName : 'Sensor';
-		const enabled = !!(sensor && sensor.enabled);
-		return `${enabled ? '🟢 ' : '⚪ '}${sensorName}`;
+		return `${sensorStateIcon(sensor)} ${sensorName}`;
 	}
 
 	function ensureTitle(sensor) {
@@ -803,7 +811,7 @@
 											style: listBtnStyle(i === selectedIndex),
 											onClick: () => setSelectedIndex(i),
 										},
-										React.createElement('span', { style: { width: 22 } }, s.enabled ? '🟢' : '⚪'),
+										React.createElement('span', { style: { width: 22 } }, sensorStateIcon(s)),
 										React.createElement(
 											'span',
 											{
