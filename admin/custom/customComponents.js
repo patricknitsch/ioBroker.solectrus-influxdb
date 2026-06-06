@@ -862,34 +862,38 @@
 											}),
 											React.createElement('span', null, t('Enabled')),
 										),
-										React.createElement(
-											'label',
-											{ style: { display: 'flex', alignItems: 'center', gap: 8 } },
-											React.createElement('input', {
-												type: 'checkbox',
-												checked: !!editSensor.internal,
-												onChange: e => {
-													const isChecked = !!e.target.checked;
-													setDraftField('internal', isChecked);
-													updateSelected('internal', isChecked);
-												},
-											}),
-											React.createElement('span', null, t('Internal')),
-										),
+										expertMode
+											? React.createElement(
+													'label',
+													{ style: { display: 'flex', alignItems: 'center', gap: 8 } },
+													React.createElement('input', {
+														type: 'checkbox',
+														checked: !!editSensor.internal,
+														onChange: e => {
+															const isChecked = !!e.target.checked;
+															setDraftField('internal', isChecked);
+															updateSelected('internal', isChecked);
+														},
+													}),
+													React.createElement('span', null, t('Internal')),
+												)
+											: null,
 									),
 								),
-								React.createElement(
-									'div',
-									{
-										style: {
-											marginTop: 8,
-											fontSize: 12,
-											color: colors.textMuted,
-											lineHeight: 1.5,
-										},
-									},
-									t('internalSensorHint'),
-								),
+								expertMode
+									? React.createElement(
+											'div',
+											{
+												style: {
+													marginTop: 8,
+													fontSize: 12,
+													color: colors.textMuted,
+													lineHeight: 1.5,
+												},
+											},
+											t('internalSensorHint'),
+										)
+									: null,
 								expertMode
 									? React.createElement(
 											React.Fragment,
