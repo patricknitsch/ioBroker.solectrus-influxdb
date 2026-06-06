@@ -62,8 +62,8 @@
 	}
 
 	function sensorStateIcon(sensor) {
-		const enabled = sensor && sensor.enabled;
-		const internal = sensor && sensor.internal;
+		const enabled = !!(sensor && sensor.enabled);
+		const internal = !!(sensor && sensor.internal);
 		if (!enabled) {
 			return '⚪';
 		}
@@ -71,8 +71,8 @@
 	}
 
 	function sensorStateColor(sensor) {
-		const enabled = sensor && sensor.enabled;
-		const internal = sensor && sensor.internal;
+		const enabled = !!(sensor && sensor.enabled);
+		const internal = !!(sensor && sensor.internal);
 		if (!enabled) {
 			return SENSOR_DISABLED_COLOR;
 		}
@@ -80,7 +80,9 @@
 	}
 
 	function sensorStateAccentColor(sensor) {
-		return sensor && sensor.enabled ? sensorStateColor(sensor) : SENSOR_DISABLED_ACCENT_COLOR;
+		const enabled = !!(sensor && sensor.enabled);
+		// Disabled sensors keep a neutral gray accent for better list contrast.
+		return enabled ? sensorStateColor(sensor) : SENSOR_DISABLED_ACCENT_COLOR;
 	}
 
 	function sensorStateDotBorderColor(sensor) {
@@ -842,7 +844,6 @@
 												background: sensorStateColor(s),
 												border: `1px solid ${sensorStateDotBorderColor(s)}`,
 												display: 'inline-block',
-												flex: `0 0 ${SENSOR_STATUS_DOT_SIZE}px`,
 											},
 										}),
 										React.createElement(
