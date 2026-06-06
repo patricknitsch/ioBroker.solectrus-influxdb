@@ -79,6 +79,10 @@
 		return internal ? '#fdd835' : '#4caf50';
 	}
 
+	function sensorStateAccentColor(sensor) {
+		return sensor && sensor.enabled ? sensorStateColor(sensor) : '#9e9e9e';
+	}
+
 	function calcTitle(sensor) {
 		const sensorName = sensor && sensor.SensorName ? sensor.SensorName : 'Sensor';
 		return `${sensorStateIcon(sensor)} ${sensorName}`;
@@ -708,7 +712,7 @@
 				padding: '10px 8px',
 				border: 'none',
 				borderBottom: `1px solid ${colors.rowBorder}`,
-				borderLeft: `4px solid ${sensorStateColor(sensor)}`,
+				borderLeft: `4px solid ${sensorStateAccentColor(sensor)}`,
 				background: isActive ? colors.active : 'transparent',
 				cursor: 'pointer',
 				fontFamily: 'inherit',
