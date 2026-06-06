@@ -70,6 +70,15 @@
 		return internal ? '🟡' : '🟢';
 	}
 
+	function sensorStateColor(sensor) {
+		const enabled = !!(sensor && sensor.enabled);
+		const internal = !!(sensor && sensor.internal);
+		if (!enabled) {
+			return '#ffffff';
+		}
+		return internal ? '#fdd835' : '#4caf50';
+	}
+
 	function calcTitle(sensor) {
 		const sensorName = sensor && sensor.SensorName ? sensor.SensorName : 'Sensor';
 		return `${sensorStateIcon(sensor)} ${sensorName}`;
@@ -693,12 +702,13 @@
 				color: colors.text,
 			};
 
-			const listBtnStyle = isActive => ({
+			const listBtnStyle = (isActive, sensor) => ({
 				width: '100%',
 				textAlign: 'left',
-				padding: '10px 10px',
+				padding: '10px 8px',
 				border: 'none',
 				borderBottom: `1px solid ${colors.rowBorder}`,
+				borderLeft: `4px solid ${sensorStateColor(sensor)}`,
 				background: isActive ? colors.active : 'transparent',
 				cursor: 'pointer',
 				fontFamily: 'inherit',
@@ -808,10 +818,20 @@
 										{
 											key: i,
 											type: 'button',
-											style: listBtnStyle(i === selectedIndex),
+											style: listBtnStyle(i === selectedIndex, s),
 											onClick: () => setSelectedIndex(i),
 										},
-										React.createElement('span', { style: { width: 22 } }, sensorStateIcon(s)),
+										React.createElement('span', {
+											style: {
+												width: 12,
+												height: 12,
+												borderRadius: '50%',
+												background: sensorStateColor(s),
+												border: `1px solid ${s.enabled ? 'transparent' : colors.textMuted}`,
+												display: 'inline-block',
+												flex: '0 0 12px',
+											},
+										}),
 										React.createElement(
 											'span',
 											{
