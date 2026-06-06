@@ -868,7 +868,11 @@
 											React.createElement('input', {
 												type: 'checkbox',
 												checked: !!editSensor.internal,
-												onChange: e => updateSelected('internal', !!e.target.checked),
+												onChange: e => {
+													const isChecked = !!e.target.checked;
+													setDraftField('internal', isChecked);
+													updateSelected('internal', isChecked);
+												},
 											}),
 											React.createElement('span', null, t('Internal')),
 										),
