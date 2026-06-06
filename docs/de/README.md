@@ -42,12 +42,13 @@ Am Ende dieses Tabs befinden sich:
 
 ## 2. Sensoren
 
-Zum Tab **Sensors** wechseln. Der Master/Detail-Editor zeigt alle konfigurierten Sensoren mit ihrem Live-Status.
+Zum Tab **Sensors** wechseln. Der Master/Detail-Editor zeigt alle konfigurierten Sensoren mit ihrem Live-Status und optionaler Gruppierung.
 
 ### Standardmodus vs. Expertenmodus
 
 Standardmäßig läuft der Adapter im **Standardmodus**. Die Sensorliste zeigt alle vorkonfigurierten Sensoren (INVERTER_POWER, BATTERY_SOC, HOUSE_POWER, Prognosesensoren usw.). Im Standardmodus:
 
+- Die Sensorliste kann nach **Ordnern/Gruppen** eingeklappt werden. Alle vorkonfigurierten SOLECTRUS-Sensoren liegen anfangs in der Gruppe **Standard Solectrus Sensoren**.
 - **Editierbar**: Source State (ioBroker-Datenpunkt), Aktiviert-Checkbox, Intern-Checkbox
 - **Nur lesen**: Sensorname, Datentyp, Measurement, Field, JSON-Vorlage
 - **Ausgeblendet**: Hinzufügen-, Löschen-, Duplizieren-Buttons, Einheit, Maximalwert, Alive-Timeout
@@ -71,6 +72,7 @@ Auf **Add** klicken (Expertenmodus) oder einen bestehenden Sensor auswählen und
 | Enabled | Sensor aktivieren/deaktivieren | Standard + Experte |
 | Internal | Spiegelt den aktuellen Wert und hält das Monitoring aktiv, überspringt aber das Schreiben nach InfluxDB. Standard: `false`. | Standard + Experte |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. | Standard + Experte |
+| Ordner/Gruppe | Optionaler Gruppenname für die linke Sensorliste. Leere Eingabe = **Ohne Gruppe**. Alle Standard-Sensoren starten in **Standard Solectrus Sensoren**. | Experte |
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) | Experte |
 | Einheit | Physikalische Einheit des Sensorwerts (z.B. `W`, `°C`, `%`, `A`). Wird automatisch aus `common.unit` des ioBroker-Objekts übernommen, wenn ein Quell-Datenpunkt ausgewählt wird. Standardmäßig `W`, falls keine Einheit konfiguriert ist. Im Expertenmodus manuell überschreibbar. | Experte |
 | Maximalwert | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. **0 = deaktiviert** (Standard). | Experte |
@@ -80,6 +82,12 @@ Auf **Add** klicken (Expertenmodus) oder einen bestehenden Sensor auswählen und
 | Influx Field | InfluxDB Feldname (z.B. `power`) | Experte |
 
 Mindestens ein Sensor muss aktiviert sein, damit Daten geschrieben werden.
+
+### Status-Symbole in der Sensorliste
+
+- `⚪` = Sensor ist deaktiviert
+- `🟡` = Sensor ist aktiv, aber **intern** (Monitoring ja, kein Influx-Write)
+- `🟢` = Sensor ist aktiv und wird an InfluxDB gesendet
 
 ### JSON-Sensoren (Prognosedaten)
 
@@ -159,7 +167,7 @@ Der Tab **SOLECTRUS Overview** (erreichbar über die Tab-Leiste im Adapter-Berei
 
 - **InfluxDB-Sensoren Raster**: Zeigt alle aktivierten Sensoren als kompakte Karten in einem responsiven Raster. Jede Karte zeigt:
   - **Sensorname** und **Datentyp-Badge** (`int`, `float`, `bool`, `string`, `json`)
-  - **Wert-Zeile** (nur numerische Sensoren): linksbündig **aktueller Wert mit Einheit** (z.B. `2697 W`); rechtsbündig **Maximalwert mit Einheit** als Badge – wird nur angezeigt, wenn der Maximalwert > 0 (Werteüberwachung aktiv). Zeigt *k.A.* an, wenn noch kein Wert empfangen wurde. JSON-Werte werden kompakt in Monospace-Schrift dargestellt.
+  - **Wert-Zeile** (nur numerische Sensoren): linksbündig **aktueller Wert mit Einheit** (z.B. `2697 W`); rechtsbündig **Maximalwert mit Einheit** als Badge – wird nur angezeigt, wenn der Maximalwert > 0 (Werteüberwachung aktiv). Zeigt *k.A.* an, wenn noch kein Wert empfangen wurde. JSON-Werte werden kompakt in Monospace-Schrift dargestellt. **Interne Sensoren** werden hier mit **gelbem linken Rahmen** und **gelbem aktuellem Wert** hervorgehoben, reguläre Influx-Sensoren bleiben **grün**.
   - **Measurement: Field** — das Ziel in InfluxDB (getrennt durch einen Doppelpunkt)
   - **Quell-State** — die gelesene ioBroker-State-ID (gekürzt, voller Pfad als Tooltip)
   - **Zeitstempel-Zeile** (wird nur angezeigt, wenn ein Alive-Timeout konfiguriert ist): linksbündig **Zeitstempel** (Datum und Uhrzeit der letzten Wertaktualisierung); rechtsbündig **nächste erwartete Aktualisierung** als Badge (nur Uhrzeit, ohne Beschriftung, automatisch berechnet als Zeitstempel + Timeout-Intervall – keine manuelle Eingabe nötig). Bei einem aktuellen Wert von 0 wird das 60-Minuten-Fallback-Intervall für die Berechnung verwendet. Die Zeile wird **orange** dargestellt, wenn der Alive-Timeout überschritten wurde.

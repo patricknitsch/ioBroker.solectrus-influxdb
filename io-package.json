@@ -222,6 +222,7 @@
     "sensors": [
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER",
         "sourceState": "",
         "type": "int",
@@ -231,6 +232,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_1",
         "sourceState": "",
         "type": "int",
@@ -240,6 +242,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_2",
         "sourceState": "",
         "type": "int",
@@ -249,6 +252,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_3",
         "sourceState": "",
         "type": "int",
@@ -258,6 +262,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_4",
         "sourceState": "",
         "type": "int",
@@ -267,6 +272,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_5",
         "sourceState": "",
         "type": "int",
@@ -276,6 +282,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "GRID_IMPORT_POWER",
         "sourceState": "",
         "type": "int",
@@ -285,6 +292,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "GRID_EXPORT_POWER",
         "sourceState": "",
         "type": "int",
@@ -294,6 +302,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "GRID_EXPORT_LIMIT",
         "sourceState": "",
         "type": "int",
@@ -303,6 +312,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CASE_TEMP",
         "sourceState": "",
         "type": "float",
@@ -312,6 +322,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "SYSTEM_STATUS",
         "sourceState": "",
         "type": "string",
@@ -321,6 +332,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "SYSTEM_STATUS_OK",
         "sourceState": "",
         "type": "bool",
@@ -330,6 +342,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "BATTERY_SOC",
         "sourceState": "",
         "type": "float",
@@ -339,6 +352,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "BATTERY_CHARGING_POWER",
         "sourceState": "",
         "type": "int",
@@ -348,6 +362,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "BATTERY_DISCHARGING_POWER",
         "sourceState": "",
         "type": "int",
@@ -357,6 +372,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "HOUSE_POWER",
         "sourceState": "",
         "type": "int",
@@ -366,6 +382,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "HEATPUMP_POWER",
         "sourceState": "",
         "type": "int",
@@ -375,6 +392,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_01",
         "sourceState": "",
         "type": "int",
@@ -384,6 +402,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_02",
         "sourceState": "",
         "type": "int",
@@ -393,6 +412,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_03",
         "sourceState": "",
         "type": "float",
@@ -402,6 +422,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_04",
         "sourceState": "",
         "type": "float",
@@ -411,6 +432,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_05",
         "sourceState": "",
         "type": "float",
@@ -420,6 +442,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_06",
         "sourceState": "",
         "type": "int",
@@ -429,6 +452,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_07",
         "sourceState": "",
         "type": "int",
@@ -438,6 +462,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_08",
         "sourceState": "",
         "type": "int",
@@ -447,6 +472,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_09",
         "sourceState": "",
         "type": "int",
@@ -456,6 +482,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_10",
         "sourceState": "",
         "type": "int",
@@ -465,6 +492,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_11",
         "sourceState": "",
         "type": "int",
@@ -474,6 +502,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_12",
         "sourceState": "",
         "type": "int",
@@ -483,6 +512,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_13",
         "sourceState": "",
         "type": "int",
@@ -492,6 +522,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_14",
         "sourceState": "",
         "type": "int",
@@ -501,6 +532,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_15",
         "sourceState": "",
         "type": "int",
@@ -510,6 +542,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_16",
         "sourceState": "",
         "type": "int",
@@ -519,6 +552,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_17",
         "sourceState": "",
         "type": "int",
@@ -528,6 +562,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_18",
         "sourceState": "",
         "type": "int",
@@ -537,6 +572,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_19",
         "sourceState": "",
         "type": "int",
@@ -546,6 +582,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_20",
         "sourceState": "",
         "type": "int",
@@ -555,6 +592,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "WALLBOX_POWER",
         "sourceState": "",
         "type": "int",
@@ -564,6 +602,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "WALLBOX_CONNECTED",
         "sourceState": "",
         "type": "bool",
@@ -573,6 +612,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CAR_BATTERY_SOC",
         "sourceState": "",
         "type": "float",
@@ -582,6 +622,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "HEATPUMP_HEATING_POWER",
         "sourceState": "",
         "type": "int",
@@ -591,6 +632,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "HEATPUMP_TANK_TEMP",
         "sourceState": "",
         "type": "float",
@@ -600,6 +642,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "HEATPUMP_TANK_TEMP_SETPOINT",
         "sourceState": "",
         "type": "float",
@@ -609,6 +652,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "HEATPUMP_STATUS",
         "sourceState": "",
         "type": "string",
@@ -618,6 +662,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "OUTDOOR_TEMP",
         "sourceState": "",
         "type": "float",
@@ -627,6 +672,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_FORECAST",
         "sourceState": "",
         "type": "json",
@@ -637,6 +683,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_FORECAST_CLEARSKY",
         "sourceState": "",
         "type": "json",
@@ -647,6 +694,7 @@
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "OUTDOOR_TEMP_FORECAST",
         "sourceState": "",
         "type": "json",
