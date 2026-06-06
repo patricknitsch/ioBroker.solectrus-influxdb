@@ -1105,11 +1105,12 @@
 													React.createElement('input', {
 														type: 'checkbox',
 														checked: !!editSensor.internal,
-														onChange: e => {
-															const isChecked = !!e.target.checked;
-															setDraftField('internal', isChecked);
-															updateSelected('internal', isChecked);
-														},
+onChange: e => {
+	const isChecked = !!e.target.checked;
+	setDraftField('internal', isChecked);
+	const nextForTitle = Object.assign({}, selectedSensor || {}, { internal: isChecked });
+	updateSelectedMulti({ internal: isChecked, _title: calcTitle(nextForTitle) });
+},
 													}),
 													React.createElement('span', null, t('Internal')),
 												)
