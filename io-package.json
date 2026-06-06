@@ -222,390 +222,486 @@
     "sensors": [
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER",
         "sourceState": "",
         "type": "int",
         "measurement": "inverter",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_1",
         "sourceState": "",
         "type": "int",
         "measurement": "inverter_1",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_2",
         "sourceState": "",
         "type": "int",
         "measurement": "inverter_2",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_3",
         "sourceState": "",
         "type": "int",
         "measurement": "inverter_3",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_4",
         "sourceState": "",
         "type": "int",
         "measurement": "inverter_4",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_5",
         "sourceState": "",
         "type": "int",
         "measurement": "inverter_5",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "GRID_IMPORT_POWER",
         "sourceState": "",
         "type": "int",
         "measurement": "grid",
-        "field": "import_power"
+        "field": "import_power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "GRID_EXPORT_POWER",
         "sourceState": "",
         "type": "int",
         "measurement": "grid",
-        "field": "export_power"
+        "field": "export_power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "GRID_EXPORT_LIMIT",
         "sourceState": "",
         "type": "int",
         "measurement": "grid",
-        "field": "export_limit"
+        "field": "export_limit",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CASE_TEMP",
         "sourceState": "",
         "type": "float",
         "measurement": "case",
-        "field": "temperature"
+        "field": "temperature",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "SYSTEM_STATUS",
         "sourceState": "",
         "type": "string",
         "measurement": "system",
-        "field": "status"
+        "field": "status",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "SYSTEM_STATUS_OK",
         "sourceState": "",
         "type": "bool",
         "measurement": "system",
-        "field": "status_ok"
+        "field": "status_ok",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "BATTERY_SOC",
         "sourceState": "",
         "type": "float",
         "measurement": "battery",
-        "field": "soc"
+        "field": "soc",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "BATTERY_CHARGING_POWER",
         "sourceState": "",
         "type": "int",
         "measurement": "battery",
-        "field": "charging_power"
+        "field": "charging_power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "BATTERY_DISCHARGING_POWER",
         "sourceState": "",
         "type": "int",
         "measurement": "battery",
-        "field": "discharging_power"
+        "field": "discharging_power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "HOUSE_POWER",
         "sourceState": "",
         "type": "int",
         "measurement": "house",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "HEATPUMP_POWER",
         "sourceState": "",
         "type": "int",
         "measurement": "heatpump",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_01",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_01",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_02",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_02",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_03",
         "sourceState": "",
         "type": "float",
         "measurement": "custom_03",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_04",
         "sourceState": "",
         "type": "float",
         "measurement": "custom_04",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_05",
         "sourceState": "",
         "type": "float",
         "measurement": "custom_05",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_06",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_06",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_07",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_07",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_08",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_08",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_09",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_09",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_10",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_10",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_11",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_11",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_12",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_12",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_13",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_13",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_14",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_14",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_15",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_15",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_16",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_16",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_17",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_17",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_18",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_18",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_19",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_19",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CUSTOM_POWER_20",
         "sourceState": "",
         "type": "int",
         "measurement": "custom_20",
-        "field": "value"
+        "field": "value",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "WALLBOX_POWER",
         "sourceState": "",
         "type": "int",
         "measurement": "wallbox",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "WALLBOX_CONNECTED",
         "sourceState": "",
         "type": "bool",
         "measurement": "wallbox",
-        "field": "connected"
+        "field": "connected",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "CAR_BATTERY_SOC",
         "sourceState": "",
         "type": "float",
         "measurement": "car",
-        "field": "battery_soc"
+        "field": "battery_soc",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "HEATPUMP_HEATING_POWER",
         "sourceState": "",
         "type": "int",
         "measurement": "heatpump",
-        "field": "heating_power"
+        "field": "heating_power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "HEATPUMP_TANK_TEMP",
         "sourceState": "",
         "type": "float",
         "measurement": "heatpump",
-        "field": "tank_temp"
+        "field": "tank_temp",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "HEATPUMP_TANK_TEMP_SETPOINT",
         "sourceState": "",
         "type": "float",
         "measurement": "heatpump",
-        "field": "tank_temp_setpoint"
+        "field": "tank_temp_setpoint",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "HEATPUMP_STATUS",
         "sourceState": "",
         "type": "string",
         "measurement": "heatpump",
-        "field": "status"
+        "field": "status",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "OUTDOOR_TEMP",
         "sourceState": "",
         "type": "float",
         "measurement": "outdoor",
-        "field": "temperature"
+        "field": "temperature",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_FORECAST",
         "sourceState": "",
         "type": "json",
         "jsonPreset": "auto",
         "measurement": "inverter_forecast",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "INVERTER_POWER_FORECAST_CLEARSKY",
         "sourceState": "",
         "type": "json",
         "jsonPreset": "auto",
         "measurement": "inverter_forecast_clearsky",
-        "field": "power"
+        "field": "power",
+        "internal": false
       },
       {
         "enabled": false,
+        "group": "Default SOLECTRUS sensors",
         "SensorName": "OUTDOOR_TEMP_FORECAST",
         "sourceState": "",
         "type": "json",
         "jsonPreset": "auto",
         "measurement": "outdoor_forecast",
-        "field": "temperature"
+        "field": "temperature",
+        "internal": false
       }
     ]
   },

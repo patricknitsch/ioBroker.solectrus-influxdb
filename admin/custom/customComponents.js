@@ -8,8 +8,10 @@
 	'use strict';
 
 	const REMOTE_NAME = 'SolectrusSensors';
-	const UI_VERSION = '2026-05-03 20260503-2';
+	const UI_VERSION = '2026-06-06 20260606-2';
 	const DEBUG = false;
+	const DEFAULT_SENSOR_GROUP_KEY = 'Default SOLECTRUS sensors';
+	const CUSTOM_SENSOR_GROUP_KEY = 'Custom sensors';
 	let shareScope;
 
 	if (DEBUG && typeof console !== 'undefined' && typeof console.debug === 'function') {
@@ -57,14 +59,141 @@
 		return mod && mod.__esModule && mod.default ? mod.default : mod;
 	}
 
+	function isDefaultSensorName(name) {
+		const sensorName = String(name || '').trim();
+		return [
+			/^INVERTER_POWER(?:_[1-5])?$/,
+			/^GRID_(?:IMPORT_POWER|EXPORT_POWER|EXPORT_LIMIT)$/,
+			/^CASE_TEMP$/,
+			/^SYSTEM_STATUS(?:_OK)?$/,
+			/^BATTERY_(?:SOC|CHARGING_POWER|DISCHARGING_POWER)$/,
+			/^HOUSE_POWER$/,
+			/^HEATPUMP_(?:POWER|HEATING_POWER|TANK_TEMP|TANK_TEMP_SETPOINT|STATUS)$/,
+			/^CUSTOM_POWER_\d{2}$/,
+			/^WALLBOX_(?:POWER|CONNECTED)$/,
+			/^CAR_BATTERY_SOC$/,
+			/^OUTDOOR_TEMP(?:_FORECAST)?$/,
+			/^INVERTER_POWER_FORECAST(?:_CLEARSKY)?$/,
+		].some(pattern => pattern.test(sensorName));
+	}
+
+	function hasExplicitSensorGroup(sensor) {
+		return !!(
+			sensor &&
+			typeof sensor === 'object' &&
+			Object.prototype.hasOwnProperty.call(sensor, 'group') &&
+			sensor.group !== undefined &&
+			sensor.group !== null
+		);
+	}
+
+	function hasConfiguredSensor(sensor) {
+		return !!String((sensor && sensor.SensorName) || '').trim();
+	}
+
+	function canonicalizeSensorGroupName(value, t) {
+		const trimmed = String(value || '').trim();
+		if (!trimmed) {
+			return '';
+		}
+		if (
+			trimmed === DEFAULT_SENSOR_GROUP_KEY ||
+			trimmed === 'Standard Solectrus Sensoren' ||
+			trimmed === 'Standard SOLECTRUS Sensoren'
+		) {
+			return DEFAULT_SENSOR_GROUP_KEY;
+		}
+		if (typeof t === 'function' && trimmed === t(DEFAULT_SENSOR_GROUP_KEY)) {
+			return DEFAULT_SENSOR_GROUP_KEY;
+		}
+		if (trimmed === CUSTOM_SENSOR_GROUP_KEY || trimmed === 'Benutzerdefiniert') {
+			return CUSTOM_SENSOR_GROUP_KEY;
+		}
+		if (typeof t === 'function' && trimmed === t(CUSTOM_SENSOR_GROUP_KEY)) {
+			return CUSTOM_SENSOR_GROUP_KEY;
+		}
+		return trimmed;
+	}
+
+	function getSensorGroupKey(sensor, t) {
+		if (hasExplicitSensorGroup(sensor)) {
+			return canonicalizeSensorGroupName(sensor && sensor.group, t);
+		}
+		if (isDefaultSensorName(sensor && sensor.SensorName)) {
+			return DEFAULT_SENSOR_GROUP_KEY;
+		}
+		return hasConfiguredSensor(sensor) ? CUSTOM_SENSOR_GROUP_KEY : '';
+	}
+
+	function displaySensorGroupName(value, t) {
+		const normalized = canonicalizeSensorGroupName(value, t);
+		if (!normalized) {
+			return typeof t === 'function' ? t('Ungrouped') : 'Ungrouped';
+		}
+		if ((normalized === DEFAULT_SENSOR_GROUP_KEY || normalized === CUSTOM_SENSOR_GROUP_KEY) && typeof t === 'function') {
+			return t(normalized);
+		}
+		return normalized;
+	}
+
+	function sensorGroupInputValue(value, t) {
+		const rawValue = value === undefined || value === null ? '' : String(value);
+		if (!rawValue) {
+			return '';
+		}
+		// Keep leading/trailing whitespace while the user is typing so spaces can be entered naturally.
+		// Canonicalization still runs on blur before persisting.
+		if (rawValue !== rawValue.trim()) {
+			return rawValue;
+		}
+		const normalized = canonicalizeSensorGroupName(rawValue, t);
+		if (!normalized) {
+			return '';
+		}
+		if ((normalized === DEFAULT_SENSOR_GROUP_KEY || normalized === CUSTOM_SENSOR_GROUP_KEY) && typeof t === 'function') {
+			return t(normalized);
+		}
+		return normalized;
+	}
+
 	function normalizeSensors(value) {
-		return Array.isArray(value) ? value.filter(v => v && typeof v === 'object') : [];
+		return Array.isArray(value)
+			? value
+					.filter(v => v && typeof v === 'object')
+					.map(sensor => {
+						const next = Object.assign({}, sensor);
+						if (hasExplicitSensorGroup(next)) {
+							const group = canonicalizeSensorGroupName(next.group);
+							if (group) {
+								next.group = group;
+							} else {
+								next.group = '';
+							}
+						} else {
+							const group = getSensorGroupKey(next);
+							if (group) {
+								next.group = group;
+							} else {
+								delete next.group;
+							}
+						}
+						return next;
+					})
+			: [];
+	}
+
+	function sensorStateIcon(sensor) {
+		const enabled = !!(sensor && sensor.enabled);
+		const internal = !!(sensor && sensor.internal);
+		if (!enabled) {
+			return '⚪';
+		}
+		return internal ? '🟡' : '🟢';
 	}
 
 	function calcTitle(sensor) {
 		const sensorName = sensor && sensor.SensorName ? sensor.SensorName : 'Sensor';
-		const enabled = !!(sensor && sensor.enabled);
-		return `${enabled ? '🟢 ' : '⚪ '}${sensorName}`;
+		return `${sensorStateIcon(sensor)} ${sensorName}`;
 	}
 
 	function ensureTitle(sensor) {
@@ -104,6 +233,8 @@
 	function makeNewSensor() {
 		const sensor = {
 			enabled: false,
+			internal: false,
+			group: CUSTOM_SENSOR_GROUP_KEY,
 			SensorName: '',
 			sourceState: '',
 			type: '',
@@ -291,6 +422,7 @@
 
 			const [selectedIndex, setSelectedIndex] = React.useState(0);
 			const [showSelectStateId, setShowSelectStateId] = React.useState(false);
+			const [collapsedFolders, setCollapsedFolders] = React.useState({});
 
 			// Refs that always hold the latest sensors/selectedIndex so async callbacks
 			// (e.g. autoDetectUnit) never close over a stale snapshot.
@@ -337,6 +469,39 @@
 			}, [sensors.length, selectedIndex]);
 
 			const selectedSensor = sensors[selectedIndex] || null;
+			const groupedSensors = (() => {
+				const groups = {};
+				sensors.forEach((sensor, index) => {
+					const groupKey = getSensorGroupKey(sensor, t);
+					if (!groups[groupKey]) {
+						groups[groupKey] = [];
+					}
+					groups[groupKey].push({ sensor, index });
+				});
+				return Object.keys(groups)
+					.sort((a, b) => {
+						if (a === DEFAULT_SENSOR_GROUP_KEY) return -1;
+						if (b === DEFAULT_SENSOR_GROUP_KEY) return 1;
+						if (!a) return 1;
+						if (!b) return -1;
+						return displaySensorGroupName(a, t).localeCompare(displaySensorGroupName(b, t), undefined, {
+							sensitivity: 'base',
+						});
+					})
+					.map(groupKey => ({
+						key: groupKey,
+						label: displaySensorGroupName(groupKey, t),
+						items: groups[groupKey],
+					}));
+			})();
+
+			const toggleFolder = folderKey => {
+				const key = folderKey || '__ungrouped__';
+				setCollapsedFolders(prev => ({
+					...prev,
+					[key]: !prev[key],
+				}));
+			};
 
 			React.useEffect(() => {
 				// Always reset draft when switching sensors.
@@ -684,13 +849,31 @@
 				color: colors.text,
 			};
 
-			const listBtnStyle = isActive => ({
+			const folderBtnStyle = {
 				width: '100%',
 				textAlign: 'left',
 				padding: '10px 10px',
 				border: 'none',
 				borderBottom: `1px solid ${colors.rowBorder}`,
-				background: isActive ? colors.active : 'transparent',
+				background: colors.panelBg,
+				cursor: 'pointer',
+				fontFamily: 'inherit',
+				fontSize: 14,
+				fontWeight: 600,
+				display: 'flex',
+				gap: 8,
+				alignItems: 'center',
+				overflow: 'hidden',
+				color: colors.text,
+			};
+
+			const folderItemStyle = {
+				width: '100%',
+				textAlign: 'left',
+				padding: '10px 10px 10px 30px',
+				border: 'none',
+				borderBottom: `1px solid ${colors.rowBorder}`,
+				background: 'transparent',
 				cursor: 'pointer',
 				fontFamily: 'inherit',
 				fontSize: 14,
@@ -699,6 +882,10 @@
 				alignItems: 'center',
 				overflow: 'hidden',
 				color: colors.text,
+			};
+
+			const folderItemActiveStyle = Object.assign({}, folderItemStyle, {
+				background: colors.active,
 			});
 
 			const labelStyle = { display: 'block', fontSize: 12, color: colors.textMuted, marginTop: 10 };
@@ -793,33 +980,83 @@
 						'div',
 						{ style: listStyle },
 						sensors.length
-							? sensors.map((s, i) =>
-									React.createElement(
-										'button',
-										{
-											key: i,
-											type: 'button',
-											style: listBtnStyle(i === selectedIndex),
-											onClick: () => setSelectedIndex(i),
-										},
-										React.createElement('span', { style: { width: 22 } }, s.enabled ? '🟢' : '⚪'),
+							? groupedSensors.map(folder => {
+									const folderStateKey = folder.key || '__ungrouped__';
+									const isCollapsed = !!collapsedFolders[folderStateKey];
+
+									return React.createElement(
+										React.Fragment,
+										{ key: folderStateKey },
 										React.createElement(
-											'span',
+											'button',
 											{
-												style: {
-													fontWeight: 600,
-													flex: 1,
-													minWidth: 0,
-													overflow: 'hidden',
-													textOverflow: 'ellipsis',
-													whiteSpace: 'nowrap',
-												},
-												title: s.SensorName || t('Unnamed'),
+												type: 'button',
+												style: folderBtnStyle,
+												onClick: () => toggleFolder(folder.key),
 											},
-											s.SensorName || t('Unnamed'),
+											React.createElement(
+												'span',
+												{ style: { width: 20, fontSize: 14 } },
+												isCollapsed ? '▶' : '▼',
+											),
+											React.createElement(
+												'span',
+												{
+													style: {
+														flex: 1,
+														minWidth: 0,
+														overflow: 'hidden',
+														textOverflow: 'ellipsis',
+														whiteSpace: 'nowrap',
+													},
+												},
+												folder.label,
+											),
+											React.createElement(
+												'span',
+												{
+													style: {
+														fontSize: 12,
+														fontWeight: 700,
+														padding: '2px 8px',
+														borderRadius: 999,
+														background: colors.active,
+														color: colors.textMuted,
+													},
+												},
+												folder.items.length,
+											),
 										),
-									),
-								)
+										!isCollapsed
+											? folder.items.map(({ sensor, index }) =>
+													React.createElement(
+														'button',
+														{
+															key: index,
+															type: 'button',
+															style: index === selectedIndex ? folderItemActiveStyle : folderItemStyle,
+															onClick: () => setSelectedIndex(index),
+														},
+														React.createElement(
+															'span',
+															{
+																style: {
+																	fontWeight: 600,
+																	flex: 1,
+																	minWidth: 0,
+																	overflow: 'hidden',
+																	textOverflow: 'ellipsis',
+																	whiteSpace: 'nowrap',
+																},
+																title: sensor.SensorName || t('Unnamed'),
+															},
+															calcTitle(sensor),
+														),
+													),
+												)
+											: null,
+									);
+								})
 							: React.createElement(
 									'div',
 									{ style: { padding: 12, opacity: 0.9, color: colors.textMuted } },
@@ -849,16 +1086,51 @@
 										calcTitle(editSensor),
 									),
 									React.createElement(
-										'label',
-										{ style: { display: 'flex', alignItems: 'center', gap: 8 } },
-										React.createElement('input', {
-											type: 'checkbox',
-											checked: !!selectedSensor.enabled,
-											onChange: e => updateSelected('enabled', !!e.target.checked),
-										}),
-										React.createElement('span', null, t('Enabled')),
+										'div',
+										{ style: { display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' } },
+										React.createElement(
+											'label',
+											{ style: { display: 'flex', alignItems: 'center', gap: 8 } },
+											React.createElement('input', {
+												type: 'checkbox',
+												checked: !!selectedSensor.enabled,
+												onChange: e => updateSelected('enabled', !!e.target.checked),
+											}),
+											React.createElement('span', null, t('Enabled')),
+										),
+										expertMode
+											? React.createElement(
+													'label',
+													{ style: { display: 'flex', alignItems: 'center', gap: 8 } },
+													React.createElement('input', {
+														type: 'checkbox',
+														checked: !!editSensor.internal,
+onChange: e => {
+	const isChecked = !!e.target.checked;
+	setDraftField('internal', isChecked);
+	const nextForTitle = Object.assign({}, selectedSensor || {}, { internal: isChecked });
+	updateSelectedMulti({ internal: isChecked, _title: calcTitle(nextForTitle) });
+},
+													}),
+													React.createElement('span', null, t('Internal')),
+												)
+											: null,
 									),
 								),
+								expertMode
+									? React.createElement(
+											'div',
+											{
+												style: {
+													marginTop: 8,
+													fontSize: 12,
+													color: colors.textMuted,
+													lineHeight: 1.5,
+												},
+											},
+											t('internalSensorHint'),
+										)
+									: null,
 								expertMode
 									? React.createElement(
 											React.Fragment,
@@ -870,6 +1142,19 @@
 												value: editSensor.SensorName || '',
 												onChange: e => setDraftField('SensorName', e.target.value),
 												onBlur: e => updateSelected('SensorName', e.target.value),
+											}),
+											React.createElement('label', { style: labelStyle }, t('Folder/Group')),
+											React.createElement('input', {
+												style: inputStyle,
+												type: 'text',
+												value: sensorGroupInputValue(editSensor.group, t),
+												onChange: e => setDraftField('group', e.target.value),
+												onBlur: e => {
+													const nextGroup = canonicalizeSensorGroupName(e.target.value, t);
+													setDraftField('group', sensorGroupInputValue(nextGroup, t));
+													updateSelected('group', nextGroup);
+												},
+												placeholder: 'pv',
 											}),
 										)
 									: null,

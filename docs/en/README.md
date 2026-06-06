@@ -42,15 +42,16 @@ At the bottom of this tab you will find:
 
 ## 2. Sensors
 
-Go to the **Sensors** tab. The master/detail editor shows all configured sensors with their live enabled status.
+Go to the **Sensors** tab. The master/detail editor shows all configured sensors with their live status and optional grouping.
 
 ### Standard Mode vs. Expert Mode
 
 By default, the adapter runs in **Standard Mode**. The sensor list shows all preconfigured sensors (INVERTER_POWER, BATTERY_SOC, HOUSE_POWER, forecast sensors, etc.). In standard mode:
 
+- The sensor list can be collapsed by **folder/group**. All preconfigured SOLECTRUS sensors start in the **Default SOLECTRUS sensors** group. Existing sensors from older configurations that do not match the default sensor set are automatically assigned to the **Custom sensors** group.
 - **Editable**: Source State (ioBroker state), Enabled checkbox
 - **Read-only**: Sensor Name, Datatype, Measurement, Field, JSON Preset
-- **Hidden**: Add, Delete, Duplicate buttons, Unit, Max Value, Alive Timeout
+- **Hidden**: Add, Delete, Duplicate buttons, Internal checkbox, Folder/Group, Unit, Max Value, Alive Timeout
 
 This ensures that beginners can simply enable sensors and assign source states without accidentally changing the InfluxDB mapping. In standard mode, the following defaults apply: **value monitoring disabled** (max value = 0) and **60 minutes** alive timeout. Precise configuration is available in Expert Mode.
 
@@ -58,6 +59,7 @@ To unlock full control, enable **Expert Mode** on the InfluxDB settings page. In
 
 - All fields are editable
 - Sensors can be added, deleted, duplicated, and reordered
+- Newly created sensors start in the **Custom sensors** group and can be regrouped there or saved without a group if needed
 - JSON presets can be changed to custom mode
 
 ### Sensor settings
@@ -69,7 +71,9 @@ Click **Add** (Expert Mode) or select an existing sensor to configure:
 | Setting | Description | Mode |
 |---------|-------------|------|
 | Enabled | Activate/deactivate the sensor | Standard + Expert |
+| Internal | Mirrors the current value and keeps monitoring active, but skips writes to InfluxDB. Default: `false`. | Expert |
 | ioBroker Source State | The source state to read values from. Use the **Select** button to browse the object tree. | Standard + Expert |
+| Folder/Group | Optional group name for the sensor list on the left. Empty value = **Ungrouped**. All default sensors start in **Default SOLECTRUS sensors**. Legacy non-default sensors and newly created expert-mode sensors start in **Custom sensors**. | Expert |
 | Sensor Name | Display name (also used for the ioBroker state ID under `sensors.*`) | Expert |
 | Unit | Physical unit of the sensor value (e.g. `W`, `°C`, `%`, `A`). Auto-detected from the ioBroker state's `common.unit` when a source state is selected. Defaults to `W` if no unit is configured. Can be overridden manually in Expert Mode. | Expert |
 | Max Value | Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. **0 = disabled** (default). | Expert |
@@ -79,6 +83,12 @@ Click **Add** (Expert Mode) or select an existing sensor to configure:
 | Influx Field | The InfluxDB field name (e.g. `power`) | Expert |
 
 At least one sensor must be enabled for data to be written.
+
+### Status icons in the sensor list
+
+- `⚪` = sensor is disabled
+- `🟡` = sensor is enabled but **internal** (monitoring yes, Influx write no)
+- `🟢` = sensor is enabled and sent to InfluxDB
 
 ### JSON Sensors (Forecast Data)
 
@@ -105,6 +115,8 @@ Fields not present in the JSON are automatically skipped.
 2. Values are mirrored under `solectrus-influxdb.X.sensors.*`
 3. On each polling interval, current values are added to the write buffer (**Collect**)
 4. Immediately after collect, the buffer is flushed to InfluxDB (**Flush**)
+
+Sensors marked as **Internal** are still mirrored under `solectrus-influxdb.X.sensors.*` and remain part of alive/max monitoring, but they are excluded from InfluxDB writes.
 
 ### Collect & Flush Architecture
 
@@ -156,7 +168,7 @@ The **SOLECTRUS Overview** tab (accessible via the tab bar in the adapter sectio
 
 - **InfluxDB Sensors grid**: Shows all enabled sensors as compact cards in a responsive grid. Each card shows:
   - **Sensor name** and **data type badge** (`int`, `float`, `bool`, `string`, `json`)
-  - **Value row** (numeric sensors only): left-aligned **current value with unit** (e.g. `2697 W`); right-aligned **max value badge** — only shown when max value > 0 (value monitoring active). Shows *n/a* if no value has been received yet. JSON values are rendered compactly in a monospace font.
+  - **Value row** (numeric sensors only): left-aligned **current value with unit** (e.g. `2697 W`); right-aligned **max value badge** — only shown when max value > 0 (value monitoring active). Shows *n/a* if no value has been received yet. JSON values are rendered compactly in a monospace font. **Internal sensors** are highlighted here with a **yellow left border** and **yellow current value**, while regular Influx sensors remain **green**.
   - **Measurement: field** — the target location in InfluxDB (separated by a colon)
   - **Source state** — the ioBroker state ID being read (truncated, full path shown on hover)
   - **Timestamp row** (shown when alive timeout is configured): left-aligned **timestamp** (date and time when the sensor last received a new value); right-aligned **next expected update** as a badge (time only, no label, auto-computed as timestamp + timeout interval — no manual input needed). When the current value is 0 the 60-minute fallback interval is used for the next-update calculation. The row is shown in **orange** when the alive timeout has been exceeded.

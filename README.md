@@ -26,11 +26,12 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 ### Features
 
 - **Sensor Mapping** -- Map any ioBroker state to an InfluxDB measurement/field with configurable data type (int, float, bool, string)
+- **Internal Sensors** -- Mirror and monitor states without writing them to InfluxDB
 - **Reliable Buffering** -- Persistent write buffer (up to 100k points) survives InfluxDB outages and adapter restarts
 - **Data-SOLECTRUS Formula Engine** (optional) -- Compute derived values from multiple inputs using formulas, source mirroring, or rule-based state machines
 - **State Machine Mode** -- Generate string/boolean states from rule conditions (first-match-wins), ideal for status labels and operating modes
 - **Formula Builder** -- Visual editor with drag-and-drop building blocks, live preview, operator tooltips, and example patterns
-- **Folder Grouping** -- Organize computed values into folders for better overview
+- **Folder Grouping** -- Organize sensors and computed values into folders for better overview
 
 ### Quick Start
 
@@ -62,6 +63,11 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (copilot) Add internal sensors (mirrored/monitored, but not written to InfluxDB) so they can also be used for interval and value checks
+* (copilot) Add sensor folder/group support and document sensor status/group behavior
+
 ### 1.9.1 (2026-06-06)
 * (copilot) Update Readme and Timeout
 

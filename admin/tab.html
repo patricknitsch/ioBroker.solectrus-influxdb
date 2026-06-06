@@ -8,6 +8,7 @@
     <style>
         :root {
             --primary: #388e3c;
+            --internal: #fdd835;
             --bg: #f5f5f5;
             --surface: #ffffff;
             --text: #212121;
@@ -175,6 +176,9 @@
             flex: 1 1 auto;
             min-width: max-content;
         }
+        .sensor-card.sensor-card-internal {
+            border-left-color: var(--internal);
+        }
         .sensor-card-header {
             display: flex;
             justify-content: center;
@@ -208,6 +212,9 @@
             white-space: nowrap;
             margin-bottom: 4px;
             min-height: 1.3em;
+        }
+        .sensor-card-value.sensor-card-value-internal {
+            color: var(--internal);
         }
         .sensor-card-value.na {
             color: var(--text-muted);
@@ -713,10 +720,11 @@
             var state  = states && states[sid];
             var hasVal = state && state.val !== null && state.val !== undefined;
             var isJson = sensor.type === 'json';
+            var isInternal = !!sensor.internal;
             var valText = fmtSensorVal(hasVal ? state.val : null, isJson);
 
             var card = document.createElement('div');
-            card.className = 'sensor-card';
+            card.className = 'sensor-card' + (isInternal ? ' sensor-card-internal' : '');
 
             /* header: name (centered) */
             var header = document.createElement('div');
@@ -729,7 +737,7 @@
 
             /* value */
             var valEl = document.createElement('div');
-            var valCls = 'sensor-card-value';
+            var valCls = 'sensor-card-value' + (isInternal ? ' sensor-card-value-internal' : '');
             if (!hasVal) {
                 valCls += ' na';
             } else if (isJson) {
