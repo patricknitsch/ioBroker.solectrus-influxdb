@@ -62,8 +62,8 @@
 	}
 
 	function sensorStateIcon(sensor) {
-		const enabled = !!(sensor && sensor.enabled);
-		const internal = !!(sensor && sensor.internal);
+		const enabled = sensor && sensor.enabled;
+		const internal = sensor && sensor.internal;
 		if (!enabled) {
 			return '⚪';
 		}
@@ -71,20 +71,20 @@
 	}
 
 	function sensorStateColor(sensor) {
-		const enabled = !!(sensor && sensor.enabled);
-		const internal = !!(sensor && sensor.internal);
+		const enabled = sensor && sensor.enabled;
+		const internal = sensor && sensor.internal;
 		if (!enabled) {
-			return '#f0f0f0';
+			return SENSOR_DISABLED_COLOR;
 		}
-		return internal ? '#fdd835' : '#4caf50';
+		return internal ? SENSOR_INTERNAL_COLOR : SENSOR_ACTIVE_COLOR;
 	}
 
 	function sensorStateAccentColor(sensor) {
-		return sensor && sensor.enabled ? sensorStateColor(sensor) : '#9e9e9e';
+		return sensor && sensor.enabled ? sensorStateColor(sensor) : SENSOR_DISABLED_ACCENT_COLOR;
 	}
 
 	function sensorStateDotBorderColor(sensor) {
-		return sensor && sensor.enabled ? 'transparent' : '#9e9e9e';
+		return sensor && sensor.enabled ? 'transparent' : SENSOR_DISABLED_ACCENT_COLOR;
 	}
 
 	function calcTitle(sensor) {
@@ -98,6 +98,11 @@
 
 	const MONITORING_ACTIVE_COLOR = '#4caf50';
 	const MONITORING_DISABLED_COLOR = '#f44336';
+	const SENSOR_DISABLED_COLOR = '#f0f0f0';
+	const SENSOR_INTERNAL_COLOR = '#fdd835';
+	const SENSOR_ACTIVE_COLOR = '#4caf50';
+	const SENSOR_DISABLED_ACCENT_COLOR = '#9e9e9e';
+	const SENSOR_STATUS_DOT_SIZE = 12;
 
 	const JSON_PRESETS = {
 		forecast: {
@@ -831,13 +836,13 @@
 										},
 										React.createElement('span', {
 											style: {
-												width: 12,
-												height: 12,
+												width: SENSOR_STATUS_DOT_SIZE,
+												height: SENSOR_STATUS_DOT_SIZE,
 												borderRadius: '50%',
 												background: sensorStateColor(s),
 												border: `1px solid ${sensorStateDotBorderColor(s)}`,
 												display: 'inline-block',
-												flex: '0 0 12px',
+												flex: `0 0 ${SENSOR_STATUS_DOT_SIZE}px`,
 											},
 										}),
 										React.createElement(
