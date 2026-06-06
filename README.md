@@ -79,7 +79,9 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 * (copilot) Modify notification manager to work with instances
 * (copilot) Update Dependencies
 
-**Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**## License
+**Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**
+
+## License
 
 MIT License
 
