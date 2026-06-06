@@ -1,4 +1,7 @@
 # Older changes
+## 1.8.4 (2026-05-23)
+* (patricknitsch) Fix missing unit in Formula-Engine
+
 ## 1.8.3 (2026-05-21)
 * (copilot) Modify notification manager to work with instances
 * (copilot) Update Dependencies

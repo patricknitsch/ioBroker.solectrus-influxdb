@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.9.1",
+    "version": "1.10.0",
     "news": {
+      "1.10.0": {
+        "en": "Add internal sensors (mirrored/monitored, but not written to InfluxDB) so they can also be used for interval and value checks\nAdd sensor folder/group support and document sensor status/group behavior",
+        "de": "Fügen Sie interne Sensoren (mirrored/monitored, aber nicht in InfluxDB geschrieben) hinzu, damit sie auch für Intervall- und Wertprüfungen verwendet werden können\nSensorordner/Gruppenunterstützung hinzufügen und Sensorstatus/Gruppenverhalten dokumentieren",
+        "ru": "Добавьте внутренние датчики (зеркальные / контролируемые, но не записанные на InfluxDB), чтобы они также могли использоваться для проверки интервалов и значений\nДобавить папку датчика / поддержку группы и статус датчика документа / поведение группы",
+        "pt": "Adicione sensores internos (espelhados/monitorados, mas não escritos para InfluxDB) para que eles também possam ser usados para verificação de intervalos e valores\nAdicionar pasta/grupo de suporte do sensor e documentar o estado/comportamento do sensor",
+        "nl": "Voeg interne sensoren (gespiegeld/gemonitord, maar niet geschreven naar InfluxDB) toe zodat ze ook gebruikt kunnen worden voor interval- en waardecontroles\nVoeg sensormap/groepsondersteuning toe en documenteer sensorstatus/groepgedrag",
+        "fr": "Ajouter des capteurs internes (mirrored/monitored, mais pas écrit à InfluxDB) afin qu'ils puissent également être utilisés pour les vérifications d'intervalle et de valeur\nAjouter le dossier du capteur/le support du groupe et le statut du capteur de document/le comportement du groupe",
+        "it": "Aggiungere sensori interni (mirrored/monitored, ma non scritti a InfluxDB) in modo da poter essere utilizzati anche per controlli di intervallo e valore\nAggiungi cartella del sensore / supporto del gruppo e stato del sensore del documento / comportamento di gruppo",
+        "es": "Agregue sensores internos (espejados / vigilados, pero no escritos a InfluxDB) para que también puedan ser utilizados para cheques de intervalo y valor\nAgregue el soporte de la carpeta/grupo de sensores y documente el comportamiento del sensor",
+        "pl": "Dodawanie wewnętrznych czujników (lustrzanych / monitorowanych, ale nie zapisanych na InfluxDB), dzięki czemu mogą być one również wykorzystywane do sprawdzania interwałów i wartości\nDodaj folder / obsługę grupy czujników oraz zachowanie czujnika / grupy",
+        "uk": "Додайте внутрішні датчики (mirrored/monitored, але не письмово на InfluxDB), щоб вони також могли використовуватися для перевірки інтервалу і значення\nДодавання сенсорної папки/групової підтримки та стану датчика документа/групової поведінки",
+        "zh-cn": "添加内部传感器(mirrored/monitored,但没有写入InfluxDB),这样也可以用于间隔和值检查\n添加传感器文件夹/组支持和文档传感器状态/组行为"
+      },
       "1.9.1": {
         "en": "Update Readme and Timeout",
         "de": "Update Readme und Timeout",
@@ -80,19 +93,6 @@
         "pl": "Zmień menedżera powiadomień do pracy z instancjami\nAktualizuj zależności",
         "uk": "Зміна диспетчера повідомлень для роботи з екземплярами\nОновлення залежності",
         "zh-cn": "修改通知管理器以配合实例\n更新依赖关系"
-      },
-      "1.8.2": {
-        "en": "Adapter requires node.js >= 22 now\nFix sensor duplicate: stale draft cache caused wrong sensor data to appear in the detail panel after duplicating or deleting a sensor\nUpdate Dependencies",
-        "de": "Adapter benötigt node.js >= 22 jetzt\nFix-Sensor-Duplikat: Stale-Entwurf-Cache verursachte falsche Sensordaten, um in der Detail-Panel nach dem Duplizieren oder Löschen eines Sensors erscheinen\nAnpassungsabhängigkeiten",
-        "ru": "Адаптер требует node.js >= 22 сейчас\nУстранение дубликата датчика: устаревший проект кэша вызвал появление неправильных данных датчика на панели деталей после дублирования или удаления датчика\nОбновление зависимостей",
-        "pt": "Adaptador requer nod.js >= 22 agora\nCorrigir duplicata do sensor: cache de rascunho velho fez com que dados errados do sensor aparecessem no painel de detalhes após duplicar ou excluir um sensor\nAtualizar dependências",
-        "nl": "Voor de adapter zijn node.js < 22 nu nodig\nFix sensor duplicate: oude ontwerp cache veroorzaakt verkeerde sensorgegevens te verschijnen in het detailpaneel na het dupliceren of verwijderen van een sensor\nAfhankelijkheden bijwerken",
-        "fr": "Adaptateur nécessite node.js >= 22 maintenant\nCorrection du duplicata du capteur: le cache à brouillon a causé l'apparition de données erronées du capteur dans le panneau de détails après duplicata ou suppression d'un capteur\nMettre à jour les dépendances",
-        "it": "Adattatore richiede node.js >= 22 ora\nRisolvere il duplicato del sensore: la cache della bozza di stante ha causato i dati del sensore errato per apparire nel pannello di dettaglio dopo la duplicazione o la cancellazione di un sensore\nDipendenze di aggiornamento",
-        "es": "Adaptador requiere node.js ю= 22 ahora\nCorregir el duplicado del sensor: el borrador de caché hizo que los datos incorrectos del sensor aparecieran en el panel de detalles después de duplicar o eliminar un sensor\nDependencias de actualización",
-        "pl": "Adapter wymaga node.js > = 22\nNapraw duplikat czujnika: nieświeży szkic pamięci podręcznej spowodował, że błędne dane czujnika pojawiły się w panelu szczegółowości po powieleniu lub usunięciu czujnika\nAktualizuj zależności",
-        "uk": "Адаптер вимагає node.js >= 22 тепер\nФіксований сенсорний дублікат: застібка проекту кешу викликала неправильні дані датчика, які з'являються в докладній панелі після видалення або видалення датчика\nОновлення залежності",
-        "zh-cn": "适配器需要节点.js 现在22\n固定传感器复制:过时的草稿缓存导致在复制或删除传感器后在细节面板中出现错误的传感器数据\n更新依赖关系"
       }
     },
     "titleLang": {
