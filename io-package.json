@@ -146,7 +146,8 @@
     "connectionType": "local",
     "dataSource": "push",
     "adminUI": {
-      "config": "json"
+      "config": "json",
+      "deviceManager": "deviceManager.html"
     },
     "dependencies": [
       {

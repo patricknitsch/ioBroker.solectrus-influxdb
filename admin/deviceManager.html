@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLECTRUS – InfluxDB</title>
+    <style>
+        /* ── CSS-Variablen identisch zu tab.html ── */
+        :root {
+            --primary: #388e3c;
+            --internal: #fdd835;
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --text: #212121;
+            --text-muted: #757575;
+            --border: #e0e0e0;
+            --code-bg: rgba(0,0,0,0.06);
+            --shadow: 0 1px 3px rgba(0,0,0,0.15);
+            --radius: 8px;
+            --color-warning: #e67e22;
+            --color-error: #e53935;
+        }
+        body.dark {
+            --bg: #121212;
+            --surface: #1e1e1e;
+            --text: #e0e0e0;
+            --text-muted: #888;
+            --border: #333;
+            --code-bg: rgba(255,255,255,0.08);
+            --shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 14px;
+            min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        /* ── IFRAME-VOLLBILD ── */
+        #frame-wrap {
+            position: fixed;
+            inset: 0;
+        }
+        #dm-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* ── FALLBACK (identisch zur tab.html-Struktur) ── */
+        #dm-fallback { display: none; }
+
+        /* ── TOOLBAR identisch zu tab.html ── */
+        #toolbar {
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,.3);
+        }
+        #toolbar .logo {
+            font-size: 18px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        #toolbar .spacer { flex: 1; }
+        .btn-toolbar {
+            background: rgba(255,255,255,.2);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,.5);
+            border-radius: 4px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+            transition: background .2s;
+            font-family: inherit;
+        }
+        .btn-toolbar:hover { background: rgba(255,255,255,.35); }
+
+        /* ── MAIN identisch zu tab.html ── */
+        #fallback-main { padding: 16px; }
+
+        /* ── IFRAME-PANEL identisch zu tab.html ── */
+        .iframe-panel {
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .iframe-toolbar {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+        .iframe-cert-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .iframe-open-btn {
+            background: #4caf50;
+            color: #fff;
+            border: 1px solid #388e3c;
+            border-radius: 4px;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+            font-family: inherit;
+        }
+        .iframe-open-btn:hover { background: #388e3c; }
+        .iframe-placeholder {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px 24px;
+            font-size: 14px;
+        }
+
+        /* ── RESPONSIVE identisch zu tab.html ── */
+        @media (max-width: 480px) {
+            #fallback-main { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Primär: tab.html als iframe (identische Darstellung) -->
+<div id="frame-wrap">
+    <iframe id="dm-frame" src="tab.html"></iframe>
+</div>
+
+<!-- Fallback: wird nur angezeigt, wenn iframe nicht geladen werden kann -->
+<div id="dm-fallback">
+    <div id="toolbar">
+        <div class="logo">&#9889; SOLECTRUS InfluxDB</div>
+        <div class="spacer"></div>
+        <a id="open-link" class="btn-toolbar" href="tab.html" target="_blank"></a>
+    </div>
+    <div id="fallback-main">
+        <div class="iframe-panel">
+            <div class="iframe-toolbar">
+                <span class="iframe-cert-hint" id="fallback-hint"></span>
+                <a id="tab-link" class="iframe-open-btn" href="tab.html" target="_blank"></a>
+            </div>
+            <div class="iframe-placeholder" id="fallback-placeholder"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ── i18n ── */
+    var STRINGS = {
+        en: {
+            openTab:     'Open in new tab',
+            openBtn:     'Open Sensor Overview',
+            hint:        'The monitoring view cannot be embedded in this context. Click the button to open it in a new tab.',
+            placeholder: 'Sensor overview is not available in this view.'
+        },
+        de: {
+            openTab:     'In neuem Tab öffnen',
+            openBtn:     'Sensorübersicht öffnen',
+            hint:        'Die Übersichtsseite kann in diesem Kontext nicht eingebettet werden. Klicke auf die Schaltfläche, um sie in einem neuen Tab zu öffnen.',
+            placeholder: 'Die Sensorübersicht ist in dieser Ansicht nicht verfügbar.'
+        }
+    };
+    var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
+    var T = STRINGS[lang] || STRINGS.en;
+
+    /* ── Theme identisch zu tab.html ── */
+    var DARK_THEME_NAMES = ['dark', 'blue'];
+
+    function resolveTheme() {
+        try {
+            var t = localStorage.getItem('App.theme');
+            if (t) return t === 'dark';
+            var n = localStorage.getItem('App.themeName');
+            if (n) return DARK_THEME_NAMES.indexOf(n) !== -1;
+        } catch (_) {}
+        try {
+            var body = window.parent && window.parent.document && window.parent.document.body;
+            var html = window.parent && window.parent.document && window.parent.document.documentElement;
+            if (body) {
+                if ((body.className  || '').toLowerCase().indexOf('dark') !== -1) return true;
+                if (html && (html.className || '').toLowerCase().indexOf('dark') !== -1) return true;
+                if (body.getAttribute('data-theme') === 'dark') return true;
+                if (html && html.getAttribute('data-theme') === 'dark') return true;
+                if (body.getAttribute('data-bs-theme') === 'dark') return true;
+            }
+        } catch (_) {}
+        return false;
+    }
+
+    function applyTheme(isDark) {
+        document.body.classList.toggle('dark', !!isDark);
+    }
+
+    try {
+        var urlTheme = new URLSearchParams(window.location.search).get('react');
+        if (urlTheme) {
+            applyTheme(DARK_THEME_NAMES.indexOf(urlTheme) !== -1);
+        } else {
+            applyTheme(resolveTheme());
+        }
+    } catch (_) { applyTheme(resolveTheme()); }
+
+    window.addEventListener('storage', function (e) {
+        if (e.key === 'App.theme' || e.key === 'App.themeName') {
+            applyTheme(resolveTheme());
+        }
+    });
+
+    /* ── Fallback-Texte setzen ── */
+    document.getElementById('open-link').textContent         = T.openTab;
+    document.getElementById('tab-link').textContent          = T.openBtn;
+    document.getElementById('fallback-hint').textContent     = T.hint;
+    document.getElementById('fallback-placeholder').textContent = T.placeholder;
+
+    /* ── Iframe-Erkennung & Fallback ── */
+    var iframe     = document.getElementById('dm-frame');
+    var frameWrap  = document.getElementById('frame-wrap');
+    var fallback   = document.getElementById('dm-fallback');
+    var iframeOk   = false;
+
+    function showFallback() {
+        frameWrap.style.display = 'none';
+        fallback.style.display  = 'block';
+    }
+
+    iframe.addEventListener('load', function () {
+        iframeOk = true;
+        try {
+            /* Gleiche Herkunft (same-origin): Zugriff auf contentDocument möglich → iframe OK */
+            var doc = iframe.contentDocument || iframe.contentWindow.document;
+            if (doc && doc.body && doc.body.children.length > 0) {
+                return; /* iframe erfolgreich geladen */
+            }
+            /* Leeres Dokument – Ladung fehlgeschlagen */
+            showFallback();
+        } catch (e) {
+            /* SecurityError: Cross-Origin oder CSP blockiert → Fallback anzeigen */
+            showFallback();
+        }
+    });
+
+    /* Timeout-Fallback: nach 10 Sekunden ohne Ladeereignis → Fallback anzeigen */
+    setTimeout(function () {
+        if (!iframeOk) {
+            showFallback();
+        }
+    }, 10000);
+
+}());
+</script>
+</body>
+</html>
