@@ -260,6 +260,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 				// Keep alive timestamp up-to-date for ds.* sensor sources
 				this.lastUpdateTs.set(sensorId, typeof state.ts === 'number' ? state.ts : Date.now());
 			}
+			// Notify Device Manager so the card refreshes in real time
+			this.deviceManagement.notifyStateChange(id, state).catch(() => {});
 			return;
 		}
 
