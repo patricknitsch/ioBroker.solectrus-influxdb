@@ -142,12 +142,15 @@
     "mode": "daemon",
     "type": "communication",
     "compact": true,
-    "messagebox": true,
+    "supportedMessages": {
+      "deviceManager": true,
+      "custom": true
+    },
     "connectionType": "local",
     "dataSource": "push",
     "adminUI": {
       "config": "json",
-      "deviceManager": "deviceManager.html"
+      "deviceManager": true
     },
     "dependencies": [
       {
