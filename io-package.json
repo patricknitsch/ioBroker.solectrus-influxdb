@@ -147,7 +147,7 @@
     "dataSource": "push",
     "adminUI": {
       "config": "json",
-      "deviceManager": "tab.html"
+      "deviceManager": "deviceManager.html"
     },
     "dependencies": [
       {
