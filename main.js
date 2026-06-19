@@ -111,8 +111,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 			'Create adapter objects',
 		);
 
-		/* Set up DM communication state early so infoUpdates work before DM page opens */
-		this.deviceManagement._initCommState().catch(() => {});
+		/* Set up DM communication state (and lookup maps) before prepareSensors subscribes */
+		await this.deviceManagement._initCommState().catch(() => {});
 
 		this.setState('info.connection', false, true);
 		this.setState('info.buffer.clear', false, true);
