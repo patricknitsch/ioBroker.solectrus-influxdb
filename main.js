@@ -20,7 +20,6 @@ const {
 	extractJsonSensorValuesAuto,
 	disableSensorByFieldTypeConflict,
 } = require('./lib/sensorManager');
-const { prepareForecastSources, processForecastJson } = require('./lib/forecastManager');
 const { collectPoints, scheduleNextFlush } = require('./lib/collectFlush');
 const { sendNotification } = require('./lib/notificationManager');
 const { getNotificationMessage } = require('./lib/notificationMessages');
@@ -62,10 +61,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.aliveNotifyAt = new Map();
 		// Maps sensor state id → timestamp (ms) when last max-value-exceeded notification was sent
 		this.maxValueWarnedAt = new Map();
-
-		/* ---------- Forecast ---------- */
-		// Maps sourceState → array of forecast config entries that use it
-		this.forecastSourceMap = {};
 
 		/* ---------- JSON sensors ---------- */
 		// Maps sourceState → array of JSON sensor configs (type === 'json')
@@ -158,8 +153,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 
 		await retryOnConnectionError(this, () => prepareSensors(this), 'Prepare sensors');
-		await retryOnConnectionError(this, () => prepareForecastSources(this), 'Prepare forecast sources');
-
 		if (this.isUnloading) {
 			return;
 		}
@@ -297,11 +290,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 				// Update alive timestamp for non-JSON sensors
 				this.lastUpdateTs.set(sensorId, typeof state.ts === 'number' ? state.ts : Date.now());
 			}
-		}
-
-		// Forecast JSON source updates (legacy)
-		if (this.forecastSourceMap[id]) {
-			processForecastJson(this, id, state.val);
 		}
 
 		// JSON sensor source updates
