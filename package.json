@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@influxdata/influxdb-client": "^1.35.0",
-    "@iobroker/adapter-core": "^3.3.2",
+    "@iobroker/adapter-core": "^3.4.1",
     "jsep": "^1.4.0"
   },
   "devDependencies": {
