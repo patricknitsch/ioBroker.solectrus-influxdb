@@ -41,7 +41,7 @@
     "@iobroker/testing": "^5.2.2",
     "@tsconfig/node22": "^22.0.5",
     "@types/iobroker": "npm:@iobroker/types@^7.1.0",
-    "@types/node": "^22.19.20",
+    "@types/node": "^22.19.21",
     "typescript": "^5.9.3"
   },
   "main": "main.js",
