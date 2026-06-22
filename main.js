@@ -12,7 +12,12 @@ const { createDsProxy } = require('./lib/dsProxy');
 const { retryOnConnectionError, getSensorStateId, getCollectIntervalMs, hasEnabledSensors } = require('./lib/helpers');
 const { loadBuffer, saveBuffer, updateBufferStates, clearBuffer } = require('./lib/bufferManager');
 const { validateInfluxConfig, verifyInfluxConnection, closeWriteApi } = require('./lib/influxManager');
-const { ensureObjectTree, createInfoStates, ensureDefaultSensorsAndTitles } = require('./lib/objectManager');
+const {
+	ensureObjectTree,
+	createInfoStates,
+	ensureDefaultSensorsAndTitles,
+	migrateLegacyForecastConfig,
+} = require('./lib/objectManager');
 const {
 	prepareSensors,
 	processJsonSensorData,
@@ -144,12 +149,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.config.sensors = [];
 		}
 
-		if (this.config.enableForecast || (Array.isArray(this.config.forecasts) && this.config.forecasts.length > 0)) {
-			this.log.warn(
-				'Legacy forecast configuration detected (enableForecast/forecasts). ' +
-					'These settings have no effect – migrate to JSON sensors with jsonPreset "auto".',
-			);
-		}
+		await migrateLegacyForecastConfig(this);
 
 		await ensureDefaultSensorsAndTitles(this);
 
