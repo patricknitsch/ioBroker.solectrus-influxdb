@@ -347,6 +347,18 @@
 					"lg": 12,
 					"xl": 12
 				},
+				"notifyOnJsonFieldMissing": {
+					"type": "checkbox",
+					"label": "notifyOnJsonFieldMissingLabel",
+					"default": true,
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
 				"notifyRepeatMinutes": {
 					"type": "number",
 					"label": "notifyRepeatMinutesLabel",
