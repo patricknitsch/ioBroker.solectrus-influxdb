@@ -195,6 +195,7 @@
     "notifyRepeatMinutes": 60,
     "notifyOnSensorTimeout": true,
     "notifyOnMaxValueExceeded": true,
+    "notifyOnJsonFieldMissing": true,
     "notifyUseTelegram": false,
     "notifyInstanceTelegram": "",
     "notifyUserTelegram": "",

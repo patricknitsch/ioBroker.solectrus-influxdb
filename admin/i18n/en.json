@@ -267,6 +267,7 @@
     "notifyInstanceTelegramLabel": "Telegram instance",
     "notifyInstanceWhatsappLabel": "WhatsApp instance",
     "notifyOnConnectionFailLabel": "Notify on InfluxDB connection failure / restore",
+    "notifyOnJsonFieldMissingLabel": "Notify when JSON field is missing from source data",
     "notifyOnMaxValueExceededLabel": "Notify when sensor value exceeds maximum",
     "notifyOnSensorTimeoutLabel": "Notify on sensor alive timeout",
     "notifyPhoneSignalLabel": "Signal phone (optional)",

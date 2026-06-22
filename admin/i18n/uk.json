@@ -267,6 +267,7 @@
     "notifyInstanceTelegramLabel": "Екземпляр Telegram (необов'язково, напр. telegram.0)",
     "notifyInstanceWhatsappLabel": "Екземпляр WhatsApp (необов'язково, напр. whatsapp-cmb.0)",
     "notifyOnConnectionFailLabel": "Сповіщати про збій / відновлення з'єднання з InfluxDB",
+    "notifyOnJsonFieldMissingLabel": "Сповіщати коли поле JSON відсутнє у вихідних даних",
     "notifyOnMaxValueExceededLabel": "Сповіщати при перевищенні максимального значення датчика",
     "notifyOnSensorTimeoutLabel": "Сповіщати про тайм-аут датчика",
     "notifyPhoneSignalLabel": "Телефон Signal (необов'язково)",

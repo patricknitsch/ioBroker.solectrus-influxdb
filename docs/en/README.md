@@ -526,6 +526,7 @@ In the **Notifications** tab of the adapter settings:
 | **InfluxDB connection failure / restore** | **❗** Sent on the first connection failure and **✅** again when the connection is restored |
 | **Sensor alive timeout** | **⚠️** Sent when a sensor does not deliver an update within the configured timeout (only for non-zero values) |
 | **Max value exceeded** (`notifyOnMaxValueExceeded`) | **⚠️** Sent when a sensor value exceeds its configured maximum; throttled to at most once per hour per sensor |
+| **JSON field missing** (`notifyOnJsonFieldMissing`) | **⚠️** Sent once per session when a known JSON field (`y`, `clearsky`, `temp`) is completely absent from the source data — indicates the backend does not provide that field (e.g. `clearsky`/`temp` require pvnode). The notification resets if the field reappears. |
 
 ### Supported Providers
 

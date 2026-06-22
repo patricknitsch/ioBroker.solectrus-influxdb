@@ -267,6 +267,7 @@
     "notifyInstanceTelegramLabel": "Telegram 实例（可选，例如 telegram.0）",
     "notifyInstanceWhatsappLabel": "WhatsApp 实例（可选，例如 whatsapp-cmb.0）",
     "notifyOnConnectionFailLabel": "InfluxDB 连接失败 / 恢复时通知",
+    "notifyOnJsonFieldMissingLabel": "当JSON字段在源数据中缺失时通知",
     "notifyOnMaxValueExceededLabel": "传感器值超过最大值时通知",
     "notifyOnSensorTimeoutLabel": "传感器存活超时时通知",
     "notifyPhoneSignalLabel": "Signal 电话（可选）",
