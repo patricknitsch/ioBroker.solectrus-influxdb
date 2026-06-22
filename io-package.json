@@ -674,7 +674,7 @@
         "SensorName": "INVERTER_POWER_FORECAST",
         "sourceState": "",
         "type": "json",
-        "jsonPreset": "forecast",
+        "jsonPreset": "auto",
         "measurement": "inverter_forecast",
         "field": "power",
         "internal": false
@@ -685,7 +685,7 @@
         "SensorName": "INVERTER_POWER_FORECAST_CLEARSKY",
         "sourceState": "",
         "type": "json",
-        "jsonPreset": "clearsky",
+        "jsonPreset": "auto",
         "measurement": "inverter_forecast_clearsky",
         "field": "power",
         "internal": false
@@ -696,7 +696,7 @@
         "SensorName": "OUTDOOR_TEMP_FORECAST",
         "sourceState": "",
         "type": "json",
-        "jsonPreset": "temperature",
+        "jsonPreset": "auto",
         "measurement": "outdoor_forecast",
         "field": "temperature",
         "internal": false
