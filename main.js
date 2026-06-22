@@ -144,6 +144,13 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.config.sensors = [];
 		}
 
+		if (this.config.enableForecast || (Array.isArray(this.config.forecasts) && this.config.forecasts.length > 0)) {
+			this.log.warn(
+				'Legacy forecast configuration detected (enableForecast/forecasts). ' +
+					'These settings have no effect – migrate to JSON sensors with jsonPreset "auto".',
+			);
+		}
+
 		await ensureDefaultSensorsAndTitles(this);
 
 		if (!hasEnabledSensors(this)) {
@@ -225,7 +232,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 	}
 
 	disableSensorByFieldTypeConflict(err) {
-		disableSensorByFieldTypeConflict(this, err);
+		return disableSensorByFieldTypeConflict(this, err);
 	}
 
 	/* =====================================================
@@ -266,19 +273,30 @@ class SolectrusInfluxdb extends utils.Adapter {
 			return;
 		}
 
+		// Pre-parse JSON once for JSON sensor sources to avoid duplicate parsing
+		const isJsonSource = !!this.jsonSourceMap[id];
+		let parsedVal = state.val;
+		if (isJsonSource && typeof state.val === 'string') {
+			try {
+				parsedVal = JSON.parse(state.val);
+			} catch {
+				// leave as string; callers handle parse errors gracefully
+			}
+		}
+
 		// Foreign sensor updates
 		const sensorId = this.sourceToSensorId[id];
 		if (sensorId) {
-			if (this.jsonSourceMap[id]) {
+			if (isJsonSource) {
 				// JSON sensors: extract only the relevant fields for each mapping
 				const mappings = this.jsonSourceMap[id];
 				for (const mapping of mappings) {
 					const mId = getSensorStateId({ SensorName: mapping.sensorName });
 					let filtered;
 					if (mapping.autoDetect) {
-						filtered = extractJsonSensorValuesAuto(this, state.val, mapping.tsField);
+						filtered = extractJsonSensorValuesAuto(this, parsedVal, mapping.tsField);
 					} else {
-						filtered = extractJsonSensorValues(this, state.val, mapping.tsField, mapping.valField);
+						filtered = extractJsonSensorValues(this, parsedVal, mapping.tsField, mapping.valField);
 					}
 					if (filtered) {
 						this.setState(mId, filtered, true);
@@ -293,8 +311,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 
 		// JSON sensor source updates
-		if (this.jsonSourceMap[id]) {
-			processJsonSensorData(this, id, state.val);
+		if (isJsonSource) {
+			processJsonSensorData(this, id, parsedVal);
 			// Refresh alive timestamp for each JSON sensor backed by this source
 			const tsNow = typeof state.ts === 'number' ? state.ts : Date.now();
 			for (const mapping of this.jsonSourceMap[id]) {
