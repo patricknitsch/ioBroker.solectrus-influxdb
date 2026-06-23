@@ -67,6 +67,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 * (copilot) Remove legacy Forecast Lib
 * (copilot) Migrate old config to new(now no Datapoints will be generated)
 * (copilot) Fix some small possible issues
+* (copilot) Update Docs
 
 
 ### 1.10.0 (2026-06-06)
