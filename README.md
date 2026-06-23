@@ -53,7 +53,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 
 ### Requirements
 - ioBroker >= latest stable
-- Node.js >= 20
+- Node.js >= 22
 - InfluxDB 2.x
 
 ---
