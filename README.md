@@ -12,7 +12,7 @@
 ## 🌞 SOLECTRUS InfluxDB Adapter for ioBroker
 
 ![ioBroker](https://img.shields.io/badge/ioBroker-Adapter-blue)
-![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20-green)
+![Node.js](https://img.shields.io/badge/Node.js-%3E%3D22-green)
 ![InfluxDB](https://img.shields.io/badge/InfluxDB-2.x-orange)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
