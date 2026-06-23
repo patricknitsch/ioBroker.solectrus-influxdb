@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.10.0",
+    "version": "1.11.0",
     "news": {
+      "1.11.0": {
+        "en": "Remove legacy Forecast Lib\nMigrate old config to new(now no Datapoints will be generated)\nFix some small possible issues\nUpdate Docs",
+        "de": "Legacy Forecast Lib entfernen\nAlte Konfiguration auf neue migrieren (es werden nun keine Datenpunkte mehr generiert)\nBeheben Sie einige kleinere mögliche Probleme\nDokumente aktualisieren",
+        "ru": "Удалить устаревшую библиотеку прогнозирования.\nПеренесите старую конфигурацию на новую (теперь точки данных генерироваться не будут).\nУстраните несколько мелких возможных проблем.\nОбновление документации",
+        "pt": "Remover biblioteca de previsão legada\nMigrar a configuração antiga para a nova (agora nenhum ponto de dados será gerado).\nCorrigir alguns pequenos problemas\nAtualizar documentos",
+        "nl": "Verwijder de oude Forecast Lib.\nMigreer de oude configuratie naar de nieuwe (er worden nu geen datapunten meer gegenereerd).\nLos enkele kleine mogelijke problemen op.\nDocumenten bijwerken",
+        "fr": "Supprimer l'ancienne bibliothèque de prévisions\nMigrer l'ancienne configuration vers la nouvelle (aucun point de données ne sera généré).\nCorriger quelques petits problèmes potentiels\nMise à jour des documents",
+        "it": "Rimozione della libreria di previsioni legacy\nMigra la vecchia configurazione alla nuova (ora non verranno generati punti dati).\nRisolvere alcuni piccoli problemi possibili\nAggiorna la documentazione",
+        "es": "Eliminar la biblioteca de pronósticos heredada\nMigrar la configuración antigua a la nueva (ahora no se generarán puntos de datos).\nSolucionar algunos pequeños problemas posibles\nActualizar documentos",
+        "pl": "Usuń starszą bibliotekę Forecast\nMigracja starej konfiguracji do nowej (teraz nie będą generowane żadne punkty danych)\nNapraw kilka drobnych, możliwych problemów\nAktualizacja dokumentów",
+        "uk": "Видалити застарілу бібліотеку прогнозів\nПеренести стару конфігурацію на нову (тепер точки даних не генеруватимуться)\nВиправте деякі можливі незначні проблеми\nОновити документи",
+        "zh-cn": "移除旧版预测库\n将旧配置迁移到新配置（现在将不再生成数据点）\n修复一些可能存在的小问题\n更新文档"
+      },
       "1.10.0": {
         "en": "Add internal sensors (mirrored/monitored, but not written to InfluxDB) so they can also be used for interval and value checks\nAdd sensor folder/group support and document sensor status/group behavior",
         "de": "Fügen Sie interne Sensoren (mirrored/monitored, aber nicht in InfluxDB geschrieben) hinzu, damit sie auch für Intervall- und Wertprüfungen verwendet werden können\nSensorordner/Gruppenunterstützung hinzufügen und Sensorstatus/Gruppenverhalten dokumentieren",
@@ -80,19 +93,6 @@
         "pl": "Popraw brakującą jednostkę w Forma- Engine",
         "uk": "Виправлено відсутній блок у формулі-Engine",
         "zh-cn": "在公式引擎中修复缺失的单位"
-      },
-      "1.8.3": {
-        "en": "Modify notification manager to work with instances\nUpdate Dependencies",
-        "de": "Benachrichtigungsmanager ändern, um mit Instanzen zu arbeiten\nAnpassungsabhängigkeiten",
-        "ru": "Изменить менеджер уведомлений для работы с экземплярами\nОбновление зависимостей",
-        "pt": "Modificar o gerenciador de notificações para trabalhar com instâncias\nAtualizar dependências",
-        "nl": "Notificatiebeheer aanpassen om met instanties te werken\nAfhankelijkheden bijwerken",
-        "fr": "Modifier le gestionnaire de notification pour travailler avec les instances\nMettre à jour les dépendances",
-        "it": "Modificare il gestore di notifiche per lavorare con le istanze\nDipendenze di aggiornamento",
-        "es": "Modificar el administrador de notificación para trabajar con casos\nDependencias de actualización",
-        "pl": "Zmień menedżera powiadomień do pracy z instancjami\nAktualizuj zależności",
-        "uk": "Зміна диспетчера повідомлень для роботи з екземплярами\nОновлення залежності",
-        "zh-cn": "修改通知管理器以配合实例\n更新依赖关系"
       }
     },
     "titleLang": {

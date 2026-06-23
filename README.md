@@ -63,12 +63,11 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 1.11.0 (2026-06-23)
 * (copilot) Remove legacy Forecast Lib
 * (copilot) Migrate old config to new(now no Datapoints will be generated)
 * (copilot) Fix some small possible issues
 * (copilot) Update Docs
-
 
 ### 1.10.0 (2026-06-06)
 * (copilot) Add internal sensors (mirrored/monitored, but not written to InfluxDB) so they can also be used for interval and value checks
@@ -83,9 +82,6 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 
 ### 1.8.6 (2026-05-25)
 * (copilot) Fixes for Repo Checker
-
-### 1.8.5 (2026-05-23)
-* (copilot) Add Icons in Notification
 
 **Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**
 

@@ -1,4 +1,7 @@
 # Older changes
+## 1.8.5 (2026-05-23)
+* (copilot) Add Icons in Notification
+
 ## 1.8.4 (2026-05-23)
 * (patricknitsch) Fix missing unit in Formula-Engine
 
