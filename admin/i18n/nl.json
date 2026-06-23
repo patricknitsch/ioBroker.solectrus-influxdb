@@ -267,6 +267,7 @@
     "notifyInstanceTelegramLabel": "Telegram-instantie (optioneel, bijv. telegram.0)",
     "notifyInstanceWhatsappLabel": "WhatsApp-instantie (optioneel, bijv. whatsapp-cmb.0)",
     "notifyOnConnectionFailLabel": "Melding bij InfluxDB-verbindingsfout / herstel",
+    "notifyOnJsonFieldMissingLabel": "Melden wanneer het JSON-veld ontbreekt in brongegevens",
     "notifyOnMaxValueExceededLabel": "Melding als sensorwaarde het maximum overschrijdt",
     "notifyOnSensorTimeoutLabel": "Melding bij sensor alive timeout",
     "notifyPhoneSignalLabel": "Signal-telefoonnummer (optioneel)",

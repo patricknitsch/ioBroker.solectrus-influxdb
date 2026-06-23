@@ -267,6 +267,7 @@
     "notifyInstanceTelegramLabel": "Instancja Telegram (opcjonalnie, np. telegram.0)",
     "notifyInstanceWhatsappLabel": "Instancja WhatsApp (opcjonalnie, np. whatsapp-cmb.0)",
     "notifyOnConnectionFailLabel": "Powiadom o błędzie / przywróceniu połączenia z InfluxDB",
+    "notifyOnJsonFieldMissingLabel": "Powiadamiaj gdy pole JSON jest nieobecne w danych źródłowych",
     "notifyOnMaxValueExceededLabel": "Powiadom, gdy wartość czujnika przekroczy maksimum",
     "notifyOnSensorTimeoutLabel": "Powiadom o przekroczeniu limitu czasu czujnika",
     "notifyPhoneSignalLabel": "Numer telefonu Signal (opcjonalnie)",

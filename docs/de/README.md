@@ -96,16 +96,16 @@ Für Prognose-/Wetterdaten den Datentyp auf **JSON-Array** setzen. Zwei Vorlage-
 
 | Modus | Beschreibung |
 |-------|--------------|
-| **Automatisch** | Erkennt bekannte Felder in den JSON-Daten (`y`, `clearsky`, `temp`) automatisch und schreibt jedes in das korrekte InfluxDB-Measurement/Field. Ein Sensor verarbeitet alle erkannten Prognosetypen. |
+| **Automatisch** | Erkennt bekannte Felder in den JSON-Daten (`y`, `clearsky`, `temp`) automatisch und schreibt jedes in das korrekte InfluxDB-Measurement/Field. Felder, die im JSON nicht vorhanden sind, werden stillschweigend übersprungen. |
 | **Benutzerdefiniert** | Zeitstempel-Feld, Wert-Feld und InfluxDB-Typ manuell festlegen. Für nicht-standardmäßige JSON-Quellen verwenden. |
 
 **Automatische Erkennung:**
 
 | JSON-Feld | InfluxDB Measurement | InfluxDB Field | Typ |
 |-----------|---------------------|----------------|-----|
-| `y` | `forecast` | `watt` | int |
-| `clearsky` | `forecast` | `watt_clearsky` | int |
-| `temp` | `forecast` | `temp` | float |
+| `y` | `inverter_forecast` | `power` | int |
+| `clearsky` | `inverter_forecast_clearsky` | `power` | int |
+| `temp` | `outdoor_forecast` | `temperature` | float |
 
 Felder, die im JSON nicht vorhanden sind, werden automatisch übersprungen.
 
@@ -212,9 +212,9 @@ Der Adapter enthält drei vorkonfigurierte Prognosesensoren:
 
 | Sensor | Measurement | Field | Typ | JSON-Feld |
 |--------|-------------|-------|-----|-----------|
-| INVERTER_POWER_FORECAST | `forecast` | `watt` | int | `y` |
-| INVERTER_POWER_FORECAST_CLEARSKY | `forecast` | `watt_clearsky` | int | `clearsky` |
-| OUTDOOR_TEMP_FORECAST | `forecast` | `temp` | float | `temp` |
+| INVERTER_POWER_FORECAST | `inverter_forecast` | `power` | int | `y` |
+| INVERTER_POWER_FORECAST_CLEARSKY | `inverter_forecast_clearsky` | `power` | int | `clearsky` |
+| OUTDOOR_TEMP_FORECAST | `outdoor_forecast` | `temperature` | float | `temp` |
 
 Im **Automatik**-Modus erkennt ein einzelner JSON-Sensor alle vorhandenen Felder und schreibt sie automatisch. Du musst nur einen Sensor aktivieren und auf den JSON-Quell-State zeigen.
 
@@ -264,18 +264,18 @@ Der pvforecast-Adapter unterstützt zwei Backends:
 
 Der Adapter erkennt automatisch alle verfügbaren Felder in den JSON-Daten und schreibt sie nach InfluxDB:
 
-- `y` -> `forecast.watt` (immer verfügbar)
-- `clearsky` -> `forecast.watt_clearsky` (nur pvnode)
-- `temp` -> `forecast.temp` (nur pvnode)
+- `y` -> `inverter_forecast.power` (immer verfügbar)
+- `clearsky` -> `inverter_forecast_clearsky.power` (nur pvnode)
+- `temp` -> `outdoor_forecast.temperature` (nur pvnode)
 
 ### Schritt 4: In InfluxDB prüfen
 
-Nach dem nächsten pvforecast-Update den InfluxDB-Bucket auf das Measurement `forecast` prüfen. Die Felder `watt` und, bei Verwendung von pvnode, auch `watt_clearsky` und `temp` sollten sichtbar sein.
+Nach dem nächsten pvforecast-Update den InfluxDB-Bucket auf die Measurements `inverter_forecast`, `inverter_forecast_clearsky` (nur pvnode) und `outdoor_forecast` (nur pvnode) prüfen. Im ersten Measurement sollte das Field `power`, im letzten das Field `temperature` sichtbar sein.
 
 ### Fehlerbehebung
 
 - **Keine Daten geschrieben**: Sicherstellen, dass der Sensor aktiviert ist und der Source-State ein gültiges JSON-Array enthält
-- **Nur Feld `watt`**: Das pvforecast-Backend ist nicht pvnode. Auf pvnode wechseln für zusätzliche Felder
+- **Nur Measurement `inverter_forecast`**: Das pvforecast-Backend ist nicht pvnode. Auf pvnode wechseln für die zusätzlichen Felder `clearsky` und `temp`
 - **Zeitstempel falsch**: Prüfen, dass die JSON-Daten Unix-Zeitstempel (Sekunden oder Millisekunden) oder ISO-Strings verwenden
 
 ---
@@ -526,6 +526,7 @@ Im Tab **Benachrichtigungen** der Adapter-Einstellungen:
 | **InfluxDB connection failure / restore** | **❗** Wird beim ersten Verbindungsfehlschlag gesendet sowie **✅** bei Wiederherstellung der Verbindung |
 | **Sensor alive timeout** | **⚠️** Wird gesendet, wenn ein Sensor innerhalb des konfigurierten Timeouts keine Aktualisierung liefert (nur bei Nicht-Null-Werten) |
 | **Max value exceeded** (`notifyOnMaxValueExceeded`) | **⚠️** Wird gesendet, wenn ein Sensor den konfigurierten Maximalwert überschreitet; gedrosselt auf max. 1×/Stunde je Sensor |
+| **JSON-Feld fehlt** (`notifyOnJsonFieldMissing`) | **⚠️** Wird einmalig pro Session gesendet, wenn ein bekanntes JSON-Feld (`y`, `clearsky`, `temp`) vollständig in den Quelldaten fehlt – weist darauf hin, dass das Backend dieses Feld nicht liefert (z.B. erfordern `clearsky`/`temp` pvnode). Die Benachrichtigung wird zurückgesetzt, wenn das Feld wieder erscheint. |
 
 ### Unterstützte Anbieter
 

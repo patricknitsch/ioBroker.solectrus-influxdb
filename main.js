@@ -12,7 +12,12 @@ const { createDsProxy } = require('./lib/dsProxy');
 const { retryOnConnectionError, getSensorStateId, getCollectIntervalMs, hasEnabledSensors } = require('./lib/helpers');
 const { loadBuffer, saveBuffer, updateBufferStates, clearBuffer } = require('./lib/bufferManager');
 const { validateInfluxConfig, verifyInfluxConnection, closeWriteApi } = require('./lib/influxManager');
-const { ensureObjectTree, createInfoStates, ensureDefaultSensorsAndTitles } = require('./lib/objectManager');
+const {
+	ensureObjectTree,
+	createInfoStates,
+	ensureDefaultSensorsAndTitles,
+	migrateLegacyForecastConfig,
+} = require('./lib/objectManager');
 const {
 	prepareSensors,
 	processJsonSensorData,
@@ -20,7 +25,6 @@ const {
 	extractJsonSensorValuesAuto,
 	disableSensorByFieldTypeConflict,
 } = require('./lib/sensorManager');
-const { prepareForecastSources, processForecastJson } = require('./lib/forecastManager');
 const { collectPoints, scheduleNextFlush } = require('./lib/collectFlush');
 const { sendNotification } = require('./lib/notificationManager');
 const { getNotificationMessage } = require('./lib/notificationMessages');
@@ -62,10 +66,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.aliveNotifyAt = new Map();
 		// Maps sensor state id → timestamp (ms) when last max-value-exceeded notification was sent
 		this.maxValueWarnedAt = new Map();
-
-		/* ---------- Forecast ---------- */
-		// Maps sourceState → array of forecast config entries that use it
-		this.forecastSourceMap = {};
 
 		/* ---------- JSON sensors ---------- */
 		// Maps sourceState → array of JSON sensor configs (type === 'json')
@@ -149,6 +149,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 			this.config.sensors = [];
 		}
 
+		await migrateLegacyForecastConfig(this);
+
 		await ensureDefaultSensorsAndTitles(this);
 
 		if (!hasEnabledSensors(this)) {
@@ -158,8 +160,6 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 
 		await retryOnConnectionError(this, () => prepareSensors(this), 'Prepare sensors');
-		await retryOnConnectionError(this, () => prepareForecastSources(this), 'Prepare forecast sources');
-
 		if (this.isUnloading) {
 			return;
 		}
@@ -232,7 +232,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 	}
 
 	disableSensorByFieldTypeConflict(err) {
-		disableSensorByFieldTypeConflict(this, err);
+		return disableSensorByFieldTypeConflict(this, err);
 	}
 
 	/* =====================================================
@@ -273,19 +273,30 @@ class SolectrusInfluxdb extends utils.Adapter {
 			return;
 		}
 
+		// Pre-parse JSON once for JSON sensor sources to avoid duplicate parsing
+		const isJsonSource = !!this.jsonSourceMap[id];
+		let parsedVal = state.val;
+		if (isJsonSource && typeof state.val === 'string') {
+			try {
+				parsedVal = JSON.parse(state.val);
+			} catch {
+				// leave as string; callers handle parse errors gracefully
+			}
+		}
+
 		// Foreign sensor updates
 		const sensorId = this.sourceToSensorId[id];
 		if (sensorId) {
-			if (this.jsonSourceMap[id]) {
+			if (isJsonSource) {
 				// JSON sensors: extract only the relevant fields for each mapping
 				const mappings = this.jsonSourceMap[id];
 				for (const mapping of mappings) {
 					const mId = getSensorStateId({ SensorName: mapping.sensorName });
 					let filtered;
 					if (mapping.autoDetect) {
-						filtered = extractJsonSensorValuesAuto(this, state.val, mapping.tsField);
+						filtered = extractJsonSensorValuesAuto(this, parsedVal, mapping.tsField);
 					} else {
-						filtered = extractJsonSensorValues(this, state.val, mapping.tsField, mapping.valField);
+						filtered = extractJsonSensorValues(this, parsedVal, mapping.tsField, mapping.valField);
 					}
 					if (filtered) {
 						this.setState(mId, filtered, true);
@@ -299,14 +310,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 		}
 
-		// Forecast JSON source updates (legacy)
-		if (this.forecastSourceMap[id]) {
-			processForecastJson(this, id, state.val);
-		}
-
 		// JSON sensor source updates
-		if (this.jsonSourceMap[id]) {
-			processJsonSensorData(this, id, state.val);
+		if (isJsonSource) {
+			processJsonSensorData(this, id, parsedVal);
 			// Refresh alive timestamp for each JSON sensor backed by this source
 			const tsNow = typeof state.ts === 'number' ? state.ts : Date.now();
 			for (const mapping of this.jsonSourceMap[id]) {

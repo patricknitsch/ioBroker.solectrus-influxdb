@@ -153,22 +153,6 @@
 							"md": 12,
 							"lg": 12,
 							"xl": 12
-						},
-						"_legacyForecastNote": {
-							"type": "staticText",
-							"text": "jsonSensorHint",
-							"newLine": true,
-							"style": {
-								"fontSize": "0.85em",
-								"color": "#e67e22",
-								"marginTop": 4
-							},
-							"xs": 12,
-							"sm": 12,
-							"md": 12,
-							"lg": 12,
-							"xl": 12,
-							"hidden": "!data.enableExpertMode"
 						}
 					}
 				}
@@ -354,6 +338,18 @@
 				"notifyOnMaxValueExceeded": {
 					"type": "checkbox",
 					"label": "notifyOnMaxValueExceededLabel",
+					"default": true,
+					"hidden": "!data.notifyEnabled",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"notifyOnJsonFieldMissing": {
+					"type": "checkbox",
+					"label": "notifyOnJsonFieldMissingLabel",
 					"default": true,
 					"hidden": "!data.notifyEnabled",
 					"newLine": true,

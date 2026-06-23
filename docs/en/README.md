@@ -103,9 +103,9 @@ For forecast/weather data, set the datatype to **JSON Array**. Two preset modes 
 
 | JSON Field | InfluxDB Measurement | InfluxDB Field | Type |
 |------------|---------------------|----------------|------|
-| `y` | `forecast` | `watt` | int |
-| `clearsky` | `forecast` | `watt_clearsky` | int |
-| `temp` | `forecast` | `temp` | float |
+| `y` | `inverter_forecast` | `power` | int |
+| `clearsky` | `inverter_forecast_clearsky` | `power` | int |
+| `temp` | `outdoor_forecast` | `temperature` | float |
 
 Fields not present in the JSON are automatically skipped.
 
@@ -212,9 +212,9 @@ The adapter comes with three preconfigured forecast sensors:
 
 | Sensor | Measurement | Field | Type | JSON Field |
 |--------|-------------|-------|------|------------|
-| INVERTER_POWER_FORECAST | `forecast` | `watt` | int | `y` |
-| INVERTER_POWER_FORECAST_CLEARSKY | `forecast` | `watt_clearsky` | int | `clearsky` |
-| OUTDOOR_TEMP_FORECAST | `forecast` | `temp` | float | `temp` |
+| INVERTER_POWER_FORECAST | `inverter_forecast` | `power` | int | `y` |
+| INVERTER_POWER_FORECAST_CLEARSKY | `inverter_forecast_clearsky` | `power` | int | `clearsky` |
+| OUTDOOR_TEMP_FORECAST | `outdoor_forecast` | `temperature` | float | `temp` |
 
 In **Automatic** mode, a single JSON sensor detects all present fields and writes them automatically. You only need to enable one sensor and point it to the JSON source state.
 
@@ -264,18 +264,18 @@ The pvforecast adapter supports two backends:
 
 The adapter will automatically detect all available fields in the JSON data and write them to InfluxDB:
 
-- `y` -> `forecast.watt` (always available)
-- `clearsky` -> `forecast.watt_clearsky` (pvnode only)
-- `temp` -> `forecast.temp` (pvnode only)
+- `y` -> `inverter_forecast.power` (always available)
+- `clearsky` -> `inverter_forecast_clearsky.power` (pvnode only)
+- `temp` -> `outdoor_forecast.temperature` (pvnode only)
 
 ### Step 4: Verify in InfluxDB
 
-After the next pvforecast update, check your InfluxDB bucket for the `forecast` measurement. You should see the fields `watt`, and if using pvnode, also `watt_clearsky` and `temp`.
+After the next pvforecast update, check your InfluxDB bucket for the measurements `inverter_forecast`, `inverter_forecast_clearsky` (pvnode only), and `outdoor_forecast` (pvnode only). You should see the field `power` in the first two and `temperature` in the third.
 
 ### Troubleshooting
 
 - **No data written**: Ensure the sensor is enabled and the source state contains a valid JSON array
-- **Only `watt` field**: Your pvforecast backend is not pvnode. Switch to pvnode for additional fields
+- **Only `inverter_forecast` measurement**: Your pvforecast backend is not pvnode. Switch to pvnode for the additional `clearsky` and `temp` fields
 - **Timestamps wrong**: Check that the JSON data uses Unix timestamps (seconds or milliseconds) or ISO strings
 
 ---
@@ -526,6 +526,7 @@ In the **Notifications** tab of the adapter settings:
 | **InfluxDB connection failure / restore** | **❗** Sent on the first connection failure and **✅** again when the connection is restored |
 | **Sensor alive timeout** | **⚠️** Sent when a sensor does not deliver an update within the configured timeout (only for non-zero values) |
 | **Max value exceeded** (`notifyOnMaxValueExceeded`) | **⚠️** Sent when a sensor value exceeds its configured maximum; throttled to at most once per hour per sensor |
+| **JSON field missing** (`notifyOnJsonFieldMissing`) | **⚠️** Sent once per session when a known JSON field (`y`, `clearsky`, `temp`) is completely absent from the source data — indicates the backend does not provide that field (e.g. `clearsky`/`temp` require pvnode). The notification resets if the field reappears. |
 
 ### Supported Providers
 
