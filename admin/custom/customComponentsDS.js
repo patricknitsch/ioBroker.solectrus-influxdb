@@ -969,6 +969,12 @@
 					(globalThis.window && globalThis.window.I18n);
 
 				try {
+					if (I18n && typeof I18n.getTranslation === 'function') {
+						const exact = I18n.getTranslation(text);
+						if (exact !== text) {
+							return exact;
+						}
+					}
 					if (I18n && typeof I18n.t === 'function') {
 						return I18n.t(text);
 					}
