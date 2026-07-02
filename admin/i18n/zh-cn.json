@@ -209,7 +209,7 @@
     "e.g. pv1 + pv2 + pv3": "翻译待完善： e.g. pv1 + pv2 + pv3",
     "e.g. pvforecast.0.summary.JSONData": "例如 pvforecast.0.summary.JSONData",
     "e.g. soc < 10 or true for default": "翻译待完善： e.g. soc < 10 or true for default",
-    "e.g. some.adapter.0.channel.state": "e.g. some.adapter.0.channel.state",
+    "e.g. some.adapter.0.channel.state": "例如 some.adapter.0.channel.state",
     "enableExpertModeLabel": "专家模式（高级传感器配置）",
     "ex.clamp01": "Clamp value to 0-1",
     "ex.clamp01.formula": "clamp(value / 100, 0, 1)",

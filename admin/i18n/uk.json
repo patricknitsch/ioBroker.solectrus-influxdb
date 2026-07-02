@@ -209,7 +209,7 @@
     "e.g. pv1 + pv2 + pv3": "Переклад у процесі: e.g. pv1 + pv2 + pv3",
     "e.g. pvforecast.0.summary.JSONData": "напр. pvforecast.0.summary.JSONData",
     "e.g. soc < 10 or true for default": "Переклад у процесі: e.g. soc < 10 or true for default",
-    "e.g. some.adapter.0.channel.state": "e.g. some.adapter.0.channel.state",
+    "e.g. some.adapter.0.channel.state": "напр. some.adapter.0.channel.state",
     "enableExpertModeLabel": "Режим експерта (розширене налаштування датчиків)",
     "ex.clamp01": "Clamp value to 0-1",
     "ex.clamp01.formula": "clamp(value / 100, 0, 1)",

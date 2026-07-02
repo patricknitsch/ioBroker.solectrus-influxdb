@@ -209,7 +209,7 @@
     "e.g. pv1 + pv2 + pv3": "Vertaling in behandeling: e.g. pv1 + pv2 + pv3",
     "e.g. pvforecast.0.summary.JSONData": "bijv. pvforecast.0.summary.JSONData",
     "e.g. soc < 10 or true for default": "Vertaling in behandeling: e.g. soc < 10 or true for default",
-    "e.g. some.adapter.0.channel.state": "e.g. some.adapter.0.channel.state",
+    "e.g. some.adapter.0.channel.state": "bijv. some.adapter.0.channel.state",
     "enableExpertModeLabel": "Expertmodus (geavanceerde sensorconfiguratie)",
     "ex.clamp01": "Clamp value to 0-1",
     "ex.clamp01.formula": "clamp(value / 100, 0, 1)",
