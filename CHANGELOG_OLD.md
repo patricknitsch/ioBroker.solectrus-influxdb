@@ -1,4 +1,7 @@
 # Older changes
+## 1.8.6 (2026-05-25)
+* (copilot) Fixes for Repo Checker
+
 ## 1.8.5 (2026-05-23)
 * (copilot) Add Icons in Notification
 

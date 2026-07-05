@@ -64,8 +64,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.12.0-beta.0 (2026-07-05)
 * (patricknitsch) Update Dependencies
 * (patricknitsch) Add built-in **Backup** tab: create/upload/restore/download/delete local backups of the instance config, sensors and Data-SOLECTRUS items, with a configurable storage location (InfluxDB token is excluded and must be re-entered after a restore)
 * (patricknitsch) Add **Enable iFrame dashboard** checkbox: gates both the iFrame config tab and the Dashboard tab in the sensor overview (tab.html); reuse **Enable notifications** as the single switch that both activates notifications and reveals the Notifications tab
@@ -86,9 +85,6 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 ### 1.9.0 (2026-06-05)
 * (copilot) Fixes for Repo Checker
 * (patricknitsch) Add new Sensor "heatpump_tank_temp_setpoint" in io-package.json
-
-### 1.8.6 (2026-05-25)
-* (copilot) Fixes for Repo Checker
 
 **Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**
 

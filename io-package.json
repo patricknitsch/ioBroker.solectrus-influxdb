@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.11.0",
+    "version": "1.12.0-beta.0",
     "news": {
+      "1.12.0-beta.0": {
+        "en": "Update Dependencies\nAdd built-in **Backup** tab: create/upload/restore/download/delete local backups of the instance config, sensors and Data-SOLECTRUS items, with a configurable storage location (InfluxDB token is excluded and must be re-entered after a restore)\nAdd **Enable iFrame dashboard** checkbox: gates both the iFrame config tab and the Dashboard tab in the sensor overview (tab.html); reuse **Enable notifications** as the single switch that both activates notifications and reveals the Notifications tab",
+        "de": "Abhängigkeiten aktualisieren\nFügt eine integrierte Registerkarte **Backup** hinzu: Lokale Backups der Instanzkonfiguration, Sensoren und Data-SOLECTRUS-Elemente erstellen/hochladen/wiederherstellen/herunterladen/löschen, mit einem konfigurierbaren Speicherort (InfluxDB-Token ist ausgeschlossen und muss nach einer Wiederherstellung erneut eingegeben werden).\nFügen Sie das Kontrollkästchen **iFrame-Dashboard aktivieren** hinzu: Es blendet sowohl den iFrame-Konfigurationsreiter als auch den Dashboard-Reiter in der Sensorübersicht (tab.html) ein; verwenden Sie **Benachrichtigungen aktivieren** als einzigen Schalter, der sowohl Benachrichtigungen aktiviert als auch den Benachrichtigungsreiter anzeigt",
+        "ru": "Обновить зависимости\nДобавьте встроенную вкладку **Резервное копирование**: создавайте/загружайте/восстанавливайте/скачивайте/удаляйте локальные резервные копии конфигурации экземпляра, датчиков и элементов Data-SOLECTRUS с настраиваемым местом хранения (токен InfluxDB исключен и должен быть введен повторно после восстановления).\nДобавьте флажок **Включить панель мониторинга iFrame**: он управляет как вкладкой конфигурации iFrame, так и вкладкой панели мониторинга в обзоре датчиков (tab.html); используйте флажок **Включить уведомления** в качестве единственного переключателя, который одновременно активирует уведомления и отображает вкладку «Уведомления».",
+        "pt": "Atualizar dependências\nAdicionar aba **Backup** integrada: criar/carregar/restaurar/baixar/excluir backups locais da configuração da instância, sensores e itens do Data-SOLECTRUS, com local de armazenamento configurável (o token do InfluxDB está excluído e deve ser inserido novamente após uma restauração).\nAdicionar a caixa de seleção **Habilitar painel do iFrame**: isso controla tanto a aba de configuração do iFrame quanto a aba Painel na visão geral do sensor (tab.html); reutilizar **Habilitar notificações** como o único botão que ativa as notificações e revela a aba Notificações.",
+        "nl": "Afhankelijkheden bijwerken\nVoeg een ingebouwd **Back-up**-tabblad toe: maak/upload/herstel/download/verwijder lokale back-ups van de instantieconfiguratie, sensoren en Data-SOLECTRUS-items, met een configureerbare opslaglocatie (InfluxDB-token is uitgesloten en moet na een herstel opnieuw worden ingevoerd).\nVoeg het selectievakje **iFrame-dashboard inschakelen** toe: hiermee worden zowel het iFrame-configuratietabblad als het dashboardtabblad in het sensoroverzicht (tab.html) weergegeven; hergebruik **Meldingen inschakelen** als de enkele schakelaar die zowel meldingen activeert als het tabblad Meldingen weergeeft.",
+        "fr": "Mise à jour des dépendances\nAjout d'un onglet **Sauvegarde** intégré : création/téléversement/restauration/téléchargement/suppression de sauvegardes locales de la configuration de l'instance, des capteurs et des éléments Data-SOLECTRUS, avec un emplacement de stockage configurable (le jeton InfluxDB est exclu et doit être saisi à nouveau après une restauration).\nAjouter la case à cocher **Activer le tableau de bord iFrame** : active l’onglet de configuration iFrame et l’onglet Tableau de bord dans la vue d’ensemble du capteur (tab.html) ; réutiliser **Activer les notifications** comme bouton unique qui active les notifications et affiche l’onglet Notifications.",
+        "it": "Aggiorna le dipendenze\nAggiunta della scheda **Backup** integrata: crea/carica/ripristina/scarica/elimina backup locali della configurazione dell'istanza, dei sensori e degli elementi Data-SOLECTRUS, con una posizione di archiviazione configurabile (il token InfluxDB è escluso e deve essere reinserito dopo un ripristino).\nAggiungi la casella di controllo **Abilita dashboard iFrame**: blocca sia la scheda di configurazione iFrame che la scheda Dashboard nella panoramica del sensore (tab.html); riutilizza **Abilita notifiche** come singolo interruttore che attiva le notifiche e rivela la scheda Notifiche",
+        "es": "Actualizar dependencias\nAgregar pestaña **Copia de seguridad** integrada: crear/cargar/restaurar/descargar/eliminar copias de seguridad locales de la configuración de la instancia, los sensores y los elementos de Data-SOLECTRUS, con una ubicación de almacenamiento configurable (el token de InfluxDB está excluido y debe volver a ingresarse después de una restauración).\nAgregar la casilla de verificación **Habilitar panel de control de iFrame**: controla tanto la pestaña de configuración de iFrame como la pestaña Panel de control en la descripción general del sensor (tab.html); reutilizar **Habilitar notificaciones** como el único interruptor que activa las notificaciones y muestra la pestaña Notificaciones.",
+        "pl": "Aktualizuj zależności\nDodaj wbudowaną zakładkę **Kopia zapasowa**: twórz/przesyłaj/przywracaj/pobieraj/usuwaj lokalne kopie zapasowe konfiguracji instancji, czujników i elementów Data-SOLECTRUS z konfigurowalną lokalizacją przechowywania (token InfluxDB jest wykluczony i musi zostać ponownie wprowadzony po przywróceniu)\nDodaj pole wyboru **Włącz pulpit nawigacyjny iFrame**: kontroluje zarówno kartę konfiguracji iFrame, jak i kartę Pulpit nawigacyjny w przeglądzie czujnika (tab.html); ponownie wykorzystaj **Włącz powiadomienia** jako pojedynczy przełącznik, który aktywuje powiadomienia i wyświetla kartę Powiadomienia",
+        "uk": "Оновлення залежностей\nДодано вбудовану вкладку **Резервне копіювання**: створення/завантаження/відновлення/вивантаження/видалення локальних резервних копій конфігурації екземпляра, датчиків та елементів Data-SOLECTRUS з налаштовуваним місцем зберігання (токен InfluxDB виключено та необхідно повторно ввести після відновлення)\nДодати прапорець **Увімкнути панель керування iFrame**: відкриває вкладку конфігурації iFrame та вкладку «Панель керування» в огляді датчика (tab.html); повторно використовувати **Увімкнути сповіщення** як єдиний перемикач, який активує сповіщення та відображає вкладку «Сповіщення».",
+        "zh-cn": "更新依赖项\n添加内置的**备份**选项卡：创建/上传/恢复/下载/删除实例配置、传感器和 Data-SOLECTRUS 项的本地备份，并可配置存储位置（不包括 InfluxDB 令牌，恢复后必须重新输入）。\n添加“启用 iFrame 控制面板”复选框：该复选框会同时打开传感器概览 (tab.html) 中的 iFrame 配置选项卡和控制面板选项卡；重新使用“启用通知”开关，该开关既可以激活通知，也可以显示“通知”选项卡。"
+      },
       "1.11.0": {
         "en": "Remove legacy Forecast Lib\nMigrate old config to new(now no Datapoints will be generated)\nFix some small possible issues\nUpdate Docs",
         "de": "Legacy Forecast Lib entfernen\nAlte Konfiguration auf neue migrieren (es werden nun keine Datenpunkte mehr generiert)\nBeheben Sie einige kleinere mögliche Probleme\nDokumente aktualisieren",
@@ -80,19 +93,6 @@
         "pl": "Dodaj ikony w powiadomieniu",
         "uk": "Додайте іконки в Сповіщення",
         "zh-cn": "在通知中添加图标"
-      },
-      "1.8.4": {
-        "en": "Fix missing unit in Formula-Engine",
-        "de": "Fehlende Einheit in Formel-Engine beheben",
-        "ru": "Исправьте недостающий блок в Формуле-двигателе",
-        "pt": "Corrigir a unidade em falta no motor de fórmula",
-        "nl": "Fix ontbrekende eenheid in Formule-Engine",
-        "fr": "Correction de l'unité manquante dans Formula-Engine",
-        "it": "Fissare l'unità mancante in Formula-Engine",
-        "es": "Fijar unidad perdida en Fórmula-Engine",
-        "pl": "Popraw brakującą jednostkę w Forma- Engine",
-        "uk": "Виправлено відсутній блок у формулі-Engine",
-        "zh-cn": "在公式引擎中修复缺失的单位"
       }
     },
     "titleLang": {
