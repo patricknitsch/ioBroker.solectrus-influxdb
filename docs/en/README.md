@@ -555,7 +555,7 @@ Each provider has an **Instance** dropdown list. Available adapter instances are
 
 ## 15. Backup
 
-With adapter **Backitup** you can create a full backup. Therefore activate the checkbox **SOLECTRUS InfluxDB**.
+With adapter **Backitup > 3.3.17** you can create a full backup. Therefore activate the checkbox **SOLECTRUS InfluxDB**.
 
 - General Configuration
 - Sensorconfiguration, internal/external, activate/deactivate
