@@ -237,7 +237,7 @@
     "iframeUrlLabel": "URL del panel (iFrame)",
     "inactive item": "inactive item",
     "inactive items": "inactive items",
-    "influxBackupHint": "Nota: Haga una copia de seguridad de la configuración completa de su Adaptador, incluidos todos los sensores y fórmulas. Por lo tanto, utilice el adaptador de respaldo.",
+    "influxBackupHint": "Nota: Haga una copia de seguridad de la configuración completa de su Adaptador, incluidos todos los sensores y fórmulas. Por lo tanto, utilice el adaptador de respaldo > 3.3.17.",
     "influxQuickStart:": "1. Cree un token API de InfluxDB 2.x con acceso de escritura a su depósito.\n2. Ingrese la URL, la organización, el depósito y el token a la izquierda y guarde.\n3. Abra la pestaña Sensores y asigne los estados de su ioBroker.\n4. Habilite el adaptador y verifique la conexión de información y los estados del búfer.",
     "internalSensorHint": "Los sensores internos se reflejan y supervisan, pero no se envían a InfluxDB.",
     "ioBroker Source State": "Estado fuente de ioBroker",
