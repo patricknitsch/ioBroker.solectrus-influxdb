@@ -35,4 +35,13 @@ export default [
 			// 'jsdoc/require-returns-check': 'off',
 		},
 	},
+	{
+		// This adapter is plain JS type-checked via JSDoc + tsc (allowJs/checkJs), not real
+		// TypeScript, so @type/@typedef ARE how types get declared here - unlike in a real
+		// .ts file, they're not redundant.
+		files: ['**/*.js'],
+		rules: {
+			'jsdoc/check-tag-names': ['warn', { typed: false }],
+		},
+	},
 ];
