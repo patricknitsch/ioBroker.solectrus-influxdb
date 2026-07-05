@@ -11,7 +11,7 @@
 	'use strict';
 
 	const REMOTE_NAME = 'SolectrusBackup';
-	const UI_VERSION = '2026-07-05 20260705-3';
+	const UI_VERSION = '2026-07-05 20260705-4';
 	let shareScope;
 
 	function compareVersions(a, b) {
@@ -175,6 +175,11 @@
 			const fileInputRef = React.useRef(null);
 
 			const refresh = () => {
+				// Clear any stale error from a previous attempt up front, so a successful
+				// refresh (e.g. after fixing a bad backup directory) doesn't leave the old
+				// error message on screen - it would otherwise only disappear on remount.
+				setIsError(false);
+				setMessage('');
 				sendToCompat('bkpList', {})
 					.then(res => setBackups((res && res.backups) || []))
 					.catch(e => {

@@ -816,7 +816,7 @@
 				"backupPanel": {
 					"type": "custom",
 					"name": "SolectrusBackup/Components/SolectrusBackupEditor",
-					"url": "custom/customComponentsBackup.js?v=20260705-3",
+					"url": "custom/customComponentsBackup.js?v=20260705-4",
 					"newLine": true,
 					"sm": 12
 				}
