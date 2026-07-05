@@ -514,7 +514,7 @@ The adapter can send messages via configurable notification providers when impor
 
 ### Activation
 
-The **Notifications** tab is hidden by default. Enable the **Show Notifications** checkbox on the **InfluxDB** tab first to reveal it, then in the **Notifications** tab of the adapter settings:
+In the **Notifications** tab of the adapter settings:
 
 1. Enable the **Enable notifications** checkbox
 2. Select the desired trigger events

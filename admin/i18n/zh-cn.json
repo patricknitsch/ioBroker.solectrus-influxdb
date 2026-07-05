@@ -326,7 +326,5 @@
     "Could not read the selected file.": "无法读取所选文件。",
     "backupDirLabel": "备份目录(可选，默认为实例数据目录)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "要恢复此备份吗？实例将会重启，之后需要关闭并重新打开此配置对话框。",
-    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "备份已恢复。请关闭并重新打开此配置对话框以查看更新后的设置。",
-    "enableIframeTabLabel": "显示 iFrame(仪表盘链接)",
-    "enableNotificationsTabLabel": "显示通知"
+    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "备份已恢复。请关闭并重新打开此配置对话框以查看更新后的设置。"
 }

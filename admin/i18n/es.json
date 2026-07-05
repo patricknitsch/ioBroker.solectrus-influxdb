@@ -326,7 +326,5 @@
     "Could not read the selected file.": "No se pudo leer el archivo seleccionado.",
     "backupDirLabel": "Directorio de copias de seguridad (opcional, por defecto el directorio de datos de la instancia)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "¿Restaurar esta copia de seguridad? La instancia se reiniciará y este cuadro de diálogo de configuración deberá cerrarse y volver a abrirse después.",
-    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Copia de seguridad restaurada. Cierre y vuelva a abrir este cuadro de diálogo de configuración para ver los ajustes actualizados.",
-    "enableIframeTabLabel": "Mostrar iFrame (enlace del panel)",
-    "enableNotificationsTabLabel": "Mostrar Notificaciones"
+    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Copia de seguridad restaurada. Cierre y vuelva a abrir este cuadro de diálogo de configuración para ver los ajustes actualizados."
 }
