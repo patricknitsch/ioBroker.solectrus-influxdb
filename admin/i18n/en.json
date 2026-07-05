@@ -238,7 +238,7 @@
     "inactive item": "inactive item",
     "inactive items": "inactive items",
     "internalSensorHint": "Internal sensors are mirrored and monitored, but not sent to InfluxDB.",
-    "influxBackupHint": "Note: Backup your complete Adapter configuration, including all sensors and formulas. Therefore use the Backitup Adapter.",
+    "influxBackupHint": "Note: Backup your complete Adapter configuration, including all sensors and formulas. Therefore use the Backitup Adapter > 3.3.17.",
     "influxQuickStart": "1. Create an InfluxDB 2.x API token with write access to your bucket.\n2. Enter URL, organization, bucket and token on the left and save.\n3. Open the Sensors tab and map your ioBroker states.\n4. Enable the adapter and check info.connection and the buffer states.",
     "ioBroker Source State": "ioBroker source state",
     "jsonAutoDetectInfo": "y → inverter_forecast:power (Forecast)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperature)\n\nFields not present in the JSON are skipped automatically.",
