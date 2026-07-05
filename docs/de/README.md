@@ -557,7 +557,22 @@ Für jeden Anbieter gibt es eine **Instanz**-Dropdown-Liste. Verfügbare Adapter
 
 ## 15. Backup
 
-Über den Adapter **Backitup > 3.3.17** kann ein komplettes Backup erstellt werden. Hierzu die Checkbox **SOLECTRUS InfluxDB** auswählen.
+### Eingebauter Backup-Reiter
+
+Über den Reiter **Backup** in der Adapterkonfiguration können Sie Backups dieser Instanz direkt erstellen, hochladen, wiederherstellen, herunterladen und löschen - es wird kein weiterer Adapter benötigt. Ein Backup enthält:
+
+- Allgemeine Konfiguration (Verbindungseinstellungen)
+- Sensorkonfiguration, intern/extern, aktiviert/deaktiviert
+- Data-SOLECTRUS-Einträge (Berechnungen/Formeln) mit ihren Ordnern
+- Alle von dieser Instanz angelegten Ordner/Kanäle/Datenpunkte
+
+Backups werden lokal auf diesem ioBroker-Host gespeichert. Über das Feld "Letzte N Backups behalten" wird gesteuert, wie viele der neuesten Backups automatisch behalten werden - ältere werden beim Erstellen eines neuen Backups gelöscht. Beim Wiederherstellen eines Backups startet die Instanz automatisch neu, damit die wiederhergestellte Konfiguration wirksam wird.
+
+> **Hinweis:** Der InfluxDB-Token ist eine geschützte/verschlüsselte Einstellung und wird nie in diesen Backups gespeichert. Nach einer Wiederherstellung muss er im Reiter **InfluxDB** einmalig manuell neu eingegeben werden.
+
+### Komplettes ioBroker-Backup über Backitup
+
+Über den Adapter **Backitup > 3.3.17** kann diese Instanz zusätzlich in ein komplettes ioBroker-Backup eingeschlossen werden. Hierzu die Checkbox **SOLECTRUS InfluxDB** auswählen.
 
 - Allgemeine Konfiguration
 - Sensorkonfiguration, intern/extern, aktiviert/deaktiviert

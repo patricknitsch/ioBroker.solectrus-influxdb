@@ -555,7 +555,22 @@ Each provider has an **Instance** dropdown list. Available adapter instances are
 
 ## 15. Backup
 
-With adapter **Backitup > 3.3.17** you can create a full backup. Therefore activate the checkbox **SOLECTRUS InfluxDB**.
+### Built-in Backup tab
+
+The **Backup** tab in the adapter configuration lets you create, upload, restore, download and delete backups of this instance directly - no other adapter needs to be installed. A backup contains:
+
+- General configuration (connection settings)
+- Sensor configuration, internal/external, activated/deactivated
+- Data-SOLECTRUS items (calculations/formulas) and their folders
+- All object folders/channels/states created by this instance
+
+Backups are stored locally on this ioBroker host. Use the "Keep last N backups" field to control how many of the most recent backups are kept automatically; older ones are deleted whenever a new backup is created. Restoring a backup restarts the instance automatically so the restored configuration takes effect.
+
+> **Note:** The InfluxDB token is a protected/encrypted setting and is never included in these backups. After a restore it has to be entered again manually on the **InfluxDB** tab.
+
+### Full ioBroker backup via Backitup
+
+With adapter **Backitup > 3.3.17** you can also include this instance in a full ioBroker backup. Therefore activate the checkbox **SOLECTRUS InfluxDB**.
 
 - General Configuration
 - Sensorconfiguration, internal/external, activate/deactivate

@@ -32,6 +32,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 - **State Machine Mode** -- Generate string/boolean states from rule conditions (first-match-wins), ideal for status labels and operating modes
 - **Formula Builder** -- Visual editor with drag-and-drop building blocks, live preview, operator tooltips, and example patterns
 - **Folder Grouping** -- Organize sensors and computed values into folders for better overview
+- **Built-in Backup** -- Create, upload, restore, download and delete local backups of the instance config, sensors and Data-SOLECTRUS items right from the **Backup** tab, no other adapter required
 
 ### Quick Start
 
@@ -65,9 +66,11 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 -->
 
 ### **WORK IN PROGRESS**
-*(patricknitsch) Update Dependencies
-*(patricknitsch) Update Doc and Config for Backup. Complete Backups now can be done by Backitup. Important: Influx Token has to be filled in again.
 
+### 1.12.0 (2026-07-05)
+* (patricknitsch) Update Dependencies
+* (patricknitsch) Update Doc and Config for Backup. Complete Backups now can be done by Backitup. Important: Influx Token has to be filled in again.
+* (patricknitsch) Add built-in **Backup** tab: create/upload/restore/download/delete local backups of the instance config, sensors and Data-SOLECTRUS items without needing the Backitup adapter (InfluxDB token is excluded and must be re-entered after a restore)
 
 ### 1.11.0 (2026-06-23)
 * (copilot) Remove legacy Forecast Lib
