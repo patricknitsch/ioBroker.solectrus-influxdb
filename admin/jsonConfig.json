@@ -328,17 +328,6 @@
 					"lg": 12,
 					"xl": 12
 				},
-				"notifyEnabled": {
-					"type": "checkbox",
-					"label": "notifyEnabledLabel",
-					"default": false,
-					"newLine": true,
-					"xs": 12,
-					"sm": 12,
-					"md": 12,
-					"lg": 12,
-					"xl": 12
-				},
 				"notifyOnConnectionFail": {
 					"type": "checkbox",
 					"label": "notifyOnConnectionFailLabel",

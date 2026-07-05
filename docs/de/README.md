@@ -514,7 +514,7 @@ Der Adapter kann bei wichtigen Ereignissen Meldungen über konfigurierbare Benac
 
 ### Aktivierung
 
-Der Tab **Benachrichtigungen** ist ausgeblendet, bis Benachrichtigungen aktiviert werden. Aktivieren Sie die Checkbox **Benachrichtigungen aktivieren** - entweder direkt im Tab **InfluxDB** oder im Tab **Benachrichtigungen** selbst, sobald dieser sichtbar ist (es handelt sich an beiden Stellen um dieselbe Einstellung) -, um den Tab einzublenden und die Funktion zu aktivieren. Danach:
+Der Tab **Benachrichtigungen** ist ausgeblendet, bis Benachrichtigungen aktiviert werden. Aktivieren Sie die Checkbox **Benachrichtigungen aktivieren** im Tab **InfluxDB**, um den Tab einzublenden und die Funktion zu aktivieren. Danach:
 
 1. Gewünschte Ereignisse auswählen
 2. Mindestens einen Benachrichtigungsanbieter konfigurieren
