@@ -11,7 +11,7 @@
 	'use strict';
 
 	const REMOTE_NAME = 'SolectrusBackup';
-	const UI_VERSION = '2026-07-05 20260705-1';
+	const UI_VERSION = '2026-07-05 20260705-2';
 	let shareScope;
 
 	function compareVersions(a, b) {
@@ -65,33 +65,6 @@
 		const d = new Date(Number(ms) || 0);
 		if (isNaN(d.getTime())) return '';
 		return d.toLocaleString();
-	}
-
-	function isDarkTheme() {
-		try {
-			const doc = globalThis.document;
-			const root = doc && doc.documentElement;
-			const attrTheme =
-				(root && (root.getAttribute('data-theme') || root.getAttribute('data-mui-color-scheme'))) || '';
-			if (attrTheme === 'dark') return true;
-			if (attrTheme === 'light') return false;
-
-			const body = doc && doc.body;
-			if (body && body.classList) {
-				if (body.classList.contains('mui-theme-dark') || body.classList.contains('iob-theme-dark')) {
-					return true;
-				}
-				if (body.classList.contains('mui-theme-light') || body.classList.contains('iob-theme-light')) {
-					return false;
-				}
-			}
-
-			return !!(
-				globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches
-			);
-		} catch {
-			return false;
-		}
 	}
 
 	function base64FromDataUrl(dataUrl) {
@@ -258,10 +231,18 @@
 			};
 
 			const handleRestore = fileName => {
-				if (!globalThis.confirm(t('Restore this backup? The instance will restart.'))) {
+				if (
+					!globalThis.confirm(
+						t('Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.'),
+					)
+				) {
 					return;
 				}
-				run(`restore:${fileName}`, sendToCompat('bkpRestore', { fileName }), t('Backup restored.'));
+				run(
+					`restore:${fileName}`,
+					sendToCompat('bkpRestore', { fileName }),
+					t('Backup restored. Close and reopen this configuration dialog to see the updated settings.'),
+				);
 			};
 
 			const handleDelete = fileName => {
@@ -282,9 +263,9 @@
 					.finally(() => setBusy(''));
 			};
 
-			const isDark = isDarkTheme();
-			const textColor = isDark ? '#f0f0f0' : '#111111';
-
+			// Browsers give <button> its own default (opaque, theme-independent) text color, so it
+			// does not automatically pick up Admin's light/dark text color like a <div> or <td>
+			// does. "inherit" forces it to use the ambient color instead of guessing a theme.
 			const buttonStyle = {
 				padding: '6px 14px',
 				marginRight: 8,
@@ -292,7 +273,7 @@
 				border: '1px solid rgba(128,128,128,0.4)',
 				borderRadius: 4,
 				background: 'transparent',
-				color: textColor,
+				color: 'inherit',
 				cursor: 'pointer',
 			};
 
@@ -303,17 +284,12 @@
 				fontSize: '0.85em',
 			});
 
-			const thStyle = {
-				textAlign: 'left',
-				padding: '4px 8px',
-				borderBottom: '1px solid rgba(128,128,128,0.4)',
-				color: textColor,
-			};
-			const tdStyle = { padding: '4px 8px', borderBottom: '1px solid rgba(128,128,128,0.15)', color: textColor };
+			const thStyle = { textAlign: 'left', padding: '4px 8px', borderBottom: '1px solid rgba(128,128,128,0.4)' };
+			const tdStyle = { padding: '4px 8px', borderBottom: '1px solid rgba(128,128,128,0.15)' };
 
 			return React.createElement(
 				'div',
-				{ style: { padding: 8, color: textColor } },
+				{ style: { padding: 8 } },
 				React.createElement(
 					'div',
 					{ style: { marginBottom: 8 } },

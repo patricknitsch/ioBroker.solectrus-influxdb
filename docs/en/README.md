@@ -567,3 +567,5 @@ The **Backup** tab in the adapter configuration lets you create, upload, restore
 Backups are stored locally on this ioBroker host. By default they are placed under this instance's own data directory, but you can choose a custom storage location (e.g. a different disk or a mounted network share) via the "Backup directory" field. Use the "Keep last N backups" field to control how many of the most recent backups are kept automatically; older ones are deleted whenever a new backup is created. Restoring a backup restarts the instance automatically so the restored configuration takes effect.
 
 > **Note:** The InfluxDB token is a protected/encrypted setting and is never included in these backups. After a restore it has to be entered again manually on the **InfluxDB** tab.
+
+> **Note:** The Admin configuration dialog does not automatically pick up the restored settings while it stays open (it only shows what was loaded when it was opened). After a restore, close the adapter configuration dialog and reopen it to see the restored values.

@@ -321,10 +321,10 @@
     "Deleting…": "Удаление…",
     "Backup created.": "Резервная копия создана.",
     "Backup uploaded.": "Резервная копия загружена.",
-    "Backup restored.": "Резервная копия восстановлена.",
     "Backup deleted.": "Резервная копия удалена.",
-    "Restore this backup? The instance will restart.": "Восстановить эту резервную копию? Экземпляр будет перезапущен.",
     "Delete this backup?": "Удалить эту резервную копию?",
     "Could not read the selected file.": "Не удалось прочитать выбранный файл.",
-    "backupDirLabel": "Каталог резервных копий (необязательно, по умолчанию каталог данных экземпляра)"
+    "backupDirLabel": "Каталог резервных копий (необязательно, по умолчанию каталог данных экземпляра)",
+    "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Восстановить эту резервную копию? Экземпляр будет перезапущен, и это диалоговое окно конфигурации нужно будет затем закрыть и открыть заново.",
+    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Резервная копия восстановлена. Закройте и снова откройте это диалоговое окно конфигурации, чтобы увидеть обновлённые настройки."
 }

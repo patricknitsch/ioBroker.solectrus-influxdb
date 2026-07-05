@@ -320,10 +320,10 @@
     "Deleting…": "Deleting…",
     "Backup created.": "Backup created.",
     "Backup uploaded.": "Backup uploaded.",
-    "Backup restored.": "Backup restored.",
     "Backup deleted.": "Backup deleted.",
-    "Restore this backup? The instance will restart.": "Restore this backup? The instance will restart.",
     "Delete this backup?": "Delete this backup?",
     "Could not read the selected file.": "Could not read the selected file.",
-    "backupDirLabel": "Backup directory (optional, defaults to the instance data directory)"
+    "backupDirLabel": "Backup directory (optional, defaults to the instance data directory)",
+    "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.",
+    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Backup restored. Close and reopen this configuration dialog to see the updated settings."
 }

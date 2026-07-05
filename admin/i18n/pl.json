@@ -321,10 +321,10 @@
     "Deleting…": "Usuwanie…",
     "Backup created.": "Kopia zapasowa utworzona.",
     "Backup uploaded.": "Kopia zapasowa przesłana.",
-    "Backup restored.": "Kopia zapasowa przywrócona.",
     "Backup deleted.": "Kopia zapasowa usunięta.",
-    "Restore this backup? The instance will restart.": "Przywrócić tę kopię zapasową? Instancja zostanie ponownie uruchomiona.",
     "Delete this backup?": "Usunąć tę kopię zapasową?",
     "Could not read the selected file.": "Nie można odczytać wybranego pliku.",
-    "backupDirLabel": "Katalog kopii zapasowych (opcjonalnie, domyślnie katalog danych instancji)"
+    "backupDirLabel": "Katalog kopii zapasowych (opcjonalnie, domyślnie katalog danych instancji)",
+    "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Przywrócić tę kopię zapasową? Instancja zostanie ponownie uruchomiona, a to okno konfiguracji trzeba będzie potem zamknąć i otworzyć ponownie.",
+    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Kopia zapasowa przywrócona. Zamknij i ponownie otwórz to okno konfiguracji, aby zobaczyć zaktualizowane ustawienia."
 }

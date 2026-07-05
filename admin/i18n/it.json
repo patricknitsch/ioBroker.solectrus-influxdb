@@ -321,10 +321,10 @@
     "Deleting…": "Eliminazione…",
     "Backup created.": "Backup creato.",
     "Backup uploaded.": "Backup caricato.",
-    "Backup restored.": "Backup ripristinato.",
     "Backup deleted.": "Backup eliminato.",
-    "Restore this backup? The instance will restart.": "Ripristinare questo backup? L'istanza verrà riavviata.",
     "Delete this backup?": "Eliminare questo backup?",
     "Could not read the selected file.": "Impossibile leggere il file selezionato.",
-    "backupDirLabel": "Directory di backup (opzionale, predefinita la directory dati dell'istanza)"
+    "backupDirLabel": "Directory di backup (opzionale, predefinita la directory dati dell'istanza)",
+    "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Ripristinare questo backup? L'istanza verrà riavviata e questa finestra di configurazione dovrà essere chiusa e riaperta in seguito.",
+    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Backup ripristinato. Chiudere e riaprire questa finestra di configurazione per vedere le impostazioni aggiornate."
 }
