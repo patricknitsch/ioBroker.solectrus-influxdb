@@ -514,11 +514,10 @@ The adapter can send messages via configurable notification providers when impor
 
 ### Activation
 
-In the **Notifications** tab of the adapter settings:
+The **Notifications** tab is hidden until notifications are enabled. Enable the **Enable notifications** checkbox on the **InfluxDB** tab to reveal it and activate the feature, then:
 
-1. Enable the **Enable notifications** checkbox
-2. Select the desired trigger events
-3. Configure at least one notification provider
+1. Select the desired trigger events
+2. Configure at least one notification provider
 
 ### Triggers
 
@@ -555,11 +554,17 @@ Each provider has an **Instance** dropdown list. Available adapter instances are
 
 ## 15. Backup
 
-With adapter **Backitup > 3.3.17** you can create a full backup. Therefore activate the checkbox **SOLECTRUS InfluxDB**.
+### Built-in Backup tab
 
-- General Configuration
-- Sensorconfiguration, internal/external, activate/deactivate
-- Calculations
-- Notifications
+The **Backup** tab in the adapter configuration lets you create, upload, restore, download and delete backups of this instance directly - no other adapter needs to be installed. A backup contains:
 
-The Token for InfluxDB will not be saved and has to fill in one time. With a complete ioBroker-Backup you can also save the Token.
+- General configuration (connection settings)
+- Sensor configuration, internal/external, activated/deactivated
+- Data-SOLECTRUS items (calculations/formulas) and their folders
+- All object folders/channels/states created by this instance
+
+Backups are stored locally on this ioBroker host. By default they are placed under this instance's own data directory, but you can choose a custom storage location (e.g. a different disk or a mounted network share) via the "Backup directory" field. Use the "Keep last N backups" field to control how many of the most recent backups are kept automatically; older ones are deleted whenever a new backup is created. Restoring a backup restarts the instance automatically so the restored configuration takes effect.
+
+> **Note:** The InfluxDB token is a protected/encrypted setting and is never included in these backups. After a restore it has to be entered again manually on the **InfluxDB** tab.
+
+> **Note:** The Admin configuration dialog does not automatically pick up the restored settings while it stays open (it only shows what was loaded when it was opened). After a restore, close the adapter configuration dialog and reopen it to see the restored values.

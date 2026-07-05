@@ -514,11 +514,10 @@ Der Adapter kann bei wichtigen Ereignissen Meldungen über konfigurierbare Benac
 
 ### Aktivierung
 
-Im Tab **Benachrichtigungen** der Adapter-Einstellungen:
+Der Tab **Benachrichtigungen** ist ausgeblendet, bis Benachrichtigungen aktiviert werden. Aktivieren Sie die Checkbox **Benachrichtigungen aktivieren** im Tab **InfluxDB**, um den Tab einzublenden und die Funktion zu aktivieren. Danach:
 
-1. Checkbox **Benachrichtigungen aktivieren** aktivieren (bzw. die entsprechend lokalisierte Beschriftung, abhängig von der Admin-Sprache)
-2. Gewünschte Ereignisse auswählen
-3. Mindestens einen Benachrichtigungsanbieter konfigurieren
+1. Gewünschte Ereignisse auswählen
+2. Mindestens einen Benachrichtigungsanbieter konfigurieren
 
 ### Auslöser
 
@@ -557,11 +556,17 @@ Für jeden Anbieter gibt es eine **Instanz**-Dropdown-Liste. Verfügbare Adapter
 
 ## 15. Backup
 
-Über den Adapter **Backitup > 3.3.17** kann ein komplettes Backup erstellt werden. Hierzu die Checkbox **SOLECTRUS InfluxDB** auswählen.
+### Eingebauter Backup-Reiter
 
-- Allgemeine Konfiguration
+Über den Reiter **Backup** in der Adapterkonfiguration können Sie Backups dieser Instanz direkt erstellen, hochladen, wiederherstellen, herunterladen und löschen - es wird kein weiterer Adapter benötigt. Ein Backup enthält:
+
+- Allgemeine Konfiguration (Verbindungseinstellungen)
 - Sensorkonfiguration, intern/extern, aktiviert/deaktiviert
-- Berechnungen
-- Benachrichtungen
+- Data-SOLECTRUS-Einträge (Berechnungen/Formeln) mit ihren Ordnern
+- Alle von dieser Instanz angelegten Ordner/Kanäle/Datenpunkte
 
-Der Token für InfluxDB wird nicht gespeichert und muss einmalig neu eingegeben werden. Über ein komplettes ioBroker-Backup kann dieser mit gespeichert werden.
+Backups werden lokal auf diesem ioBroker-Host gespeichert. Standardmäßig im Datenverzeichnis dieser Instanz - über das Feld "Backup-Verzeichnis" kann aber auch ein individueller Speicherort (z. B. ein anderes Laufwerk oder ein eingebundenes Netzlaufwerk) gewählt werden. Über das Feld "Letzte N Backups behalten" wird gesteuert, wie viele der neuesten Backups automatisch behalten werden - ältere werden beim Erstellen eines neuen Backups gelöscht. Beim Wiederherstellen eines Backups startet die Instanz automatisch neu, damit die wiederhergestellte Konfiguration wirksam wird.
+
+> **Hinweis:** Der InfluxDB-Token ist eine geschützte/verschlüsselte Einstellung und wird nie in diesen Backups gespeichert. Nach einer Wiederherstellung muss er im Reiter **InfluxDB** einmalig manuell neu eingegeben werden.
+
+> **Hinweis:** Der Admin-Konfigurationsdialog übernimmt die wiederhergestellten Einstellungen nicht automatisch, solange er geöffnet bleibt (er zeigt nur den Stand, der beim Öffnen geladen wurde). Schließen Sie nach einer Wiederherstellung den Konfigurationsdialog der Instanz und öffnen Sie ihn erneut, um die wiederhergestellten Werte zu sehen.

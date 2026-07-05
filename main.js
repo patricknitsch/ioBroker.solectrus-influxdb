@@ -28,9 +28,12 @@ const {
 const { collectPoints, scheduleNextFlush } = require('./lib/collectFlush');
 const { sendNotification } = require('./lib/notificationManager');
 const { getNotificationMessage } = require('./lib/notificationMessages');
+const backupManager = require('./lib/backupManager');
 const dsStateRegistry = require('./lib/data-solectrus/services/stateRegistry');
 const dsItemManager = require('./lib/data-solectrus/services/itemManager');
 const dsTickRunner = require('./lib/data-solectrus/services/tickRunner');
+
+const BACKUP_COMMANDS = new Set(['bkpList', 'bkpCreate', 'bkpUpload', 'bkpRestore', 'bkpDelete', 'bkpDownload']);
 
 class SolectrusInfluxdb extends utils.Adapter {
 	constructor(options) {
@@ -329,7 +332,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 	}
 
 	/* =====================================================
-	 * MESSAGE (formula preview for Data-SOLECTRUS)
+	 * MESSAGE (formula preview for Data-SOLECTRUS, backup tab)
 	 * ===================================================== */
 
 	onMessage(obj) {
@@ -337,6 +340,12 @@ class SolectrusInfluxdb extends utils.Adapter {
 			if (!obj || !obj.command) {
 				return;
 			}
+
+			if (BACKUP_COMMANDS.has(obj.command)) {
+				this.handleBackupMessage(obj).catch(() => {});
+				return;
+			}
+
 			if (obj.command !== 'evalFormulaPreview') {
 				return;
 			}
@@ -403,6 +412,82 @@ class SolectrusInfluxdb extends utils.Adapter {
 			} catch {
 				/* ignore */
 			}
+		}
+	}
+
+	/* =====================================================
+	 * BACKUP TAB (create/list/upload/restore/delete/download)
+	 * ===================================================== */
+
+	async handleBackupMessage(obj) {
+		const respond = result => {
+			if (obj.callback) {
+				this.sendTo(obj.from, obj.command, result, obj.callback);
+			}
+		};
+
+		// The Admin dialog only persists edits to this running instance's config once saved
+		// (which restarts it), so `this.config.backupDir` here may lag behind whatever the
+		// still-open dialog currently shows. The frontend sends that current value along on
+		// every request so Backup tab actions honor unsaved edits instead of a stale path.
+		const msg = (obj.message && typeof obj.message === 'object' && obj.message) || {};
+		const dirOverride = msg.backupDir;
+
+		try {
+			switch (obj.command) {
+				case 'bkpList': {
+					respond({ ok: true, backups: await backupManager.listBackups(this, dirOverride) });
+					break;
+				}
+				case 'bkpCreate': {
+					const fileName = await backupManager.createBackup(this, dirOverride);
+					respond({ ok: true, fileName, backups: await backupManager.listBackups(this, dirOverride) });
+					break;
+				}
+				case 'bkpUpload': {
+					const fileName = await backupManager.saveUploadedBackup(
+						this,
+						msg.fileName,
+						msg.base64,
+						dirOverride,
+					);
+					respond({ ok: true, fileName, backups: await backupManager.listBackups(this, dirOverride) });
+					break;
+				}
+				case 'bkpDelete': {
+					await backupManager.deleteBackup(this, msg.fileName, dirOverride);
+					respond({ ok: true, backups: await backupManager.listBackups(this, dirOverride) });
+					break;
+				}
+				case 'bkpDownload': {
+					const base64 = await backupManager.readBackupBase64(this, msg.fileName, dirOverride);
+					respond({ ok: true, fileName: msg.fileName, base64 });
+					break;
+				}
+				case 'bkpRestore': {
+					const { restoredCount, instanceNative } = await backupManager.restoreBackup(
+						this,
+						msg.fileName,
+						dirOverride,
+					);
+					respond({ ok: true, restoredCount, willRestart: !!instanceNative });
+
+					// Applied last and not awaited by the response above: extending the instance
+					// object triggers an automatic restart via js-controller.
+					if (instanceNative) {
+						this.log.info('Restored instance configuration - the instance restarts automatically.');
+						this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+							native: instanceNative,
+						}).catch(err => this.log.warn(`Could not apply restored instance configuration: ${err}`));
+					}
+					break;
+				}
+				default:
+					break;
+			}
+		} catch (e) {
+			this.log.warn(`Backup command "${obj.command}" failed: ${e.message || e}`);
+			respond({ ok: false, error: e.message || String(e) });
 		}
 	}
 
