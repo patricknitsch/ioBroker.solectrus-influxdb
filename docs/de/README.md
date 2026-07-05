@@ -555,7 +555,7 @@ Für jeden Anbieter gibt es eine **Instanz**-Dropdown-Liste. Verfügbare Adapter
 
 ---
 
-## 13. Backup
+## 15. Backup
 
 Über den Adapter **Backitup** kann ein komplettes Backup erstellt werden. Hierzu die Checkbox **SOLECTRUS InfluxDB** auswählen.
 
