@@ -237,7 +237,7 @@
     "iframeUrlLabel": "Dashboard-URL (iFrame)",
     "inactive item": "inactive item",
     "inactive items": "inactive items",
-    "influxBackupHint": "Opmerking: maak een back-up van uw volledige adapterconfiguratie, inclusief alle sensoren en formules. Gebruik daarom de Backup Adapter.",
+    "influxBackupHint": "Opmerking: maak een back-up van uw volledige adapterconfiguratie, inclusief alle sensoren en formules. Gebruik daarom de Backup Adapter > 3.3.17.",
     "influxQuickStart": "1. Maak een InfluxDB 2.x API-token met schrijftoegang tot uw bucket.\n2. Voer links URL, organisatie, bucket en token in en sla op.\n3. Open het tabblad Sensoren en breng uw ioBroker-statussen in kaart.\n4. Schakel de adapter in en controleer info.connection en de bufferstatussen.",
     "internalSensorHint": "Interne sensoren worden gespiegeld en bewaakt, maar niet naar InfluxDB gestuurd.",
     "ioBroker Source State": "ioBroker-bronstatus",
