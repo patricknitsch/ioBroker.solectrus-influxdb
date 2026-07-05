@@ -63,6 +63,12 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+*(patricknitsch) Update Dependencies
+*(patricknitsch) Update Doc and Config for Backup. Complete Backups now can be done by Backitup. Important: Influx Token has to be filled in again.
+
+
 ### 1.11.0 (2026-06-23)
 * (copilot) Remove legacy Forecast Lib
 * (copilot) Migrate old config to new(now no Datapoints will be generated)
