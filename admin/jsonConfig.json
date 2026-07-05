@@ -317,10 +317,10 @@
 					"text": "notifyHint",
 					"newLine": true,
 					"style": {
-						"fontSize": "0.85em",
-						"color": "#888",
+						"whiteSpace": "pre-line",
+						"fontSize": "1em",
 						"marginTop": 4,
-						"whiteSpace": "pre-line"
+						"marginBottom": 8
 					},
 					"xs": 12,
 					"sm": 12,
