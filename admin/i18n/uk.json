@@ -326,5 +326,7 @@
     "Could not read the selected file.": "Не вдалося прочитати вибраний файл.",
     "backupDirLabel": "Каталог резервних копій (необов'язково, за замовчуванням каталог даних екземпляра)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Відновити цю резервну копію? Екземпляр буде перезапущено, а це діалогове вікно конфігурації потрібно буде потім закрити та знову відкрити.",
-    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Резервну копію відновлено. Закрийте і знову відкрийте це діалогове вікно конфігурації, щоб побачити оновлені налаштування."
+    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Резервну копію відновлено. Закрийте і знову відкрийте це діалогове вікно конфігурації, щоб побачити оновлені налаштування.",
+    "enableIframeTabLabel": "Показати вкладку iFrame (посилання на дашборд) - потрібно не всім",
+    "enableNotificationsTabLabel": "Показати вкладку Сповіщення - потрібно не всім"
 }
