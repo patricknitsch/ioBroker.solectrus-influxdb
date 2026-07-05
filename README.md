@@ -68,6 +68,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 ### **WORK IN PROGRESS**
 * (patricknitsch) Update Dependencies
 * (patricknitsch) Add built-in **Backup** tab: create/upload/restore/download/delete local backups of the instance config, sensors and Data-SOLECTRUS items, with a configurable storage location (InfluxDB token is excluded and must be re-entered after a restore)
+* (patricknitsch) Add **Enable iFrame dashboard** checkbox: gates both the iFrame config tab and the Dashboard tab in the sensor overview (tab.html); reuse **Enable notifications** as the single switch that both activates notifications and reveals the Notifications tab
 
 ### 1.11.0 (2026-06-23)
 * (copilot) Remove legacy Forecast Lib

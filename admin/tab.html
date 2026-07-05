@@ -932,8 +932,9 @@
         }
 
         var iframeUrl = (config.iframeUrl || '').trim();
-        /* Only allow http/https to prevent javascript: / data: injection */
-        var iframeUrlSafe = /^https?:\/\//i.test(iframeUrl) ? iframeUrl : '';
+        /* Only allow http/https to prevent javascript: / data: injection, and require the
+           "Enable iFrame dashboard" checkbox - the Dashboard tab needs both. */
+        var iframeUrlSafe = config.enableIframe && /^https?:\/\//i.test(iframeUrl) ? iframeUrl : '';
         var iframeEl = document.getElementById('dashboard-iframe');
         var iframePlaceholder = document.getElementById('iframe-placeholder');
         var iframeToolbar = document.getElementById('iframe-toolbar');

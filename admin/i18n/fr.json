@@ -326,5 +326,6 @@
     "Could not read the selected file.": "Impossible de lire le fichier sélectionné.",
     "backupDirLabel": "Répertoire de sauvegarde (facultatif, par défaut le répertoire de données de l'instance)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Restaurer cette sauvegarde ? L'instance va redémarrer et cette boîte de dialogue de configuration devra être fermée puis rouverte ensuite.",
-    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Sauvegarde restaurée. Fermez puis rouvrez cette boîte de dialogue de configuration pour voir les paramètres mis à jour."
+    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Sauvegarde restaurée. Fermez puis rouvrez cette boîte de dialogue de configuration pour voir les paramètres mis à jour.",
+    "enableIframeLabel": "Activer le tableau de bord iFrame"
 }

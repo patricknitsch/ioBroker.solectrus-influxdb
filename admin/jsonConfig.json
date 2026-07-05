@@ -142,6 +142,28 @@
 							"lg": 12,
 							"xl": 12
 						},
+						"enableIframe": {
+							"type": "checkbox",
+							"label": "enableIframeLabel",
+							"default": false,
+							"newLine": true,
+							"xs": 12,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
+						},
+						"notifyEnabled": {
+							"type": "checkbox",
+							"label": "notifyEnabledLabel",
+							"default": false,
+							"newLine": true,
+							"xs": 12,
+							"sm": 12,
+							"md": 12,
+							"lg": 12,
+							"xl": 12
+						},
 						"_influxBackupHint": {
 							"type": "staticText",
 							"text": "influxBackupHint",
@@ -256,6 +278,7 @@
 		"iframeTab": {
 			"type": "panel",
 			"label": "iFrame",
+			"hidden": "!data.enableIframe",
 			"items": {
 				"iframeUrl": {
 					"type": "text",
@@ -287,6 +310,7 @@
 		"notifications": {
 			"type": "panel",
 			"label": "notificationsTabLabel",
+			"hidden": "!data.notifyEnabled",
 			"items": {
 				"_notifyHint": {
 					"type": "staticText",

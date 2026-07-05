@@ -325,5 +325,6 @@
     "Could not read the selected file.": "Het geselecteerde bestand kon niet worden gelezen.",
     "backupDirLabel": "Back-upmap (optioneel, standaard de gegevensmap van de instantie)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Deze back-up herstellen? De instantie wordt opnieuw gestart en dit configuratiedialoogvenster moet daarna worden gesloten en opnieuw geopend.",
-    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Back-up hersteld. Sluit dit configuratiedialoogvenster en open het opnieuw om de bijgewerkte instellingen te zien."
+    "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Back-up hersteld. Sluit dit configuratiedialoogvenster en open het opnieuw om de bijgewerkte instellingen te zien.",
+    "enableIframeLabel": "iFrame-dashboard inschakelen"
 }
