@@ -1,21 +1,8 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.12.0",
+    "version": "1.11.0",
     "news": {
-      "1.12.0": {
-        "en": "Add built-in Backup tab: create/upload/restore/download/delete local backups of the instance (config, sensors, Data-SOLECTRUS items) without needing the Backitup adapter\nUpdate documentation and translations for Backup",
-        "de": "Neuer eingebauter Backup-Reiter: lokale Backups der Instanz (Konfiguration, Sensoren, Data-SOLECTRUS-Einträge) erstellen/hochladen/wiederherstellen/herunterladen/löschen, ohne den Backitup-Adapter zu benötigen\nDokumentation und Übersetzungen für Backup aktualisiert",
-        "ru": "Добавлена встроенная вкладка Backup: создание/загрузка/восстановление/скачивание/удаление локальных резервных копий экземпляра (конфигурация, датчики, элементы Data-SOLECTRUS) без необходимости в адаптере Backitup\nОбновлена документация и переводы для Backup",
-        "pt": "Adicionada aba Backup integrada: criar/carregar/restaurar/transferir/eliminar backups locais da instância (configuração, sensores, itens Data-SOLECTRUS) sem precisar do adaptador Backitup\nDocumentação e traduções de Backup atualizadas",
-        "nl": "Nieuw ingebouwd Backup-tabblad: lokale back-ups van de instantie (configuratie, sensoren, Data-SOLECTRUS-items) maken/uploaden/herstellen/downloaden/verwijderen zonder de Backitup-adapter nodig te hebben\nDocumentatie en vertalingen voor Backup bijgewerkt",
-        "fr": "Ajout d'un onglet Backup intégré : créer/téléverser/restaurer/télécharger/supprimer des sauvegardes locales de l'instance (configuration, capteurs, éléments Data-SOLECTRUS) sans avoir besoin de l'adaptateur Backitup\nMise à jour de la documentation et des traductions pour Backup",
-        "it": "Aggiunta scheda Backup integrata: crea/carica/ripristina/scarica/elimina backup locali dell'istanza (configurazione, sensori, voci Data-SOLECTRUS) senza necessità dell'adattatore Backitup\nAggiornata documentazione e traduzioni per Backup",
-        "es": "Nueva pestaña Backup integrada: crear/subir/restaurar/descargar/eliminar copias de seguridad locales de la instancia (configuración, sensores, elementos Data-SOLECTRUS) sin necesitar el adaptador Backitup\nDocumentación y traducciones de Backup actualizadas",
-        "pl": "Dodano wbudowaną kartę Backup: tworzenie/przesyłanie/przywracanie/pobieranie/usuwanie lokalnych kopii zapasowych instancji (konfiguracja, czujniki, pozycje Data-SOLECTRUS) bez konieczności użycia adaptera Backitup\nZaktualizowano dokumentację i tłumaczenia dla Backup",
-        "uk": "Додано вбудовану вкладку Backup: створення/завантаження/відновлення/скачування/видалення локальних резервних копій екземпляра (конфігурація, датчики, елементи Data-SOLECTRUS) без потреби в адаптері Backitup\nОновлено документацію та переклади для Backup",
-        "zh-cn": "新增内置备份标签页：无需 Backitup 适配器即可创建/上传/恢复/下载/删除此实例的本地备份(配置、传感器、Data-SOLECTRUS 项目)\n更新了备份相关的文档和翻译"
-      },
       "1.11.0": {
         "en": "Remove legacy Forecast Lib\nMigrate old config to new(now no Datapoints will be generated)\nFix some small possible issues\nUpdate Docs",
         "de": "Legacy Forecast Lib entfernen\nAlte Konfiguration auf neue migrieren (es werden nun keine Datenpunkte mehr generiert)\nBeheben Sie einige kleinere mögliche Probleme\nDokumente aktualisieren",

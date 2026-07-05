@@ -66,8 +66,6 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 -->
 
 ### **WORK IN PROGRESS**
-
-### 1.12.0 (2026-07-05)
 * (patricknitsch) Update Dependencies
 * (patricknitsch) Add built-in **Backup** tab: create/upload/restore/download/delete local backups of the instance config, sensors and Data-SOLECTRUS items, with a configurable storage location (InfluxDB token is excluded and must be re-entered after a restore)
 

@@ -756,9 +756,9 @@
 					"newLine": true,
 					"style": {
 						"whiteSpace": "pre-line",
-						"fontSize": "0.85em",
-						"color": "#888",
-						"marginTop": 4
+						"fontSize": "1em",
+						"marginTop": 4,
+						"marginBottom": 8
 					},
 					"xs": 12,
 					"sm": 12,
