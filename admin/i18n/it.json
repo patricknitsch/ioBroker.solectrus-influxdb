@@ -327,6 +327,6 @@
     "backupDirLabel": "Directory di backup (opzionale, predefinita la directory dati dell'istanza)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Ripristinare questo backup? L'istanza verrà riavviata e questa finestra di configurazione dovrà essere chiusa e riaperta in seguito.",
     "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Backup ripristinato. Chiudere e riaprire questa finestra di configurazione per vedere le impostazioni aggiornate.",
-    "enableIframeTabLabel": "Mostra scheda iFrame (link alla dashboard) - non serve a tutti",
-    "enableNotificationsTabLabel": "Mostra scheda Notifiche - non serve a tutti"
+    "enableIframeTabLabel": "Mostra iFrame (link alla dashboard)",
+    "enableNotificationsTabLabel": "Mostra Notifiche"
 }

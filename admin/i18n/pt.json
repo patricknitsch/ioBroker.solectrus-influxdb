@@ -327,6 +327,6 @@
     "backupDirLabel": "Diretório de backup (opcional, por padrão o diretório de dados da instância)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Restaurar este backup? A instância será reiniciada e esta caixa de diálogo de configuração terá de ser fechada e reaberta em seguida.",
     "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Backup restaurado. Feche e reabra esta caixa de diálogo de configuração para ver as definições atualizadas.",
-    "enableIframeTabLabel": "Mostrar aba iFrame (link do painel) - nem todos precisam disto",
-    "enableNotificationsTabLabel": "Mostrar aba Notificações - nem todos precisam disto"
+    "enableIframeTabLabel": "Mostrar iFrame (link do painel)",
+    "enableNotificationsTabLabel": "Mostrar Notificações"
 }

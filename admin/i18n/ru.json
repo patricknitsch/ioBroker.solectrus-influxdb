@@ -327,6 +327,6 @@
     "backupDirLabel": "Каталог резервных копий (необязательно, по умолчанию каталог данных экземпляра)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Восстановить эту резервную копию? Экземпляр будет перезапущен, и это диалоговое окно конфигурации нужно будет затем закрыть и открыть заново.",
     "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Резервная копия восстановлена. Закройте и снова откройте это диалоговое окно конфигурации, чтобы увидеть обновлённые настройки.",
-    "enableIframeTabLabel": "Показать вкладку iFrame (ссылка на дашборд) - нужно не всем",
-    "enableNotificationsTabLabel": "Показать вкладку Уведомления - нужно не всем"
+    "enableIframeTabLabel": "Показать iFrame (ссылка на дашборд)",
+    "enableNotificationsTabLabel": "Показать Уведомления"
 }
