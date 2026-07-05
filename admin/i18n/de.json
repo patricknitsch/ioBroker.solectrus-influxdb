@@ -237,7 +237,7 @@
     "iframeUrlLabel": "Dashboard-URL (iFrame)",
     "inactive item": "inaktiver Datenpunkt",
     "inactive items": "inaktive Datenpunkte",
-    "influxBackupHint": "Hinweis: Sichern Sie Ihre komplette Adapterkonfiguration, einschließlich aller Sensoren und Formeln. Benutzen Sie dafür den Backitup-Adapter.",
+    "influxBackupHint": "Hinweis: Sichern Sie Ihre komplette Adapterkonfiguration, einschließlich aller Sensoren und Formeln. Benutzen Sie dafür den Backitup-Adapter > 3.3.17.",
     "influxQuickStart": "1. Erstellen Sie ein InfluxDB 2.x-API-Token mit Schreibzugriff auf Ihren Bucket.\n2. Geben Sie links URL, Organisation, Bucket und Token ein und speichern Sie.\n3. Öffnen Sie die Registerkarte „Sensoren“ und ordnen Sie Ihre ioBroker-Zustände zu.\n4. Aktivieren Sie den Adapter und überprüfen Sie info.connection und die Pufferzustände.",
     "internalSensorHint": "Interne Sensoren werden gespiegelt und überwacht, aber nicht an InfluxDB gesendet.",
     "ioBroker Source State": "ioBroker-Quellstatus",
