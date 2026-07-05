@@ -67,6 +67,33 @@
 		return d.toLocaleString();
 	}
 
+	function isDarkTheme() {
+		try {
+			const doc = globalThis.document;
+			const root = doc && doc.documentElement;
+			const attrTheme =
+				(root && (root.getAttribute('data-theme') || root.getAttribute('data-mui-color-scheme'))) || '';
+			if (attrTheme === 'dark') return true;
+			if (attrTheme === 'light') return false;
+
+			const body = doc && doc.body;
+			if (body && body.classList) {
+				if (body.classList.contains('mui-theme-dark') || body.classList.contains('iob-theme-dark')) {
+					return true;
+				}
+				if (body.classList.contains('mui-theme-light') || body.classList.contains('iob-theme-light')) {
+					return false;
+				}
+			}
+
+			return !!(
+				globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches
+			);
+		} catch {
+			return false;
+		}
+	}
+
 	function base64FromDataUrl(dataUrl) {
 		const idx = String(dataUrl || '').indexOf(',');
 		return idx >= 0 ? dataUrl.slice(idx + 1) : '';
@@ -255,6 +282,9 @@
 					.finally(() => setBusy(''));
 			};
 
+			const isDark = isDarkTheme();
+			const textColor = isDark ? '#f0f0f0' : '#111111';
+
 			const buttonStyle = {
 				padding: '6px 14px',
 				marginRight: 8,
@@ -262,6 +292,7 @@
 				border: '1px solid rgba(128,128,128,0.4)',
 				borderRadius: 4,
 				background: 'transparent',
+				color: textColor,
 				cursor: 'pointer',
 			};
 
@@ -272,12 +303,17 @@
 				fontSize: '0.85em',
 			});
 
-			const thStyle = { textAlign: 'left', padding: '4px 8px', borderBottom: '1px solid rgba(128,128,128,0.4)' };
-			const tdStyle = { padding: '4px 8px', borderBottom: '1px solid rgba(128,128,128,0.15)' };
+			const thStyle = {
+				textAlign: 'left',
+				padding: '4px 8px',
+				borderBottom: '1px solid rgba(128,128,128,0.4)',
+				color: textColor,
+			};
+			const tdStyle = { padding: '4px 8px', borderBottom: '1px solid rgba(128,128,128,0.15)', color: textColor };
 
 			return React.createElement(
 				'div',
-				{ style: { padding: 8 } },
+				{ style: { padding: 8, color: textColor } },
 				React.createElement(
 					'div',
 					{ style: { marginBottom: 8 } },

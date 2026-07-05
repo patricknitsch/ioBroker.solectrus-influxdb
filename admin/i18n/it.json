@@ -237,7 +237,7 @@
     "iframeUrlLabel": "URL del pannello (iFrame)",
     "inactive item": "inactive item",
     "inactive items": "inactive items",
-    "influxBackupHint": "Nota: utilizzare la scheda Backup per creare/caricare/ripristinare direttamente i backup di questa istanza, oppure l'adattatore Backitup > 3.3.17 per un backup completo di ioBroker.",
+    "influxBackupHint": "Nota: utilizzare la scheda Backup per creare, caricare, ripristinare, scaricare o eliminare direttamente i backup di questa istanza (posizione di archiviazione personalizzabile).",
     "influxQuickStart": "1. Crea un token API InfluxDB 2.x con accesso in scrittura al tuo bucket.\n2. Inserisci URL, organizzazione, bucket e token a sinistra e salva.\n3. Apri la scheda Sensori e mappa gli stati di ioBroker.\n4. Abilitare l'adattatore e controllare info.connection e gli stati del buffer.",
     "influxQuickStart:": "1. Crea un token API InfluxDB 2.x con accesso in scrittura al tuo bucket.\n2. Inserisci URL, organizzazione, bucket e token a sinistra e salva.\n3. Apri la scheda Sensori e mappa gli stati di ioBroker.\n4. Abilitare l'adattatore e controllare info.connection e gli stati del buffer.",
     "internalSensorHint": "I sensori interni vengono rispecchiati e monitorati, ma non inviati a InfluxDB.",
@@ -304,7 +304,7 @@
     "op.?:": "Traduzione in sospeso: Ternary operator: If-Then-Else shorthand. Example: condition ? valueIfTrue : valueIfFalse",
     "op.||": "Traduzione in sospeso: Logical OR: At least one condition must be true. Example: a > 10 || b > 10",
     "backupTabLabel": "Backup",
-    "backupTabHint": "Crea, carica, ripristina, scarica o elimina backup locali di questa istanza dell'adattatore (impostazioni di connessione, sensori e voci Data-SOLECTRUS). I backup vengono salvati solo su questo host ioBroker.\nIl token InfluxDB non viene mai incluso e deve essere reinserito manualmente dopo un ripristino.",
+    "backupTabHint": "Crea, carica, ripristina, scarica o elimina backup locali di questa istanza dell'adattatore (impostazioni di connessione, sensori e voci Data-SOLECTRUS). I backup vengono salvati su questo host ioBroker, per impostazione predefinita nella directory dati di questa istanza - è possibile impostare una posizione di archiviazione personalizzata qui sotto.\nIl token InfluxDB non viene mai incluso e deve essere reinserito manualmente dopo un ripristino.",
     "backupKeepCountLabel": "Conserva le ultime N copie di backup",
     "Create backup now": "Crea backup ora",
     "Creating…": "Creazione…",
@@ -325,5 +325,6 @@
     "Backup deleted.": "Backup eliminato.",
     "Restore this backup? The instance will restart.": "Ripristinare questo backup? L'istanza verrà riavviata.",
     "Delete this backup?": "Eliminare questo backup?",
-    "Could not read the selected file.": "Impossibile leggere il file selezionato."
+    "Could not read the selected file.": "Impossibile leggere il file selezionato.",
+    "backupDirLabel": "Directory di backup (opzionale, predefinita la directory dati dell'istanza)"
 }

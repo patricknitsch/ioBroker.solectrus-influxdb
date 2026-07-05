@@ -237,7 +237,7 @@
     "iframeUrlLabel": "URL del panel (iFrame)",
     "inactive item": "inactive item",
     "inactive items": "inactive items",
-    "influxBackupHint": "Nota: Utilice la pestaña Backup para crear/subir/restaurar copias de seguridad de esta instancia directamente, o el adaptador Backitup > 3.3.17 para una copia de seguridad completa de ioBroker.",
+    "influxBackupHint": "Nota: Utilice la pestaña Backup para crear, subir, restaurar, descargar o eliminar copias de seguridad de esta instancia directamente (ubicación de almacenamiento personalizable).",
     "influxQuickStart": "1. Cree un token API de InfluxDB 2.x con acceso de escritura a su depósito.\n2. Ingrese la URL, la organización, el depósito y el token a la izquierda y guarde.\n3. Abra la pestaña Sensores y asigne los estados de su ioBroker.\n4. Habilite el adaptador y verifique la conexión de información y los estados del búfer.",
     "influxQuickStart:": "1. Cree un token API de InfluxDB 2.x con acceso de escritura a su depósito.\n2. Ingrese la URL, la organización, el depósito y el token a la izquierda y guarde.\n3. Abra la pestaña Sensores y asigne los estados de su ioBroker.\n4. Habilite el adaptador y verifique la conexión de información y los estados del búfer.",
     "internalSensorHint": "Los sensores internos se reflejan y supervisan, pero no se envían a InfluxDB.",
@@ -304,7 +304,7 @@
     "op.?:": "Pendiente de traducción: Ternary operator: If-Then-Else shorthand. Example: condition ? valueIfTrue : valueIfFalse",
     "op.||": "Pendiente de traducción: Logical OR: At least one condition must be true. Example: a > 10 || b > 10",
     "backupTabLabel": "Copia de seguridad",
-    "backupTabHint": "Cree, suba, restaure, descargue o elimine copias de seguridad locales de esta instancia del adaptador (ajustes de conexión, sensores y elementos Data-SOLECTRUS). Las copias de seguridad solo se almacenan en este host de ioBroker.\nEl token de InfluxDB nunca se incluye y debe volver a introducirse manualmente tras una restauración.",
+    "backupTabHint": "Cree, suba, restaure, descargue o elimine copias de seguridad locales de esta instancia del adaptador (ajustes de conexión, sensores y elementos Data-SOLECTRUS). Las copias de seguridad se almacenan en este host de ioBroker, por defecto en el directorio de datos de esta instancia; a continuación puede definirse una ubicación de almacenamiento personalizada.\nEl token de InfluxDB nunca se incluye y debe volver a introducirse manualmente tras una restauración.",
     "backupKeepCountLabel": "Conservar las últimas N copias",
     "Create backup now": "Crear copia de seguridad ahora",
     "Creating…": "Creando…",
@@ -325,5 +325,6 @@
     "Backup deleted.": "Copia de seguridad eliminada.",
     "Restore this backup? The instance will restart.": "¿Restaurar esta copia de seguridad? La instancia se reiniciará.",
     "Delete this backup?": "¿Eliminar esta copia de seguridad?",
-    "Could not read the selected file.": "No se pudo leer el archivo seleccionado."
+    "Could not read the selected file.": "No se pudo leer el archivo seleccionado.",
+    "backupDirLabel": "Directorio de copias de seguridad (opcional, por defecto el directorio de datos de la instancia)"
 }

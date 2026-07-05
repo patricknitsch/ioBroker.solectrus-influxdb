@@ -237,7 +237,7 @@
     "iframeUrlLabel": "URL du tableau de bord (iFrame)",
     "inactive item": "inactive item",
     "inactive items": "inactive items",
-    "influxBackupHint": "Remarque : utilisez l'onglet Backup pour créer/téléverser/restaurer directement des sauvegardes de cette instance, ou l'adaptateur Backitup > 3.3.17 pour une sauvegarde complète d'ioBroker.",
+    "influxBackupHint": "Remarque : utilisez l'onglet Backup pour créer, téléverser, restaurer, télécharger ou supprimer directement des sauvegardes de cette instance (emplacement de stockage personnalisable).",
     "influxQuickStart": "1. Créez un jeton API InfluxDB 2.x avec un accès en écriture à votre compartiment.\n2. Saisissez l'URL, l'organisation, le compartiment et le jeton à gauche et enregistrez.\n3. Ouvrez l'onglet Capteurs et cartographiez les états de votre ioBroker.\n4. Activez l'adaptateur et vérifiez info.connection et les états du tampon.",
     "influxQuickStart:": "1. Créez un jeton API InfluxDB 2.x avec un accès en écriture à votre compartiment.\n2. Saisissez l'URL, l'organisation, le compartiment et le jeton à gauche et enregistrez.\n3. Ouvrez l'onglet Capteurs et cartographiez les états de votre ioBroker.\n4. Activez l'adaptateur et vérifiez info.connection et les états du tampon.",
     "internalSensorHint": "Les capteurs internes sont reflétés et surveillés, mais ne sont pas envoyés à InfluxDB.",
@@ -304,7 +304,7 @@
     "op.?:": "Traduction en attente: Ternary operator: If-Then-Else shorthand. Example: condition ? valueIfTrue : valueIfFalse",
     "op.||": "Traduction en attente: Logical OR: At least one condition must be true. Example: a > 10 || b > 10",
     "backupTabLabel": "Sauvegarde",
-    "backupTabHint": "Créez, téléversez, restaurez, téléchargez ou supprimez des sauvegardes locales de cette instance d'adaptateur (paramètres de connexion, capteurs et éléments Data-SOLECTRUS). Les sauvegardes ne sont stockées que sur cet hôte ioBroker.\nLe jeton InfluxDB n'est jamais inclus et doit être ressaisi manuellement après une restauration.",
+    "backupTabHint": "Créez, téléversez, restaurez, téléchargez ou supprimez des sauvegardes locales de cette instance d'adaptateur (paramètres de connexion, capteurs et éléments Data-SOLECTRUS). Les sauvegardes sont stockées sur cet hôte ioBroker, par défaut dans le répertoire de données de cette instance - un emplacement de stockage personnalisé peut être défini ci-dessous.\nLe jeton InfluxDB n'est jamais inclus et doit être ressaisi manuellement après une restauration.",
     "backupKeepCountLabel": "Conserver les N dernières sauvegardes",
     "Create backup now": "Créer une sauvegarde maintenant",
     "Creating…": "Création…",
@@ -325,5 +325,6 @@
     "Backup deleted.": "Sauvegarde supprimée.",
     "Restore this backup? The instance will restart.": "Restaurer cette sauvegarde ? L'instance va redémarrer.",
     "Delete this backup?": "Supprimer cette sauvegarde ?",
-    "Could not read the selected file.": "Impossible de lire le fichier sélectionné."
+    "Could not read the selected file.": "Impossible de lire le fichier sélectionné.",
+    "backupDirLabel": "Répertoire de sauvegarde (facultatif, par défaut le répertoire de données de l'instance)"
 }

@@ -566,17 +566,6 @@ Für jeden Anbieter gibt es eine **Instanz**-Dropdown-Liste. Verfügbare Adapter
 - Data-SOLECTRUS-Einträge (Berechnungen/Formeln) mit ihren Ordnern
 - Alle von dieser Instanz angelegten Ordner/Kanäle/Datenpunkte
 
-Backups werden lokal auf diesem ioBroker-Host gespeichert. Über das Feld "Letzte N Backups behalten" wird gesteuert, wie viele der neuesten Backups automatisch behalten werden - ältere werden beim Erstellen eines neuen Backups gelöscht. Beim Wiederherstellen eines Backups startet die Instanz automatisch neu, damit die wiederhergestellte Konfiguration wirksam wird.
+Backups werden lokal auf diesem ioBroker-Host gespeichert. Standardmäßig im Datenverzeichnis dieser Instanz - über das Feld "Backup-Verzeichnis" kann aber auch ein individueller Speicherort (z. B. ein anderes Laufwerk oder ein eingebundenes Netzlaufwerk) gewählt werden. Über das Feld "Letzte N Backups behalten" wird gesteuert, wie viele der neuesten Backups automatisch behalten werden - ältere werden beim Erstellen eines neuen Backups gelöscht. Beim Wiederherstellen eines Backups startet die Instanz automatisch neu, damit die wiederhergestellte Konfiguration wirksam wird.
 
 > **Hinweis:** Der InfluxDB-Token ist eine geschützte/verschlüsselte Einstellung und wird nie in diesen Backups gespeichert. Nach einer Wiederherstellung muss er im Reiter **InfluxDB** einmalig manuell neu eingegeben werden.
-
-### Komplettes ioBroker-Backup über Backitup
-
-Über den Adapter **Backitup > 3.3.17** kann diese Instanz zusätzlich in ein komplettes ioBroker-Backup eingeschlossen werden. Hierzu die Checkbox **SOLECTRUS InfluxDB** auswählen.
-
-- Allgemeine Konfiguration
-- Sensorkonfiguration, intern/extern, aktiviert/deaktiviert
-- Berechnungen
-- Benachrichtungen
-
-Der Token für InfluxDB wird nicht gespeichert und muss einmalig neu eingegeben werden. Über ein komplettes ioBroker-Backup kann dieser mit gespeichert werden.

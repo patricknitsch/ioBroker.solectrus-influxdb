@@ -238,7 +238,7 @@
     "inactive item": "inactive item",
     "inactive items": "inactive items",
     "internalSensorHint": "Internal sensors are mirrored and monitored, but not sent to InfluxDB.",
-    "influxBackupHint": "Note: Use the Backup tab to create/upload/restore backups of this instance directly, or the Backitup Adapter > 3.3.17 for a complete ioBroker backup.",
+    "influxBackupHint": "Note: Use the Backup tab to create, upload, restore, download or delete backups of this instance directly (custom storage location supported).",
     "influxQuickStart": "1. Create an InfluxDB 2.x API token with write access to your bucket.\n2. Enter URL, organization, bucket and token on the left and save.\n3. Open the Sensors tab and map your ioBroker states.\n4. Enable the adapter and check info.connection and the buffer states.",
     "ioBroker Source State": "ioBroker source state",
     "jsonAutoDetectInfo": "y → inverter_forecast:power (Forecast)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperature)\n\nFields not present in the JSON are skipped automatically.",
@@ -303,7 +303,7 @@
     "op.?:": "Ternary operator: If-Then-Else shorthand. Example: condition ? valueIfTrue : valueIfFalse",
     "op.||": "Logical OR: At least one condition must be true. Example: a > 10 || b > 10",
     "backupTabLabel": "Backup",
-    "backupTabHint": "Create, upload, restore, download or delete local backups of this adapter instance (connection settings, sensors and Data-SOLECTRUS items). Backups are stored on this ioBroker host only.\nThe InfluxDB token is never included and has to be re-entered manually after a restore.",
+    "backupTabHint": "Create, upload, restore, download or delete local backups of this adapter instance (connection settings, sensors and Data-SOLECTRUS items). Backups are stored on this ioBroker host, by default under this instance's own data directory - a custom storage location can be set below.\nThe InfluxDB token is never included and has to be re-entered manually after a restore.",
     "backupKeepCountLabel": "Keep last N backups",
     "Create backup now": "Create backup now",
     "Creating…": "Creating…",
@@ -324,5 +324,6 @@
     "Backup deleted.": "Backup deleted.",
     "Restore this backup? The instance will restart.": "Restore this backup? The instance will restart.",
     "Delete this backup?": "Delete this backup?",
-    "Could not read the selected file.": "Could not read the selected file."
+    "Could not read the selected file.": "Could not read the selected file.",
+    "backupDirLabel": "Backup directory (optional, defaults to the instance data directory)"
 }

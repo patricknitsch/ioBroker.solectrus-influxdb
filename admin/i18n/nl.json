@@ -237,7 +237,7 @@
     "iframeUrlLabel": "Dashboard-URL (iFrame)",
     "inactive item": "inactive item",
     "inactive items": "inactive items",
-    "influxBackupHint": "Opmerking: gebruik het tabblad Backup om back-ups van deze instantie direct te maken/uploaden/herstellen, of de Backitup-adapter > 3.3.17 voor een volledige ioBroker-back-up.",
+    "influxBackupHint": "Opmerking: gebruik het tabblad Backup om back-ups van deze instantie direct te maken, uploaden, herstellen, downloaden of verwijderen (aangepaste opslaglocatie mogelijk).",
     "influxQuickStart": "1. Maak een InfluxDB 2.x API-token met schrijftoegang tot uw bucket.\n2. Voer links URL, organisatie, bucket en token in en sla op.\n3. Open het tabblad Sensoren en breng uw ioBroker-statussen in kaart.\n4. Schakel de adapter in en controleer info.connection en de bufferstatussen.",
     "internalSensorHint": "Interne sensoren worden gespiegeld en bewaakt, maar niet naar InfluxDB gestuurd.",
     "ioBroker Source State": "ioBroker-bronstatus",
@@ -303,7 +303,7 @@
     "op.?:": "Vertaling in behandeling: Ternary operator: If-Then-Else shorthand. Example: condition ? valueIfTrue : valueIfFalse",
     "op.||": "Vertaling in behandeling: Logical OR: At least one condition must be true. Example: a > 10 || b > 10",
     "backupTabLabel": "Back-up",
-    "backupTabHint": "Maak, upload, herstel, download of verwijder lokale back-ups van deze adapterinstantie (verbindingsinstellingen, sensoren en Data-SOLECTRUS-items). Back-ups worden alleen op deze ioBroker-host opgeslagen.\nDe InfluxDB-token wordt nooit meegenomen en moet na een herstel handmatig opnieuw worden ingevoerd.",
+    "backupTabHint": "Maak, upload, herstel, download of verwijder lokale back-ups van deze adapterinstantie (verbindingsinstellingen, sensoren en Data-SOLECTRUS-items). Back-ups worden op deze ioBroker-host opgeslagen, standaard in de eigen gegevensmap van deze instantie - hieronder kan een aangepaste opslaglocatie worden ingesteld.\nDe InfluxDB-token wordt nooit meegenomen en moet na een herstel handmatig opnieuw worden ingevoerd.",
     "backupKeepCountLabel": "Laatste N back-ups bewaren",
     "Create backup now": "Nu back-up maken",
     "Creating…": "Bezig met maken…",
@@ -324,5 +324,6 @@
     "Backup deleted.": "Back-up verwijderd.",
     "Restore this backup? The instance will restart.": "Deze back-up herstellen? De instantie wordt opnieuw gestart.",
     "Delete this backup?": "Deze back-up verwijderen?",
-    "Could not read the selected file.": "Het geselecteerde bestand kon niet worden gelezen."
+    "Could not read the selected file.": "Het geselecteerde bestand kon niet worden gelezen.",
+    "backupDirLabel": "Back-upmap (optioneel, standaard de gegevensmap van de instantie)"
 }

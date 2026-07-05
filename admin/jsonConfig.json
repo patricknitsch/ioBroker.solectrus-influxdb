@@ -284,48 +284,6 @@
 				}
 			}
 		},
-		"backup": {
-			"type": "panel",
-			"label": "backupTabLabel",
-			"items": {
-				"_backupHint": {
-					"type": "staticText",
-					"text": "backupTabHint",
-					"newLine": true,
-					"style": {
-						"whiteSpace": "pre-line",
-						"fontSize": "0.85em",
-						"color": "#888",
-						"marginTop": 4
-					},
-					"xs": 12,
-					"sm": 12,
-					"md": 12,
-					"lg": 12,
-					"xl": 12
-				},
-				"backupKeepCount": {
-					"type": "number",
-					"label": "backupKeepCountLabel",
-					"min": 1,
-					"max": 50,
-					"default": 5,
-					"newLine": true,
-					"xs": 12,
-					"sm": 6,
-					"md": 4,
-					"lg": 3,
-					"xl": 3
-				},
-				"backupPanel": {
-					"type": "custom",
-					"name": "SolectrusBackup/Components/SolectrusBackupEditor",
-					"url": "custom/customComponentsBackup.js?v=20260705-1",
-					"newLine": true,
-					"sm": 12
-				}
-			}
-		},
 		"notifications": {
 			"type": "panel",
 			"label": "notificationsTabLabel",
@@ -785,6 +743,58 @@
 					"md": 6,
 					"lg": 4,
 					"xl": 4
+				}
+			}
+		},
+		"backup": {
+			"type": "panel",
+			"label": "backupTabLabel",
+			"items": {
+				"_backupHint": {
+					"type": "staticText",
+					"text": "backupTabHint",
+					"newLine": true,
+					"style": {
+						"whiteSpace": "pre-line",
+						"fontSize": "0.85em",
+						"color": "#888",
+						"marginTop": 4
+					},
+					"xs": 12,
+					"sm": 12,
+					"md": 12,
+					"lg": 12,
+					"xl": 12
+				},
+				"backupDir": {
+					"type": "text",
+					"label": "backupDirLabel",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 8,
+					"lg": 6,
+					"xl": 6
+				},
+				"backupKeepCount": {
+					"type": "number",
+					"label": "backupKeepCountLabel",
+					"min": 1,
+					"max": 50,
+					"default": 5,
+					"newLine": true,
+					"xs": 12,
+					"sm": 6,
+					"md": 4,
+					"lg": 3,
+					"xl": 3
+				},
+				"backupPanel": {
+					"type": "custom",
+					"name": "SolectrusBackup/Components/SolectrusBackupEditor",
+					"url": "custom/customComponentsBackup.js?v=20260705-1",
+					"newLine": true,
+					"sm": 12
 				}
 			}
 		}

@@ -564,17 +564,6 @@ The **Backup** tab in the adapter configuration lets you create, upload, restore
 - Data-SOLECTRUS items (calculations/formulas) and their folders
 - All object folders/channels/states created by this instance
 
-Backups are stored locally on this ioBroker host. Use the "Keep last N backups" field to control how many of the most recent backups are kept automatically; older ones are deleted whenever a new backup is created. Restoring a backup restarts the instance automatically so the restored configuration takes effect.
+Backups are stored locally on this ioBroker host. By default they are placed under this instance's own data directory, but you can choose a custom storage location (e.g. a different disk or a mounted network share) via the "Backup directory" field. Use the "Keep last N backups" field to control how many of the most recent backups are kept automatically; older ones are deleted whenever a new backup is created. Restoring a backup restarts the instance automatically so the restored configuration takes effect.
 
 > **Note:** The InfluxDB token is a protected/encrypted setting and is never included in these backups. After a restore it has to be entered again manually on the **InfluxDB** tab.
-
-### Full ioBroker backup via Backitup
-
-With adapter **Backitup > 3.3.17** you can also include this instance in a full ioBroker backup. Therefore activate the checkbox **SOLECTRUS InfluxDB**.
-
-- General Configuration
-- Sensorconfiguration, internal/external, activate/deactivate
-- Calculations
-- Notifications
-
-The Token for InfluxDB will not be saved and has to fill in one time. With a complete ioBroker-Backup you can also save the Token.
