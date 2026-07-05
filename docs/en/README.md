@@ -16,6 +16,7 @@
 12. [Using Computed Values as Sensor Sources](#12-using-computed-values-as-sensor-sources)
 13. [Debugging](#13-debugging)
 14. [Notifications](#14-notifications)
+15. [Backup](#15-backup)
 
 ---
 
@@ -551,3 +552,14 @@ Each provider has an **Instance** dropdown list. Available adapter instances are
 - Notification messages are localized via `getNotificationMessage()` using the configured `systemLanguage`.
 - For InfluxDB connection failures, a notification is sent on the **first** failure and can repeat after `notifyRepeatMinutes` while the connection remains down.
 - Sensor timeout notifications are sent when the configured alive-timeout condition is met (Expert Mode) and are throttled by `notifyRepeatMinutes`.
+
+## 15. Backup
+
+With adapter **Backitup** you can create a full backup. Therefore activate the checkbox **SOLECTRUS InfluxDB**.
+
+- General Configuration
+- Sensorconfiguration, internal/external, activate/deactivate
+- Calculations
+- Notifications
+
+The Token for InfluxDB will not be saved and has to fill in one time. With a complete ioBroker-Backup you can also save the Token.
