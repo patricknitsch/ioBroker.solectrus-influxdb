@@ -16,6 +16,7 @@
 12. [Berechnete Werte als Sensor-Quellen verwenden](#12-berechnete-werte-als-sensor-quellen-verwenden)
 13. [Debugging](#13-debugging)
 14. [Benachrichtigungen](#14-benachrichtigungen)
+15. [Backup](#15-backup)
 
 ---
 
@@ -551,3 +552,16 @@ Für jeden Anbieter gibt es eine **Instanz**-Dropdown-Liste. Verfügbare Adapter
 - Die Benachrichtigungen werden über `getNotificationMessage()` anhand der `systemLanguage` lokalisiert gesendet.
 - Bei InfluxDB-Verbindungsfehlern wird eine Benachrichtigung gesendet; bei anhaltenden Problemen kann sie nach `notifyRepeatMinutes` erneut gesendet werden.
 - Sensor-Timeout-Benachrichtigungen setzen das konfigurierte Alive-Timeout (Expertenmodus) voraus und sind zusätzlich über `notifyRepeatMinutes` gedrosselt.
+
+---
+
+## 13. Backup
+
+Über den Adapter **Backitup** kann ein komplettes Backup erstellt werden. Hierzu die Checkbox **SOLECTRUS InfluxDB** auswählen.
+
+- Allgemeine Konfiguration
+- Sensorkonfiguration, intern/extern, aktiviert/deaktiviert
+- Berechnungen
+- Benachrichtungen
+
+Der Token für InfluxDB wird nicht gespeichert und muss einmalig neu eingegeben werden. Über ein komplettes ioBroker-Backup kann dieser mit gespeichert werden.
