@@ -426,38 +426,50 @@ class SolectrusInfluxdb extends utils.Adapter {
 			}
 		};
 
+		// The Admin dialog only persists edits to this running instance's config once saved
+		// (which restarts it), so `this.config.backupDir` here may lag behind whatever the
+		// still-open dialog currently shows. The frontend sends that current value along on
+		// every request so Backup tab actions honor unsaved edits instead of a stale path.
+		const msg = (obj.message && typeof obj.message === 'object' && obj.message) || {};
+		const dirOverride = msg.backupDir;
+
 		try {
 			switch (obj.command) {
 				case 'bkpList': {
-					respond({ ok: true, backups: await backupManager.listBackups(this) });
+					respond({ ok: true, backups: await backupManager.listBackups(this, dirOverride) });
 					break;
 				}
 				case 'bkpCreate': {
-					const fileName = await backupManager.createBackup(this);
-					respond({ ok: true, fileName, backups: await backupManager.listBackups(this) });
+					const fileName = await backupManager.createBackup(this, dirOverride);
+					respond({ ok: true, fileName, backups: await backupManager.listBackups(this, dirOverride) });
 					break;
 				}
 				case 'bkpUpload': {
-					const msg = (obj.message && typeof obj.message === 'object' && obj.message) || {};
-					const fileName = await backupManager.saveUploadedBackup(this, msg.fileName, msg.base64);
-					respond({ ok: true, fileName, backups: await backupManager.listBackups(this) });
+					const fileName = await backupManager.saveUploadedBackup(
+						this,
+						msg.fileName,
+						msg.base64,
+						dirOverride,
+					);
+					respond({ ok: true, fileName, backups: await backupManager.listBackups(this, dirOverride) });
 					break;
 				}
 				case 'bkpDelete': {
-					const msg = (obj.message && typeof obj.message === 'object' && obj.message) || {};
-					await backupManager.deleteBackup(this, msg.fileName);
-					respond({ ok: true, backups: await backupManager.listBackups(this) });
+					await backupManager.deleteBackup(this, msg.fileName, dirOverride);
+					respond({ ok: true, backups: await backupManager.listBackups(this, dirOverride) });
 					break;
 				}
 				case 'bkpDownload': {
-					const msg = (obj.message && typeof obj.message === 'object' && obj.message) || {};
-					const base64 = await backupManager.readBackupBase64(this, msg.fileName);
+					const base64 = await backupManager.readBackupBase64(this, msg.fileName, dirOverride);
 					respond({ ok: true, fileName: msg.fileName, base64 });
 					break;
 				}
 				case 'bkpRestore': {
-					const msg = (obj.message && typeof obj.message === 'object' && obj.message) || {};
-					const { restoredCount, instanceNative } = await backupManager.restoreBackup(this, msg.fileName);
+					const { restoredCount, instanceNative } = await backupManager.restoreBackup(
+						this,
+						msg.fileName,
+						dirOverride,
+					);
 					respond({ ok: true, restoredCount, willRestart: !!instanceNative });
 
 					// Applied last and not awaited by the response above: extending the instance

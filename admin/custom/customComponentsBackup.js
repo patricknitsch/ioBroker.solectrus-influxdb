@@ -11,7 +11,7 @@
 	'use strict';
 
 	const REMOTE_NAME = 'SolectrusBackup';
-	const UI_VERSION = '2026-07-05 20260705-2';
+	const UI_VERSION = '2026-07-05 20260705-3';
 	let shareScope;
 
 	function compareVersions(a, b) {
@@ -131,13 +131,22 @@
 
 			// Compatibility wrapper: returns a Promise, supporting both promise-based (Admin v7+)
 			// and callback-based (older Admin) socket.sendTo implementations.
+			//
+			// The Admin dialog only writes field edits to the running instance's config once
+			// the user hits Save (which then restarts the instance) - the backend's own
+			// adapter.config.backupDir can therefore lag behind what this still-open dialog
+			// currently shows. Sending the current (possibly unsaved) value along on every
+			// request means Backup tab actions always act on what's visible here, not a stale
+			// saved path - e.g. after fixing a directory that just showed "access denied".
 			const sendToCompat = (command, message) => {
 				if (!socket || typeof socket.sendTo !== 'function') {
 					return Promise.reject(new Error('socket.sendTo is not available'));
 				}
+				const backupDir = (props && props.data && props.data.backupDir) || undefined;
+				const fullMessage = Object.assign({ backupDir }, message);
 				return new Promise((resolve, reject) => {
 					try {
-						const maybePromise = socket.sendTo(getInstanceId(), command, message, result => {
+						const maybePromise = socket.sendTo(getInstanceId(), command, fullMessage, result => {
 							if (result && result.ok === false) {
 								reject(new Error(result.error || 'Unknown error'));
 							} else {
