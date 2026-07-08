@@ -64,8 +64,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.12.0 (2026-07-08)
 * (patricknitsch) Final Release
 
 ### 1.12.0-beta.1 (2026-07-08)
@@ -87,9 +86,6 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 ### 1.10.0 (2026-06-06)
 * (copilot) Add internal sensors (mirrored/monitored, but not written to InfluxDB) so they can also be used for interval and value checks
 * (copilot) Add sensor folder/group support and document sensor status/group behavior
-
-### 1.9.1 (2026-06-06)
-* (copilot) Update Readme and Timeout
 
 **Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**
 

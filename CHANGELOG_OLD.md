@@ -1,4 +1,7 @@
 # Older changes
+## 1.9.1 (2026-06-06)
+* (copilot) Update Readme and Timeout
+
 ## 1.9.0 (2026-06-05)
 * (copilot) Fixes for Repo Checker
 * (patricknitsch) Add new Sensor "heatpump_tank_temp_setpoint" in io-package.json

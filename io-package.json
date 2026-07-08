@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.12.0-beta.1",
+    "version": "1.12.0",
     "news": {
+      "1.12.0": {
+        "en": "Final Release",
+        "de": "Endgültige Version",
+        "ru": "Финальный релиз",
+        "pt": "Versão final",
+        "nl": "Definitieve release",
+        "fr": "Version finale",
+        "it": "Versione finale",
+        "es": "Versión final",
+        "pl": "Wersja ostateczna",
+        "uk": "Остаточний реліз",
+        "zh-cn": "最终版本"
+      },
       "1.12.0-beta.1": {
         "en": "Fix `npm run check` (tsc type-checking of the JSDoc-typed JS codebase) so it passes cleanly again\nImprove JSDoc type coverage across `dsProxy.js`, `jsonpath.js`, `stateMachine.js` and `helpers.js`\nResolve all remaining ESLint JSDoc warnings (`npm run lint` is now warning-free)",
         "de": "Korrigiere `npm run check` (die tsc-Typüberprüfung des JSDoc-typisierten JS-Codes), sodass es wieder fehlerfrei durchläuft.\nVerbesserung der JSDoc-Typabdeckung in `dsProxy.js`, `jsonpath.js`, `stateMachine.js` und `helpers.js`\nAlle verbleibenden ESLint JSDoc-Warnungen wurden behoben (`npm run lint` ist jetzt warnungsfrei).",
@@ -80,19 +93,6 @@
         "pl": "Fixes for Repo Checker\nDodaj nowy sensor \"heatpomp _ tank _ temp _ setpoint\" w jo- package.json",
         "uk": "Виправлення для репо-перевірки\nДодати новий датчик \"heatpump tank temp setpoint\" в io-package.json",
         "zh-cn": "Repo 检查器的修复\n在io-package.json中添加新的传感器“headpump tank temp setpoint”"
-      },
-      "1.8.6": {
-        "en": "Fixes for Repo Checker",
-        "de": "Fixes für Repo Checker",
-        "ru": "Обсуждение Repo Checker",
-        "pt": "Correcções para o Verificador de Repo",
-        "nl": "Fixes voor Repo Checker",
-        "fr": "Corrections pour Repo Checker",
-        "it": "Riparazioni per Checker Repo",
-        "es": "Fijas para el Checker Repo",
-        "pl": "Poprawki dla Repo Checker",
-        "uk": "Виправлення для репо-перевірки",
-        "zh-cn": "Repo 检查器的修复"
       }
     },
     "titleLang": {
