@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "1.12.0-beta.0",
+    "version": "1.12.0-beta.1",
     "news": {
+      "1.12.0-beta.1": {
+        "en": "Fix `npm run check` (tsc type-checking of the JSDoc-typed JS codebase) so it passes cleanly again\nImprove JSDoc type coverage across `dsProxy.js`, `jsonpath.js`, `stateMachine.js` and `helpers.js`\nResolve all remaining ESLint JSDoc warnings (`npm run lint` is now warning-free)",
+        "de": "Korrigiere `npm run check` (die tsc-Typüberprüfung des JSDoc-typisierten JS-Codes), sodass es wieder fehlerfrei durchläuft.\nVerbesserung der JSDoc-Typabdeckung in `dsProxy.js`, `jsonpath.js`, `stateMachine.js` und `helpers.js`\nAlle verbleibenden ESLint JSDoc-Warnungen wurden behoben (`npm run lint` ist jetzt warnungsfrei).",
+        "ru": "Исправьте `npm run check` (проверка типов JS-кода с использованием JSDoc-типов) с помощью tsc, чтобы она снова проходила без ошибок.\nУлучшить покрытие типов JSDoc в файлах `dsProxy.js`, `jsonpath.js`, `stateMachine.js` и `helpers.js`.\nУстранены все оставшиеся предупреждения ESLint JSDoc (команда `npm run lint` теперь не выдает предупреждений).",
+        "pt": "Corrigir o comando `npm run check` (verificação de tipo do código JavaScript tipado pelo tsc) para que volte a ser executado sem problemas.\nMelhorar a cobertura de tipos JSDoc em `dsProxy.js`, `jsonpath.js`, `stateMachine.js` e `helpers.js`.\nResolva todos os avisos restantes do ESLint JSDoc (`npm run lint` agora está livre de avisos).",
+        "nl": "Repareer `npm run check` (tsc-typecontrole van de JSDoc-getypte JS-codebasis) zodat deze weer probleemloos slaagt.\nVerbeter de dekking van JSDoc-typen in `dsProxy.js`, `jsonpath.js`, `stateMachine.js` en `helpers.js`.\nLos alle resterende ESLint JSDoc-waarschuwingen op (`npm run lint` geeft nu geen waarschuwingen meer).",
+        "fr": "Corriger `npm run check` (vérification de type tsc du code source JS typé JSDoc) pour qu'il réussisse à nouveau sans problème.\nAméliorer la couverture de type JSDoc dans `dsProxy.js`, `jsonpath.js`, `stateMachine.js` et `helpers.js`\nRésolution de tous les avertissements ESLint JSDoc restants (`npm run lint` ne génère désormais plus d'avertissements).",
+        "it": "Correggi `npm run check` (controllo dei tipi tsc del codice sorgente JS tipizzato da JSDoc) in modo che venga eseguito correttamente di nuovo.\nMigliorare la copertura dei tipi JSDoc in `dsProxy.js`, `jsonpath.js`, `stateMachine.js` e `helpers.js`\nRisolvi tutti gli avvisi rimanenti di ESLint JSDoc (`npm run lint` ora non genera più avvisi)",
+        "es": "Corrige la comprobación de `npm run check` (verificación de tipos de tsc del código fuente JS tipado con JSDoc) para que vuelva a pasar correctamente.\nMejorar la cobertura de tipos JSDoc en `dsProxy.js`, `jsonpath.js`, `stateMachine.js` y `helpers.js`.\nResuelve todas las advertencias restantes de ESLint JSDoc (`npm run lint` ahora no muestra advertencias).",
+        "pl": "Napraw `npm run check` (sprawdzanie typu tsc kodu JS opartego na typie JSDoc), aby ponownie przechodziło poprawnie\nPoprawa pokrycia typu JSDoc w `dsProxy.js`, `jsonpath.js`, `stateMachine.js` i `helpers.js`\nRozwiąż wszystkie pozostałe ostrzeżenia JSDoc ESLint (polecenie `npm run lint` nie generuje już ostrzeżeń)",
+        "uk": "Виправлено `npm run check` (перевірка типів tsc для кодової бази JS з типом JSDoc), щоб вона знову проходила чисто.\nПокращено покриття типів JSDoc у `dsProxy.js`, `jsonpath.js`, `stateMachine.js` та `helpers.js`\nВирішено всі решту попереджень ESLint JSDoc (`npm run lint` тепер не містить попереджень)",
+        "zh-cn": "修复 `npm run check`（对 JSDoc 类型化的 JS 代码库进行 tsc 类型检查），使其再次顺利通过。\n提高 `dsProxy.js`、`jsonpath.js`、`stateMachine.js` 和 `helpers.js` 的 JSDoc 类型覆盖率\n解决所有剩余的 ESLint JSDoc 警告（`npm run lint` 现在不会再出现警告）"
+      },
       "1.12.0-beta.0": {
         "en": "Update Dependencies\nAdd built-in **Backup** tab: create/upload/restore/download/delete local backups of the instance config, sensors and Data-SOLECTRUS items, with a configurable storage location (InfluxDB token is excluded and must be re-entered after a restore)\nAdd **Enable iFrame dashboard** checkbox: gates both the iFrame config tab and the Dashboard tab in the sensor overview (tab.html); reuse **Enable notifications** as the single switch that both activates notifications and reveals the Notifications tab",
         "de": "Abhängigkeiten aktualisieren\nFügt eine integrierte Registerkarte **Backup** hinzu: Lokale Backups der Instanzkonfiguration, Sensoren und Data-SOLECTRUS-Elemente erstellen/hochladen/wiederherstellen/herunterladen/löschen, mit einem konfigurierbaren Speicherort (InfluxDB-Token ist ausgeschlossen und muss nach einer Wiederherstellung erneut eingegeben werden).\nFügen Sie das Kontrollkästchen **iFrame-Dashboard aktivieren** hinzu: Es blendet sowohl den iFrame-Konfigurationsreiter als auch den Dashboard-Reiter in der Sensorübersicht (tab.html) ein; verwenden Sie **Benachrichtigungen aktivieren** als einzigen Schalter, der sowohl Benachrichtigungen aktiviert als auch den Benachrichtigungsreiter anzeigt",
@@ -80,19 +93,6 @@
         "pl": "Poprawki dla Repo Checker",
         "uk": "Виправлення для репо-перевірки",
         "zh-cn": "Repo 检查器的修复"
-      },
-      "1.8.5": {
-        "en": "Add Icons in Notification",
-        "de": "Icons in Notification hinzufügen",
-        "ru": "Добавить иконки в уведомление",
-        "pt": "Adicionar Ícones na Notificação",
-        "nl": "Pictogrammen toevoegen in notificatie",
-        "fr": "Ajouter des icônes dans la notification",
-        "it": "Aggiungi icone nella notifica",
-        "es": "Añadir iconos en la notificación",
-        "pl": "Dodaj ikony w powiadomieniu",
-        "uk": "Додайте іконки в Сповіщення",
-        "zh-cn": "在通知中添加图标"
       }
     },
     "titleLang": {
