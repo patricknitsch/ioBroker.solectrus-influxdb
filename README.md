@@ -64,6 +64,11 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+* (patricknitsch) Cleanup i18n
+* (copilot) Fix timeout for Backup Manager
+
 ### 1.12.0 (2026-07-08)
 * (patricknitsch) Final Release
 
