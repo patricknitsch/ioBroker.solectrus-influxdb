@@ -8,7 +8,7 @@
 	'use strict';
 
 	const REMOTE_NAME = 'DataSolectrusItems';
-	const UI_VERSION = '2026-02-10 v0.3.6 (cursor-fix)';
+	const UI_VERSION = '2026-08-02 20260802-1';
 	const DEBUG = false;
 	let shareScope;
 
@@ -68,6 +68,14 @@
 		const factory = await entry.get();
 		const mod = typeof factory === 'function' ? factory() : null;
 		return mod && mod.__esModule && mod.default ? mod.default : mod;
+	}
+
+	// ioBroker.admin 8 (React 19 / MUI 9) renamed the shared package from
+	// '@iobroker/adapter-react-v5' to '@iobroker/gui-components'. Try the legacy
+	// name first (Admin 6/7), then fall back to the new one (Admin 8+), so this
+	// component keeps working across major Admin versions without pinning one.
+	async function loadAdapterReact() {
+		return (await loadShared('@iobroker/adapter-react-v5')) || (await loadShared('@iobroker/gui-components'));
 	}
 
 	function normalizeItems(value) {
@@ -4204,7 +4212,7 @@
 	const moduleMap = {
 		'./Components': async function () {
 			const React = globalThis.React || (await loadShared('react'));
-			const AdapterReact = await loadShared('@iobroker/adapter-react-v5');
+			const AdapterReact = await loadAdapterReact();
 			if (!React) {
 				throw new Error('DataSolectrusItems custom UI: React not available.');
 			}

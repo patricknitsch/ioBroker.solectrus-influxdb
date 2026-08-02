@@ -8,7 +8,7 @@
 	'use strict';
 
 	const REMOTE_NAME = 'SolectrusSensors';
-	const UI_VERSION = '2026-06-06 20260606-2';
+	const UI_VERSION = '2026-08-02 20260802-1';
 	const DEBUG = false;
 	const DEFAULT_SENSOR_GROUP_KEY = 'Default SOLECTRUS sensors';
 	const CUSTOM_SENSOR_GROUP_KEY = 'Custom sensors';
@@ -57,6 +57,14 @@
 		const mod = typeof factory === 'function' ? factory() : null;
 		// Handle both CommonJS and ESM interop shapes
 		return mod && mod.__esModule && mod.default ? mod.default : mod;
+	}
+
+	// ioBroker.admin 8 (React 19 / MUI 9) renamed the shared package from
+	// '@iobroker/adapter-react-v5' to '@iobroker/gui-components'. Try the legacy
+	// name first (Admin 6/7), then fall back to the new one (Admin 8+), so this
+	// component keeps working across major Admin versions without pinning one.
+	async function loadAdapterReact() {
+		return (await loadShared('@iobroker/adapter-react-v5')) || (await loadShared('@iobroker/gui-components'));
 	}
 
 	function isDefaultSensorName(name) {
@@ -1750,7 +1758,7 @@ onChange: e => {
 	const moduleMap = {
 		'./Components': async function () {
 			const React = globalThis.React || (await loadShared('react'));
-			const AdapterReact = await loadShared('@iobroker/adapter-react-v5');
+			const AdapterReact = await loadAdapterReact();
 			if (!React) {
 				throw new Error(
 					'SolectrusSensors custom UI: React not available (neither global nor via shared scope).',

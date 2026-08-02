@@ -201,7 +201,7 @@
 				"sensors": {
 					"type": "custom",
 					"name": "SolectrusSensors/Components/SolectrusSensorsEditor",
-					"url": "custom/customComponents.js?v=20260606-2",
+					"url": "custom/customComponents.js?v=20260802-1",
 					"newLine": true,
 					"sm": 12
 				}
@@ -223,7 +223,7 @@
 				},
 				"dsItems": {
 					"type": "custom",
-					"url": "custom/customComponentsDS.js?v=20260207-1",
+					"url": "custom/customComponentsDS.js?v=20260802-1",
 					"name": "DataSolectrusItems/Components/DataSolectrusItemsEditor",
 					"label": "Configured values",
 					"xs": 12,
@@ -805,7 +805,7 @@
 				"backupPanel": {
 					"type": "custom",
 					"name": "SolectrusBackup/Components/SolectrusBackupEditor",
-					"url": "custom/customComponentsBackup.js?v=20260705-4",
+					"url": "custom/customComponentsBackup.js?v=20260802-1",
 					"newLine": true,
 					"sm": 12
 				}
