@@ -1086,7 +1086,19 @@ export default function DataSolectrusItemsEditor(props) {
 
 			const updateItems = nextItems => {
 				const safeItems = normalizeItems(nextItems).map(it => ensureTitle(it, t));
-				void props.onChange(attr, safeItems);
+				// This component is a plain function component, not a ConfigGeneric subclass, so it
+				// does not get ConfigGeneric.prototype.onChange's clone-and-dispatch for free. The
+				// top-level onChange prop (wired up by Admin's ConfigCustom/ConfigGeneric) expects the
+				// FULL updated data object as its first argument - not (attr, value) - because that is
+				// exactly how ConfigGeneric.onChange itself calls it internally. Passing (attr, value)
+				// made Admin's page-level state.data become the literal string "items", which then
+				// broke every other field/tab reading from the same data object.
+				const nextData = setByPath(props.data, attr, safeItems);
+				props.onChange(nextData, undefined, () => {
+					if (typeof props.oContext?.forceUpdate === 'function') {
+						props.oContext.forceUpdate([attr], nextData);
+					}
+				});
 			};
 
 			const editItem = selectedDraft || selectedItem || {};
