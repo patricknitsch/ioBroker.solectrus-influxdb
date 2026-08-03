@@ -2,7 +2,6 @@ import React from 'react';
 import { ConfigGeneric, type ConfigGenericProps, type ConfigGenericState } from '@iobroker/json-config';
 import { I18n, DialogSelectID } from '@iobroker/gui-components';
 
-const UI_VERSION = '2026-08-03 20260803-1';
 const DEFAULT_SENSOR_GROUP_KEY = 'Default SOLECTRUS sensors';
 const CUSTOM_SENSOR_GROUP_KEY = 'Custom sensors';
 
@@ -1145,9 +1144,6 @@ export default class SolectrusSensorsEditor extends ConfigGeneric<ConfigGenericP
                     ) : (
                         <div style={{ opacity: 0.9, color: colors.textMuted }}>{t('Select a sensor on the left or add a new one.')}</div>
                     )}
-                </div>
-                <div style={{ position: 'absolute', right: 14, marginTop: -22, fontSize: 11, opacity: 0, pointerEvents: 'none' }}>
-                    Sensors UI {UI_VERSION}
                 </div>
             </div>
         );

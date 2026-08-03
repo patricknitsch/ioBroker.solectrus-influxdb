@@ -2734,23 +2734,6 @@ export default function DataSolectrusItemsEditor(props) {
 			return React.createElement(
 				'div',
 				{ style: rootStyle },
-				DEBUG
-					? React.createElement(
-							'div',
-							{
-								style: {
-									position: 'absolute',
-									right: 14,
-									marginTop: -22,
-									fontSize: 11,
-									opacity: 0.7,
-									color: colors.textMuted,
-									pointerEvents: 'none',
-								},
-							},
-							`Items UI ${UI_VERSION}`,
-						)
-					: null,
 				React.createElement(
 					'div',
 					{ style: leftStyle },
