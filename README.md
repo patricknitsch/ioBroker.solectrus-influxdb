@@ -54,7 +54,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 
 ### Requirements
 - ioBroker >= latest stable
-- **ioBroker.admin >= 8.0.0** (currently Alpha) - **required since v2.0.0**, the admin UI no longer works on Admin 6/7 (see Changelog)
+- **ioBroker.admin >= 8.0.0** - **required since v2.0.0**, the admin UI no longer works on Admin 6/7 (see Changelog)
 - Node.js >= 22
 - InfluxDB 2.x
 
