@@ -1,4 +1,8 @@
 # Older changes
+## 1.10.0 (2026-06-06)
+* (copilot) Add internal sensors (mirrored/monitored, but not written to InfluxDB) so they can also be used for interval and value checks
+* (copilot) Add sensor folder/group support and document sensor status/group behavior
+
 ## 1.9.1 (2026-06-06)
 * (copilot) Update Readme and Timeout
 
