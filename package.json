@@ -44,7 +44,7 @@
     "@types/iobroker": "npm:@iobroker/types@^7.1.0",
     "@types/node": "^22.20.1",
     "tsx": "^4.23.1",
-    "typescript": "^5.9.3"
+    "typescript": "^7.0.2"
   },
   "main": "main.js",
   "files": [
