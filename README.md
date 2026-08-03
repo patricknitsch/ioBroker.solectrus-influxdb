@@ -54,6 +54,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 
 ### Requirements
 - ioBroker >= latest stable
+- **ioBroker.admin >= 8.0.0** (currently Alpha) - **required since v2.0.0**, the admin UI no longer works on Admin 6/7 (see Changelog)
 - Node.js >= 22
 - InfluxDB 2.x
 
@@ -66,6 +67,10 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 -->
 
 ### **WORK IN PROGRESS**
+
+### 2.0.0 (2026-08-03)
+* (patricknitsch) **BREAKING CHANGE:** Requires ioBroker.admin 8 (currently Alpha) or newer. Admin 8 introduced a new "GUI API generation" for custom jsonConfig components (React 19 / MUI 9, `@iobroker/gui-components`) with no backward compatibility, so the Sensors, Data Values and Backup tabs no longer load on Admin 6/7. Do **not** update to this version unless ioBroker.admin has already been updated to version 8.
+* (patricknitsch) Rebuild the admin UI (sensors editor, Data-SOLECTRUS items editor, backup panel) as a proper Vite + Module Federation build (`src-admin/`) targeting `@iobroker/gui-components`, replacing the hand-written vanilla-JS Module Federation containers
 * (patricknitsch) Cleanup i18n
 * (copilot) Fix timeout for Backup Manager
 

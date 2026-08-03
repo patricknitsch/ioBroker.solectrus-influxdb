@@ -1,19 +1,15 @@
-/* eslint-disable */
+// Ported from the legacy admin/custom/customComponentsDS.js Module Federation container to
+// target ioBroker.admin 8's "GUI API generation 2" (@iobroker/gui-components, React 19 / MUI 9),
+// built by Vite + @module-federation/vite (see src-admin/vite.config.ts) instead of a hand-rolled
+// federation shim. Kept as React.createElement(...) calls rather than JSX to port the ~3500-line
+// render tree (formula builder, autocomplete, live preview polling) mechanically with minimal risk
+// of transcription errors; @ts-nocheck matches the original file's lack of static typing.
 // @ts-nocheck
+import React from 'react';
+import { I18n, DialogSelectID } from '@iobroker/gui-components';
 
-// Custom Master/Detail editor for ioBroker Admin jsonConfig.
-// - Supports both modern (module federation) and legacy (global customComponents) loading.
-// - Exposes: DataSolectrusItems/Components -> default export object containing { DataSolectrusItemsEditor }.
-(function () {
-	'use strict';
+const UI_VERSION = '2026-08-03 20260803-1';
 
-	const REMOTE_NAME = 'DataSolectrusItems';
-	const UI_VERSION = '2026-08-02 20260802-1';
-	const DEBUG = false;
-	let shareScope;
-
-	// Neutral (self-created) inline logo for the editor header.
-	// Intentionally NOT using third-party trademarks/logos.
 	const HEADER_LOGO_SVG = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
     <defs>
@@ -28,55 +24,6 @@
     <path d="M78 44h26M78 58h26M78 72h26" stroke="#93c5fd" stroke-width="6" stroke-linecap="round"/>
     <path d="M78 88h18" stroke="#34d399" stroke-width="6" stroke-linecap="round"/>
 </svg>`;
-
-	function compareVersions(a, b) {
-		const pa = String(a)
-			.split('.')
-			.map(n => parseInt(n, 10));
-		const pb = String(b)
-			.split('.')
-			.map(n => parseInt(n, 10));
-		const len = Math.max(pa.length, pb.length);
-		for (let i = 0; i < len; i++) {
-			const da = Number.isFinite(pa[i]) ? pa[i] : 0;
-			const db = Number.isFinite(pb[i]) ? pb[i] : 0;
-			if (da !== db) {
-				return da - db;
-			}
-		}
-		return 0;
-	}
-
-	async function loadShared(moduleName) {
-		const scope = shareScope;
-		if (!scope || !scope[moduleName]) {
-			return null;
-		}
-
-		const versions = Object.keys(scope[moduleName]);
-		if (!versions.length) {
-			return null;
-		}
-
-		versions.sort(compareVersions);
-		const best = versions[versions.length - 1];
-		const entry = scope[moduleName][best];
-		if (!entry || typeof entry.get !== 'function') {
-			return null;
-		}
-
-		const factory = await entry.get();
-		const mod = typeof factory === 'function' ? factory() : null;
-		return mod && mod.__esModule && mod.default ? mod.default : mod;
-	}
-
-	// ioBroker.admin 8 (React 19 / MUI 9) renamed the shared package from
-	// '@iobroker/adapter-react-v5' to '@iobroker/gui-components'. Try the legacy
-	// name first (Admin 6/7), then fall back to the new one (Admin 8+), so this
-	// component keeps working across major Admin versions without pinning one.
-	async function loadAdapterReact() {
-		return (await loadShared('@iobroker/adapter-react-v5')) || (await loadShared('@iobroker/gui-components'));
-	}
 
 	function normalizeItems(value) {
 		return Array.isArray(value) ? value.filter(v => v && typeof v === 'object') : [];
@@ -684,8 +631,7 @@
 		return value;
 	}
 
-	function createDataSolectrusItemsEditor(React, AdapterReact) {
-		return function DataSolectrusItemsEditor(props) {
+export default function DataSolectrusItemsEditor(props) {
 			const DEFAULT_ITEMS_ATTR = 'items';
 			const attr = props && typeof props.attr === 'string' && props.attr ? props.attr : DEFAULT_ITEMS_ATTR;
 			const dataIsArray = Array.isArray(props && props.data);
@@ -803,13 +749,13 @@
 
 				if (
 					props &&
-					typeof props.themeType === 'string' &&
-					(props.themeType === 'dark' || props.themeType === 'light')
+					typeof props.oContext.themeType === 'string' &&
+					(props.oContext.themeType === 'dark' || props.oContext.themeType === 'light')
 				) {
-					return props.themeType;
+					return props.oContext.themeType;
 				}
 
-				const mode = props && props.theme && props.theme.palette && props.theme.palette.mode;
+				const mode = props.oContext.theme && props.oContext.theme.palette && props.oContext.theme.palette.mode;
 				if (mode === 'dark' || mode === 'light') {
 					return mode;
 				}
@@ -899,7 +845,7 @@
 			}, []);
 
 			const isDark = themeType === 'dark';
-			const theme = (props && props.theme) || null;
+			const theme = props.oContext.theme || null;
 			const themePalette = theme && theme.palette ? theme.palette : null;
 			const paletteMatches = !!(
 				themePalette &&
@@ -959,36 +905,9 @@
 					(isDark ? 'rgba(255,255,255,0.06)' : '#ffffff'),
 			});
 
-			const DialogSelectID = AdapterReact && (AdapterReact.DialogSelectID || AdapterReact.SelectID);
-			const socket = (props && props.socket) || globalThis.socket || globalThis._socket || null;
+			const socket = props.oContext.socket;
 
-			const t = text => {
-				try {
-					if (props && typeof props.t === 'function') {
-						return props.t(text);
-					}
-				} catch {
-					// ignore
-				}
-
-				const I18n =
-					(AdapterReact && AdapterReact.I18n) ||
-					globalThis.I18n ||
-					(globalThis.window && globalThis.window.I18n);
-
-				try {
-					if (I18n && typeof I18n.t === 'function') {
-						return I18n.t(text);
-					}
-					if (I18n && typeof I18n.getTranslation === 'function') {
-						return I18n.getTranslation(text);
-					}
-				} catch {
-					// ignore
-				}
-
-				return text;
-			};
+			const t = text => I18n.t(text);
 
 			const items = dataIsArray
 				? normalizeItems(props.data)
@@ -1166,48 +1085,8 @@
 			};
 
 			const updateItems = nextItems => {
-				if (typeof props.onChange !== 'function') {
-					return;
-				}
-
-				const onChange = props.onChange;
-
 				const safeItems = normalizeItems(nextItems).map(it => ensureTitle(it, t));
-
-				if (props && props.custom) {
-					// Some Admin versions do NOT allow passing `attr` in jsonConfig for custom controls.
-					// So we always write to native.items, regardless of the schema field name.
-					try {
-						onChange(DEFAULT_ITEMS_ATTR, safeItems);
-					} catch {
-						// ignore
-					}
-					// Best-effort: also update the field that hosts this custom control to keep the UI in sync.
-					if (attr !== DEFAULT_ITEMS_ATTR) {
-						try {
-							onChange(attr, safeItems);
-						} catch {
-							// ignore
-						}
-					}
-					return;
-				}
-
-				if (dataIsObject) {
-					const nextData = setByPath(props.data, attr, safeItems);
-					onChange(nextData);
-					try {
-						if (props && typeof props.forceUpdate === 'function') {
-							// IMPORTANT: pass the updated data object to avoid forcing a re-render with stale props.data
-							props.forceUpdate([attr], nextData);
-						}
-					} catch {
-						// ignore
-					}
-					return;
-				}
-
-				onChange(safeItems);
+				void props.onChange(attr, safeItems);
 			};
 
 			const editItem = selectedDraft || selectedItem || {};
@@ -1260,11 +1139,8 @@
 			})();
 
 			const getAdapterInstanceId = () => {
-				const adapterName = (props && (props.adapterName || props.adapter)) || 'data-solectrus';
-				const instanceId = props && typeof props.instanceId === 'string' ? props.instanceId : '';
-				if (instanceId && String(instanceId).startsWith('system.adapter.')) return String(instanceId);
-				if (instanceId && /^[a-zA-Z0-9_-]+\.\d+$/.test(String(instanceId))) return String(instanceId);
-				const inst = props && Number.isFinite(props.instance) ? props.instance : 0;
+				const adapterName = props.oContext.adapterName || 'data-solectrus';
+				const inst = Number.isFinite(props.oContext.instance) ? props.oContext.instance : 0;
 				return `${adapterName}.${inst}`;
 			};
 
@@ -1977,7 +1853,7 @@
 				return React.createElement(DialogSelectID, {
 					key: 'selectStateId',
 					imagePrefix: '../..',
-					dialogName: (props && (props.adapterName || props.adapter)) || 'data-solectrus',
+					dialogName: props.oContext.adapterName || 'data-solectrus',
 					themeType: themeType,
 					theme: theme,
 					socket: socket,
@@ -4206,53 +4082,4 @@
 							),
 				),
 			);
-		};
-	}
-
-	const moduleMap = {
-		'./Components': async function () {
-			const React = globalThis.React || (await loadShared('react'));
-			const AdapterReact = await loadAdapterReact();
-			if (!React) {
-				throw new Error('DataSolectrusItems custom UI: React not available.');
-			}
-			const DataSolectrusItemsEditor = createDataSolectrusItemsEditor(React, AdapterReact);
-
-			// Legacy global registry (best-effort)
-			try {
-				globalThis.customComponents = globalThis.customComponents || {};
-				globalThis.customComponents.DataSolectrusItemsEditor = DataSolectrusItemsEditor;
-			} catch {
-				// ignore
-			}
-
-			return {
-				default: {
-					DataSolectrusItemsEditor,
-				},
-			};
-		},
-		Components: async function () {
-			return moduleMap['./Components']();
-		},
-	};
-
-	function get(module) {
-		const factoryFn = moduleMap[module];
-		if (!factoryFn) {
-			return Promise.reject(new Error(`Module ${module} not found in ${REMOTE_NAME}`));
-		}
-		return Promise.resolve()
-			.then(() => factoryFn())
-			.then(mod => () => mod);
-	}
-
-	function init(scope) {
-		shareScope = scope;
-	}
-
-	globalThis[REMOTE_NAME] = {
-		get,
-		init,
-	};
-})();
+}
