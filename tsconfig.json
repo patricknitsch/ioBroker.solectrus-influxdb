@@ -25,6 +25,6 @@
 		// "noUnusedParameters": true,
 		"useUnknownInCatchVariables": false
 	},
-	"include": ["**/*.js", "**/*.d.ts"],
-	"exclude": ["node_modules/**", "widgets/**"]
+	"include": ["**/*.js", "**/*.ts", "**/*.d.ts"],
+	"exclude": ["node_modules/**", "widgets/**", "src-admin/**"]
 }
