@@ -9,7 +9,13 @@ const path = require('node:path');
 
 /* ---------- lib modules ---------- */
 const { createDsProxy } = require('./lib/dsProxy');
-const { retryOnConnectionError, getSensorStateId, getCollectIntervalMs, hasEnabledSensors } = require('./lib/helpers');
+const {
+	checkAdminVersionCompatibility,
+	retryOnConnectionError,
+	getSensorStateId,
+	getCollectIntervalMs,
+	hasEnabledSensors,
+} = require('./lib/helpers');
 const { loadBuffer, saveBuffer, updateBufferStates, clearBuffer } = require('./lib/bufferManager');
 const { validateInfluxConfig, verifyInfluxConnection, closeWriteApi } = require('./lib/influxManager');
 const {
@@ -113,6 +119,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.setState('info.connection', false, true);
 		this.setState('info.buffer.clear', false, true);
 		this.setState('info.lastError', '', true);
+
+		await checkAdminVersionCompatibility(this);
 
 		loadBuffer(this);
 		updateBufferStates(this);

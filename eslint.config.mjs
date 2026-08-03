@@ -18,6 +18,10 @@ export default [
 			'admin/admin.d.ts',
 			'admin/blockly.js',
 			'admin/custom/customComponents.js',
+			'admin/custom/**',
+			// Separate Vite/React project with its own toolchain and eslint config; not part of
+			// the main JSDoc-typed adapter backend linted here.
+			'src-admin/',
 			'**/adapter-config.d.ts',
 			'widgets/**/*.js',
 		],
