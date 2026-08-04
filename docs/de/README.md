@@ -168,6 +168,7 @@ Der Tab **SOLECTRUS Overview** (erreichbar über die Tab-Leiste im Adapter-Berei
 ### Funktionen
 
 - **Farblegende** (Toolbar oben rechts neben dem Titel): zeigt die Bedeutung der Kartenfarben auf einen Blick – **grün** = aktiver Sensor, **gelb** = interner Sensor, **orange** = Alive-Timeout überschritten, **rot** = Maximalwert überschritten.
+- Der Bereich trägt die allgemeine Überschrift **Sensoren** und ist darunter in zwei Abschnitte unterteilt: **InfluxDB-Sensoren** und **Interne Sensoren**.
 - **InfluxDB-Sensoren Raster**: Zeigt alle aktivierten Sensoren, die tatsächlich nach InfluxDB geschrieben werden, als kompakte Karten in einem responsiven Raster. Jede Karte zeigt:
   - **Sensorname** und **Datentyp-Badge** (`int`, `float`, `bool`, `string`, `json`)
   - **Wert-Zeile** (nur numerische Sensoren): linksbündig **aktueller Wert mit Einheit** (z.B. `2697 W`); rechtsbündig **Maximalwert mit Einheit** als Badge – wird nur angezeigt, wenn der Maximalwert > 0 (Werteüberwachung aktiv). Zeigt *k.A.* an, wenn noch kein Wert empfangen wurde. JSON-Werte werden kompakt in Monospace-Schrift dargestellt. Sobald der konfigurierte Alive-Timeout überschritten ist, wird der aktuelle Wert **orange** dargestellt; wird zusätzlich der Maximalwert überschritten, hat **rot** Vorrang vor orange.
