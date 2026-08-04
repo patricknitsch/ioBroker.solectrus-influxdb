@@ -167,13 +167,14 @@ Der Tab **SOLECTRUS Overview** (erreichbar über die Tab-Leiste im Adapter-Berei
 
 ### Funktionen
 
+- **Farblegende** (Toolbar oben rechts neben dem Titel): zeigt die Bedeutung der Kartenfarben auf einen Blick – **grün** = aktiver Sensor, **gelb** = interner Sensor, **orange** = Alive-Timeout überschritten, **rot** = Maximalwert überschritten.
 - **InfluxDB-Sensoren Raster**: Zeigt alle aktivierten Sensoren als kompakte Karten in einem responsiven Raster. Jede Karte zeigt:
   - **Sensorname** und **Datentyp-Badge** (`int`, `float`, `bool`, `string`, `json`)
-  - **Wert-Zeile** (nur numerische Sensoren): linksbündig **aktueller Wert mit Einheit** (z.B. `2697 W`); rechtsbündig **Maximalwert mit Einheit** als Badge – wird nur angezeigt, wenn der Maximalwert > 0 (Werteüberwachung aktiv). Zeigt *k.A.* an, wenn noch kein Wert empfangen wurde. JSON-Werte werden kompakt in Monospace-Schrift dargestellt. **Interne Sensoren** werden hier mit **gelbem linken Rahmen** und **gelbem aktuellem Wert** hervorgehoben, reguläre Influx-Sensoren bleiben **grün**.
+  - **Wert-Zeile** (nur numerische Sensoren): linksbündig **aktueller Wert mit Einheit** (z.B. `2697 W`); rechtsbündig **Maximalwert mit Einheit** als Badge – wird nur angezeigt, wenn der Maximalwert > 0 (Werteüberwachung aktiv). Zeigt *k.A.* an, wenn noch kein Wert empfangen wurde. JSON-Werte werden kompakt in Monospace-Schrift dargestellt. **Interne Sensoren** werden hier mit **gelbem linken Rahmen** und **gelbem aktuellem Wert** hervorgehoben, reguläre Influx-Sensoren bleiben **grün**. Sobald der konfigurierte Alive-Timeout überschritten ist, wird der aktuelle Wert **orange** dargestellt; wird zusätzlich der Maximalwert überschritten, hat **rot** Vorrang vor orange.
   - **Measurement: Field** — das Ziel in InfluxDB (getrennt durch einen Doppelpunkt)
   - **Quell-State** — die gelesene ioBroker-State-ID (gekürzt, voller Pfad als Tooltip)
   - **Zeitstempel-Zeile** (wird nur angezeigt, wenn ein Alive-Timeout konfiguriert ist): linksbündig **Zeitstempel** (Datum und Uhrzeit der letzten Wertaktualisierung); rechtsbündig **nächste erwartete Aktualisierung** als Badge (nur Uhrzeit, ohne Beschriftung, automatisch berechnet als Zeitstempel + Timeout-Intervall – keine manuelle Eingabe nötig). Bei einem aktuellen Wert von 0 wird das 60-Minuten-Fallback-Intervall für die Berechnung verwendet. Die Zeile wird **orange** dargestellt, wenn der Alive-Timeout überschritten wurde.
-- **Formel-Engine Raster** (wird nur angezeigt, wenn Data-SOLECTRUS aktiviert ist): Zeigt alle aktiven berechneten Items in der gleichen Kartendarstellung mit Modus-Badge, aktuellem Wert, State-ID und Formel/Ausdruck. Schriftgrößen bleiben in allen Gerätedrehungen konstant.
+- **Formel-Engine Raster** (wird nur angezeigt, wenn Data-SOLECTRUS aktiviert ist): Zeigt alle aktiven berechneten Items in der gleichen Kartendarstellung mit Modus-Badge, aktuellem Wert, State-ID und Formel/Ausdruck. Schriftgrößen bleiben in allen Gerätedrehungen konstant. Numerische Werte zeigen eine **Einheit** an (z.B. `2697 W`) – die im Item konfigurierte Einheit, standardmäßig `W` falls keine gesetzt ist; boolesche und String-Ergebnisse werden ohne Einheit angezeigt.
 - **JSON-Array Vorschau**: Bei Sensoren mit Datentyp `json` zeigt der Wert den **ersten Array-Eintrag** gefolgt von der Anzahl weiterer Einträge (z.B. `{"t":1710000000000,"y":1250} (+543 weitere Einträge)`).
 - **Automatische Aktualisierung**: Der Tab aktualisiert sich alle 5 Sekunden selbstständig.
 - **Layout-Umschalter**: Die Schaltfläche **Ganze Breite** / **Flexibel** in der Toolbar wechselt beide Raster zwischen einem flexiblen Mehrspalten-Layout und einem einspaltigem Vollbreiten-Layout. Die Auswahl wird im Browser gespeichert und beim nächsten Besuch wiederhergestellt.
@@ -296,6 +297,7 @@ Bei Aktivierung erscheinen zwei zusätzliche Tabs:
 - Items können in drei Modi betrieben werden: **Source**, **Formula** oder **State Machine**
 - Items lassen sich in **Ordner/Gruppen** organisieren
 - Berechnete Werte können als Sensor-Quellen für die InfluxDB-Speicherung verwendet werden
+- Jedes Item hat ein optionales **Einheit**-Feld (Platzhalter `W`). Ist keine Einheit gesetzt, zeigt das Formel-Engine-Raster im **SOLECTRUS Overview**-Tab (siehe Abschnitt 3) für numerische Items standardmäßig `W` an — wie bei den InfluxDB-Sensoren. Boolesche und String-Items werden nie mit Einheit angezeigt.
 
 ---
 
