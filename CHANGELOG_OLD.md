@@ -1,4 +1,10 @@
 # Older changes
+## 1.11.0 (2026-06-23)
+* (copilot) Remove legacy Forecast Lib
+* (copilot) Migrate old config to new(now no Datapoints will be generated)
+* (copilot) Fix some small possible issues
+* (copilot) Update Docs
+
 ## 1.10.0 (2026-06-06)
 * (copilot) Add internal sensors (mirrored/monitored, but not written to InfluxDB) so they can also be used for interval and value checks
 * (copilot) Add sensor folder/group support and document sensor status/group behavior
