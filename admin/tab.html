@@ -56,6 +56,30 @@
             font-weight: 500;
             white-space: nowrap;
         }
+        #toolbar .legend {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 12px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        .legend-dot.legend-active   { background: var(--primary); }
+        .legend-dot.legend-internal { background: var(--internal); }
+        .legend-dot.legend-timeout  { background: var(--color-warning); }
+        .legend-dot.legend-error    { background: var(--color-error); }
         #toolbar .spacer { flex: 1; }
         .btn-toolbar {
             background: rgba(255,255,255,.2);
@@ -334,6 +358,12 @@
 <!-- TOOLBAR -->
 <div id="toolbar">
     <div class="logo">⚡ SOLECTRUS InfluxDB</div>
+    <div class="legend" id="legend">
+        <span class="legend-item"><span class="legend-dot legend-active"></span><span id="legend-active"></span></span>
+        <span class="legend-item"><span class="legend-dot legend-internal"></span><span id="legend-internal"></span></span>
+        <span class="legend-item"><span class="legend-dot legend-timeout"></span><span id="legend-timeout"></span></span>
+        <span class="legend-item"><span class="legend-dot legend-error"></span><span id="legend-max"></span></span>
+    </div>
     <div class="spacer"></div>
     <button class="btn-toolbar" id="layout-btn"></button>
     <button class="btn-toolbar" id="config-btn"></button>
@@ -430,6 +460,10 @@
             disconnected:   'Disconnected',
             lastUpdate:     'Timestamp:',
             maxOf:          'max:',
+            legendActive:   'Active',
+            legendInternal: 'Internal',
+            legendTimeout:  'Timeout',
+            legendMax:      'Max value exceeded',
         },
         de: {
             loading:        'Lade…',
@@ -465,6 +499,10 @@
             disconnected:   'Getrennt',
             lastUpdate:     'Zeitstempel:',
             maxOf:          'max:',
+            legendActive:   'Aktiv',
+            legendInternal: 'Intern',
+            legendTimeout:  'Timeout',
+            legendMax:      'Maximalwert überschritten',
         }
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
@@ -744,6 +782,15 @@
                 valCls += ' json-val';
             }
             valEl.className = valCls;
+
+            /* timeout: value is considered stale once older than the configured alive-timeout */
+            var isStale = false;
+            if (hasVal && state.ts && sensor.aliveTimeoutMinutes > 0) {
+                var isZeroValForStale = state.val === 0 || state.val === '0';
+                var staleDisplayMin = isZeroValForStale ? 60 : sensor.aliveTimeoutMinutes;
+                isStale = (Date.now() - state.ts) > staleDisplayMin * 60000;
+            }
+
             var isNumeric = sensor.type !== 'bool' && sensor.type !== 'string' && sensor.type !== 'json';
             if (hasVal && isNumeric) {
                 /* 0 = DEFAULT_MAX_VALUE in lib/constants.js (monitoring disabled) */
@@ -756,17 +803,23 @@
                     maxSpan.className = 'sensor-type-badge';
                     maxSpan.textContent = maxVal + ' ' + (sensor.unit || 'W');
                     var numVal = parseFloat(state.val);
+                    if (isStale) {
+                        curSpan.style.color = 'var(--color-warning)';
+                        maxSpan.style.color = 'var(--color-warning)';
+                    }
                     if (!isNaN(numVal) && numVal > maxVal) {
-                        curSpan.style.color = '#e53935';
-                        maxSpan.style.color = '#e53935';
+                        curSpan.style.color = 'var(--color-error)';
+                        maxSpan.style.color = 'var(--color-error)';
                     }
                     valEl.appendChild(curSpan);
                     valEl.appendChild(maxSpan);
                 } else {
                     valEl.textContent = valText + ' ' + (sensor.unit || 'W');
+                    if (isStale) valEl.style.color = 'var(--color-warning)';
                 }
             } else {
                 valEl.textContent = valText;
+                if (hasVal && isStale) valEl.style.color = 'var(--color-warning)';
             }
             card.appendChild(valEl);
 
@@ -805,16 +858,14 @@
                     tsEl.className += ' sensor-ts-row';
                     var isZeroVal = state.val === 0 || state.val === '0';
                     var displayMin = isZeroVal ? 60 : sensor.aliveTimeoutMinutes;
-                    var aliveMs = displayMin * 60000;
-                    var isStale = (Date.now() - state.ts) > aliveMs;
-                    if (isStale) tsEl.style.color = '#e67e22';
+                    if (isStale) tsEl.style.color = 'var(--color-warning)';
                     var leftSpan = document.createElement('span');
                     leftSpan.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
                     var nextTs = new Date(state.ts + displayMin * 60000);
                     var rightSpan = document.createElement('span');
                     rightSpan.className = 'sensor-type-badge';
                     rightSpan.textContent = nextTs.toLocaleTimeString();
-                    if (isStale) rightSpan.style.color = '#e67e22';
+                    if (isStale) rightSpan.style.color = 'var(--color-warning)';
                     tsEl.appendChild(leftSpan);
                     tsEl.appendChild(rightSpan);
                 } else {
@@ -866,8 +917,10 @@
                 valCls += ' na';
             }
             valEl.className = valCls;
-            if (hasVal && item.unit) {
-                valEl.textContent = valText + ' ' + item.unit;
+            var itemType = item.type || '';
+            var isItemNumeric = itemType !== 'boolean' && itemType !== 'string';
+            if (hasVal && isItemNumeric) {
+                valEl.textContent = valText + ' ' + (item.unit || 'W');
             } else {
                 valEl.textContent = valText;
             }
@@ -1012,6 +1065,10 @@
     /* ── init ── */
     setText('loading',    T.loading);
     setText('config-btn', T.configBtn);
+    setText('legend-active',   T.legendActive);
+    setText('legend-internal', T.legendInternal);
+    setText('legend-timeout',  T.legendTimeout);
+    setText('legend-max',      T.legendMax);
     setConnStatus('');
 
     var _savedLayout = 'flex';
