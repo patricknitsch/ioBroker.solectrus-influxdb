@@ -410,10 +410,6 @@
 
         <!-- Formula Engine Tab -->
         <div class="tab-panel" id="tab-ds">
-            <div class="section-header">
-                <span class="icon">🧮</span>
-                <span id="h-ds"></span>
-            </div>
             <div id="ds-grid" class="sensor-grid"></div>
         </div>
 
@@ -445,7 +441,6 @@
             hInflux:        'Sensors',
             hExternal:      'InfluxDB Sensors',
             hInternal:      'Internal Sensors',
-            hDs:            'Formula Engine (Data-SOLECTRUS)',
             tabInflux:      'InfluxDB Sensors',
             tabDs:          'Formula Engine',
             tabIframe:      'Dashboard',
@@ -486,7 +481,6 @@
             hInflux:        'Sensoren',
             hExternal:      'InfluxDB-Sensoren',
             hInternal:      'Interne Sensoren',
-            hDs:            'Formel-Engine (Data-SOLECTRUS)',
             tabInflux:      'InfluxDB-Sensoren',
             tabDs:          'Formel-Engine',
             tabIframe:      'Dashboard',
@@ -935,8 +929,6 @@
     }
 
     function renderDs(items, states) {
-        setText('h-ds', T.hDs);
-
         var grid = document.getElementById('ds-grid');
         grid.innerHTML = '';
         var active = (items || []).filter(function (it) { return it && it.enabled && it.targetId; });
