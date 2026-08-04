@@ -182,7 +182,7 @@
             border-bottom: 2px solid var(--primary);
         }
         .section-header .icon { font-size: 18px; }
-        .sensor-grid + .sensor-grid { margin-top: 20px; }
+        .sensor-grid + .section-header { margin-top: 20px; }
 
         /* ── SENSOR GRID ── */
         .sensor-grid {
@@ -395,7 +395,16 @@
                 <span id="h-influx"></span>
             </div>
 
+            <div class="section-header" id="h-external-header">
+                <span class="icon">📤</span>
+                <span id="h-external"></span>
+            </div>
             <div id="sensor-grid" class="sensor-grid"></div>
+
+            <div class="section-header" id="h-internal-header" style="display:none">
+                <span class="icon">🔒</span>
+                <span id="h-internal"></span>
+            </div>
             <div id="sensor-grid-internal" class="sensor-grid" style="display:none"></div>
         </div>
 
@@ -434,6 +443,8 @@
         en: {
             loading:        'Loading…',
             hInflux:        'Sensors',
+            hExternal:      'InfluxDB Sensors',
+            hInternal:      'Internal Sensors',
             hDs:            'Formula Engine (Data-SOLECTRUS)',
             tabInflux:      'InfluxDB Sensors',
             tabDs:          'Formula Engine',
@@ -473,6 +484,8 @@
         de: {
             loading:        'Lade…',
             hInflux:        'Sensoren',
+            hExternal:      'InfluxDB-Sensoren',
+            hInternal:      'Interne Sensoren',
             hDs:            'Formel-Engine (Data-SOLECTRUS)',
             tabInflux:      'InfluxDB-Sensoren',
             tabDs:          'Formel-Engine',
@@ -513,16 +526,16 @@
            sync with every language ioBroker.admin exposes for this adapter
            (see admin/i18n/) so newly-added UI does not silently regress to
            English for users on those locales; other keys fall back to en. */
-        es: { legendActive: 'Activo', legendInternal: 'Interno', legendTimeout: 'Tiempo de espera', legendMax: 'Valor máximo superado', hInflux: 'Sensores' },
-        fr: { legendActive: 'Actif', legendInternal: 'Interne', legendTimeout: 'Délai dépassé', legendMax: 'Valeur maximale dépassée', hInflux: 'Capteurs' },
-        it: { legendActive: 'Attivo', legendInternal: 'Interno', legendTimeout: 'Timeout', legendMax: 'Valore massimo superato', hInflux: 'Sensori' },
-        nl: { legendActive: 'Actief', legendInternal: 'Intern', legendTimeout: 'Time-out', legendMax: 'Maximale waarde overschreden', hInflux: 'Sensoren' },
-        pl: { legendActive: 'Aktywny', legendInternal: 'Wewnętrzny', legendTimeout: 'Limit czasu', legendMax: 'Przekroczono wartość maksymalną', hInflux: 'Czujniki' },
-        pt: { legendActive: 'Ativo', legendInternal: 'Interno', legendTimeout: 'Tempo limite', legendMax: 'Valor máximo excedido', hInflux: 'Sensores' },
-        ru: { legendActive: 'Активен', legendInternal: 'Внутренний', legendTimeout: 'Тайм-аут', legendMax: 'Максимальное значение превышено', hInflux: 'Датчики' },
-        uk: { legendActive: 'Активний', legendInternal: 'Внутрішній', legendTimeout: 'Тайм-аут', legendMax: 'Максимальне значення перевищено', hInflux: 'Датчики' },
+        es: { legendActive: 'Activo', legendInternal: 'Interno', legendTimeout: 'Tiempo de espera', legendMax: 'Valor máximo superado', hInflux: 'Sensores', hExternal: 'Sensores InfluxDB', hInternal: 'Sensores internos' },
+        fr: { legendActive: 'Actif', legendInternal: 'Interne', legendTimeout: 'Délai dépassé', legendMax: 'Valeur maximale dépassée', hInflux: 'Capteurs', hExternal: 'Capteurs InfluxDB', hInternal: 'Capteurs internes' },
+        it: { legendActive: 'Attivo', legendInternal: 'Interno', legendTimeout: 'Timeout', legendMax: 'Valore massimo superato', hInflux: 'Sensori', hExternal: 'Sensori InfluxDB', hInternal: 'Sensori interni' },
+        nl: { legendActive: 'Actief', legendInternal: 'Intern', legendTimeout: 'Time-out', legendMax: 'Maximale waarde overschreden', hInflux: 'Sensoren', hExternal: 'InfluxDB-sensoren', hInternal: 'Interne sensoren' },
+        pl: { legendActive: 'Aktywny', legendInternal: 'Wewnętrzny', legendTimeout: 'Limit czasu', legendMax: 'Przekroczono wartość maksymalną', hInflux: 'Czujniki', hExternal: 'Czujniki InfluxDB', hInternal: 'Czujniki wewnętrzne' },
+        pt: { legendActive: 'Ativo', legendInternal: 'Interno', legendTimeout: 'Tempo limite', legendMax: 'Valor máximo excedido', hInflux: 'Sensores', hExternal: 'Sensores InfluxDB', hInternal: 'Sensores internos' },
+        ru: { legendActive: 'Активен', legendInternal: 'Внутренний', legendTimeout: 'Тайм-аут', legendMax: 'Максимальное значение превышено', hInflux: 'Датчики', hExternal: 'Датчики InfluxDB', hInternal: 'Внутренние датчики' },
+        uk: { legendActive: 'Активний', legendInternal: 'Внутрішній', legendTimeout: 'Тайм-аут', legendMax: 'Максимальне значення перевищено', hInflux: 'Датчики', hExternal: 'Датчики InfluxDB', hInternal: 'Внутрішні датчики' },
         /* keyed 'zh' (not 'zh-cn') to match the 2-letter truncation `lang` uses below */
-        zh: { legendActive: '活动', legendInternal: '内部', legendTimeout: '超时', legendMax: '超过最大值', hInflux: '传感器' },
+        zh: { legendActive: '活动', legendInternal: '内部', legendTimeout: '超时', legendMax: '超过最大值', hInflux: '传感器', hExternal: 'InfluxDB 传感器', hInternal: '内部传感器' },
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
     /* Merge over the English defaults so a language block that only translates
@@ -901,6 +914,8 @@
 
     function renderInflux(sensors, states) {
         setText('h-influx', T.hInflux);
+        setText('h-external', T.hExternal);
+        setText('h-internal', T.hInternal);
 
         var active = (sensors || []).filter(function (s) { return s && s.enabled && s.SensorName; });
         var externalSensors = active.filter(function (s) { return !s.internal; });
@@ -908,12 +923,14 @@
 
         fillSensorGrid('sensor-grid', externalSensors, states);
 
-        var internalGrid = document.getElementById('sensor-grid-internal');
+        var internalHeader = document.getElementById('h-internal-header');
         if (internalSensors.length) {
-            internalGrid.style.display = '';
+            internalHeader.style.display = '';
+            document.getElementById('sensor-grid-internal').style.display = '';
             fillSensorGrid('sensor-grid-internal', internalSensors, states);
         } else {
-            internalGrid.style.display = 'none';
+            internalHeader.style.display = 'none';
+            document.getElementById('sensor-grid-internal').style.display = 'none';
         }
     }
 
