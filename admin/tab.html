@@ -76,7 +76,9 @@
             display: inline-block;
             flex-shrink: 0;
         }
-        .legend-dot.legend-active   { background: var(--primary); }
+        /* dark green + border: the toolbar background is the same green as
+           --primary, so the dot would otherwise disappear into it */
+        .legend-dot.legend-active   { background: #1b5e20; border: 1px solid rgba(255,255,255,.5); }
         .legend-dot.legend-internal { background: var(--internal); }
         .legend-dot.legend-timeout  { background: var(--color-warning); }
         .legend-dot.legend-error    { background: var(--color-error); }
