@@ -56,6 +56,32 @@
             font-weight: 500;
             white-space: nowrap;
         }
+        #toolbar .legend {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 12px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        /* dark green + border: the toolbar background is the same green as
+           --primary, so the dot would otherwise disappear into it */
+        .legend-dot.legend-active   { background: #1b5e20; border: 1px solid rgba(255,255,255,.5); }
+        .legend-dot.legend-internal { background: var(--internal); }
+        .legend-dot.legend-timeout  { background: var(--color-warning); }
+        .legend-dot.legend-error    { background: var(--color-error); }
         #toolbar .spacer { flex: 1; }
         .btn-toolbar {
             background: rgba(255,255,255,.2);
@@ -156,6 +182,7 @@
             border-bottom: 2px solid var(--primary);
         }
         .section-header .icon { font-size: 18px; }
+        .sensor-grid + .section-header { margin-top: 20px; }
 
         /* ── SENSOR GRID ── */
         .sensor-grid {
@@ -334,6 +361,12 @@
 <!-- TOOLBAR -->
 <div id="toolbar">
     <div class="logo">⚡ SOLECTRUS InfluxDB</div>
+    <div class="legend" id="legend">
+        <span class="legend-item"><span class="legend-dot legend-active"></span><span id="legend-active"></span></span>
+        <span class="legend-item"><span class="legend-dot legend-internal"></span><span id="legend-internal"></span></span>
+        <span class="legend-item"><span class="legend-dot legend-timeout"></span><span id="legend-timeout"></span></span>
+        <span class="legend-item"><span class="legend-dot legend-error"></span><span id="legend-max"></span></span>
+    </div>
     <div class="spacer"></div>
     <button class="btn-toolbar" id="layout-btn"></button>
     <button class="btn-toolbar" id="config-btn"></button>
@@ -358,18 +391,20 @@
         <!-- InfluxDB Sensors Tab -->
         <div class="tab-panel active" id="tab-influx">
             <div class="section-header">
-                <span class="icon">📊</span>
+                <span class="icon">🔷</span>
                 <span id="h-influx"></span>
             </div>
             <div id="sensor-grid" class="sensor-grid"></div>
+
+            <div class="section-header" id="h-internal-header" style="display:none">
+                <span class="icon">🔒</span>
+                <span id="h-internal"></span>
+            </div>
+            <div id="sensor-grid-internal" class="sensor-grid" style="display:none"></div>
         </div>
 
         <!-- Formula Engine Tab -->
         <div class="tab-panel" id="tab-ds">
-            <div class="section-header">
-                <span class="icon">🧮</span>
-                <span id="h-ds"></span>
-            </div>
             <div id="ds-grid" class="sensor-grid"></div>
         </div>
 
@@ -399,8 +434,8 @@
         en: {
             loading:        'Loading…',
             hInflux:        'InfluxDB Sensors',
-            hDs:            'Formula Engine (Data-SOLECTRUS)',
-            tabInflux:      'InfluxDB Sensors',
+            hInternal:      'Internal Sensors',
+            tabInflux:      'Sensors',
             tabDs:          'Formula Engine',
             tabIframe:      'Dashboard',
             iframePlaceholder: 'No dashboard URL configured. Open the configuration and enter a URL in the iFrame tab.',
@@ -430,12 +465,16 @@
             disconnected:   'Disconnected',
             lastUpdate:     'Timestamp:',
             maxOf:          'max:',
+            legendActive:   'Active',
+            legendInternal: 'Internal',
+            legendTimeout:  'Timeout',
+            legendMax:      'Max value exceeded',
         },
         de: {
             loading:        'Lade…',
             hInflux:        'InfluxDB-Sensoren',
-            hDs:            'Formel-Engine (Data-SOLECTRUS)',
-            tabInflux:      'InfluxDB-Sensoren',
+            hInternal:      'Interne Sensoren',
+            tabInflux:      'Sensoren',
             tabDs:          'Formel-Engine',
             tabIframe:      'Dashboard',
             iframePlaceholder: 'Keine Dashboard-URL konfiguriert. Öffne die Konfiguration und gib eine URL im iFrame-Tab ein.',
@@ -465,10 +504,31 @@
             disconnected:   'Getrennt',
             lastUpdate:     'Zeitstempel:',
             maxOf:          'max:',
-        }
+            legendActive:   'Aktiv',
+            legendInternal: 'Intern',
+            legendTimeout:  'Timeout',
+            legendMax:      'Maximalwert überschritten',
+        },
+        /* The rest of this file is only maintained in en/de. The legend is kept in
+           sync with every language ioBroker.admin exposes for this adapter
+           (see admin/i18n/) so newly-added UI does not silently regress to
+           English for users on those locales; other keys fall back to en. */
+        es: { legendActive: 'Activo', legendInternal: 'Interno', legendTimeout: 'Tiempo de espera', legendMax: 'Valor máximo superado', hInflux: 'Sensores InfluxDB', tabInflux: 'Sensores', hInternal: 'Sensores internos' },
+        fr: { legendActive: 'Actif', legendInternal: 'Interne', legendTimeout: 'Délai dépassé', legendMax: 'Valeur maximale dépassée', hInflux: 'Capteurs InfluxDB', tabInflux: 'Capteurs', hInternal: 'Capteurs internes' },
+        it: { legendActive: 'Attivo', legendInternal: 'Interno', legendTimeout: 'Timeout', legendMax: 'Valore massimo superato', hInflux: 'Sensori InfluxDB', tabInflux: 'Sensori', hInternal: 'Sensori interni' },
+        nl: { legendActive: 'Actief', legendInternal: 'Intern', legendTimeout: 'Time-out', legendMax: 'Maximale waarde overschreden', hInflux: 'InfluxDB-sensoren', tabInflux: 'Sensoren', hInternal: 'Interne sensoren' },
+        pl: { legendActive: 'Aktywny', legendInternal: 'Wewnętrzny', legendTimeout: 'Limit czasu', legendMax: 'Przekroczono wartość maksymalną', hInflux: 'Czujniki InfluxDB', tabInflux: 'Czujniki', hInternal: 'Czujniki wewnętrzne' },
+        pt: { legendActive: 'Ativo', legendInternal: 'Interno', legendTimeout: 'Tempo limite', legendMax: 'Valor máximo excedido', hInflux: 'Sensores InfluxDB', tabInflux: 'Sensores', hInternal: 'Sensores internos' },
+        ru: { legendActive: 'Активен', legendInternal: 'Внутренний', legendTimeout: 'Тайм-аут', legendMax: 'Максимальное значение превышено', hInflux: 'Датчики InfluxDB', tabInflux: 'Датчики', hInternal: 'Внутренние датчики' },
+        uk: { legendActive: 'Активний', legendInternal: 'Внутрішній', legendTimeout: 'Тайм-аут', legendMax: 'Максимальне значення перевищено', hInflux: 'Датчики InfluxDB', tabInflux: 'Датчики', hInternal: 'Внутрішні датчики' },
+        /* keyed 'zh' (not 'zh-cn') to match the 2-letter truncation `lang` uses below */
+        zh: { legendActive: '活动', legendInternal: '内部', legendTimeout: '超时', legendMax: '超过最大值', hInflux: 'InfluxDB 传感器', tabInflux: '传感器', hInternal: '内部传感器' },
     };
     var lang = (navigator.language || 'en').slice(0, 2).toLowerCase();
-    var T = STRINGS[lang] || STRINGS.en;
+    /* Merge over the English defaults so a language block that only translates
+       a subset of keys (e.g. the extra locales above) never leaves other UI
+       strings undefined. */
+    var T = Object.assign({}, STRINGS.en, STRINGS[lang] || {});
 
     /* ── constants ── */
     var SOCKET_TIMEOUT_MS   = 8000;  /* ms to wait for socket.io to connect  */
@@ -702,134 +762,165 @@
     }
 
     /* ── render ── */
-    function renderInflux(sensors, states) {
-        setText('h-influx', T.hInflux);
+    function buildSensorCard(sensor, state) {
+        var hasVal = state && state.val !== null && state.val !== undefined;
+        var isJson = sensor.type === 'json';
+        var isInternal = !!sensor.internal;
+        var valText = fmtSensorVal(hasVal ? state.val : null, isJson);
 
-        var grid = document.getElementById('sensor-grid');
+        var card = document.createElement('div');
+        card.className = 'sensor-card' + (isInternal ? ' sensor-card-internal' : '');
+
+        /* header: name (centered) */
+        var header = document.createElement('div');
+        header.className = 'sensor-card-header';
+        var nameEl = document.createElement('span');
+        nameEl.className = 'sensor-card-name';
+        nameEl.textContent = sensor.SensorName;
+        header.appendChild(nameEl);
+        card.appendChild(header);
+
+        /* value */
+        var valEl = document.createElement('div');
+        var valCls = 'sensor-card-value' + (isInternal ? ' sensor-card-value-internal' : '');
+        if (!hasVal) {
+            valCls += ' na';
+        } else if (isJson) {
+            valCls += ' json-val';
+        }
+        valEl.className = valCls;
+
+        /* timeout: value is considered stale once older than the configured alive-timeout */
+        var isStale = false;
+        if (hasVal && state.ts && sensor.aliveTimeoutMinutes > 0) {
+            var isZeroValForStale = state.val === 0 || state.val === '0';
+            var staleDisplayMin = isZeroValForStale ? 60 : sensor.aliveTimeoutMinutes;
+            isStale = (Date.now() - state.ts) > staleDisplayMin * 60000;
+        }
+
+        var isNumeric = sensor.type !== 'bool' && sensor.type !== 'string' && sensor.type !== 'json';
+        if (hasVal && isNumeric) {
+            /* 0 = DEFAULT_MAX_VALUE in lib/constants.js (monitoring disabled) */
+            var maxVal = sensor.maxValue != null ? sensor.maxValue : 0;
+            if (maxVal > 0) {
+                valEl.className = valCls + ' sensor-val-row';
+                var curSpan = document.createElement('span');
+                curSpan.textContent = valText + ' ' + (sensor.unit || 'W');
+                var maxSpan = document.createElement('span');
+                maxSpan.className = 'sensor-type-badge';
+                maxSpan.textContent = maxVal + ' ' + (sensor.unit || 'W');
+                var numVal = parseFloat(state.val);
+                if (isStale) {
+                    curSpan.style.color = 'var(--color-warning)';
+                }
+                if (!isNaN(numVal) && numVal > maxVal) {
+                    curSpan.style.color = 'var(--color-error)';
+                    maxSpan.style.color = 'var(--color-error)';
+                }
+                valEl.appendChild(curSpan);
+                valEl.appendChild(maxSpan);
+            } else {
+                valEl.textContent = valText + ' ' + (sensor.unit || 'W');
+                if (isStale) valEl.style.color = 'var(--color-warning)';
+            }
+        } else {
+            valEl.textContent = valText;
+            if (hasVal && isStale) valEl.style.color = 'var(--color-warning)';
+        }
+        card.appendChild(valEl);
+
+        /* measurement: field [type] */
+        if (sensor.measurement || sensor.field || sensor.type) {
+            var metaEl = document.createElement('div');
+            metaEl.className = 'sensor-card-meta';
+            var metaText = (sensor.measurement || '') + (sensor.field ? ': ' + sensor.field : '');
+            var metaTextSpan = document.createElement('span');
+            metaTextSpan.className = 'sensor-card-meta-text';
+            metaTextSpan.textContent = metaText;
+            metaEl.appendChild(metaTextSpan);
+            if (sensor.type) {
+                var typeBadge = document.createElement('span');
+                typeBadge.className = 'sensor-type-badge';
+                typeBadge.textContent = sensor.type;
+                metaEl.appendChild(typeBadge);
+            }
+            card.appendChild(metaEl);
+        }
+
+        /* source state */
+        if (sensor.sourceState) {
+            var srcEl = document.createElement('div');
+            srcEl.className = 'sensor-card-source';
+            srcEl.textContent = sensor.sourceState;
+            srcEl.title = sensor.sourceState;
+            card.appendChild(srcEl);
+        }
+
+        /* last update timestamp */
+        if (state && state.ts) {
+            var tsEl = document.createElement('div');
+            tsEl.className = 'sensor-card-source';
+            if (sensor.aliveTimeoutMinutes > 0) {
+                tsEl.className += ' sensor-ts-row';
+                var isZeroVal = state.val === 0 || state.val === '0';
+                var displayMin = isZeroVal ? 60 : sensor.aliveTimeoutMinutes;
+                if (isStale) tsEl.style.color = 'var(--color-warning)';
+                var leftSpan = document.createElement('span');
+                leftSpan.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
+                var nextTs = new Date(state.ts + displayMin * 60000);
+                var rightSpan = document.createElement('span');
+                rightSpan.className = 'sensor-type-badge';
+                rightSpan.textContent = nextTs.toLocaleTimeString();
+                if (isStale) rightSpan.style.color = 'var(--color-warning)';
+                tsEl.appendChild(leftSpan);
+                tsEl.appendChild(rightSpan);
+            } else {
+                tsEl.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
+            }
+            card.appendChild(tsEl);
+        }
+
+        return card;
+    }
+
+    function fillSensorGrid(gridId, sensors, states) {
+        var grid = document.getElementById(gridId);
         grid.innerHTML = '';
-        var active = (sensors || []).filter(function (s) { return s && s.enabled && s.SensorName; });
-        if (!active.length) {
+        if (!sensors.length) {
             var empty = document.createElement('div');
             empty.className = 'sensor-grid-empty';
             empty.textContent = T.noSensors;
             grid.appendChild(empty);
             return;
         }
-        active.forEach(function (sensor) {
-            var sid    = sensorStateId(sensor);
-            var state  = states && states[sid];
-            var hasVal = state && state.val !== null && state.val !== undefined;
-            var isJson = sensor.type === 'json';
-            var isInternal = !!sensor.internal;
-            var valText = fmtSensorVal(hasVal ? state.val : null, isJson);
-
-            var card = document.createElement('div');
-            card.className = 'sensor-card' + (isInternal ? ' sensor-card-internal' : '');
-
-            /* header: name (centered) */
-            var header = document.createElement('div');
-            header.className = 'sensor-card-header';
-            var nameEl = document.createElement('span');
-            nameEl.className = 'sensor-card-name';
-            nameEl.textContent = sensor.SensorName;
-            header.appendChild(nameEl);
-            card.appendChild(header);
-
-            /* value */
-            var valEl = document.createElement('div');
-            var valCls = 'sensor-card-value' + (isInternal ? ' sensor-card-value-internal' : '');
-            if (!hasVal) {
-                valCls += ' na';
-            } else if (isJson) {
-                valCls += ' json-val';
-            }
-            valEl.className = valCls;
-            var isNumeric = sensor.type !== 'bool' && sensor.type !== 'string' && sensor.type !== 'json';
-            if (hasVal && isNumeric) {
-                /* 0 = DEFAULT_MAX_VALUE in lib/constants.js (monitoring disabled) */
-                var maxVal = sensor.maxValue != null ? sensor.maxValue : 0;
-                if (maxVal > 0) {
-                    valEl.className = valCls + ' sensor-val-row';
-                    var curSpan = document.createElement('span');
-                    curSpan.textContent = valText + ' ' + (sensor.unit || 'W');
-                    var maxSpan = document.createElement('span');
-                    maxSpan.className = 'sensor-type-badge';
-                    maxSpan.textContent = maxVal + ' ' + (sensor.unit || 'W');
-                    var numVal = parseFloat(state.val);
-                    if (!isNaN(numVal) && numVal > maxVal) {
-                        curSpan.style.color = '#e53935';
-                        maxSpan.style.color = '#e53935';
-                    }
-                    valEl.appendChild(curSpan);
-                    valEl.appendChild(maxSpan);
-                } else {
-                    valEl.textContent = valText + ' ' + (sensor.unit || 'W');
-                }
-            } else {
-                valEl.textContent = valText;
-            }
-            card.appendChild(valEl);
-
-            /* measurement: field [type] */
-            if (sensor.measurement || sensor.field || sensor.type) {
-                var metaEl = document.createElement('div');
-                metaEl.className = 'sensor-card-meta';
-                var metaText = (sensor.measurement || '') + (sensor.field ? ': ' + sensor.field : '');
-                var metaTextSpan = document.createElement('span');
-                metaTextSpan.className = 'sensor-card-meta-text';
-                metaTextSpan.textContent = metaText;
-                metaEl.appendChild(metaTextSpan);
-                if (sensor.type) {
-                    var typeBadge = document.createElement('span');
-                    typeBadge.className = 'sensor-type-badge';
-                    typeBadge.textContent = sensor.type;
-                    metaEl.appendChild(typeBadge);
-                }
-                card.appendChild(metaEl);
-            }
-
-            /* source state */
-            if (sensor.sourceState) {
-                var srcEl = document.createElement('div');
-                srcEl.className = 'sensor-card-source';
-                srcEl.textContent = sensor.sourceState;
-                srcEl.title = sensor.sourceState;
-                card.appendChild(srcEl);
-            }
-
-            /* last update timestamp */
-            if (state && state.ts) {
-                var tsEl = document.createElement('div');
-                tsEl.className = 'sensor-card-source';
-                if (sensor.aliveTimeoutMinutes > 0) {
-                    tsEl.className += ' sensor-ts-row';
-                    var isZeroVal = state.val === 0 || state.val === '0';
-                    var displayMin = isZeroVal ? 60 : sensor.aliveTimeoutMinutes;
-                    var aliveMs = displayMin * 60000;
-                    var isStale = (Date.now() - state.ts) > aliveMs;
-                    if (isStale) tsEl.style.color = '#e67e22';
-                    var leftSpan = document.createElement('span');
-                    leftSpan.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
-                    var nextTs = new Date(state.ts + displayMin * 60000);
-                    var rightSpan = document.createElement('span');
-                    rightSpan.className = 'sensor-type-badge';
-                    rightSpan.textContent = nextTs.toLocaleTimeString();
-                    if (isStale) rightSpan.style.color = '#e67e22';
-                    tsEl.appendChild(leftSpan);
-                    tsEl.appendChild(rightSpan);
-                } else {
-                    tsEl.textContent = T.lastUpdate + ' ' + new Date(state.ts).toLocaleString();
-                }
-                card.appendChild(tsEl);
-            }
-
-            grid.appendChild(card);
+        sensors.forEach(function (sensor) {
+            var sid = sensorStateId(sensor);
+            grid.appendChild(buildSensorCard(sensor, states && states[sid]));
         });
     }
 
-    function renderDs(items, states) {
-        setText('h-ds', T.hDs);
+    function renderInflux(sensors, states) {
+        setText('h-influx', T.hInflux);
+        setText('h-internal', T.hInternal);
 
+        var active = (sensors || []).filter(function (s) { return s && s.enabled && s.SensorName; });
+        var externalSensors = active.filter(function (s) { return !s.internal; });
+        var internalSensors = active.filter(function (s) { return !!s.internal; });
+
+        fillSensorGrid('sensor-grid', externalSensors, states);
+
+        var internalHeader = document.getElementById('h-internal-header');
+        if (internalSensors.length) {
+            internalHeader.style.display = '';
+            document.getElementById('sensor-grid-internal').style.display = '';
+            fillSensorGrid('sensor-grid-internal', internalSensors, states);
+        } else {
+            internalHeader.style.display = 'none';
+            document.getElementById('sensor-grid-internal').style.display = 'none';
+        }
+    }
+
+    function renderDs(items, states) {
         var grid = document.getElementById('ds-grid');
         grid.innerHTML = '';
         var active = (items || []).filter(function (it) { return it && it.enabled && it.targetId; });
@@ -848,7 +939,9 @@
             var valText = fmtVal(hasVal ? state.val : null);
 
             var card = document.createElement('div');
-            card.className = 'sensor-card';
+            /* Formula Engine items are never written to InfluxDB (only sensors are) --
+               always styled like internal sensors. */
+            card.className = 'sensor-card sensor-card-internal';
 
             /* header: name (centered) */
             var header = document.createElement('div');
@@ -861,13 +954,15 @@
 
             /* value */
             var valEl = document.createElement('div');
-            var valCls = 'sensor-card-value';
+            var valCls = 'sensor-card-value sensor-card-value-internal';
             if (!hasVal) {
                 valCls += ' na';
             }
             valEl.className = valCls;
-            if (hasVal && item.unit) {
-                valEl.textContent = valText + ' ' + item.unit;
+            var itemType = item.type || '';
+            var isItemNumeric = itemType !== 'boolean' && itemType !== 'string';
+            if (hasVal && isItemNumeric) {
+                valEl.textContent = valText + ' ' + (item.unit || 'W');
             } else {
                 valEl.textContent = valText;
             }
@@ -1012,6 +1107,10 @@
     /* ── init ── */
     setText('loading',    T.loading);
     setText('config-btn', T.configBtn);
+    setText('legend-active',   T.legendActive);
+    setText('legend-internal', T.legendInternal);
+    setText('legend-timeout',  T.legendTimeout);
+    setText('legend-max',      T.legendMax);
     setConnStatus('');
 
     var _savedLayout = 'flex';
