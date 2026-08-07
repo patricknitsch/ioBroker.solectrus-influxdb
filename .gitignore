@@ -18,5 +18,5 @@ Thumbs.db
 admin/i18n/flat.txt
 admin/i18n/*/flat.txt
 
-# src-admin build output is copied into admin/custom by tasks-admin-ui.ts; not committed itself
+# src-admin build output is copied into admin/custom by tasks.ts; not committed itself
 src-admin/build
