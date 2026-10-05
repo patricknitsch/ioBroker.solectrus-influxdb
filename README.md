@@ -67,6 +67,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 -->
 
 ### **WORK IN PROGRESS**
+* (patricknitsch) Fix DS warning "Tick time budget exceeded": the budget now covers only the evaluation, not the snapshot reads
 * (patricknitsch) Add Node.js 26 in test-and-release.yml
 * (patricknitsch) Update Dependencies
 
