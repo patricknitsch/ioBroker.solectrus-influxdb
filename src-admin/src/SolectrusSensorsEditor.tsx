@@ -38,6 +38,7 @@ function isDefaultSensorName(name: unknown): boolean {
         /^CUSTOM_POWER_\d{2}$/,
         /^WALLBOX_(?:POWER|CONNECTED)$/,
         /^CAR_BATTERY_SOC$/,
+        /^CAR_(?:BATTERY_SOC|MILEAGE|RANGE|CONNECTED|LATITUDE|LONGITUDE)_[1-5]$/,
         /^OUTDOOR_TEMP(?:_FORECAST)?$/,
         /^INVERTER_POWER_FORECAST(?:_CLEARSKY)?$/,
     ].some(pattern => pattern.test(sensorName));
