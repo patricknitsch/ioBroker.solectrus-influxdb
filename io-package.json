@@ -612,11 +612,61 @@
       {
         "enabled": false,
         "group": "Default SOLECTRUS sensors",
-        "SensorName": "CAR_BATTERY_SOC",
+        "SensorName": "CAR_BATTERY_SOC_1",
         "sourceState": "",
         "type": "float",
         "measurement": "car",
         "field": "battery_soc",
+        "internal": false
+      },
+      {
+        "enabled": false,
+        "group": "Default SOLECTRUS sensors",
+        "SensorName": "CAR_MILEAGE_1",
+        "sourceState": "",
+        "type": "float",
+        "measurement": "car",
+        "field": "mileage",
+        "internal": false
+      },
+      {
+        "enabled": false,
+        "group": "Default SOLECTRUS sensors",
+        "SensorName": "CAR_RANGE_1",
+        "sourceState": "",
+        "type": "float",
+        "measurement": "car",
+        "field": "range",
+        "internal": false
+      },
+      {
+        "enabled": false,
+        "group": "Default SOLECTRUS sensors",
+        "SensorName": "CAR_CONNECTED_1",
+        "sourceState": "",
+        "type": "bool",
+        "measurement": "car",
+        "field": "connected",
+        "internal": false
+      },
+      {
+        "enabled": false,
+        "group": "Default SOLECTRUS sensors",
+        "SensorName": "CAR_LATITUDE_1",
+        "sourceState": "",
+        "type": "float",
+        "measurement": "car",
+        "field": "latitude",
+        "internal": false
+      },
+      {
+        "enabled": false,
+        "group": "Default SOLECTRUS sensors",
+        "SensorName": "CAR_LONGITUDE_1",
+        "sourceState": "",
+        "type": "float",
+        "measurement": "car",
+        "field": "longitude",
         "internal": false
       },
       {
