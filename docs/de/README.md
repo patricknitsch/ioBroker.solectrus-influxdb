@@ -49,7 +49,7 @@ Zum Tab **Sensors** wechseln. Der Master/Detail-Editor zeigt alle konfigurierten
 
 Standardmäßig läuft der Adapter im **Standardmodus**. Die Sensorliste zeigt alle vorkonfigurierten Sensoren (INVERTER_POWER, BATTERY_SOC, HOUSE_POWER, Prognosesensoren usw.). Im Standardmodus:
 
-- Die Sensorliste kann nach **Ordnern/Gruppen** eingeklappt werden. Die vorkonfigurierten SOLECTRUS-Sensoren liegen in Ordnern wie in der Sensorübersicht von HELIOS: **Wechselrichter**, **Stromnetz**, **Batterie**, **Wallbox**, **Elektroauto 1–5**, **Wärmepumpe**, **Prognose** und **Selbstdefinierte Verbraucher**. Sensoren aus dem früheren Ordner **Standard SOLECTRUS Sensoren** werden automatisch in diese Ordner einsortiert. Vorhandene Sensoren aus älteren Konfigurationen, die nicht zu den Standardsensoren passen, werden automatisch der Gruppe **Benutzerdefiniert** zugeordnet.
+- Die Sensorliste kann nach **Ordnern/Gruppen** eingeklappt werden. Die vorkonfigurierten SOLECTRUS-Sensoren liegen in Ordnern wie in der Sensorübersicht von HELIOS: **Wechselrichter**, **Stromnetz**, **Batterie**, **Wallbox**, **E-Auto 1–5**, **Wärmepumpe**, **Prognose** und **Selbstdefinierte Verbraucher**. Sensoren aus dem früheren Ordner **Standard SOLECTRUS Sensoren** werden automatisch in diese Ordner einsortiert. Vorhandene Sensoren aus älteren Konfigurationen, die nicht zu den Standardsensoren passen, werden automatisch der Gruppe **Benutzerdefiniert** zugeordnet.
 - **Editierbar**: Source State (ioBroker-Datenpunkt), Aktiviert-Checkbox
 - **Nur lesen**: Sensorname, Datentyp, Measurement, Field, JSON-Vorlage
 - **Ausgeblendet**: Hinzufügen-, Löschen-, Duplizieren-Buttons, Intern-Checkbox, Ordner/Gruppe, Einheit, Maximalwert, Alive-Timeout
@@ -88,7 +88,7 @@ Mindestens ein Sensor muss aktiviert sein, damit Daten geschrieben werden.
 
 ### Fahrzeug-Sensoren
 
-SOLECTRUS unterstützt bis zu **5 Fahrzeuge**. Für jedes Fahrzeug `n` (1–5) gibt es einen eigenen Ordner **Elektroauto n** mit diesen Sensoren:
+SOLECTRUS unterstützt bis zu **5 Fahrzeuge**. Für jedes Fahrzeug `n` (1–5) gibt es einen eigenen Ordner **E-Auto n** mit diesen Sensoren:
 
 | Sensor | Bedeutung | Typ |
 |---|---|---|
