@@ -326,5 +326,18 @@
     "backupDirLabel": "备份目录(可选，默认为实例数据目录)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "要恢复此备份吗？实例将会重启，之后需要关闭并重新打开此配置对话框。",
     "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "备份已恢复。请关闭并重新打开此配置对话框以查看更新后的设置。",
-    "enableIframeLabel": "启用 iFrame 仪表盘"
+    "enableIframeLabel": "启用 iFrame 仪表盘",
+    "Inverter": "逆变器",
+    "Grid": "电网",
+    "Battery": "电池",
+    "Wallbox": "壁挂式充电桩",
+    "Heat Pump": "热泵",
+    "Custom Consumer": "自定义用电设备",
+    "Electric Car 1": "电动汽车 1",
+    "Electric Car 2": "电动汽车 2",
+    "Electric Car 3": "电动汽车 3",
+    "Electric Car 4": "电动汽车 4",
+    "Electric Car 5": "电动汽车 5",
+    "writeOnChangeLabel": "仅在变化时写入，并使用变化时间",
+    "writeOnChangeHint": "适用于很少变化的值，例如汽车数据：每当源状态发生变化时写入一个值，而不是按采集间隔写入，并使用变化时间而不是当前时间。源重复相同的值不会添加新点。"
 }

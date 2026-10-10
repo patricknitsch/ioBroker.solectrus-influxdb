@@ -49,7 +49,7 @@ Go to the **Sensors** tab. The master/detail editor shows all configured sensors
 
 By default, the adapter runs in **Standard Mode**. The sensor list shows all preconfigured sensors (INVERTER_POWER, BATTERY_SOC, HOUSE_POWER, forecast sensors, etc.). In standard mode:
 
-- The sensor list can be collapsed by **folder/group**. All preconfigured SOLECTRUS sensors start in the **Default SOLECTRUS sensors** group. Existing sensors from older configurations that do not match the default sensor set are automatically assigned to the **Custom sensors** group.
+- The sensor list can be collapsed by **folder/group**. The preconfigured SOLECTRUS sensors are sorted into folders as in the sensor overview of HELIOS: **Inverter**, **Grid**, **Battery**, **Wallbox**, **Electric Car 1–5**, **Heat Pump**, **Forecast** and **Custom Consumer**. Sensors from the former **Default SOLECTRUS sensors** folder are moved into these folders automatically. Existing sensors from older configurations that do not match the default sensor set are automatically assigned to the **Custom sensors** group.
 - **Editable**: Source State (ioBroker state), Enabled checkbox
 - **Read-only**: Sensor Name, Datatype, Measurement, Field, JSON Preset
 - **Hidden**: Add, Delete, Duplicate buttons, Internal checkbox, Folder/Group, Unit, Max Value, Alive Timeout
@@ -74,7 +74,8 @@ Click **Add** (Expert Mode) or select an existing sensor to configure:
 | Enabled | Activate/deactivate the sensor | Standard + Expert |
 | Internal | Mirrors the current value and keeps monitoring active, but skips writes to InfluxDB. Default: `false`. | Expert |
 | ioBroker Source State | The source state to read values from. Use the **Select** button to browse the object tree. | Standard + Expert |
-| Folder/Group | Optional group name for the sensor list on the left. Empty value = **Ungrouped**. All default sensors start in **Default SOLECTRUS sensors**. Legacy non-default sensors and newly created expert-mode sensors start in **Custom sensors**. | Expert |
+| Write only on change | The value is not written in the collect interval but each time the source state changes, with the time of that change (**last changed**, `lc`). A source that repeats the same value adds no point. Meant for values that change rarely, such as the car sensors. Not for JSON sensors. Default: off, on for the car sensors. | Standard + Expert |
+| Folder/Group | Optional group name for the sensor list on the left. Empty value = **Ungrouped**. Default sensors start in their HELIOS folder (e.g. **Battery**). Legacy non-default sensors and newly created expert-mode sensors start in **Custom sensors**. | Expert |
 | Sensor Name | Display name (also used for the ioBroker state ID under `sensors.*`) | Expert |
 | Unit | Physical unit of the sensor value (e.g. `W`, `°C`, `%`, `A`). Auto-detected from the ioBroker state's `common.unit` when a source state is selected. Defaults to `W` if no unit is configured. Can be overridden manually in Expert Mode. | Expert |
 | Max Value | Per-sensor plausibility limit. If exceeded, the last valid value is sent instead and a warning is logged. **0 = disabled** (default). | Expert |
@@ -84,6 +85,24 @@ Click **Add** (Expert Mode) or select an existing sensor to configure:
 | Influx Field | The InfluxDB field name (e.g. `power`) | Expert |
 
 At least one sensor must be enabled for data to be written.
+
+### Car sensors
+
+SOLECTRUS supports up to **5 cars**. Each car `n` (1–5) has a folder **Electric Car n** with these sensors:
+
+| Sensor | Meaning | Type |
+|---|---|---|
+| `CAR_BATTERY_SOC_n` | state of charge (%) | float |
+| `CAR_ODOMETER_n` | odometer (km) | float |
+| `CAR_RANGE_n` | remaining range (km) | float |
+| `CAR_CONNECTED_n` | car plugged in | bool |
+| `CAR_LATITUDE_n` / `CAR_LONGITUDE_n` | location (degrees) | float |
+
+Car 1 writes to the measurement `car`, cars 2–5 to `car_2` … `car_5`. A car reports its values only while it is online, so these sensors have **Write only on change** on and the alive timeout off (`0`). Each reading reaches InfluxDB once, with the time of its change, instead of every 5 seconds with the current time.
+
+When the **adapter starts**, the current value of each of these sensors is written once right away, also with the time of its last change. The adapter does not wait for the next change, so a value that changed while the adapter was stopped is not lost. If InfluxDB already has the point, it is only overwritten; no duplicate is created. If the source adapter writes its value again after a restart and this moves **last changed**, the value gets the new time.
+
+SOLECTRUS still reads the former sensor `CAR_BATTERY_SOC` (without a number) as `CAR_BATTERY_SOC_1`. A `CAR_MILEAGE_n` from a development version is renamed to `CAR_ODOMETER_n` on start.
 
 ### Status icons in the sensor list
 

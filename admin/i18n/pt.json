@@ -326,5 +326,18 @@
     "backupDirLabel": "Diretório de backup (opcional, por padrão o diretório de dados da instância)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Restaurar este backup? A instância será reiniciada e esta caixa de diálogo de configuração terá de ser fechada e reaberta em seguida.",
     "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Backup restaurado. Feche e reabra esta caixa de diálogo de configuração para ver as definições atualizadas.",
-    "enableIframeLabel": "Ativar painel iFrame"
+    "enableIframeLabel": "Ativar painel iFrame",
+    "Inverter": "Inversor",
+    "Grid": "Rede elétrica",
+    "Battery": "Bateria",
+    "Wallbox": "Wallbox",
+    "Heat Pump": "Bomba de calor",
+    "Custom Consumer": "Consumidores personalizados",
+    "Electric Car 1": "Carro elétrico 1",
+    "Electric Car 2": "Carro elétrico 2",
+    "Electric Car 3": "Carro elétrico 3",
+    "Electric Car 4": "Carro elétrico 4",
+    "Electric Car 5": "Carro elétrico 5",
+    "writeOnChangeLabel": "Gravar apenas na alteração, com a hora da alteração",
+    "writeOnChangeHint": "Para valores que mudam raramente, como os dados de um carro: um valor é gravado sempre que o estado de origem muda, não no intervalo de recolha, e recebe a hora da alteração em vez da hora atual. Uma origem que repete o mesmo valor não acrescenta nenhum ponto."
 }

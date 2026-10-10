@@ -326,5 +326,18 @@
     "backupDirLabel": "Répertoire de sauvegarde (facultatif, par défaut le répertoire de données de l'instance)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Restaurer cette sauvegarde ? L'instance va redémarrer et cette boîte de dialogue de configuration devra être fermée puis rouverte ensuite.",
     "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Sauvegarde restaurée. Fermez puis rouvrez cette boîte de dialogue de configuration pour voir les paramètres mis à jour.",
-    "enableIframeLabel": "Activer le tableau de bord iFrame"
+    "enableIframeLabel": "Activer le tableau de bord iFrame",
+    "Inverter": "Onduleur",
+    "Grid": "Réseau électrique",
+    "Battery": "Batterie",
+    "Wallbox": "Wallbox",
+    "Heat Pump": "Pompe à chaleur",
+    "Custom Consumer": "Consommateurs personnalisés",
+    "Electric Car 1": "Voiture électrique 1",
+    "Electric Car 2": "Voiture électrique 2",
+    "Electric Car 3": "Voiture électrique 3",
+    "Electric Car 4": "Voiture électrique 4",
+    "Electric Car 5": "Voiture électrique 5",
+    "writeOnChangeLabel": "Écrire uniquement lors d'un changement, avec l'heure du changement",
+    "writeOnChangeHint": "Pour les valeurs qui changent rarement, comme les données d'une voiture : une valeur est écrite à chaque changement de l'état source, et non à l'intervalle de collecte, avec l'heure du changement au lieu de l'heure actuelle. Une source qui répète la même valeur n'ajoute aucun point."
 }

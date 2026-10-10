@@ -326,5 +326,18 @@
     "backupDirLabel": "Backup directory (optional, defaults to the instance data directory)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.",
     "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Backup restored. Close and reopen this configuration dialog to see the updated settings.",
-    "enableIframeLabel": "Enable iFrame dashboard"
+    "enableIframeLabel": "Enable iFrame dashboard",
+    "Inverter": "Inverter",
+    "Grid": "Grid",
+    "Battery": "Battery",
+    "Wallbox": "Wallbox",
+    "Heat Pump": "Heat Pump",
+    "Custom Consumer": "Custom Consumer",
+    "Electric Car 1": "Electric Car 1",
+    "Electric Car 2": "Electric Car 2",
+    "Electric Car 3": "Electric Car 3",
+    "Electric Car 4": "Electric Car 4",
+    "Electric Car 5": "Electric Car 5",
+    "writeOnChangeLabel": "Write only on change, with the time of the change",
+    "writeOnChangeHint": "For values that change rarely, such as the data of a car: a point is written whenever the source state changes, not in the collect interval, and it gets the time of the change (last changed) instead of the current time. A source that repeats the same value adds no point."
 }

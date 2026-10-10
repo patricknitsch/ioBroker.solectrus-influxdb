@@ -326,5 +326,18 @@
     "backupDirLabel": "Katalog kopii zapasowych (opcjonalnie, domyślnie katalog danych instancji)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Przywrócić tę kopię zapasową? Instancja zostanie ponownie uruchomiona, a to okno konfiguracji trzeba będzie potem zamknąć i otworzyć ponownie.",
     "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Kopia zapasowa przywrócona. Zamknij i ponownie otwórz to okno konfiguracji, aby zobaczyć zaktualizowane ustawienia.",
-    "enableIframeLabel": "Włącz panel iFrame"
+    "enableIframeLabel": "Włącz panel iFrame",
+    "Inverter": "Falownik",
+    "Grid": "Sieć energetyczna",
+    "Battery": "Bateria",
+    "Wallbox": "Wallbox",
+    "Heat Pump": "Pompa ciepła",
+    "Custom Consumer": "Własne odbiorniki",
+    "Electric Car 1": "Samochód elektryczny 1",
+    "Electric Car 2": "Samochód elektryczny 2",
+    "Electric Car 3": "Samochód elektryczny 3",
+    "Electric Car 4": "Samochód elektryczny 4",
+    "Electric Car 5": "Samochód elektryczny 5",
+    "writeOnChangeLabel": "Zapisuj tylko przy zmianie, z czasem zmiany",
+    "writeOnChangeHint": "Dla rzadko zmieniających się wartości, np. danych samochodu: wartość jest zapisywana przy każdej zmianie stanu źródłowego, a nie w interwale zbierania, i otrzymuje czas zmiany zamiast bieżącego czasu. Źródło powtarzające tę samą wartość nie dodaje punktu."
 }

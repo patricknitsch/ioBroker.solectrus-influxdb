@@ -326,5 +326,18 @@
     "backupDirLabel": "Каталог резервних копій (необов'язково, за замовчуванням каталог даних екземпляра)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Відновити цю резервну копію? Екземпляр буде перезапущено, а це діалогове вікно конфігурації потрібно буде потім закрити та знову відкрити.",
     "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Резервну копію відновлено. Закрийте і знову відкрийте це діалогове вікно конфігурації, щоб побачити оновлені налаштування.",
-    "enableIframeLabel": "Увімкнути дашборд iFrame"
+    "enableIframeLabel": "Увімкнути дашборд iFrame",
+    "Inverter": "Інвертор",
+    "Grid": "Електромережа",
+    "Battery": "Акумулятор",
+    "Wallbox": "Wallbox",
+    "Heat Pump": "Тепловий насос",
+    "Custom Consumer": "Власні споживачі",
+    "Electric Car 1": "Електромобіль 1",
+    "Electric Car 2": "Електромобіль 2",
+    "Electric Car 3": "Електромобіль 3",
+    "Electric Car 4": "Електромобіль 4",
+    "Electric Car 5": "Електромобіль 5",
+    "writeOnChangeLabel": "Записувати лише під час зміни, з часом зміни",
+    "writeOnChangeHint": "Для значень, що рідко змінюються, наприклад даних автомобіля: значення записується під час кожної зміни вихідного стану, а не з інтервалом опитування, і отримує час зміни замість поточного часу. Повтор того самого значення не додає точку."
 }
