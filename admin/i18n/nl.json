@@ -326,5 +326,18 @@
     "backupDirLabel": "Back-upmap (optioneel, standaard de gegevensmap van de instantie)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Deze back-up herstellen? De instantie wordt opnieuw gestart en dit configuratiedialoogvenster moet daarna worden gesloten en opnieuw geopend.",
     "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Back-up hersteld. Sluit dit configuratiedialoogvenster en open het opnieuw om de bijgewerkte instellingen te zien.",
-    "enableIframeLabel": "iFrame-dashboard inschakelen"
+    "enableIframeLabel": "iFrame-dashboard inschakelen",
+    "Inverter": "Omvormer",
+    "Grid": "Stroomnet",
+    "Battery": "Batterij",
+    "Wallbox": "Wallbox",
+    "Heat Pump": "Warmtepomp",
+    "Custom Consumer": "Eigen verbruikers",
+    "Electric Car 1": "Elektrische auto 1",
+    "Electric Car 2": "Elektrische auto 2",
+    "Electric Car 3": "Elektrische auto 3",
+    "Electric Car 4": "Elektrische auto 4",
+    "Electric Car 5": "Elektrische auto 5",
+    "writeOnChangeLabel": "Alleen bij wijziging schrijven, met het tijdstip van de wijziging",
+    "writeOnChangeHint": "Voor waarden die zelden veranderen, zoals de gegevens van een auto: een waarde wordt geschreven zodra de bronstatus verandert, niet in het verzamelinterval, en krijgt het tijdstip van de wijziging in plaats van de huidige tijd. Een bron die dezelfde waarde herhaalt, voegt geen punt toe."
 }

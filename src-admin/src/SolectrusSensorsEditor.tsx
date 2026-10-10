@@ -17,6 +17,7 @@ export interface Sensor {
     unit?: string;
     maxValue?: number;
     aliveTimeoutMinutes?: number | null;
+    writeOnChange?: boolean;
     jsonPreset?: string;
     jsonTsField?: string;
     jsonValField?: string;
@@ -25,23 +26,33 @@ export interface Sensor {
     [key: string]: unknown;
 }
 
-function isDefaultSensorName(name: unknown): boolean {
+// Folders of the default sensors, in the order and with the names of the sensor overview of
+// HELIOS (the SOLECTRUS configuration app). Each car has a folder of its own. Keep in sync with
+// lib/objectManager.js.
+const SENSOR_GROUPS: { key: string; patterns: RegExp[] }[] = [
+    { key: 'Inverter', patterns: [/^INVERTER_POWER(?:_[1-5])?$/, /^CASE_TEMP$/, /^SYSTEM_STATUS(?:_OK)?$/] },
+    { key: 'Grid', patterns: [/^GRID_(?:IMPORT_POWER|EXPORT_POWER|EXPORT_LIMIT)$/, /^HOUSE_POWER$/] },
+    { key: 'Battery', patterns: [/^BATTERY_(?:CHARGING_POWER|DISCHARGING_POWER|SOC)$/] },
+    { key: 'Wallbox', patterns: [/^WALLBOX_(?:POWER|CONNECTED|CAR_CONNECTED)$/] },
+    ...[1, 2, 3, 4, 5].map(n => ({
+        key: `Electric Car ${n}`,
+        patterns: [
+            new RegExp(`^CAR_(?:BATTERY_SOC|ODOMETER|MILEAGE|RANGE|CONNECTED|LATITUDE|LONGITUDE)_${n}$`),
+            // SOLECTRUS reads CAR_BATTERY_SOC as CAR_BATTERY_SOC_1
+            ...(n === 1 ? [/^CAR_BATTERY_SOC$/] : []),
+        ],
+    })),
+    { key: 'Heat Pump', patterns: [/^HEATPUMP_(?:POWER|HEATING_POWER|TANK_TEMP|TANK_TEMP_SETPOINT|STATUS)$/, /^OUTDOOR_TEMP$/] },
+    { key: 'Forecast', patterns: [/^INVERTER_POWER_FORECAST(?:_CLEARSKY)?$/, /^OUTDOOR_TEMP_FORECAST$/] },
+    { key: 'Custom Consumer', patterns: [/^CUSTOM_POWER_\d{2}$/] },
+];
+
+// Folders with a translated name, in the order of the sensor list
+const KNOWN_GROUP_KEYS = [...SENSOR_GROUPS.map(g => g.key), DEFAULT_SENSOR_GROUP_KEY, CUSTOM_SENSOR_GROUP_KEY];
+
+function getDefaultSensorGroup(name: unknown): string {
     const sensorName = String(name || '').trim();
-    return [
-        /^INVERTER_POWER(?:_[1-5])?$/,
-        /^GRID_(?:IMPORT_POWER|EXPORT_POWER|EXPORT_LIMIT)$/,
-        /^CASE_TEMP$/,
-        /^SYSTEM_STATUS(?:_OK)?$/,
-        /^BATTERY_(?:SOC|CHARGING_POWER|DISCHARGING_POWER)$/,
-        /^HOUSE_POWER$/,
-        /^HEATPUMP_(?:POWER|HEATING_POWER|TANK_TEMP|TANK_TEMP_SETPOINT|STATUS)$/,
-        /^CUSTOM_POWER_\d{2}$/,
-        /^WALLBOX_(?:POWER|CONNECTED)$/,
-        /^CAR_BATTERY_SOC$/,
-        /^CAR_(?:BATTERY_SOC|MILEAGE|RANGE|CONNECTED|LATITUDE|LONGITUDE)_[1-5]$/,
-        /^OUTDOOR_TEMP(?:_FORECAST)?$/,
-        /^INVERTER_POWER_FORECAST(?:_CLEARSKY)?$/,
-    ].some(pattern => pattern.test(sensorName));
+    return SENSOR_GROUPS.find(g => g.patterns.some(pattern => pattern.test(sensorName)))?.key || '';
 }
 
 function hasExplicitSensorGroup(sensor: Sensor | null | undefined): boolean {
@@ -75,15 +86,18 @@ function canonicalizeSensorGroupName(value: unknown, t: (s: string) => string = 
     if (trimmed === t(CUSTOM_SENSOR_GROUP_KEY)) {
         return CUSTOM_SENSOR_GROUP_KEY;
     }
-    return trimmed;
+    return KNOWN_GROUP_KEYS.find(key => trimmed === key || trimmed === t(key)) || trimmed;
 }
 
 function getSensorGroupKey(sensor: Sensor | null | undefined, t: (s: string) => string = I18n.t): string {
+    const defaultGroup = getDefaultSensorGroup(sensor?.SensorName);
     if (hasExplicitSensorGroup(sensor)) {
-        return canonicalizeSensorGroupName(sensor?.group, t);
+        const group = canonicalizeSensorGroupName(sensor?.group, t);
+        // The former single folder of all default sensors is split into the HELIOS folders
+        return group === DEFAULT_SENSOR_GROUP_KEY && defaultGroup ? defaultGroup : group;
     }
-    if (isDefaultSensorName(sensor?.SensorName)) {
-        return DEFAULT_SENSOR_GROUP_KEY;
+    if (defaultGroup) {
+        return defaultGroup;
     }
     return hasConfiguredSensor(sensor) ? CUSTOM_SENSOR_GROUP_KEY : '';
 }
@@ -93,7 +107,7 @@ function displaySensorGroupName(value: unknown, t: (s: string) => string = I18n.
     if (!normalized) {
         return t('Ungrouped');
     }
-    if (normalized === DEFAULT_SENSOR_GROUP_KEY || normalized === CUSTOM_SENSOR_GROUP_KEY) {
+    if (KNOWN_GROUP_KEYS.includes(normalized)) {
         return t(normalized);
     }
     return normalized;
@@ -113,7 +127,7 @@ function sensorGroupInputValue(value: unknown, t: (s: string) => string = I18n.t
     if (!normalized) {
         return '';
     }
-    if (normalized === DEFAULT_SENSOR_GROUP_KEY || normalized === CUSTOM_SENSOR_GROUP_KEY) {
+    if (KNOWN_GROUP_KEYS.includes(normalized)) {
         return t(normalized);
     }
     return normalized;
@@ -267,11 +281,11 @@ export default class SolectrusSensorsEditor extends ConfigGeneric<ConfigGenericP
         });
         return Object.keys(groups)
             .sort((a, b) => {
-                if (a === DEFAULT_SENSOR_GROUP_KEY) {
-                    return -1;
-                }
-                if (b === DEFAULT_SENSOR_GROUP_KEY) {
-                    return 1;
+                // HELIOS folders first, in their order, then the folders of the user
+                const ia = KNOWN_GROUP_KEYS.indexOf(a);
+                const ib = KNOWN_GROUP_KEYS.indexOf(b);
+                if (ia !== -1 || ib !== -1) {
+                    return (ia === -1 ? Infinity : ia) - (ib === -1 ? Infinity : ib);
                 }
                 if (!a) {
                     return 1;
@@ -907,6 +921,23 @@ export default class SolectrusSensorsEditor extends ConfigGeneric<ConfigGenericP
                                     {t('Select')}
                                 </button>
                             </div>
+                            {editSensor.type !== 'json' ? (
+                                <>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10 }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={!!editSensor.writeOnChange}
+                                            onChange={e => {
+                                                const isChecked = !!e.target.checked;
+                                                this.setDraftField('writeOnChange', isChecked);
+                                                this.updateSelected('writeOnChange', isChecked);
+                                            }}
+                                        />
+                                        <span>{t('writeOnChangeLabel')}</span>
+                                    </label>
+                                    <div style={{ fontSize: 12, color: colors.textMuted, marginTop: 2 }}>{t('writeOnChangeHint')}</div>
+                                </>
+                            ) : null}
                             {hasMaxTimeoutRow ? (
                                 <div style={rowStyle}>
                                     <div>

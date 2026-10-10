@@ -49,7 +49,7 @@ Zum Tab **Sensors** wechseln. Der Master/Detail-Editor zeigt alle konfigurierten
 
 Standardmäßig läuft der Adapter im **Standardmodus**. Die Sensorliste zeigt alle vorkonfigurierten Sensoren (INVERTER_POWER, BATTERY_SOC, HOUSE_POWER, Prognosesensoren usw.). Im Standardmodus:
 
-- Die Sensorliste kann nach **Ordnern/Gruppen** eingeklappt werden. Alle vorkonfigurierten SOLECTRUS-Sensoren liegen anfangs in der Gruppe **Standard SOLECTRUS Sensoren**. Vorhandene Sensoren aus älteren Konfigurationen, die nicht zu den Standardsensoren passen, werden automatisch der Gruppe **Benutzerdefiniert** zugeordnet.
+- Die Sensorliste kann nach **Ordnern/Gruppen** eingeklappt werden. Die vorkonfigurierten SOLECTRUS-Sensoren liegen in Ordnern wie in der Sensorübersicht von HELIOS: **Wechselrichter**, **Stromnetz**, **Batterie**, **Wallbox**, **Elektroauto 1–5**, **Wärmepumpe**, **Prognose** und **Selbstdefinierte Verbraucher**. Sensoren aus dem früheren Ordner **Standard SOLECTRUS Sensoren** werden automatisch in diese Ordner einsortiert. Vorhandene Sensoren aus älteren Konfigurationen, die nicht zu den Standardsensoren passen, werden automatisch der Gruppe **Benutzerdefiniert** zugeordnet.
 - **Editierbar**: Source State (ioBroker-Datenpunkt), Aktiviert-Checkbox
 - **Nur lesen**: Sensorname, Datentyp, Measurement, Field, JSON-Vorlage
 - **Ausgeblendet**: Hinzufügen-, Löschen-, Duplizieren-Buttons, Intern-Checkbox, Ordner/Gruppe, Einheit, Maximalwert, Alive-Timeout
@@ -74,7 +74,8 @@ Auf **Add** klicken (Expertenmodus) oder einen bestehenden Sensor auswählen und
 | Enabled | Sensor aktivieren/deaktivieren | Standard + Experte |
 | Internal | Spiegelt den aktuellen Wert und hält das Monitoring aktiv, überspringt aber das Schreiben nach InfluxDB. Standard: `false`. | Experte |
 | ioBroker Source State | Quell-Datenpunkt. Mit **Select** den Objektbaum durchsuchen. | Standard + Experte |
-| Ordner/Gruppe | Optionaler Gruppenname für die linke Sensorliste. Leere Eingabe = **Ohne Gruppe**. Alle Standard-Sensoren starten in **Standard SOLECTRUS Sensoren**. Nicht passende Bestands- oder neue Expertenmodus-Sensoren starten in **Benutzerdefiniert**. | Experte |
+| Nur bei Änderung schreiben | Der Wert wird nicht im Abfrageintervall geschrieben, sondern jedes Mal, wenn sich der Quell-Datenpunkt ändert, und zwar mit dem Zeitpunkt der Änderung (**Zuletzt geändert**, `lc`). Liefert die Quelle denselben Wert erneut, entsteht kein neuer Punkt. Gedacht für selten wechselnde Werte wie die Fahrzeug-Sensoren. Nicht für JSON-Sensoren. Standard: aus, bei den Fahrzeug-Sensoren an. | Standard + Experte |
+| Ordner/Gruppe | Optionaler Gruppenname für die linke Sensorliste. Leere Eingabe = **Ohne Gruppe**. Standard-Sensoren starten in ihrem HELIOS-Ordner (z. B. **Batterie**). Nicht passende Bestands- oder neue Expertenmodus-Sensoren starten in **Benutzerdefiniert**. | Experte |
 | Sensor Name | Anzeigename (wird auch für die ioBroker State-ID unter `sensors.*` verwendet) | Experte |
 | Einheit | Physikalische Einheit des Sensorwerts (z.B. `W`, `°C`, `%`, `A`). Wird automatisch aus `common.unit` des ioBroker-Objekts übernommen, wenn ein Quell-Datenpunkt ausgewählt wird. Standardmäßig `W`, falls keine Einheit konfiguriert ist. Im Expertenmodus manuell überschreibbar. | Experte |
 | Maximalwert | Sensor-spezifischer Plausibilitätswert. Bei Überschreitung wird der letzte gültige Wert gesendet und eine Warnung ausgegeben. **0 = deaktiviert** (Standard). | Experte |
@@ -84,6 +85,22 @@ Auf **Add** klicken (Expertenmodus) oder einen bestehenden Sensor auswählen und
 | Influx Field | InfluxDB Feldname (z.B. `power`) | Experte |
 
 Mindestens ein Sensor muss aktiviert sein, damit Daten geschrieben werden.
+
+### Fahrzeug-Sensoren
+
+SOLECTRUS unterstützt bis zu **5 Fahrzeuge**. Für jedes Fahrzeug `n` (1–5) gibt es einen eigenen Ordner **Elektroauto n** mit diesen Sensoren:
+
+| Sensor | Bedeutung | Typ |
+|---|---|---|
+| `CAR_BATTERY_SOC_n` | Ladestand (%) | float |
+| `CAR_ODOMETER_n` | Kilometerstand (km) | float |
+| `CAR_RANGE_n` | Restreichweite (km) | float |
+| `CAR_CONNECTED_n` | Fahrzeug angesteckt | bool |
+| `CAR_LATITUDE_n` / `CAR_LONGITUDE_n` | Standort (Grad) | float |
+
+Fahrzeug 1 schreibt in das Measurement `car`, Fahrzeug 2–5 in `car_2` … `car_5`. Ein Auto meldet seine Werte nur, solange es online ist. Deshalb ist bei diesen Sensoren **Nur bei Änderung schreiben** aktiv und der Alive-Timeout aus (`0`). So landet jeder Messwert genau einmal mit dem Zeitpunkt seiner Änderung in InfluxDB, statt alle 5 Sekunden mit der aktuellen Zeit.
+
+Der bisherige Sensor `CAR_BATTERY_SOC` (ohne Nummer) wird von SOLECTRUS weiterhin als `CAR_BATTERY_SOC_1` gelesen. Ein `CAR_MILEAGE_n` aus einer Entwicklerversion wird beim Start in `CAR_ODOMETER_n` umbenannt.
 
 ### Status-Symbole in der Sensorliste
 

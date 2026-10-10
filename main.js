@@ -31,7 +31,7 @@ const {
 	extractJsonSensorValuesAuto,
 	disableSensorByFieldTypeConflict,
 } = require('./lib/sensorManager');
-const { collectPoints, scheduleNextFlush } = require('./lib/collectFlush');
+const { collectPoints, writeSensorChange, scheduleNextFlush } = require('./lib/collectFlush');
 const { sendNotification } = require('./lib/notificationManager');
 const { getNotificationMessage } = require('./lib/notificationMessages');
 const backupManager = require('./lib/backupManager');
@@ -69,6 +69,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 		/* ---------- Alive monitoring ---------- */
 		// Maps sensor state id → timestamp (ms) of last received value
 		this.lastUpdateTs = new Map();
+		// Timestamp of the last written point of each "write on change" sensor
+		this.lastWrittenTs = new Map();
 		// Maps sensor state id → timestamp (ms) when last alive warning was logged
 		this.aliveWarnedAt = new Map();
 		// Maps sensor state id → timestamp (ms) when last alive-timeout notification was sent
@@ -266,6 +268,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 				this.setState(sensorId, state.val, true);
 				// Keep alive timestamp up-to-date for ds.* sensor sources
 				this.lastUpdateTs.set(sensorId, typeof state.ts === 'number' ? state.ts : Date.now());
+				writeSensorChange(this, sensorId, state);
 			}
 			return;
 		}
@@ -318,6 +321,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 				this.setState(sensorId, state.val, true);
 				// Update alive timestamp for non-JSON sensors
 				this.lastUpdateTs.set(sensorId, typeof state.ts === 'number' ? state.ts : Date.now());
+				writeSensorChange(this, sensorId, state);
 			}
 		}
 

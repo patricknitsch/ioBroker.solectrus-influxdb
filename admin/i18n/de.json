@@ -326,5 +326,18 @@
     "backupDirLabel": "Backup-Verzeichnis (optional, Standard: Datenverzeichnis der Instanz)",
     "Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.": "Dieses Backup wiederherstellen? Die Instanz wird neu gestartet und dieser Konfigurationsdialog muss anschließend geschlossen und neu geöffnet werden.",
     "Backup restored. Close and reopen this configuration dialog to see the updated settings.": "Backup wiederhergestellt. Schließen und öffnen Sie diesen Konfigurationsdialog erneut, um die aktualisierten Einstellungen zu sehen.",
-    "enableIframeLabel": "iFrame-Dashboard aktivieren"
+    "enableIframeLabel": "iFrame-Dashboard aktivieren",
+    "Inverter": "Wechselrichter",
+    "Grid": "Stromnetz",
+    "Battery": "Batterie",
+    "Wallbox": "Wallbox",
+    "Heat Pump": "Wärmepumpe",
+    "Custom Consumer": "Selbstdefinierte Verbraucher",
+    "Electric Car 1": "Elektroauto 1",
+    "Electric Car 2": "Elektroauto 2",
+    "Electric Car 3": "Elektroauto 3",
+    "Electric Car 4": "Elektroauto 4",
+    "Electric Car 5": "Elektroauto 5",
+    "writeOnChangeLabel": "Nur bei Änderung schreiben, mit dem Zeitpunkt der Änderung",
+    "writeOnChangeHint": "Für selten wechselnde Werte wie die Daten eines Autos: Ein Wert wird geschrieben, sobald sich der Quellstatus ändert, nicht im Abfrageintervall, und er erhält den Zeitpunkt der Änderung (Zuletzt geändert) statt der aktuellen Zeit. Liefert die Quelle denselben Wert erneut, entsteht kein neuer Wert."
 }
