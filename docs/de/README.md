@@ -100,6 +100,8 @@ SOLECTRUS unterstützt bis zu **5 Fahrzeuge**. Für jedes Fahrzeug `n` (1–5) g
 
 Fahrzeug 1 schreibt in das Measurement `car`, Fahrzeug 2–5 in `car_2` … `car_5`. Ein Auto meldet seine Werte nur, solange es online ist. Deshalb ist bei diesen Sensoren **Nur bei Änderung schreiben** aktiv und der Alive-Timeout aus (`0`). So landet jeder Messwert genau einmal mit dem Zeitpunkt seiner Änderung in InfluxDB, statt alle 5 Sekunden mit der aktuellen Zeit.
 
+Beim **Start des Adapters** wird der aktuelle Wert jedes dieser Sensoren sofort einmal geschrieben, ebenfalls mit dem Zeitpunkt seiner letzten Änderung. Der Adapter wartet also nicht auf die nächste Änderung, und ein Wert, der sich während einer Adapter-Pause geändert hat, geht nicht verloren. Kennt InfluxDB den Punkt schon, wird er nur überschrieben, es entsteht kein Duplikat. Schreibt der Quelladapter seinen Wert nach einem Neustart neu und ändert sich dadurch **Zuletzt geändert**, erhält der Wert den neuen Zeitpunkt.
+
 Der bisherige Sensor `CAR_BATTERY_SOC` (ohne Nummer) wird von SOLECTRUS weiterhin als `CAR_BATTERY_SOC_1` gelesen. Ein `CAR_MILEAGE_n` aus einer Entwicklerversion wird beim Start in `CAR_ODOMETER_n` umbenannt.
 
 ### Status-Symbole in der Sensorliste

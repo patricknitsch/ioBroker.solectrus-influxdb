@@ -100,6 +100,8 @@ SOLECTRUS supports up to **5 cars**. Each car `n` (1–5) has a folder **Electri
 
 Car 1 writes to the measurement `car`, cars 2–5 to `car_2` … `car_5`. A car reports its values only while it is online, so these sensors have **Write only on change** on and the alive timeout off (`0`). Each reading reaches InfluxDB once, with the time of its change, instead of every 5 seconds with the current time.
 
+When the **adapter starts**, the current value of each of these sensors is written once right away, also with the time of its last change. The adapter does not wait for the next change, so a value that changed while the adapter was stopped is not lost. If InfluxDB already has the point, it is only overwritten; no duplicate is created. If the source adapter writes its value again after a restart and this moves **last changed**, the value gets the new time.
+
 SOLECTRUS still reads the former sensor `CAR_BATTERY_SOC` (without a number) as `CAR_BATTERY_SOC_1`. A `CAR_MILEAGE_n` from a development version is renamed to `CAR_ODOMETER_n` on start.
 
 ### Status icons in the sensor list
