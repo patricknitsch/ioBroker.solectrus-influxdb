@@ -343,5 +343,21 @@
     "inputMonitoringLabel": "Alive",
     "inputMonitoringTooltip": "使用存活超时监控此输入。对于仅在变化时写入的输入请关闭；该值仍用于计算。",
     "sourceMonitoringLabel": "监控源状态（Alive）",
-    "formulaAliveTimeoutHint": "监控此值的输入。如果有启用的传感器使用此值，则适用该传感器的超时。0 = 禁用。"
+    "formulaAliveTimeoutHint": "监控此值的输入。如果有启用的传感器使用此值，则适用该传感器的超时。0 = 禁用。",
+    "webdavHeader": "WebDAV",
+    "webdavEnabledLabel": "同时将备份存储到 WebDAV 服务器",
+    "webdavEnabledHelp": "每个新备份都会额外上传到 WebDAV 服务器。存储在那里的备份可在下方恢复。",
+    "webdavURLLabel": "WebDAV 网址",
+    "webdavURLHelp": "例如 https://<example.com>/remote.php/dav/files/<username>/",
+    "webdavUsernameLabel": "用户名",
+    "webdavPasswordLabel": "密码",
+    "webdavDirLabel": "WebDAV 目录",
+    "webdavSignedCertificatesLabel": "仅允许已签名的证书",
+    "webdavDeleteOldBackupLabel": "删除旧的 WebDAV 备份（保留最近 N 个）",
+    "webdavTestButton": "测试连接",
+    "WebDAV connection successful.": "WebDAV 连接成功。",
+    "Backup created, but the WebDAV upload failed:": "备份已创建，但 WebDAV 上传失败：",
+    "Backup created and uploaded to WebDAV.": "备份已创建并上传到 WebDAV。",
+    "WebDAV backups": "WebDAV 备份",
+    "No WebDAV backups found.": "未找到 WebDAV 备份。"
 }

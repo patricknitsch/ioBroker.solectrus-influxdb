@@ -35,11 +35,23 @@ const { collectPoints, writeSensorChange, scheduleNextFlush } = require('./lib/c
 const { sendNotification } = require('./lib/notificationManager');
 const { getNotificationMessage } = require('./lib/notificationMessages');
 const backupManager = require('./lib/backupManager');
+const webdavManager = require('./lib/webdavManager');
 const dsStateRegistry = require('./lib/data-solectrus/services/stateRegistry');
 const dsItemManager = require('./lib/data-solectrus/services/itemManager');
 const dsTickRunner = require('./lib/data-solectrus/services/tickRunner');
 
-const BACKUP_COMMANDS = new Set(['bkpList', 'bkpCreate', 'bkpUpload', 'bkpRestore', 'bkpDelete', 'bkpDownload']);
+const BACKUP_COMMANDS = new Set([
+	'bkpList',
+	'bkpCreate',
+	'bkpUpload',
+	'bkpRestore',
+	'bkpDelete',
+	'bkpDownload',
+	'bkpWebdavList',
+	'bkpWebdavRestore',
+	'bkpWebdavDelete',
+	'bkpWebdavTest',
+]);
 
 class SolectrusInfluxdb extends utils.Adapter {
 	constructor(options) {
@@ -448,6 +460,21 @@ class SolectrusInfluxdb extends utils.Adapter {
 		// every request so Backup tab actions honor unsaved edits instead of a stale path.
 		const msg = (obj.message && typeof obj.message === 'object' && obj.message) || {};
 		const dirOverride = msg.backupDir;
+		const webdavCfg = webdavManager.getWebdavConfig(this, msg.webdav);
+
+		const restoreLocal = async fileName => {
+			const { restoredCount, instanceNative } = await backupManager.restoreBackup(this, fileName, dirOverride);
+			respond({ ok: true, restoredCount, willRestart: !!instanceNative });
+
+			// Applied last and not awaited by the response above: extending the instance
+			// object triggers an automatic restart via js-controller.
+			if (instanceNative) {
+				this.log.info('Restored instance configuration - the instance restarts automatically.');
+				this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
+					native: instanceNative,
+				}).catch(err => this.log.warn(`Could not apply restored instance configuration: ${err}`));
+			}
+		};
 
 		try {
 			switch (obj.command) {
@@ -457,7 +484,22 @@ class SolectrusInfluxdb extends utils.Adapter {
 				}
 				case 'bkpCreate': {
 					const fileName = await backupManager.createBackup(this, dirOverride);
-					respond({ ok: true, fileName, backups: await backupManager.listBackups(this, dirOverride) });
+					let webdavError;
+					if (webdavManager.isActive(webdavCfg)) {
+						try {
+							const base64 = await backupManager.readBackupBase64(this, fileName, dirOverride);
+							await webdavManager.uploadBackup(this, webdavCfg, fileName, Buffer.from(base64, 'base64'));
+						} catch (e) {
+							webdavError = e.message || String(e);
+							this.log.warn(`WebDAV upload of backup "${fileName}" failed: ${webdavError}`);
+						}
+					}
+					respond({
+						ok: true,
+						fileName,
+						webdavError,
+						backups: await backupManager.listBackups(this, dirOverride),
+					});
 					break;
 				}
 				case 'bkpUpload': {
@@ -481,21 +523,33 @@ class SolectrusInfluxdb extends utils.Adapter {
 					break;
 				}
 				case 'bkpRestore': {
-					const { restoredCount, instanceNative } = await backupManager.restoreBackup(
+					await restoreLocal(msg.fileName);
+					break;
+				}
+				case 'bkpWebdavList': {
+					respond({ ok: true, backups: await webdavManager.listRemoteBackups(this, webdavCfg) });
+					break;
+				}
+				case 'bkpWebdavRestore': {
+					// Stored locally first, then restored like a local backup (as in backitup)
+					const buf = await webdavManager.downloadBackup(this, webdavCfg, msg.fileName);
+					const fileName = await backupManager.saveUploadedBackup(
 						this,
 						msg.fileName,
+						buf.toString('base64'),
 						dirOverride,
 					);
-					respond({ ok: true, restoredCount, willRestart: !!instanceNative });
-
-					// Applied last and not awaited by the response above: extending the instance
-					// object triggers an automatic restart via js-controller.
-					if (instanceNative) {
-						this.log.info('Restored instance configuration - the instance restarts automatically.');
-						this.extendForeignObjectAsync(`system.adapter.${this.namespace}`, {
-							native: instanceNative,
-						}).catch(err => this.log.warn(`Could not apply restored instance configuration: ${err}`));
-					}
+					await restoreLocal(fileName);
+					break;
+				}
+				case 'bkpWebdavDelete': {
+					await webdavManager.deleteBackup(this, webdavCfg, msg.fileName);
+					respond({ ok: true, backups: await webdavManager.listRemoteBackups(this, webdavCfg) });
+					break;
+				}
+				case 'bkpWebdavTest': {
+					await webdavManager.testConnection(this, webdavCfg);
+					respond({ ok: true, result: 'WebDAV connection successful.' });
 					break;
 				}
 				default:

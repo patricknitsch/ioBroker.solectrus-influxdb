@@ -343,5 +343,21 @@
     "inputMonitoringLabel": "Alive",
     "inputMonitoringTooltip": "Deze invoer bewaken met de alive-time-out. Uitschakelen voor invoer die alleen bij wijziging wordt geschreven; de waarde wordt nog steeds berekend.",
     "sourceMonitoringLabel": "Bronstatus bewaken (Alive)",
-    "formulaAliveTimeoutHint": "Bewaakt de invoer van deze waarde. Als een actieve sensor deze waarde gebruikt, geldt diens time-out. 0 = uitgeschakeld."
+    "formulaAliveTimeoutHint": "Bewaakt de invoer van deze waarde. Als een actieve sensor deze waarde gebruikt, geldt diens time-out. 0 = uitgeschakeld.",
+    "webdavHeader": "WebDAV",
+    "webdavEnabledLabel": "Back-ups ook op een WebDAV-server opslaan",
+    "webdavEnabledHelp": "Elke nieuwe back-up wordt ook naar de WebDAV-server geüpload. Daar opgeslagen back-ups kunnen hieronder worden hersteld.",
+    "webdavURLLabel": "WebDAV-URL",
+    "webdavURLHelp": "bijv. https://<example.com>/remote.php/dav/files/<username>/",
+    "webdavUsernameLabel": "Gebruikersnaam",
+    "webdavPasswordLabel": "Wachtwoord",
+    "webdavDirLabel": "WebDAV-map",
+    "webdavSignedCertificatesLabel": "Alleen ondertekende certificaten toestaan",
+    "webdavDeleteOldBackupLabel": "Oude WebDAV-back-ups verwijderen (laatste N bewaren)",
+    "webdavTestButton": "Verbinding testen",
+    "WebDAV connection successful.": "WebDAV-verbinding geslaagd.",
+    "Backup created, but the WebDAV upload failed:": "Back-up gemaakt, maar de WebDAV-upload is mislukt:",
+    "Backup created and uploaded to WebDAV.": "Back-up gemaakt en naar WebDAV geüpload.",
+    "WebDAV backups": "WebDAV-back-ups",
+    "No WebDAV backups found.": "Geen WebDAV-back-ups gevonden."
 }

@@ -4,8 +4,9 @@ import { I18n } from '@iobroker/gui-components';
 
 // Lets the user create/upload/restore/download/delete local backups of this adapter instance
 // (instance config, sensors, Data-SOLECTRUS items and the object tree) without needing the
-// separate ioBroker.backitup adapter installed.
-const UI_VERSION = '2026-08-03 20260803-1';
+// separate ioBroker.backitup adapter installed. Optionally the backups are also stored on a
+// WebDAV server (like the WebDAV storage of ioBroker.backitup).
+const UI_VERSION = '2026-10-19 20261019-1';
 
 interface Backup {
     fileName: string;
@@ -18,10 +19,12 @@ interface BackupResult {
     error?: string;
     backups?: Backup[];
     base64?: string;
+    webdavError?: string;
 }
 
 interface SolectrusBackupEditorState extends ConfigGenericState {
     backups: Backup[];
+    webdavBackups: Backup[];
     busy: string;
     message: string;
     isError: boolean;
@@ -105,6 +108,7 @@ export default class SolectrusBackupEditor extends ConfigGeneric<ConfigGenericPr
         this.state = {
             ...this.state,
             backups: [],
+            webdavBackups: [],
             busy: '',
             message: '',
             isError: false,
@@ -128,8 +132,37 @@ export default class SolectrusBackupEditor extends ConfigGeneric<ConfigGenericPr
     // showed "access denied".
     private sendToCompat(command: string, message: Record<string, unknown>): Promise<BackupResult> {
         const backupDir = ConfigGeneric.getValue(this.props.data, 'backupDir');
-        return this.props.oContext.socket.sendTo(this.getInstanceId(), command, { backupDir, ...message });
+        const data = this.props.data;
+        const webdav = {
+            enabled: ConfigGeneric.getValue(data, 'webdavEnabled'),
+            url: ConfigGeneric.getValue(data, 'webdavURL'),
+            username: ConfigGeneric.getValue(data, 'webdavUsername'),
+            password: ConfigGeneric.getValue(data, 'webdavPassword'),
+            dir: ConfigGeneric.getValue(data, 'webdavDir'),
+            signedCertificates: ConfigGeneric.getValue(data, 'webdavSignedCertificates'),
+            deleteOldBackup: ConfigGeneric.getValue(data, 'webdavDeleteOldBackup'),
+        };
+        return this.props.oContext.socket.sendTo(this.getInstanceId(), command, { backupDir, webdav, ...message });
     }
+
+    private isWebdavEnabled(): boolean {
+        return !!ConfigGeneric.getValue(this.props.data, 'webdavEnabled') && !!ConfigGeneric.getValue(this.props.data, 'webdavURL');
+    }
+
+    private refreshWebdav = (): void => {
+        if (!this.isWebdavEnabled()) {
+            this.setState({ webdavBackups: [] });
+            return;
+        }
+        this.sendToCompat('bkpWebdavList', {})
+            .then(res => {
+                if (res && res.ok === false) {
+                    this.setState({ isError: true, message: `WebDAV: ${res.error || ''}` });
+                }
+                this.setState({ webdavBackups: res?.backups || [] });
+            })
+            .catch((e: unknown) => this.setState({ isError: true, message: `WebDAV: ${String((e as Error)?.message || e)}` }));
+    };
 
     private refresh = (): void => {
         // Clear any stale error from a previous attempt up front, so a successful refresh
@@ -139,12 +172,16 @@ export default class SolectrusBackupEditor extends ConfigGeneric<ConfigGenericPr
         this.sendToCompat('bkpList', {})
             .then(res => this.setState({ backups: res?.backups || [] }))
             .catch((e: unknown) => this.setState({ isError: true, message: String((e as Error)?.message || e) }));
+        this.refreshWebdav();
     };
 
     private run(busyKey: string, promise: Promise<BackupResult>, okText: string): Promise<void> {
         this.setState({ busy: busyKey, isError: false, message: '' });
         return promise
             .then(res => {
+                if (res && res.ok === false) {
+                    throw new Error(res.error || '');
+                }
                 if (res && Array.isArray(res.backups)) {
                     this.setState({ backups: res.backups });
                 }
@@ -155,7 +192,64 @@ export default class SolectrusBackupEditor extends ConfigGeneric<ConfigGenericPr
     }
 
     private handleCreate = (): void => {
-        void this.run('create', this.sendToCompat('bkpCreate', {}), I18n.t('Backup created.'));
+        this.setState({ busy: 'create', isError: false, message: '' });
+        this.sendToCompat('bkpCreate', {})
+            .then(res => {
+                if (res && res.ok === false) {
+                    throw new Error(res.error || '');
+                }
+                if (res && Array.isArray(res.backups)) {
+                    this.setState({ backups: res.backups });
+                }
+                if (res?.webdavError) {
+                    this.setState({
+                        isError: true,
+                        message: `${I18n.t('Backup created, but the WebDAV upload failed:')} ${res.webdavError}`,
+                    });
+                } else {
+                    this.setState({
+                        message: this.isWebdavEnabled()
+                            ? I18n.t('Backup created and uploaded to WebDAV.')
+                            : I18n.t('Backup created.'),
+                    });
+                }
+                this.refreshWebdav();
+            })
+            .catch((e: unknown) => this.setState({ isError: true, message: String((e as Error)?.message || e) }))
+            .finally(() => this.setState({ busy: '' }));
+    };
+
+    private handleWebdavRestore = (fileName: string): void => {
+        if (
+            !globalThis.confirm(
+                I18n.t(
+                    'Restore this backup? The instance will restart and this configuration dialog must be closed and reopened afterwards.',
+                ),
+            )
+        ) {
+            return;
+        }
+        void this.run(
+            `webdavRestore:${fileName}`,
+            this.sendToCompat('bkpWebdavRestore', { fileName }),
+            I18n.t('Backup restored. Close and reopen this configuration dialog to see the updated settings.'),
+        );
+    };
+
+    private handleWebdavDelete = (fileName: string): void => {
+        if (!globalThis.confirm(I18n.t('Delete this backup?'))) {
+            return;
+        }
+        this.setState({ busy: `webdavDelete:${fileName}`, isError: false, message: '' });
+        this.sendToCompat('bkpWebdavDelete', { fileName })
+            .then(res => {
+                if (res && res.ok === false) {
+                    throw new Error(res.error || '');
+                }
+                this.setState({ webdavBackups: res?.backups || [], message: I18n.t('Backup deleted.') });
+            })
+            .catch((e: unknown) => this.setState({ isError: true, message: String((e as Error)?.message || e) }))
+            .finally(() => this.setState({ busy: '' }));
     };
 
     private handleUploadClick = (): void => {
@@ -218,7 +312,7 @@ export default class SolectrusBackupEditor extends ConfigGeneric<ConfigGenericPr
     };
 
     renderItem(): React.JSX.Element {
-        const { backups, busy, message, isError } = this.state;
+        const { backups, webdavBackups, busy, message, isError } = this.state;
 
         return (
             <div style={{ padding: 8 }}>
@@ -290,6 +384,54 @@ export default class SolectrusBackupEditor extends ConfigGeneric<ConfigGenericPr
                         </tbody>
                     </table>
                 )}
+                {this.isWebdavEnabled() ? (
+                    <div style={{ marginTop: 16 }}>
+                        <div style={{ fontWeight: 'bold', marginBottom: 8 }}>{I18n.t('WebDAV backups')}</div>
+                        {webdavBackups.length === 0 ? (
+                            <div style={{ opacity: 0.75 }}>{I18n.t('No WebDAV backups found.')}</div>
+                        ) : (
+                            <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+                                <thead>
+                                    <tr>
+                                        <th style={thStyle}>{I18n.t('Created')}</th>
+                                        <th style={thStyle}>{I18n.t('Size')}</th>
+                                        <th style={thStyle}>{I18n.t('Actions')}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {webdavBackups.map(b => (
+                                        <tr key={b.fileName}>
+                                            <td style={tdStyle}>{formatDate(b.mtime)}</td>
+                                            <td style={tdStyle}>{formatBytes(b.size)}</td>
+                                            <td style={tdStyle}>
+                                                <button
+                                                    type="button"
+                                                    style={smallButtonStyle}
+                                                    disabled={!!busy}
+                                                    onClick={() => this.handleWebdavRestore(b.fileName)}
+                                                >
+                                                    {busy === `webdavRestore:${b.fileName}`
+                                                        ? I18n.t('Restoring…')
+                                                        : I18n.t('Restore')}
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    style={smallButtonStyle}
+                                                    disabled={!!busy}
+                                                    onClick={() => this.handleWebdavDelete(b.fileName)}
+                                                >
+                                                    {busy === `webdavDelete:${b.fileName}`
+                                                        ? I18n.t('Deleting…')
+                                                        : I18n.t('Delete')}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
+                ) : null}
                 <div style={{ marginTop: 8, fontSize: '0.75em', opacity: 0.5 }}>UI {UI_VERSION}</div>
             </div>
         );

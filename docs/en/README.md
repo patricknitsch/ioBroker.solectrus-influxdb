@@ -605,4 +605,16 @@ Backups are stored locally on this ioBroker host. By default they are placed und
 
 > **Note:** The InfluxDB token is a protected/encrypted setting and is never included in these backups. After a restore it has to be entered again manually on the **InfluxDB** tab.
 
+### WebDAV storage
+
+Like ioBroker.backitup, the Backup tab can also store backups on a WebDAV server (e.g. Nextcloud, ownCloud, a NAS). Enable **Also store backups on a WebDAV server** and enter:
+
+- **WebDAV URL** - e.g. `https://<example.com>/remote.php/dav/files/<username>/` for Nextcloud
+- **Username** and **Password** (the password is stored encrypted and is never included in backups)
+- **WebDAV directory** - target directory on the server (default `/solectrus-influxdb`, created automatically)
+- **Allow only signed certificates** - turn this off for servers with a self-signed certificate
+- **Delete old WebDAV backups** - keeps only the last N backups (same number as "Keep last N backups") on the server
+
+Use **Test connection** to check the settings. Every backup created with **Create backup now** is then also uploaded to the WebDAV server. The backups stored there are listed below the local backups in the section **WebDAV backups** and can be restored or deleted there. On restore, the backup is first copied to the local backup directory and then restored like a local backup.
+
 > **Note:** The Admin configuration dialog does not automatically pick up the restored settings while it stays open (it only shows what was loaded when it was opened). After a restore, close the adapter configuration dialog and reopen it to see the restored values.

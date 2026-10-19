@@ -607,4 +607,16 @@ Backups werden lokal auf diesem ioBroker-Host gespeichert. Standardmäßig im Da
 
 > **Hinweis:** Der InfluxDB-Token ist eine geschützte/verschlüsselte Einstellung und wird nie in diesen Backups gespeichert. Nach einer Wiederherstellung muss er im Reiter **InfluxDB** einmalig manuell neu eingegeben werden.
 
+### WebDAV-Speicher
+
+Wie bei ioBroker.backitup können Backups zusätzlich auf einem WebDAV-Server (z. B. Nextcloud, ownCloud, NAS) gespeichert werden. Aktivieren Sie **Backups zusätzlich auf einem WebDAV-Server speichern** und tragen Sie ein:
+
+- **WebDAV-URL** - z. B. `https://<example.com>/remote.php/dav/files/<benutzername>/` für Nextcloud
+- **Benutzername** und **Passwort** (das Passwort wird verschlüsselt gespeichert und nie in Backups übernommen)
+- **WebDAV-Verzeichnis** - Zielverzeichnis auf dem Server (Standard `/solectrus-influxdb`, wird automatisch angelegt)
+- **Nur signierte Zertifikate erlauben** - für Server mit selbstsigniertem Zertifikat deaktivieren
+- **Alte WebDAV-Backups löschen** - behält auf dem Server nur die letzten N Backups (gleiche Anzahl wie "Letzte N Backups behalten")
+
+Mit **Verbindung testen** lassen sich die Einstellungen prüfen. Jedes mit **Backup jetzt erstellen** erzeugte Backup wird danach zusätzlich auf den WebDAV-Server hochgeladen. Die dort gespeicherten Backups werden unterhalb der lokalen Backups im Bereich **WebDAV-Backups** angezeigt und können dort wiederhergestellt oder gelöscht werden. Beim Wiederherstellen wird das Backup zunächst in das lokale Backup-Verzeichnis kopiert und dann wie ein lokales Backup wiederhergestellt.
+
 > **Hinweis:** Der Admin-Konfigurationsdialog übernimmt die wiederhergestellten Einstellungen nicht automatisch, solange er geöffnet bleibt (er zeigt nur den Stand, der beim Öffnen geladen wurde). Schließen Sie nach einer Wiederherstellung den Konfigurationsdialog der Instanz und öffnen Sie ihn erneut, um die wiederhergestellten Werte zu sehen.
