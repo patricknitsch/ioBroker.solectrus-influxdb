@@ -190,6 +190,13 @@
     "dsSnapshotDelayMs": 0,
     "dsItems": [],
     "iframeUrl": "",
+    "webdavEnabled": false,
+    "webdavURL": "",
+    "webdavUsername": "",
+    "webdavPassword": "",
+    "webdavDir": "/solectrus-influxdb",
+    "webdavSignedCertificates": true,
+    "webdavDeleteOldBackup": true,
     "notifyEnabled": false,
     "notifyOnConnectionFail": true,
     "notifyRepeatMinutes": 60,
@@ -1055,10 +1062,12 @@
     ]
   },
   "encryptedNative": [
-    "influxToken"
+    "influxToken",
+    "webdavPassword"
   ],
   "protectedNative": [
-    "influxToken"
+    "influxToken",
+    "webdavPassword"
   ],
   "objects": [],
   "instanceObjects": [

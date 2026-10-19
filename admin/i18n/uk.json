@@ -343,5 +343,21 @@
     "inputMonitoringLabel": "Alive",
     "inputMonitoringTooltip": "Контролювати цей вхід за тайм-аутом активності. Вимкніть для входів, що записуються лише при зміні; значення й надалі використовується в розрахунку.",
     "sourceMonitoringLabel": "Контролювати вихідний стан (Alive)",
-    "formulaAliveTimeoutHint": "Контролює входи цього значення. Якщо його використовує активний датчик, діє тайм-аут датчика. 0 = вимкнено."
+    "formulaAliveTimeoutHint": "Контролює входи цього значення. Якщо його використовує активний датчик, діє тайм-аут датчика. 0 = вимкнено.",
+    "webdavHeader": "WebDAV",
+    "webdavEnabledLabel": "Також зберігати резервні копії на сервері WebDAV",
+    "webdavEnabledHelp": "Кожна нова резервна копія додатково завантажується на сервер WebDAV. Збережені там копії можна відновити нижче.",
+    "webdavURLLabel": "URL WebDAV",
+    "webdavURLHelp": "наприклад, https://<example.com>/remote.php/dav/files/<username>/",
+    "webdavUsernameLabel": "Ім'я користувача",
+    "webdavPasswordLabel": "Пароль",
+    "webdavDirLabel": "Каталог WebDAV",
+    "webdavSignedCertificatesLabel": "Дозволяти лише підписані сертифікати",
+    "webdavDeleteOldBackupLabel": "Видаляти старі резервні копії WebDAV (зберігати останні N)",
+    "webdavTestButton": "Перевірити з'єднання",
+    "WebDAV connection successful.": "З'єднання з WebDAV успішне.",
+    "Backup created, but the WebDAV upload failed:": "Резервну копію створено, але завантаження на WebDAV не вдалося:",
+    "Backup created and uploaded to WebDAV.": "Резервну копію створено та завантажено на WebDAV.",
+    "WebDAV backups": "Резервні копії WebDAV",
+    "No WebDAV backups found.": "Резервні копії WebDAV не знайдено."
 }

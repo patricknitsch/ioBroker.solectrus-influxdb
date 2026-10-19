@@ -343,5 +343,21 @@
     "inputMonitoringLabel": "Alive",
     "inputMonitoringTooltip": "Monitora questo input con il timeout di attività. Disattivalo per gli input scritti solo in caso di modifica; il valore viene comunque usato nel calcolo.",
     "sourceMonitoringLabel": "Monitora stato sorgente (Alive)",
-    "formulaAliveTimeoutHint": "Monitora gli input di questo valore. Se un sensore attivo usa questo valore, vale il suo timeout. 0 = disattivato."
+    "formulaAliveTimeoutHint": "Monitora gli input di questo valore. Se un sensore attivo usa questo valore, vale il suo timeout. 0 = disattivato.",
+    "webdavHeader": "WebDAV",
+    "webdavEnabledLabel": "Salva i backup anche su un server WebDAV",
+    "webdavEnabledHelp": "Ogni nuovo backup viene caricato anche sul server WebDAV. I backup salvati lì possono essere ripristinati qui sotto.",
+    "webdavURLLabel": "URL WebDAV",
+    "webdavURLHelp": "ad es. https://<example.com>/remote.php/dav/files/<username>/",
+    "webdavUsernameLabel": "Nome utente",
+    "webdavPasswordLabel": "Password",
+    "webdavDirLabel": "Directory WebDAV",
+    "webdavSignedCertificatesLabel": "Consenti solo certificati firmati",
+    "webdavDeleteOldBackupLabel": "Elimina i vecchi backup WebDAV (mantieni gli ultimi N)",
+    "webdavTestButton": "Verifica connessione",
+    "WebDAV connection successful.": "Connessione WebDAV riuscita.",
+    "Backup created, but the WebDAV upload failed:": "Backup creato, ma il caricamento su WebDAV non è riuscito:",
+    "Backup created and uploaded to WebDAV.": "Backup creato e caricato su WebDAV.",
+    "WebDAV backups": "Backup WebDAV",
+    "No WebDAV backups found.": "Nessun backup WebDAV trovato."
 }
