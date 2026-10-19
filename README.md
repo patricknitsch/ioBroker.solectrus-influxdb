@@ -66,7 +66,8 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-* (patricknitsch) Backups can now also be stored on a WebDAV server (e.g. Nextcloud) and restored from there, like in ioBroker.backitup
+* (patricknitsch) Backups can now also be stored on a WebDAV server (e.g. Nextcloud) and restored from there
+* (patricknitsch) Update Dependencies
 
 ### 2.2.1 (2026-10-13)
 * (patricknitsch) Release without function. Deploying for 2.2.0 failed.
