@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "2.2.1",
+    "version": "2.2.2",
     "news": {
+      "2.2.2": {
+        "en": "Backups can now also be stored on a WebDAV server (e.g. Nextcloud) and restored from there\nUpdate Dependencies",
+        "de": "Backups können nun auch auf WebDAV-Servern (z. B. Nextcloud) gespeichert und wiederhergestellt werden\nAbhängigkeiten updaten",
+        "ru": "Теперь резервные копии также можно хранить на сервере WebDAV (например, Nextcloud) и восстанавливать оттуда\nОбновить зависимости",
+        "pt": "Agora é possível armazenar backups em um servidor WebDAV (ex. Nextcloud) e restaurá-los\nAtualizar dependências",
+        "nl": "Back-ups kunnen nu ook worden opgeslagen op een WebDAV-server (bijvoorbeeld Nextcloud) en van daaruit worden hersteld\nAfhankelijkheden bijwerken",
+        "fr": "Les sauvegardes peuvent être stockées sur un serveur WebDAV (Nextcloud, par exemple) et restaurées\nMettre à jour les dépendances",
+        "it": "Ora è possibile salvare i backup su un server WebDAV (ad es. Nextcloud) e ripristinarli\nAggiorna dipendenze",
+        "es": "Las copias de seguridad ahora también pueden guardarse en un servidor WebDAV (por ejemplo, Nextcloud) y restaurarse\nActualizar dependencias",
+        "pl": "Kopie zapasowe mogą być teraz również przechowywane na serwerze WebDAV (np. Nextcloud) i stamtąd przywracane\nZależności aktualizacji",
+        "uk": "Резервні копії тепер також можуть зберігатися на сервері WebDAV (наприклад, Nextcloud) і відновлюватися звідти\nОновити залежності",
+        "zh-cn": "备份现在也可以存储在 WebDAV 服务器（例如 Nextcloud）上并从那里恢复\n更新依赖关系"
+      },
       "2.2.1": {
         "en": "Release without function. Deploying for 2.2.0 failed.",
         "de": "Release ohne Funktion. Fehler beim Deployment für 2.2.0.",
@@ -80,19 +93,6 @@
         "pl": "Wersja ostateczna",
         "uk": "Остаточний реліз",
         "zh-cn": "最终版本"
-      },
-      "1.12.0-beta.1": {
-        "en": "Fix `npm run check` (tsc type-checking of the JSDoc-typed JS codebase) so it passes cleanly again\nImprove JSDoc type coverage across `dsProxy.js`, `jsonpath.js`, `stateMachine.js` and `helpers.js`\nResolve all remaining ESLint JSDoc warnings (`npm run lint` is now warning-free)",
-        "de": "Korrigiere `npm run check` (die tsc-Typüberprüfung des JSDoc-typisierten JS-Codes), sodass es wieder fehlerfrei durchläuft.\nVerbesserung der JSDoc-Typabdeckung in `dsProxy.js`, `jsonpath.js`, `stateMachine.js` und `helpers.js`\nAlle verbleibenden ESLint JSDoc-Warnungen wurden behoben (`npm run lint` ist jetzt warnungsfrei).",
-        "ru": "Исправьте `npm run check` (проверка типов JS-кода с использованием JSDoc-типов) с помощью tsc, чтобы она снова проходила без ошибок.\nУлучшить покрытие типов JSDoc в файлах `dsProxy.js`, `jsonpath.js`, `stateMachine.js` и `helpers.js`.\nУстранены все оставшиеся предупреждения ESLint JSDoc (команда `npm run lint` теперь не выдает предупреждений).",
-        "pt": "Corrigir o comando `npm run check` (verificação de tipo do código JavaScript tipado pelo tsc) para que volte a ser executado sem problemas.\nMelhorar a cobertura de tipos JSDoc em `dsProxy.js`, `jsonpath.js`, `stateMachine.js` e `helpers.js`.\nResolva todos os avisos restantes do ESLint JSDoc (`npm run lint` agora está livre de avisos).",
-        "nl": "Repareer `npm run check` (tsc-typecontrole van de JSDoc-getypte JS-codebasis) zodat deze weer probleemloos slaagt.\nVerbeter de dekking van JSDoc-typen in `dsProxy.js`, `jsonpath.js`, `stateMachine.js` en `helpers.js`.\nLos alle resterende ESLint JSDoc-waarschuwingen op (`npm run lint` geeft nu geen waarschuwingen meer).",
-        "fr": "Corriger `npm run check` (vérification de type tsc du code source JS typé JSDoc) pour qu'il réussisse à nouveau sans problème.\nAméliorer la couverture de type JSDoc dans `dsProxy.js`, `jsonpath.js`, `stateMachine.js` et `helpers.js`\nRésolution de tous les avertissements ESLint JSDoc restants (`npm run lint` ne génère désormais plus d'avertissements).",
-        "it": "Correggi `npm run check` (controllo dei tipi tsc del codice sorgente JS tipizzato da JSDoc) in modo che venga eseguito correttamente di nuovo.\nMigliorare la copertura dei tipi JSDoc in `dsProxy.js`, `jsonpath.js`, `stateMachine.js` e `helpers.js`\nRisolvi tutti gli avvisi rimanenti di ESLint JSDoc (`npm run lint` ora non genera più avvisi)",
-        "es": "Corrige la comprobación de `npm run check` (verificación de tipos de tsc del código fuente JS tipado con JSDoc) para que vuelva a pasar correctamente.\nMejorar la cobertura de tipos JSDoc en `dsProxy.js`, `jsonpath.js`, `stateMachine.js` y `helpers.js`.\nResuelve todas las advertencias restantes de ESLint JSDoc (`npm run lint` ahora no muestra advertencias).",
-        "pl": "Napraw `npm run check` (sprawdzanie typu tsc kodu JS opartego na typie JSDoc), aby ponownie przechodziło poprawnie\nPoprawa pokrycia typu JSDoc w `dsProxy.js`, `jsonpath.js`, `stateMachine.js` i `helpers.js`\nRozwiąż wszystkie pozostałe ostrzeżenia JSDoc ESLint (polecenie `npm run lint` nie generuje już ostrzeżeń)",
-        "uk": "Виправлено `npm run check` (перевірка типів tsc для кодової бази JS з типом JSDoc), щоб вона знову проходила чисто.\nПокращено покриття типів JSDoc у `dsProxy.js`, `jsonpath.js`, `stateMachine.js` та `helpers.js`\nВирішено всі решту попереджень ESLint JSDoc (`npm run lint` тепер не містить попереджень)",
-        "zh-cn": "修复 `npm run check`（对 JSDoc 类型化的 JS 代码库进行 tsc 类型检查），使其再次顺利通过。\n提高 `dsProxy.js`、`jsonpath.js`、`stateMachine.js` 和 `helpers.js` 的 JSDoc 类型覆盖率\n解决所有剩余的 ESLint JSDoc 警告（`npm run lint` 现在不会再出现警告）"
       }
     },
     "titleLang": {
