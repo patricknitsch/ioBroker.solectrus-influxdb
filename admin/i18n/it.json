@@ -238,7 +238,7 @@
     "inactive item": "elemento inattivo",
     "inactive items": "elementi inattivi",
     "influxBackupHint": "Nota: utilizzare la scheda Backup per creare, caricare, ripristinare, scaricare o eliminare direttamente i backup di questa istanza (posizione di archiviazione personalizzabile).",
-    "influxQuickStart": "1. Crea un token API InfluxDB 2.x con accesso in scrittura al tuo bucket.\n2. Inserisci URL, organizzazione, bucket e token a sinistra e salva.\n3. Apri la scheda Sensori e mappa gli stati di ioBroker.\n4. Abilitare l'adattatore e controllare info.connection e gli stati del buffer.",
+    "influxQuickStart": "1. Crea un token API InfluxDB 2.x con accesso in scrittura al tuo bucket.\n2. Inserisci a sinistra URL, porta, organizzazione, bucket e token – oppure, da Admin 8, scegli credenziali \"Login e password\" (login = URL, password = token). Salva.\n3. Apri la scheda Sensori e mappa gli stati di ioBroker.\n4. Abilitare l'adattatore e controllare info.connection e gli stati del buffer.",
     "internalSensorHint": "I sensori interni vengono rispecchiati e monitorati, ma non inviati a InfluxDB.",
     "ioBroker Source State": "Stato di origine di ioBroker",
     "jsonAutoDetectInfo": "y → inverter_forecast:power (Previsione)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperatura)\n\nI campi non presenti nel JSON vengono ignorati automaticamente.",

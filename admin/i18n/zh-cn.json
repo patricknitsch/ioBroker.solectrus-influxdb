@@ -238,7 +238,7 @@
     "inactive item": "未激活项目",
     "inactive items": "未激活项目",
     "influxBackupHint": "注意：可使用“备份”标签页直接创建、上传、恢复、下载或删除此实例的备份(支持自定义存储位置)。",
-    "influxQuickStart": "1. 创建一个对您的存储桶具有写入权限的 InfluxDB 2.x API 令牌。\n2. 在左侧输入URL、组织、存储桶和令牌并保存。\n3. 打开传感器选项卡并映射您的 ioBroker 状态。\n4. 启用适配器并检查 info.connection 和缓冲区状态。",
+    "influxQuickStart": "1. 创建一个对您的存储桶具有写入权限的 InfluxDB 2.x API 令牌。\n2. 在左侧输入 URL、端口、组织、存储桶和令牌——或自 Admin 8 起选择“登录名和密码”形式的凭据（登录名 = URL，密码 = 令牌）。保存。\n3. 打开传感器选项卡并映射您的 ioBroker 状态。\n4. 启用适配器并检查 info.connection 和缓冲区状态。",
     "internalSensorHint": "内部传感器会被镜像和监控，但不会发送到 InfluxDB。",
     "ioBroker Source State": "ioBroker 源状态",
     "jsonAutoDetectInfo": "y → inverter_forecast:power（预报）\nclearsky → inverter_forecast_clearsky:power（Clearsky）\ntemp → outdoor_forecast:temperature（温度）\n\nJSON 中不存在的字段将自动跳过。",
