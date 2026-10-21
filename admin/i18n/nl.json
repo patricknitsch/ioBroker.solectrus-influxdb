@@ -364,5 +364,5 @@
     "influxCredentialHelp": "Geen = URL en token hieronder gebruiken. Anders inloggegevens van de vorm \"Login & wachtwoord\": login = URL, wachtwoord = token.",
     "influxUrlHelp": "Adres zonder poort, bijv. http://192.168.1.10",
     "influxPortLabel": "Poort",
-    "influxPortHelp": "Standaard 8086."
+    "influxPortHelp": "Standaard 8086"
 }

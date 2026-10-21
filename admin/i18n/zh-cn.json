@@ -364,5 +364,5 @@
     "influxCredentialHelp": "无 = 使用下方的 URL 和令牌。否则使用“登录名和密码”形式的凭据：登录名 = URL，密码 = 令牌。",
     "influxUrlHelp": "不含端口的地址，例如 http://192.168.1.10",
     "influxPortLabel": "端口",
-    "influxPortHelp": "默认 8086。"
+    "influxPortHelp": "默认 8086"
 }

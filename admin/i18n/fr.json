@@ -364,5 +364,5 @@
     "influxCredentialHelp": "Aucun = utiliser l'URL et le jeton ci-dessous. Sinon, des identifiants de la forme « Identifiant et mot de passe » : identifiant = URL, mot de passe = jeton.",
     "influxUrlHelp": "Adresse sans port, p. ex. http://192.168.1.10",
     "influxPortLabel": "Port",
-    "influxPortHelp": "Par défaut 8086."
+    "influxPortHelp": "Par défaut 8086"
 }

@@ -364,5 +364,5 @@
     "influxCredentialHelp": "Ninguna = usar la URL y el token de abajo. Si no, una credencial del tipo «Usuario y contraseña»: usuario = URL, contraseña = token.",
     "influxUrlHelp": "Dirección sin puerto, p. ej. http://192.168.1.10",
     "influxPortLabel": "Puerto",
-    "influxPortHelp": "Predeterminado 8086."
+    "influxPortHelp": "Predeterminado 8086"
 }
