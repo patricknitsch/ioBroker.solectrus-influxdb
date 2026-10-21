@@ -359,5 +359,10 @@
     "Backup created, but the WebDAV upload failed:": "备份已创建，但 WebDAV 上传失败：",
     "Backup created and uploaded to WebDAV.": "备份已创建并上传到 WebDAV。",
     "WebDAV backups": "WebDAV 备份",
-    "No WebDAV backups found.": "未找到 WebDAV 备份。"
+    "No WebDAV backups found.": "未找到 WebDAV 备份。",
+    "influxCredentialLabel": "凭据（Admin 设置）",
+    "influxCredentialHelp": "无 = 使用下方的 URL 和令牌。“密钥”：密钥即令牌。“登录名和密码”：登录名 = URL，密码 = 令牌。",
+    "influxUrlHelp": "不含端口的地址，例如 http://192.168.1.10",
+    "influxPortLabel": "端口",
+    "influxPortHelp": "默认 8086。0 = 协议默认端口（例如反向代理后的 HTTPS 为 443）。URL 中的端口优先。"
 }

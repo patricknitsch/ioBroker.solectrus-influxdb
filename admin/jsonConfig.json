@@ -15,15 +15,39 @@
 					"lg": 4,
 					"xl": 4,
 					"items": {
-						"influxUrl": {
-							"type": "text",
-							"label": "InfluxDB URL",
+						"influxCredential": {
+							"type": "credential",
+							"label": "influxCredentialLabel",
+							"help": "influxCredentialHelp",
 							"newLine": true,
 							"xs": 12,
 							"sm": 12,
 							"md": 12,
 							"lg": 12,
 							"xl": 12
+						},
+						"influxUrl": {
+							"type": "text",
+							"label": "InfluxDB URL",
+							"help": "influxUrlHelp",
+							"newLine": true,
+							"xs": 12,
+							"sm": 8,
+							"md": 8,
+							"lg": 8,
+							"xl": 8
+						},
+						"influxPort": {
+							"type": "number",
+							"label": "influxPortLabel",
+							"help": "influxPortHelp",
+							"min": 0,
+							"max": 65535,
+							"xs": 12,
+							"sm": 4,
+							"md": 4,
+							"lg": 4,
+							"xl": 4
 						},
 						"influxOrg": {
 							"type": "text",
@@ -48,6 +72,7 @@
 						"influxToken": {
 							"type": "password",
 							"label": "Token",
+							"disabled": "!!data.influxCredential",
 							"newLine": true,
 							"xs": 12,
 							"sm": 12,

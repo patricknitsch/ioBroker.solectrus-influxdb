@@ -17,12 +17,20 @@ const {
 	hasEnabledSensors,
 } = require('./lib/helpers');
 const { loadBuffer, saveBuffer, updateBufferStates, clearBuffer } = require('./lib/bufferManager');
-const { validateInfluxConfig, verifyInfluxConnection, closeWriteApi } = require('./lib/influxManager');
+const Credentials = require('@iobroker/adapter-core/credentials');
+const {
+	validateInfluxConfig,
+	verifyInfluxConnection,
+	closeWriteApi,
+	getCredentialInfluxValues,
+	applyInfluxCredential,
+} = require('./lib/influxManager');
 const {
 	ensureObjectTree,
 	createInfoStates,
 	ensureDefaultSensorsAndTitles,
 	migrateLegacyForecastConfig,
+	migrateInfluxPortConfig,
 } = require('./lib/objectManager');
 const {
 	prepareSensors,
@@ -64,6 +72,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.influx = null;
 		this.writeApi = null;
 		this.influxVerified = false;
+		// Unsubscribes the central credential of the InfluxDB connection (set in onReady)
+		this.unsubscribeInfluxCredential = null;
 
 		/* ---------- Runtime ---------- */
 		this.cache = {};
@@ -150,6 +160,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 		} catch {
 			this.systemLanguage = 'en';
 		}
+
+		await migrateInfluxPortConfig(this);
+		await this.applyAndWatchInfluxCredential();
 
 		if (!validateInfluxConfig(this)) {
 			this.log.error('InfluxDB configuration incomplete');
@@ -561,6 +574,33 @@ class SolectrusInfluxdb extends utils.Adapter {
 		}
 	}
 
+	/**
+	 * Takes URL and token from the selected central credential and restarts the adapter when
+	 * the credential is changed or deleted in the admin.
+	 */
+	async applyAndWatchInfluxCredential() {
+		const applied = await applyInfluxCredential(this);
+		if (!applied) {
+			return;
+		}
+		try {
+			this.unsubscribeInfluxCredential = await Credentials.subscribeCredentials(
+				this,
+				this.config.influxCredential.trim(),
+				(id, info) => {
+					const values = info ? getCredentialInfluxValues(info.values) : null;
+					if (values && values.url === applied.url && values.token === applied.token) {
+						return;
+					}
+					this.log.info(`Credential "${id}" changed – restarting adapter`);
+					this.restart();
+				},
+			);
+		} catch (e) {
+			this.log.warn(`Cannot watch credential: ${e.message}`);
+		}
+	}
+
 	/* =====================================================
 	 * UNLOAD
 	 * ===================================================== */
@@ -594,6 +634,11 @@ class SolectrusInfluxdb extends utils.Adapter {
 
 			saveBuffer(this);
 			await closeWriteApi(this);
+
+			if (this.unsubscribeInfluxCredential) {
+				await this.unsubscribeInfluxCredential().catch(() => {});
+				this.unsubscribeInfluxCredential = null;
+			}
 
 			this.setState('info.connection', false, true);
 			callback();

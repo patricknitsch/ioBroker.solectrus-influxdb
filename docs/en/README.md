@@ -26,13 +26,17 @@ Open the adapter settings and go to the **InfluxDB** tab.
 
 | Field | Description |
 |-------|-------------|
-| URL | InfluxDB 2.x server address (e.g. `http://192.168.1.10:8086`) |
+| Credential | Optional: credential from the Admin settings (*System settings → Credentials*, Admin 8 and newer). **None** = URL and token below are used. Form *Key*: the key is the token. Form *Login & password*: login = URL, password = token. ➕ creates a new credential right there. |
+| URL | InfluxDB 2.x server address without port (e.g. `http://192.168.1.10`) |
+| Port | Port of the InfluxDB server (default `8086`). `0` = default port of the protocol (e.g. 443 for HTTPS behind a reverse proxy). A port in the URL takes precedence. |
 | Organization | Your InfluxDB organization |
 | Bucket | Target bucket for time-series data |
-| Token | API token with **write** permissions |
+| Token | API token with **write** permissions (locked while a credential is selected) |
 | Polling Interval (s) | How often sensor values are collected (5-30 seconds) |
 
 The adapter verifies the connection at startup by writing a test point. The connection state is shown in `info.connection`.
+
+Existing settings are taken over automatically at the first start: a port in the URL (e.g. `http://192.168.1.10:8086`) is moved to the **Port** field; a URL without port keeps the default port of its protocol (80 or 443). If the selected credential is changed in the Admin, the adapter restarts.
 
 At the bottom of this tab you will find:
 

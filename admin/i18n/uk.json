@@ -359,5 +359,10 @@
     "Backup created, but the WebDAV upload failed:": "Резервну копію створено, але завантаження на WebDAV не вдалося:",
     "Backup created and uploaded to WebDAV.": "Резервну копію створено та завантажено на WebDAV.",
     "WebDAV backups": "Резервні копії WebDAV",
-    "No WebDAV backups found.": "Резервні копії WebDAV не знайдено."
+    "No WebDAV backups found.": "Резервні копії WebDAV не знайдено.",
+    "influxCredentialLabel": "Облікові дані (налаштування Admin)",
+    "influxCredentialHelp": "Немає = використовувати URL і токен нижче. «Ключ»: ключ є токеном. «Логін і пароль»: логін = URL, пароль = токен.",
+    "influxUrlHelp": "Адреса без порту, напр. http://192.168.1.10",
+    "influxPortLabel": "Порт",
+    "influxPortHelp": "За замовчуванням 8086. 0 = стандартний порт протоколу (напр. 443 для HTTPS за зворотним проксі). Порт в URL має пріоритет."
 }

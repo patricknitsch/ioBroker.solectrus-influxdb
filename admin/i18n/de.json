@@ -359,5 +359,10 @@
     "Backup created, but the WebDAV upload failed:": "Backup erstellt, aber der WebDAV-Upload ist fehlgeschlagen:",
     "Backup created and uploaded to WebDAV.": "Backup erstellt und auf WebDAV hochgeladen.",
     "WebDAV backups": "WebDAV-Backups",
-    "No WebDAV backups found.": "Keine WebDAV-Backups gefunden."
+    "No WebDAV backups found.": "Keine WebDAV-Backups gefunden.",
+    "influxCredentialLabel": "Zugangsdaten (Admin-Einstellungen)",
+    "influxCredentialHelp": "Keine = URL und Token unten verwenden. „Schlüssel“: der Schlüssel ist der Token. „Login & Passwort“: Login = URL, Passwort = Token.",
+    "influxUrlHelp": "Adresse ohne Port, z. B. http://192.168.1.10",
+    "influxPortLabel": "Port",
+    "influxPortHelp": "Standard 8086. 0 = Standard-Port des Protokolls (z. B. 443 für HTTPS hinter einem Reverse Proxy). Ein Port in der URL hat Vorrang."
 }
