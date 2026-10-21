@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "solectrus-influxdb",
-    "version": "2.2.2",
+    "version": "2.3.0",
     "news": {
+      "2.3.0": {
+        "en": "**ADAPTER MEETS ioBroker SECRETS**\nioBroker secrets (credentials of the Admin settings, Admin 8 and newer) can now be used for the InfluxDB connection: a credential \"Login & password\" provides URL (login) and token (password)\nThe InfluxDB port now has its own field (default 8086); existing settings are taken over automatically",
+        "de": "**ADAPTER ERFÜLLT ioBROKER-SECRETS**\nioBroker-Secrets (Admin-Zugangsdaten, Admin 8 und neuer) können jetzt für die InfluxDB-Verbindung verwendet werden: Ein „Login & Passwort“ enthält URL (Login) und Token (Passwort)\nDer InfluxDB-Port hat jetzt ein eigenes Feld (Standard 8086); alte Werte werden übernommen",
+        "ru": "**АДАПТЕР ОТВЕЧАЕТ СЕКРЕТАМ IOBROKER**\nСекреты IOBroker (учетные данные настроек Admin, Admin 8 и новее) теперь можно использовать для соединения с InfluxDB: учетные данные «Логин и пароль» предоставляют URL-адрес (логин) и токен (пароль)\nПорт InfluxDB теперь имеет собственное поле (по умолчанию 8086); существующие настройки сохраняются автоматически",
+        "pt": "**ADAPTADOR E SEGREDOS DA IOBROKER**\nOs segredos do IOBroker (credenciais do Admin, Admin 8 e mais recentes) agora podem ser usados para a conexão do InfluxDB: uma credencial “Login e senha” fornece URL e token (senha)\nO port InfluxDB agora tem seu próprio campo (padrão 8086); os ajustes atuais são automaticamente",
+        "nl": "**ADAPTER VOLDOET AAN DE GEHEIMEN VAN IOBROKER**\nDe geheimen van ioBroker (inloggegevens van de Admin-instellingen, Admin 8 en nieuwer) kunnen nu worden gebruikt voor de InfluxDB-verbinding: een referentie „Login en wachtwoord” bevat een URL (login) en token (wachtwoord)\nDe InfluxDB-poort heeft nu een eigen veld (standaard 8086); bestaande instellingen worden automatisch overgenomen",
+        "fr": "**ADAPTER RÉPOND AUX SECRETS D'IOBROKER**\nLes secrets IObroker (identifiants des paramètres d'administration, Admin 8 et versions ultérieures) peuvent désormais être utilisés pour la connexion InfluxDB : un identifiant « Login et mot de passe » fournit une URL (login) et un jeton (mot de passe)\nLe port InfluxDB a désormais son propre champ (8086 par défaut) ; les réglages sont automatiquement repris",
+        "it": "**ADAPTER HA I SEGRETI DI IOBROKER**\nI segreti di IObroker (impostazioni Admin, Admin 8 e successive) possono ora essere usati per la connessione InfluxDB: una credenziale «Login e password» fornisce URL (login) e token (password)\nLa porta InfluxDB ora ha il suo campo (default 8086); le impostazioni sono automatiche",
+        "es": "**ADAPTADOR CON IOBOKER**\nLos secretos de IOBroker (credenciales de la configuración de administración, Admin 8 y posteriores) ahora se pueden utilizar para la conexión a InfluxDB: la credencial «Inicio de sesión y contraseña» indica la URL (inicio de sesión) y el token (contraseña)\nEl puerto de InfluxDB ahora tiene su propio campo (por defecto, 8086); los ajustes actuales se controlan automáticamente",
+        "pl": "**ADAPTER SPEŁNIA SEKRETY IOBroker**\nTajemnice ioBroker (dane uwierzytelniające ustawień administratora, Admin 8 i nowsze) mogą być teraz używane do połączenia InfluxDB: poświadczenie „Login i hasło” zapewnia adres URL (login) i token (hasło)\nPort InfluxDB ma teraz własne pole (domyślnie 8086); istniejące ustawienia są przejmowane automatycznie",
+        "uk": "** АДАПТЕР ВІДПОВІДАЄ СЕКРЕТАМ IObroker**\nСекрети IObroker (облікові дані налаштувань адміністратора, адміністратора 8 та новіших) тепер можуть використовуватися для підключення InfluxDB: обліковий запис «Логін та пароль» надає URL-адресу (логін) та маркер (пароль)\nПорт InfluxDB тепер має власне поле (за замовчуванням 8086); існуючі налаштування приймаються автоматично",
+        "zh-cn": "**适配器符合 IOBroker 的秘密**\nIOBroker 密钥（管理员设置的凭据，管理员 8 及更高版本）现在可以用于 InfluxDB 连接：凭据 “登录名和密码” 提供 URL（登录）和令牌（密码）\nInfluxDB 端口现在有自己的字段（默认为 8086）；现有设置将自动接管"
+      },
       "2.2.2": {
         "en": "Backups can now also be stored on a WebDAV server (e.g. Nextcloud) and restored from there\nUpdate Dependencies",
         "de": "Backups können nun auch auf WebDAV-Servern (z. B. Nextcloud) gespeichert und wiederhergestellt werden\nAbhängigkeiten updaten",
@@ -80,19 +93,6 @@
         "pl": "**WAŻNA ZMIANA:** Wymaga ioBroker.admin w wersji 8 (obecnie Alpha) lub nowszej. W Adminie 8 wprowadzono nową funkcję „generowania interfejsu API GUI” dla niestandardowych komponentów jsonConfig (React 19 / MUI 9, `@iobroker/gui-components`) bez wstecznej kompatybilności, więc zakładki „Czujniki”, „Wartości danych” i „Kopia zapasowa” nie ładują się już w Adminie 6/7. **Nie** aktualizuj do tej wersji, chyba że ioBroker.admin został już zaktualizowany do wersji 8.\nPrzebudowa interfejsu użytkownika administratora (edytor czujników, edytor elementów Data-SOLECTRUS, panel kopii zapasowej) jako poprawną kompilację Vite + Module Federation (`src-admin/`) z przeznaczeniem `@iobroker/gui-components`, zastępując ręcznie napisane kontenery Vanilla-JS Module Federation\nRejestruj wyraźny błąd i ustawiaj `info.lastError` podczas uruchamiania, jeśli zainstalowany plik ioBroker.admin ma wersję starszą niż 8, dzięki czemu niezgodna konfiguracja będzie natychmiast widoczna zamiast cichego/mylącego błędu w oknie dialogowym konfiguracji\nCzyszczenie i18n\nNapraw przekroczenie limitu czasu dla Menedżera kopii zapasowych",
         "uk": "**ВАЖЛИВА ЗМІНА:** Потрібна версія ioBroker.admin 8 (наразі альфа) або новіша. У версії Admin 8 було запроваджено нову «генерацію GUI API» для користувацьких компонентів jsonConfig (React 19 / MUI 9, `@iobroker/gui-components`) без зворотної сумісності, тому вкладки «Датчики», «Значення даних» та «Резервне копіювання» більше не завантажуються в Admin 6/7. **Не** оновлюйте ioBroker.admin до цієї версії, якщо ioBroker.admin ще не оновлено до версії 8.\nПеребудувати інтерфейс адміністратора (редактор сенсорів, редактор елементів Data-SOLECTRUS, панель резервного копіювання) як належну збірку Vite + Module Federation (`src-admin/`) з орієнтацією на `@iobroker/gui-components`, замінивши рукописні контейнери Module Federation vanilla-JS.\nЗареєструвати помилку очищення та встановити `info.lastError` під час запуску, якщо встановлений ioBroker.admin має версію нижче 8, щоб несумісна конфігурація була одразу видимою, а не тиха/незрозуміла помилка в діалоговому вікні конфігурації.\nОчищення i18n\nВиправлення часу очікування для менеджера резервного копіювання",
         "zh-cn": "**重大变更：** 需要 ioBroker.admin 8（目前为 Alpha 版本）或更高版本。Admin 8 为自定义 jsonConfig 组件（React 19 / MUI 9，`@iobroker/gui-components`）引入了新的“GUI API 生成”机制，不向下兼容，因此“传感器”、“数据值”和“备份”选项卡在 Admin 6/7 上将无法加载。除非 ioBroker.admin 已更新至版本 8，否则**请勿**更新至此版本。\n重新构建管理界面（传感器编辑器、Data-SOLECTRUS 项目编辑器、备份面板），使其符合 Vite + Module Federation 的构建规范（`src-admin/`），并针对 `@iobroker/gui-components` 进行优化，替换掉之前手动编写的纯 JavaScript Module Federation 容器。\n如果已安装的 ioBroker.admin 版本低于 8，则在启动时记录一个清晰的错误信息并设置 `info.lastError`，以便立即显示不兼容的配置，而不是在配置对话框中出现令人困惑的静默错误。\n清理 i18n\n修复备份管理器超时问题"
-      },
-      "1.12.0": {
-        "en": "Final Release",
-        "de": "Endgültige Version",
-        "ru": "Финальный релиз",
-        "pt": "Versão final",
-        "nl": "Definitieve release",
-        "fr": "Version finale",
-        "it": "Versione finale",
-        "es": "Versión final",
-        "pl": "Wersja ostateczna",
-        "uk": "Остаточний реліз",
-        "zh-cn": "最终版本"
       }
     },
     "titleLang": {

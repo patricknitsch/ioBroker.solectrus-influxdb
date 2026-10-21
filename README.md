@@ -65,7 +65,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 2.3.0 (2026-10-21)
 * **ADAPTER MEETS ioBroker SECRETS**
 * (patricknitsch) ioBroker secrets (credentials of the Admin settings, Admin 8 and newer) can now be used for the InfluxDB connection: a credential "Login & password" provides URL (login) and token (password)
 * (patricknitsch) The InfluxDB port now has its own field (default 8086); existing settings are taken over automatically
@@ -91,13 +91,6 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 * (patricknitsch) Add Node.js 26 in test-and-release.yml
 * (patricknitsch) Add guide for contributors working with Claude Code (CLAUDE.md)
 * (patricknitsch) Update Dependencies
-
-### 2.0.1 (2026-08-04)
-* (patricknitsch) **BREAKING CHANGE:** Requires ioBroker.admin 8 (currently Alpha) or newer. Admin 8 introduced a new "GUI API generation" for custom jsonConfig components (React 19 / MUI 9, `@iobroker/gui-components`) with no backward compatibility, so the Sensors, Data Values and Backup tabs no longer load on Admin 6/7. Do **not** update to this version unless ioBroker.admin has already been updated to version 8.
-* (patricknitsch) Fix Sensor Overview Format
-* (patricknitsch) Fix missing unit in Formula Engine
-* (patricknitsch) Split internal and external Sensors in Overview
-* (patricknitsch) Update Doc
 
 **Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**
 
