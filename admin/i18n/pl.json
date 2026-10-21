@@ -361,7 +361,7 @@
     "WebDAV backups": "Kopie zapasowe WebDAV",
     "No WebDAV backups found.": "Nie znaleziono kopii zapasowych WebDAV.",
     "influxCredentialLabel": "Dane logowania (ustawienia Admin)",
-    "influxCredentialHelp": "Brak = użyj poniższego URL i tokenu. „Klucz”: klucz jest tokenem. „Login i hasło”: login = URL, hasło = token.",
+    "influxCredentialHelp": "Brak = użyj poniższego URL i tokenu. W przeciwnym razie dane logowania typu „Login i hasło”: login = URL, hasło = token.",
     "influxUrlHelp": "Adres bez portu, np. http://192.168.1.10",
     "influxPortLabel": "Port",
     "influxPortHelp": "Domyślnie 8086. 0 = domyślny port protokołu (np. 443 dla HTTPS za reverse proxy). Port w URL ma pierwszeństwo."

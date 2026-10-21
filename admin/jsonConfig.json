@@ -30,6 +30,7 @@
 							"type": "text",
 							"label": "InfluxDB URL",
 							"help": "influxUrlHelp",
+							"disabled": "!!data.influxCredential",
 							"newLine": true,
 							"xs": 12,
 							"sm": 8,

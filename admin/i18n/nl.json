@@ -361,7 +361,7 @@
     "WebDAV backups": "WebDAV-back-ups",
     "No WebDAV backups found.": "Geen WebDAV-back-ups gevonden.",
     "influxCredentialLabel": "Inloggegevens (Admin-instellingen)",
-    "influxCredentialHelp": "Geen = URL en token hieronder gebruiken. \"Sleutel\": de sleutel is het token. \"Login & wachtwoord\": login = URL, wachtwoord = token.",
+    "influxCredentialHelp": "Geen = URL en token hieronder gebruiken. Anders inloggegevens van de vorm \"Login & wachtwoord\": login = URL, wachtwoord = token.",
     "influxUrlHelp": "Adres zonder poort, bijv. http://192.168.1.10",
     "influxPortLabel": "Poort",
     "influxPortHelp": "Standaard 8086. 0 = standaardpoort van het protocol (bijv. 443 voor HTTPS achter een reverse proxy). Een poort in de URL heeft voorrang."

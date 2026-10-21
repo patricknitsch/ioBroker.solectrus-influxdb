@@ -26,8 +26,8 @@ Adapter-Einstellungen öffnen und zum Tab **InfluxDB** wechseln.
 
 | Feld | Beschreibung |
 |------|--------------|
-| Zugangsdaten | Optional: Zugangsdaten aus den Admin-Einstellungen (*System-Einstellungen → Zugangsdaten*, ab Admin 8). **Keine** = URL und Token unten werden verwendet. Form *Schlüssel*: der Schlüssel ist der Token. Form *Login & Passwort*: Login = URL, Passwort = Token. Über ➕ lassen sich direkt neue Zugangsdaten anlegen. |
-| URL | InfluxDB 2.x Server-Adresse ohne Port (z.B. `http://192.168.1.10`) |
+| Zugangsdaten | Optional: Zugangsdaten aus den Admin-Einstellungen (*System-Einstellungen → Zugangsdaten*, ab Admin 8). **Keine** = URL und Token unten werden verwendet. Sonst Zugangsdaten der Form *Login & Passwort*: Login = URL (z.B. `http://192.168.1.10`), Passwort = Token. Zugangsdaten der Form *Schlüssel* werden nicht unterstützt. Über ➕ lassen sich direkt neue Zugangsdaten anlegen. |
+| URL | InfluxDB 2.x Server-Adresse ohne Port (z.B. `http://192.168.1.10`; gesperrt, wenn Zugangsdaten gewählt sind) |
 | Port | Port des InfluxDB-Servers (Standard `8086`). `0` = Standard-Port des Protokolls (z.B. 443 für HTTPS hinter einem Reverse Proxy). Enthält die URL einen Port, hat dieser Vorrang. |
 | Organization | Deine InfluxDB-Organisation |
 | Bucket | Ziel-Bucket für Zeitreihendaten |

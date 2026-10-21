@@ -26,8 +26,8 @@ Open the adapter settings and go to the **InfluxDB** tab.
 
 | Field | Description |
 |-------|-------------|
-| Credential | Optional: credential from the Admin settings (*System settings → Credentials*, Admin 8 and newer). **None** = URL and token below are used. Form *Key*: the key is the token. Form *Login & password*: login = URL, password = token. ➕ creates a new credential right there. |
-| URL | InfluxDB 2.x server address without port (e.g. `http://192.168.1.10`) |
+| Credential | Optional: credential from the Admin settings (*System settings → Credentials*, Admin 8 and newer). **None** = URL and token below are used. Otherwise a credential of the form *Login & password*: login = URL (e.g. `http://192.168.1.10`), password = token. Credentials of the form *Key* are not supported. ➕ creates a new credential right there. |
+| URL | InfluxDB 2.x server address without port (e.g. `http://192.168.1.10`; locked while a credential is selected) |
 | Port | Port of the InfluxDB server (default `8086`). `0` = default port of the protocol (e.g. 443 for HTTPS behind a reverse proxy). A port in the URL takes precedence. |
 | Organization | Your InfluxDB organization |
 | Bucket | Target bucket for time-series data |

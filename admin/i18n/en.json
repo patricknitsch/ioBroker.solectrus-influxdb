@@ -361,7 +361,7 @@
     "WebDAV backups": "WebDAV backups",
     "No WebDAV backups found.": "No WebDAV backups found.",
     "influxCredentialLabel": "Credential (Admin settings)",
-    "influxCredentialHelp": "None = use URL and token below. \"Key\": the key is the token. \"Login & password\": login = URL, password = token.",
+    "influxCredentialHelp": "None = use URL and token below. Otherwise a credential of the form \"Login & password\": login = URL, password = token.",
     "influxUrlHelp": "Address without port, e.g. http://192.168.1.10",
     "influxPortLabel": "Port",
     "influxPortHelp": "Default 8086. 0 = default port of the protocol (e.g. 443 for HTTPS behind a reverse proxy). A port in the URL takes precedence."
