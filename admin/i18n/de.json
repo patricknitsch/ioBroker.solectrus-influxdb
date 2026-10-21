@@ -238,7 +238,7 @@
     "inactive item": "inaktiver Datenpunkt",
     "inactive items": "inaktive Datenpunkte",
     "influxBackupHint": "Hinweis: Nutzen Sie den Reiter Backup, um Backups dieser Instanz direkt zu erstellen, hochzuladen, wiederherzustellen, herunterzuladen oder zu löschen (individueller Speicherort möglich).",
-    "influxQuickStart": "1. Erstellen Sie ein InfluxDB 2.x-API-Token mit Schreibzugriff auf Ihren Bucket.\n2. Geben Sie links URL, Organisation, Bucket und Token ein und speichern Sie.\n3. Öffnen Sie die Registerkarte „Sensoren“ und ordnen Sie Ihre ioBroker-Zustände zu.\n4. Aktivieren Sie den Adapter und überprüfen Sie info.connection und die Pufferzustände.",
+    "influxQuickStart": "1. Erstellen Sie ein InfluxDB 2.x-API-Token mit Schreibzugriff auf Ihren Bucket.\n2. Geben Sie links URL, Port, Organisation, Bucket und Token ein – oder wählen Sie ab Admin 8 Zugangsdaten „Login & Passwort“ (Login = URL, Passwort = Token). Speichern Sie.\n3. Öffnen Sie die Registerkarte „Sensoren“ und ordnen Sie Ihre ioBroker-Zustände zu.\n4. Aktivieren Sie den Adapter und überprüfen Sie info.connection und die Pufferzustände.",
     "internalSensorHint": "Interne Sensoren werden gespiegelt und überwacht, aber nicht an InfluxDB gesendet.",
     "ioBroker Source State": "ioBroker-Quellstatus",
     "jsonAutoDetectInfo": "y → inverter_forecast:power (Prognose)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperatur)\n\nFelder, die im JSON nicht vorhanden sind, werden automatisch übersprungen.",
@@ -359,5 +359,10 @@
     "Backup created, but the WebDAV upload failed:": "Backup erstellt, aber der WebDAV-Upload ist fehlgeschlagen:",
     "Backup created and uploaded to WebDAV.": "Backup erstellt und auf WebDAV hochgeladen.",
     "WebDAV backups": "WebDAV-Backups",
-    "No WebDAV backups found.": "Keine WebDAV-Backups gefunden."
+    "No WebDAV backups found.": "Keine WebDAV-Backups gefunden.",
+    "influxCredentialLabel": "Zugangsdaten (Admin-Einstellungen)",
+    "influxCredentialHelp": "Keine = URL und Token unten verwenden. Sonst Zugangsdaten der Form „Login & Passwort“: Login = URL, Passwort = Token.",
+    "influxUrlHelp": "Adresse ohne Port, z. B. http://192.168.1.10",
+    "influxPortLabel": "Port",
+    "influxPortHelp": "Standard 8086. 0 = Standard-Port des Protokolls (z. B. 443 für HTTPS hinter einem Reverse Proxy). Ein Port in der URL hat Vorrang."
 }

@@ -65,6 +65,11 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* **ADAPTER MEETS ioBroker SECRETS**
+* (patricknitsch) ioBroker secrets (credentials of the Admin settings, Admin 8 and newer) can now be used for the InfluxDB connection: a credential "Login & password" provides URL (login) and token (password)
+* (patricknitsch) The InfluxDB port now has its own field (default 8086); existing settings are taken over automatically
+
 ### 2.2.2 (2026-10-19)
 * (patricknitsch) Backups can now also be stored on a WebDAV server (e.g. Nextcloud) and restored from there
 * (patricknitsch) Update Dependencies

@@ -238,7 +238,7 @@
     "inactive item": "inactief item",
     "inactive items": "inactieve items",
     "influxBackupHint": "Opmerking: gebruik het tabblad Backup om back-ups van deze instantie direct te maken, uploaden, herstellen, downloaden of verwijderen (aangepaste opslaglocatie mogelijk).",
-    "influxQuickStart": "1. Maak een InfluxDB 2.x API-token met schrijftoegang tot uw bucket.\n2. Voer links URL, organisatie, bucket en token in en sla op.\n3. Open het tabblad Sensoren en breng uw ioBroker-statussen in kaart.\n4. Schakel de adapter in en controleer info.connection en de bufferstatussen.",
+    "influxQuickStart": "1. Maak een InfluxDB 2.x API-token met schrijftoegang tot uw bucket.\n2. Voer links URL, poort, organisatie, bucket en token in – of kies vanaf Admin 8 inloggegevens \"Login & wachtwoord\" (login = URL, wachtwoord = token). Sla op.\n3. Open het tabblad Sensoren en breng uw ioBroker-statussen in kaart.\n4. Schakel de adapter in en controleer info.connection en de bufferstatussen.",
     "internalSensorHint": "Interne sensoren worden gespiegeld en bewaakt, maar niet naar InfluxDB gestuurd.",
     "ioBroker Source State": "ioBroker-bronstatus",
     "jsonAutoDetectInfo": "y → inverter_forecast:power (Prognose)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperatuur)\n\nVelden die niet in de JSON aanwezig zijn, worden automatisch overgeslagen.",
@@ -359,5 +359,10 @@
     "Backup created, but the WebDAV upload failed:": "Back-up gemaakt, maar de WebDAV-upload is mislukt:",
     "Backup created and uploaded to WebDAV.": "Back-up gemaakt en naar WebDAV geüpload.",
     "WebDAV backups": "WebDAV-back-ups",
-    "No WebDAV backups found.": "Geen WebDAV-back-ups gevonden."
+    "No WebDAV backups found.": "Geen WebDAV-back-ups gevonden.",
+    "influxCredentialLabel": "Inloggegevens (Admin-instellingen)",
+    "influxCredentialHelp": "Geen = URL en token hieronder gebruiken. Anders inloggegevens van de vorm \"Login & wachtwoord\": login = URL, wachtwoord = token.",
+    "influxUrlHelp": "Adres zonder poort, bijv. http://192.168.1.10",
+    "influxPortLabel": "Poort",
+    "influxPortHelp": "Standaard 8086. 0 = standaardpoort van het protocol (bijv. 443 voor HTTPS achter een reverse proxy). Een poort in de URL heeft voorrang."
 }

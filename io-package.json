@@ -177,7 +177,9 @@
     }
   },
   "native": {
-    "influxUrl": "http://localhost:8086",
+    "influxUrl": "http://localhost",
+    "influxPort": 8086,
+    "influxCredential": "",
     "influxOrg": "solectrus",
     "influxBucket": "solectrus",
     "influxInterval": 5,

@@ -238,7 +238,7 @@
     "inactive item": "неактивний елемент",
     "inactive items": "неактивні елементи",
     "influxBackupHint": "Примітка: використовуйте вкладку Backup, щоб напряму створювати, завантажувати, відновлювати, скачувати або видаляти резервні копії цього екземпляра (можна задати власне місце зберігання).",
-    "influxQuickStart": "1. Створіть токен API InfluxDB 2.x із доступом на запис до свого сегмента.\n2. Введіть URL-адресу, організацію, сегмент і маркер ліворуч і збережіть.\n3. Відкрийте вкладку «Датчики» та відобразіть свої стани ioBroker.\n4. Увімкніть адаптер і перевірте стан info.connection і буфера.",
+    "influxQuickStart": "1. Створіть токен API InfluxDB 2.x із доступом на запис до свого сегмента.\n2. Введіть ліворуч URL, порт, організацію, бакет і токен – або, починаючи з Admin 8, виберіть облікові дані «Логін і пароль» (логін = URL, пароль = токен). Збережіть.\n3. Відкрийте вкладку «Датчики» та відобразіть свої стани ioBroker.\n4. Увімкніть адаптер і перевірте стан info.connection і буфера.",
     "internalSensorHint": "Внутрішні датчики віддзеркалюються та контролюються, але не надсилаються до InfluxDB.",
     "ioBroker Source State": "вихідний стан ioBroker",
     "jsonAutoDetectInfo": "y → inverter_forecast:power (Прогноз)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Температура)\n\nПоля, відсутні в JSON, автоматично пропускаються.",
@@ -359,5 +359,10 @@
     "Backup created, but the WebDAV upload failed:": "Резервну копію створено, але завантаження на WebDAV не вдалося:",
     "Backup created and uploaded to WebDAV.": "Резервну копію створено та завантажено на WebDAV.",
     "WebDAV backups": "Резервні копії WebDAV",
-    "No WebDAV backups found.": "Резервні копії WebDAV не знайдено."
+    "No WebDAV backups found.": "Резервні копії WebDAV не знайдено.",
+    "influxCredentialLabel": "Облікові дані (налаштування Admin)",
+    "influxCredentialHelp": "Немає = використовувати URL і токен нижче. Інакше облікові дані виду «Логін і пароль»: логін = URL, пароль = токен.",
+    "influxUrlHelp": "Адреса без порту, напр. http://192.168.1.10",
+    "influxPortLabel": "Порт",
+    "influxPortHelp": "За замовчуванням 8086. 0 = стандартний порт протоколу (напр. 443 для HTTPS за зворотним проксі). Порт в URL має пріоритет."
 }

@@ -238,7 +238,7 @@
     "inactive item": "élément inactif",
     "inactive items": "éléments inactifs",
     "influxBackupHint": "Remarque : utilisez l'onglet Backup pour créer, téléverser, restaurer, télécharger ou supprimer directement des sauvegardes de cette instance (emplacement de stockage personnalisable).",
-    "influxQuickStart": "1. Créez un jeton API InfluxDB 2.x avec un accès en écriture à votre compartiment.\n2. Saisissez l'URL, l'organisation, le compartiment et le jeton à gauche et enregistrez.\n3. Ouvrez l'onglet Capteurs et cartographiez les états de votre ioBroker.\n4. Activez l'adaptateur et vérifiez info.connection et les états du tampon.",
+    "influxQuickStart": "1. Créez un jeton API InfluxDB 2.x avec un accès en écriture à votre compartiment.\n2. Saisissez à gauche l'URL, le port, l'organisation, le bucket et le jeton – ou, à partir d'Admin 8, choisissez des identifiants « Identifiant et mot de passe » (identifiant = URL, mot de passe = jeton). Enregistrez.\n3. Ouvrez l'onglet Capteurs et cartographiez les états de votre ioBroker.\n4. Activez l'adaptateur et vérifiez info.connection et les états du tampon.",
     "internalSensorHint": "Les capteurs internes sont reflétés et surveillés, mais ne sont pas envoyés à InfluxDB.",
     "ioBroker Source State": "État source d'ioBroker",
     "jsonAutoDetectInfo": "y → inverter_forecast:power (Prévision)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Température)\n\nLes champs absents du JSON sont ignorés automatiquement.",
@@ -359,5 +359,10 @@
     "Backup created, but the WebDAV upload failed:": "Sauvegarde créée, mais l'envoi vers WebDAV a échoué :",
     "Backup created and uploaded to WebDAV.": "Sauvegarde créée et envoyée vers WebDAV.",
     "WebDAV backups": "Sauvegardes WebDAV",
-    "No WebDAV backups found.": "Aucune sauvegarde WebDAV trouvée."
+    "No WebDAV backups found.": "Aucune sauvegarde WebDAV trouvée.",
+    "influxCredentialLabel": "Identifiants (paramètres Admin)",
+    "influxCredentialHelp": "Aucun = utiliser l'URL et le jeton ci-dessous. Sinon, des identifiants de la forme « Identifiant et mot de passe » : identifiant = URL, mot de passe = jeton.",
+    "influxUrlHelp": "Adresse sans port, p. ex. http://192.168.1.10",
+    "influxPortLabel": "Port",
+    "influxPortHelp": "Par défaut 8086. 0 = port par défaut du protocole (p. ex. 443 pour HTTPS derrière un proxy inverse). Un port dans l'URL est prioritaire."
 }

@@ -238,7 +238,7 @@
     "inactive item": "elemento inativo",
     "inactive items": "elementos inativos",
     "influxBackupHint": "Nota: Use a aba Backup para criar, carregar, restaurar, transferir ou eliminar backups desta instância diretamente (local de armazenamento personalizável).",
-    "influxQuickStart": "1. Crie um token de API InfluxDB 2.x com acesso de gravação ao seu bucket.\n2. Insira URL, organização, bucket e token à esquerda e salve.\n3. Abra a guia Sensores e mapeie os estados do seu ioBroker.\n4. Habilite o adaptador e verifique info.connection e os estados do buffer.",
+    "influxQuickStart": "1. Crie um token de API InfluxDB 2.x com acesso de gravação ao seu bucket.\n2. Insira à esquerda URL, porta, organização, bucket e token – ou, a partir do Admin 8, selecione uma credencial \"Login e senha\" (login = URL, senha = token). Salve.\n3. Abra a guia Sensores e mapeie os estados do seu ioBroker.\n4. Habilite o adaptador e verifique info.connection e os estados do buffer.",
     "internalSensorHint": "Os sensores internos são espelhados e monitorados, mas não são enviados ao InfluxDB.",
     "ioBroker Source State": "Estado de origem do ioBroker",
     "jsonAutoDetectInfo": "y → inverter_forecast:power (Previsão)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperatura)\n\nCampos não presentes no JSON são ignorados automaticamente.",
@@ -359,5 +359,10 @@
     "Backup created, but the WebDAV upload failed:": "Backup criado, mas o envio para o WebDAV falhou:",
     "Backup created and uploaded to WebDAV.": "Backup criado e enviado para o WebDAV.",
     "WebDAV backups": "Backups WebDAV",
-    "No WebDAV backups found.": "Nenhum backup WebDAV encontrado."
+    "No WebDAV backups found.": "Nenhum backup WebDAV encontrado.",
+    "influxCredentialLabel": "Credencial (configurações do Admin)",
+    "influxCredentialHelp": "Nenhuma = usar URL e token abaixo. Caso contrário, uma credencial do tipo \"Login e senha\": login = URL, senha = token.",
+    "influxUrlHelp": "Endereço sem porta, p. ex. http://192.168.1.10",
+    "influxPortLabel": "Porta",
+    "influxPortHelp": "Padrão 8086. 0 = porta padrão do protocolo (p. ex. 443 para HTTPS atrás de um proxy reverso). Uma porta na URL tem prioridade."
 }

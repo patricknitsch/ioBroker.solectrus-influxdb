@@ -238,7 +238,7 @@
     "inactive item": "elemento inactivo",
     "inactive items": "elementos inactivos",
     "influxBackupHint": "Nota: Utilice la pestaña Backup para crear, subir, restaurar, descargar o eliminar copias de seguridad de esta instancia directamente (ubicación de almacenamiento personalizable).",
-    "influxQuickStart": "1. Cree un token API de InfluxDB 2.x con acceso de escritura a su depósito.\n2. Ingrese la URL, la organización, el depósito y el token a la izquierda y guarde.\n3. Abra la pestaña Sensores y asigne los estados de su ioBroker.\n4. Habilite el adaptador y verifique la conexión de información y los estados del búfer.",
+    "influxQuickStart": "1. Cree un token API de InfluxDB 2.x con acceso de escritura a su depósito.\n2. Introduzca a la izquierda URL, puerto, organización, bucket y token – o, a partir de Admin 8, elija una credencial «Usuario y contraseña» (usuario = URL, contraseña = token). Guarde.\n3. Abra la pestaña Sensores y asigne los estados de su ioBroker.\n4. Habilite el adaptador y verifique la conexión de información y los estados del búfer.",
     "internalSensorHint": "Los sensores internos se reflejan y supervisan, pero no se envían a InfluxDB.",
     "ioBroker Source State": "Estado fuente de ioBroker",
     "jsonAutoDetectInfo": "y → inverter_forecast:power (Pronóstico)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperatura)\n\nLos campos no presentes en el JSON se omiten automáticamente.",
@@ -359,5 +359,10 @@
     "Backup created, but the WebDAV upload failed:": "Copia de seguridad creada, pero la subida a WebDAV falló:",
     "Backup created and uploaded to WebDAV.": "Copia de seguridad creada y subida a WebDAV.",
     "WebDAV backups": "Copias de seguridad WebDAV",
-    "No WebDAV backups found.": "No se encontraron copias de seguridad WebDAV."
+    "No WebDAV backups found.": "No se encontraron copias de seguridad WebDAV.",
+    "influxCredentialLabel": "Credencial (ajustes de Admin)",
+    "influxCredentialHelp": "Ninguna = usar la URL y el token de abajo. Si no, una credencial del tipo «Usuario y contraseña»: usuario = URL, contraseña = token.",
+    "influxUrlHelp": "Dirección sin puerto, p. ej. http://192.168.1.10",
+    "influxPortLabel": "Puerto",
+    "influxPortHelp": "Predeterminado 8086. 0 = puerto predeterminado del protocolo (p. ej. 443 para HTTPS tras un proxy inverso). Un puerto en la URL tiene prioridad."
 }

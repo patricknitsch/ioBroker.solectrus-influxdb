@@ -24,15 +24,36 @@
 
 Adapter-Einstellungen öffnen und zum Tab **InfluxDB** wechseln.
 
+URL und Token können auf zwei Wegen angegeben werden:
+
+### Möglichkeit A (Standard): Eingabe in der Instanz
+
+**Zugangsdaten** auf **Keine** lassen und URL, Port und Token direkt in die Felder eintragen.
+
+### Möglichkeit B (ab Admin 8): ioBroker-Zugangsdaten „Login & Passwort“
+
+URL und Token werden zentral in *System-Einstellungen → Zugangsdaten* gespeichert und im Feld **Zugangsdaten** ausgewählt (über ➕ auch direkt dort anlegbar):
+
+- **Login** = URL, z.B. `http://192.168.1.10`
+- **Passwort** = API-Token
+
+Die Felder URL und Token sind dann gesperrt. Zugangsdaten der Form *Schlüssel* werden nicht unterstützt. Werden die Zugangsdaten im Admin geändert, startet der Adapter neu.
+
+### Felder
+
 | Feld | Beschreibung |
 |------|--------------|
-| URL | InfluxDB 2.x Server-Adresse (z.B. `http://192.168.1.10:8086`) |
+| Zugangsdaten | **Keine** (Möglichkeit A) oder Zugangsdaten „Login & Passwort“ (Möglichkeit B) |
+| URL | InfluxDB 2.x Server-Adresse ohne Port, z.B. `http://192.168.1.10` |
+| Port | Standard `8086`. `0` = Standard-Port des Protokolls (z.B. 443 für HTTPS hinter einem Reverse Proxy). Ein Port in der URL hat Vorrang. |
 | Organization | Deine InfluxDB-Organisation |
 | Bucket | Ziel-Bucket für Zeitreihendaten |
 | Token | API-Token mit **Schreibrechten** |
 | Polling Interval (s) | Wie oft Sensorwerte gesammelt werden (5-30 Sekunden) |
 
 Der Adapter prüft die Verbindung beim Start durch Schreiben eines Test-Punktes. Der Verbindungsstatus wird in `info.connection` angezeigt.
+
+> **Update von älteren Versionen:** Ein Port in der URL (z.B. `http://192.168.1.10:8086`) wird beim ersten Start automatisch in das Feld **Port** übernommen. Eine URL ohne Port behält den Standard-Port ihres Protokolls (80 bzw. 443). Es ist nichts zu tun.
 
 Am Ende dieses Tabs befinden sich:
 
