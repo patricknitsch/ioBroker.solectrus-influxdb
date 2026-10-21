@@ -364,5 +364,5 @@
     "influxCredentialHelp": "Keine = URL und Token unten verwenden. Sonst Zugangsdaten der Form „Login & Passwort“: Login = URL, Passwort = Token.",
     "influxUrlHelp": "Adresse ohne Port, z. B. http://192.168.1.10",
     "influxPortLabel": "Port",
-    "influxPortHelp": "Standard 8086. 0 = Standard-Port des Protokolls (z. B. 443 für HTTPS hinter einem Reverse Proxy). Ein Port in der URL hat Vorrang."
+    "influxPortHelp": "Standard 8086."
 }
