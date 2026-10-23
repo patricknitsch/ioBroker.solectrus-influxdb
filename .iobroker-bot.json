@@ -1,0 +1,8 @@
+{
+  "iobroker-adapter-checker": {
+    "ignore": [
+      "W1073",
+      "W1074"
+    ]
+  }
+}
