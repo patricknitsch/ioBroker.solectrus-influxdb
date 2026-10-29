@@ -94,6 +94,10 @@ rm -rf admin/custom && npx tsx tasks.ts --3-copy && rm -rf src-admin/build
 
 ## Git and PRs
 
-- Branch from the current `main`; never commit to `main` directly.
+- Branch from the current `main`. Never commit to `main` directly. Work on a feature branch (feat/…, fix/…, chore/…).
+- When the work is done and all checks pass, push the branch and open the PR automatically, without asking first.
+- PR title: short and fitting, at most two words, e.g. Robust Login, Consumption Tracker, Blue Fix.
 - PR description: summary and test plan; use `Refers to #<issue>`, never a closing keyword.
+- One topic per PR. Describe in the PR what changed, why, and how it was tested, including whether it was tested against the live API.
+- Keep commit messages descriptive, in English, imperative mood.
 - Push only after the checks above are green.
