@@ -28,6 +28,7 @@
   "dependencies": {
     "@influxdata/influxdb-client": "^1.35.0",
     "@iobroker/adapter-core": "^3.4.3",
+    "@iobroker/dm-utils": "^3.2.1",
     "jsep": "^1.6.0",
     "webdav": "^5.11.0"
   },

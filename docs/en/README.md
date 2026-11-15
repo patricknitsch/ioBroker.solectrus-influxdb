@@ -226,6 +226,19 @@ The **SOLECTRUS Overview** tab (accessible via the tab bar in the adapter sectio
 
 Click **Open Configuration** (top right) to jump directly to the instance configuration page of this adapter.
 
+### Device Manager
+
+All active sensors and formula engine items are also shown as cards in the **device manager** of the Admin (select the instance `solectrus-influxdb.X`). The cards show the same information as the sensors overview and are updated live:
+
+- **Groups**: with the group filter of the device manager, **InfluxDB Sensors**, **Internal Sensors** and **Formula Engine** can be shown separately.
+- **Colors** as in the sensors overview: **green** = InfluxDB sensor, **yellow** = internal sensor or formula engine item, **orange** = alive timeout exceeded (value, timestamp and the inputs without update), **red** = max value exceeded (value and limit; red takes precedence over orange).
+- Each card has two tabs, so the card keeps its size:
+  - **Value**: current value with unit, max value, timestamp, next expected update or the timeout of the inputs (*Inputs: 15 min*) and the lines *Input without update*.
+  - **Details**: measurement, field, type, source state and state ID of the sensor; for formula engine items state ID, mode and formula/expression.
+- The adapter writes the sensors that exceeded their alive timeout to the state `info.staleSensors`.
+
+A current Admin version is required, whose device manager shows information directly on the card. The sensors overview stays unchanged.
+
 ---
 
 ## 4. Forecast Sources

@@ -143,6 +143,10 @@
     "type": "communication",
     "compact": true,
     "messagebox": true,
+    "supportedMessages": {
+      "custom": true,
+      "deviceManager": true
+    },
     "connectionType": "local",
     "dataSource": "push",
     "adminUI": {

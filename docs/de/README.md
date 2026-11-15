@@ -226,6 +226,19 @@ Der Tab **SOLECTRUS Overview** (erreichbar über die Tab-Leiste im Adapter-Berei
 
 Auf **Konfiguration öffnen** (oben rechts) klicken, um direkt zur Instanzkonfiguration dieses Adapters zu gelangen.
 
+### Geräte-Manager
+
+Alle aktiven Sensoren und Formel-Engine-Items erscheinen zusätzlich als Kacheln im **Geräte-Manager** des Admin (Instanz `solectrus-influxdb.X` auswählen). Die Kacheln zeigen dieselben Informationen wie die Sensoren-Übersicht und aktualisieren sich live:
+
+- **Gruppen**: Über den Gruppenfilter des Geräte-Managers lassen sich **InfluxDB-Sensoren**, **Interne Sensoren** und **Formel-Engine** getrennt anzeigen.
+- **Farben** wie in der Sensoren-Übersicht: **grün** = InfluxDB-Sensor, **gelb** = interner Sensor bzw. Formel-Engine-Item, **orange** = Alive-Timeout überschritten (Wert, Zeitstempel und die Eingänge ohne Aktualisierung), **rot** = Maximalwert überschritten (Wert und Grenze; rot hat Vorrang vor orange).
+- Jede Kachel hat zwei Tabs, damit die Kachelgröße erhalten bleibt:
+  - **Wert**: aktueller Wert mit Einheit, Maximalwert, Zeitstempel, nächste erwartete Aktualisierung bzw. Timeout der Eingänge (*Eingänge: 15 min*) und die Zeilen *Eingang ohne Aktualisierung*.
+  - **Details**: Measurement, Field, Typ, Quell-State und State-ID des Sensors; bei Formel-Engine-Items State-ID, Modus und Formel/Ausdruck.
+- Welche Sensoren ihren Alive-Timeout überschritten haben, schreibt der Adapter in den State `info.staleSensors`.
+
+Voraussetzung ist eine aktuelle Admin-Version, deren Geräte-Manager Informationen direkt auf der Kachel anzeigt. Die Sensoren-Übersicht bleibt unverändert erhalten.
+
 ---
 
 ## 4. Prognosequellen

@@ -44,6 +44,7 @@ const { sendNotification } = require('./lib/notificationManager');
 const { getNotificationMessage } = require('./lib/notificationMessages');
 const backupManager = require('./lib/backupManager');
 const webdavManager = require('./lib/webdavManager');
+const { SolectrusDeviceManagement } = require('./lib/deviceManagement');
 const dsStateRegistry = require('./lib/data-solectrus/services/stateRegistry');
 const dsItemManager = require('./lib/data-solectrus/services/itemManager');
 const dsTickRunner = require('./lib/data-solectrus/services/tickRunner');
@@ -95,6 +96,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.lastWrittenTs = new Map();
 		// Last written value of info.staleInputs (JSON), written only on change
 		this.staleInputsJson = null;
+		// Last written value of info.staleSensors (JSON), written only on change
+		this.staleSensorsJson = null;
 		// Last written value of info.staleFormulaInputs (JSON), written only on change
 		this.staleItemInputsJson = null;
 		// Maps sensor state id → timestamp (ms) when last alive warning was logged
@@ -128,6 +131,9 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.on('unload', this.onUnload.bind(this));
 		this.on('stateChange', this.onStateChange.bind(this));
 		this.on('message', this.onMessage.bind(this));
+
+		/* ---------- Device manager (handles the `dm:` messages itself) ---------- */
+		this.deviceManagement = new SolectrusDeviceManagement(this);
 	}
 
 	/* =====================================================
