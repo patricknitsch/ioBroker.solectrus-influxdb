@@ -364,5 +364,7 @@
     "influxCredentialHelp": "Brak = użyj poniższego URL i tokenu. W przeciwnym razie dane logowania typu „Login i hasło”: login = URL, hasło = token.",
     "influxUrlHelp": "Adres bez portu, np. http://192.168.1.10",
     "influxPortLabel": "Port",
-    "influxPortHelp": "Domyślnie 8086"
+    "influxPortHelp": "Domyślnie 8086",
+    "notifyConnectionFailDelayLabel": "Opóźnienie przed powiadomieniem o awarii połączenia (s)",
+    "notifyConnectionFailDelayHelp": "Powiadomienie jest wysyłane tylko wtedy, gdy połączenie z InfluxDB nadal jest przerwane po tym czasie. 0 = natychmiast. W tym czasie dane są buforowane."
 }

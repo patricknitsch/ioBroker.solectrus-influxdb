@@ -368,6 +368,20 @@
 					"lg": 12,
 					"xl": 12
 				},
+				"notifyConnectionFailDelaySeconds": {
+					"type": "number",
+					"label": "notifyConnectionFailDelayLabel",
+					"help": "notifyConnectionFailDelayHelp",
+					"default": 0,
+					"min": 0,
+					"hidden": "!data.notifyEnabled || !data.notifyOnConnectionFail",
+					"newLine": true,
+					"xs": 12,
+					"sm": 12,
+					"md": 6,
+					"lg": 4,
+					"xl": 4
+				},
 				"notifyOnSensorTimeout": {
 					"type": "checkbox",
 					"label": "notifyOnSensorTimeoutLabel",

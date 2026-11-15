@@ -39,9 +39,7 @@ const {
 	extractJsonSensorValuesAuto,
 	disableSensorByFieldTypeConflict,
 } = require('./lib/sensorManager');
-const { collectPoints, writeSensorChange, scheduleNextFlush } = require('./lib/collectFlush');
-const { sendNotification } = require('./lib/notificationManager');
-const { getNotificationMessage } = require('./lib/notificationMessages');
+const { collectPoints, writeSensorChange, scheduleNextFlush, notifyConnectionFailure } = require('./lib/collectFlush');
 const backupManager = require('./lib/backupManager');
 const webdavManager = require('./lib/webdavManager');
 const dsStateRegistry = require('./lib/data-solectrus/services/stateRegistry');
@@ -117,6 +115,8 @@ class SolectrusInfluxdb extends utils.Adapter {
 		this.influxWasDisconnected = false;
 		// Timestamp (ms) of the last InfluxDB connection-failure notification sent
 		this.lastConnectionFailNotifyTs = 0;
+		// Pending (delayed) InfluxDB connection-failure notification
+		this.connectionFailNotifyTimer = null;
 		// System language read from system.config at startup (e.g. 'de', 'en')
 		this.systemLanguage = 'en';
 
@@ -175,11 +175,7 @@ class SolectrusInfluxdb extends utils.Adapter {
 		if (!influxOk) {
 			const errMsg = 'InfluxDB connection failed – check URL, Token, Org and Bucket';
 			this.setState('info.lastError', errMsg, true);
-			this.influxWasDisconnected = true;
-			if (this.config.notifyOnConnectionFail) {
-				this.lastConnectionFailNotifyTs = Date.now();
-				sendNotification(this, getNotificationMessage(this, 'influxConnectionFailed')).catch(() => {});
-			}
+			notifyConnectionFailure(this);
 			// Adapter continues running; flush loop will retry
 		}
 
