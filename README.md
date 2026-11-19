@@ -65,6 +65,8 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (patricknitsch) Adjustable delay for the InfluxDB connection failure notification: short outages no longer send a failure and a restored message (refers to #259)
 ### 2.3.0 (2026-10-21)
 * **ADAPTER MEETS ioBroker SECRETS**
 * (patricknitsch) ioBroker secrets (credentials of the Admin settings, Admin 8 and newer) can now be used for the InfluxDB connection: a credential "Login & password" provides URL (login) and token (password)

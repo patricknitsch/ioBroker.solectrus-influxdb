@@ -201,6 +201,7 @@
     "webdavDeleteOldBackup": true,
     "notifyEnabled": false,
     "notifyOnConnectionFail": true,
+    "notifyConnectionFailDelaySeconds": 0,
     "notifyRepeatMinutes": 60,
     "notifyOnSensorTimeout": true,
     "notifyOnMaxValueExceeded": true,

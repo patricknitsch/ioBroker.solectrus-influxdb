@@ -364,5 +364,7 @@
     "influxCredentialHelp": "Geen = URL en token hieronder gebruiken. Anders inloggegevens van de vorm \"Login & wachtwoord\": login = URL, wachtwoord = token.",
     "influxUrlHelp": "Adres zonder poort, bijv. http://192.168.1.10",
     "influxPortLabel": "Poort",
-    "influxPortHelp": "Standaard 8086"
+    "influxPortHelp": "Standaard 8086",
+    "notifyConnectionFailDelayLabel": "Wachttijd voor melding verbindingsfout (s)",
+    "notifyConnectionFailDelayHelp": "De melding wordt alleen verzonden als de InfluxDB-verbinding na deze tijd nog steeds verbroken is. 0 = direct. De gegevens worden in de tussentijd gebufferd."
 }

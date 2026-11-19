@@ -609,6 +609,7 @@ Für jeden Anbieter gibt es eine **Instanz**-Dropdown-Liste. Verfügbare Adapter
 
 - Die Benachrichtigungen werden über `getNotificationMessage()` anhand der `systemLanguage` lokalisiert gesendet.
 - Bei InfluxDB-Verbindungsfehlern wird eine Benachrichtigung gesendet; bei anhaltenden Problemen kann sie nach `notifyRepeatMinutes` erneut gesendet werden.
+- Mit **Wartezeit vor Meldung Verbindungsausfall (s)** wird die Meldung erst gesendet, wenn die Verbindung so lange gestört ist. Ist sie vorher wieder da, wird weder eine Störungs- noch eine Wiederherstellungsmeldung gesendet (z. B. bei kurzen Aussetzern während eines NAS-Backups). 0 = sofort.
 - Sensor-Timeout-Benachrichtigungen setzen das konfigurierte Alive-Timeout (Expertenmodus) voraus und sind zusätzlich über `notifyRepeatMinutes` gedrosselt. Dasselbe gilt für Formel-Timeout-Benachrichtigungen mit dem Alive-Timeout des Formel-Datenpunkts.
 
 ---
