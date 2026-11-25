@@ -65,6 +65,9 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (patricknitsch) New forecast sensors INVERTER_POWER_FORECAST_MIN and INVERTER_POWER_FORECAST_MAX for the variability band of pvnode Plus (refers to #275)
+
 ### 2.3.1 (2026-11-19)
 * (patricknitsch) Adjustable delay for the InfluxDB connection failure notification: short outages no longer send a failure and a restored message (refers to #259)
 * (patricknitsch) Update Dependencies

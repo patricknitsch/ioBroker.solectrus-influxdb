@@ -241,7 +241,7 @@
     "influxQuickStart": "1. Créez un jeton API InfluxDB 2.x avec un accès en écriture à votre compartiment.\n2. Saisissez à gauche l'URL, le port, l'organisation, le bucket et le jeton – ou, à partir d'Admin 8, choisissez des identifiants « Identifiant et mot de passe » (identifiant = URL, mot de passe = jeton). Enregistrez.\n3. Ouvrez l'onglet Capteurs et cartographiez les états de votre ioBroker.\n4. Activez l'adaptateur et vérifiez info.connection et les états du tampon.",
     "internalSensorHint": "Les capteurs internes sont reflétés et surveillés, mais ne sont pas envoyés à InfluxDB.",
     "ioBroker Source State": "État source d'ioBroker",
-    "jsonAutoDetectInfo": "y → inverter_forecast:power (Prévision)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Température)\n\nLes champs absents du JSON sont ignorés automatiquement.",
+    "jsonAutoDetectInfo": "y → inverter_forecast:power (Prévision)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ny_min → inverter_forecast:power_min (Prévision min)\ny_max → inverter_forecast:power_max (Prévision max)\ntemp → outdoor_forecast:temperature (Température)\n\nLes champs absents du JSON sont ignorés automatiquement.",
     "jsonSensorDetailHint": "L'état source doit contenir un tableau JSON (p.ex. de pvforecast). Chaque entrée du tableau est analysée et écrite directement dans InfluxDB avec l'horodatage original. En mode automatique, l'adaptateur détecte les champs connus (y, clearsky, temp) et les écrit dans les measurements appropriés. Pour les types personnalisés, spécifiez la clé JSON pour l'horodatage et la valeur.",
     "jsonSensorHint": "Les données de prévision/météo peuvent être configurées comme capteurs JSON dans l'onglet Capteurs (type de données : Tableau JSON).",
     "max": "max",
@@ -366,5 +366,9 @@
     "influxPortLabel": "Port",
     "influxPortHelp": "Par défaut 8086",
     "notifyConnectionFailDelayLabel": "Délai avant la notification de perte de connexion (s)",
-    "notifyConnectionFailDelayHelp": "La notification n'est envoyée que si la connexion à InfluxDB est toujours interrompue après ce délai. 0 = immédiatement. Les données sont mises en mémoire tampon entre-temps."
+    "notifyConnectionFailDelayHelp": "La notification n'est envoyée que si la connexion à InfluxDB est toujours interrompue après ce délai. 0 = immédiatement. Les données sont mises en mémoire tampon entre-temps.",
+    "Forecast Min": "Prévision min",
+    "Forecast Max": "Prévision max",
+    "INVERTER_POWER_FORECAST_MIN": "INVERTER_POWER_FORECAST_MIN",
+    "INVERTER_POWER_FORECAST_MAX": "INVERTER_POWER_FORECAST_MAX"
 }

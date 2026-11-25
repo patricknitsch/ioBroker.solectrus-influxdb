@@ -241,7 +241,7 @@
     "influxQuickStart": "1. Создайте токен API InfluxDB 2.x с доступом на запись в вашу корзину.\n2. Введите слева URL, порт, организацию, корзину и токен – или, начиная с Admin 8, выберите учётные данные «Логин и пароль» (логин = URL, пароль = токен). Сохраните.\n3. Откройте вкладку «Датчики» и сопоставьте состояния вашего ioBroker.\n4. Включите адаптер и проверьте состояние info.connection и буфера.",
     "internalSensorHint": "Внутренние датчики зеркалируются и контролируются, но не отправляются в InfluxDB.",
     "ioBroker Source State": "Исходное состояние ioBroker",
-    "jsonAutoDetectInfo": "y → inverter_forecast:power (Прогноз)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Температура)\n\nПоля, отсутствующие в JSON, автоматически пропускаются.",
+    "jsonAutoDetectInfo": "y → inverter_forecast:power (Прогноз)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ny_min → inverter_forecast:power_min (Прогноз мин.)\ny_max → inverter_forecast:power_max (Прогноз макс.)\ntemp → outdoor_forecast:temperature (Температура)\n\nПоля, отсутствующие в JSON, автоматически пропускаются.",
     "jsonSensorDetailHint": "Состояние-источник должно содержать JSON-массив (напр. от pvforecast). Каждая запись массива разбирается и записывается напрямую в InfluxDB с исходной меткой времени. В автоматическом режиме адаптер определяет известные поля (y, clearsky, temp) и записывает их в соответствующие measurements. Для пользовательских типов укажите ключ JSON для метки времени и значения.",
     "jsonSensorHint": "Данные прогноза/погоды можно настроить как JSON-датчики на вкладке «Датчики» (тип данных: JSON-массив).",
     "max": "max",
@@ -366,5 +366,9 @@
     "influxPortLabel": "Порт",
     "influxPortHelp": "По умолчанию 8086",
     "notifyConnectionFailDelayLabel": "Задержка перед уведомлением о потере соединения (с)",
-    "notifyConnectionFailDelayHelp": "Уведомление отправляется, только если соединение с InfluxDB всё ещё отсутствует по истечении этого времени. 0 = сразу. Данные в это время буферизуются."
+    "notifyConnectionFailDelayHelp": "Уведомление отправляется, только если соединение с InfluxDB всё ещё отсутствует по истечении этого времени. 0 = сразу. Данные в это время буферизуются.",
+    "Forecast Min": "Прогноз мин.",
+    "Forecast Max": "Прогноз макс.",
+    "INVERTER_POWER_FORECAST_MIN": "INVERTER_POWER_FORECAST_MIN",
+    "INVERTER_POWER_FORECAST_MAX": "INVERTER_POWER_FORECAST_MAX"
 }

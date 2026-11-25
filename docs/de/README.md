@@ -253,12 +253,14 @@ Der Quell-State muss ein JSON-Array von Objekten enthalten. Jedes Objekt muss ei
 
 ### Vorkonfigurierte Prognosesensoren
 
-Der Adapter enthält drei vorkonfigurierte Prognosesensoren:
+Der Adapter enthält fünf vorkonfigurierte Prognosesensoren:
 
 | Sensor | Measurement | Field | Typ | JSON-Feld |
 |--------|-------------|-------|-----|-----------|
 | INVERTER_POWER_FORECAST | `inverter_forecast` | `power` | int | `y` |
 | INVERTER_POWER_FORECAST_CLEARSKY | `inverter_forecast_clearsky` | `power` | int | `clearsky` |
+| INVERTER_POWER_FORECAST_MIN | `inverter_forecast` | `power_min` | int | `y_min` |
+| INVERTER_POWER_FORECAST_MAX | `inverter_forecast` | `power_max` | int | `y_max` |
 | OUTDOOR_TEMP_FORECAST | `outdoor_forecast` | `temperature` | float | `temp` |
 
 Im **Automatik**-Modus erkennt ein einzelner JSON-Sensor alle vorhandenen Felder und schreibt sie automatisch. Du musst nur einen Sensor aktivieren und auf den JSON-Quell-State zeigen.
@@ -311,6 +313,7 @@ Der Adapter erkennt automatisch alle verfügbaren Felder in den JSON-Daten und s
 
 - `y` -> `inverter_forecast.power` (immer verfügbar)
 - `clearsky` -> `inverter_forecast_clearsky.power` (nur pvnode)
+- `y_min` / `y_max` -> `inverter_forecast.power_min` / `power_max` (Variabilitätsband, nur pvnode Plus)
 - `temp` -> `outdoor_forecast.temperature` (nur pvnode)
 
 ### Schritt 4: In InfluxDB prüfen

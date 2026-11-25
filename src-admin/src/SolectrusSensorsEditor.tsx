@@ -43,7 +43,7 @@ const SENSOR_GROUPS: { key: string; patterns: RegExp[] }[] = [
         ],
     })),
     { key: 'Heat Pump', patterns: [/^HEATPUMP_(?:POWER|HEATING_POWER|TANK_TEMP|TANK_TEMP_SETPOINT|STATUS)$/, /^OUTDOOR_TEMP$/] },
-    { key: 'Forecast', patterns: [/^INVERTER_POWER_FORECAST(?:_CLEARSKY)?$/, /^OUTDOOR_TEMP_FORECAST$/] },
+    { key: 'Forecast', patterns: [/^INVERTER_POWER_FORECAST(?:_CLEARSKY|_MIN|_MAX)?$/, /^OUTDOOR_TEMP_FORECAST$/] },
     { key: 'Custom Consumer', patterns: [/^CUSTOM_POWER_\d{2}$/] },
 ];
 
@@ -180,6 +180,8 @@ const MONITORING_DISABLED_COLOR = '#f44336';
 const JSON_PRESETS: Record<string, { valField: string; valDesc: string; measurement: string; field: string }> = {
     forecast: { valField: 'y', valDesc: 'Forecast', measurement: 'inverter_forecast', field: 'power' },
     clearsky: { valField: 'clearsky', valDesc: 'Forecast Clearsky', measurement: 'inverter_forecast_clearsky', field: 'power' },
+    forecastMin: { valField: 'y_min', valDesc: 'Forecast Min', measurement: 'inverter_forecast', field: 'power_min' },
+    forecastMax: { valField: 'y_max', valDesc: 'Forecast Max', measurement: 'inverter_forecast', field: 'power_max' },
     temperature: { valField: 'temp', valDesc: 'Temperature', measurement: 'outdoor_forecast', field: 'temperature' },
 };
 
@@ -575,7 +577,16 @@ export default class SolectrusSensorsEditor extends ConfigGeneric<ConfigGenericP
     private renderNonExpertJsonInfo(editSensor: Sensor): React.ReactNode {
         const t = I18n.t;
         const name = (editSensor.SensorName || '').toUpperCase();
-        const presetKey = name.indexOf('CLEARSKY') >= 0 ? 'clearsky' : name.indexOf('TEMP') >= 0 ? 'temperature' : 'forecast';
+        const presetKey =
+            name.indexOf('CLEARSKY') >= 0
+                ? 'clearsky'
+                : name.endsWith('_MIN')
+                  ? 'forecastMin'
+                  : name.endsWith('_MAX')
+                    ? 'forecastMax'
+                    : name.indexOf('TEMP') >= 0
+                      ? 'temperature'
+                      : 'forecast';
         const preset = JSON_PRESETS[presetKey];
         const m = editSensor.measurement || preset.measurement;
         const f = editSensor.field || preset.field;
