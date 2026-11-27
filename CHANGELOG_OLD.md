@@ -1,4 +1,9 @@
 # Older changes
+## 2.2.0 (2026-10-13)
+* (patricknitsch) Formula engine: values that are only used internally can get their own alive timeout; stale inputs are shown in the overview tab under Formula Engine. If an enabled sensor uses the value, the sensor takes precedence
+* (patricknitsch) Formula engine: alive monitoring can be turned off per input, e.g. for values that are only written on change; the value is still used in the calculation
+* (patricknitsch) Alive monitoring of sensors fed by the formula engine now also checks the input values of the formula; stale inputs are marked in the overview tab
+
 ## 2.1.0 (2026-10-12)
 * (patricknitsch) Add new SOLECTRUS car sensors for multiple vehicles (`CAR_BATTERY_SOC`, `CAR_ODOMETER`, `CAR_RANGE`, `CAR_CONNECTED`, `CAR_LATITUDE`, `CAR_LONGITUDE`, suffix `_1`–`_5`) (#209 and #212)
 * (patricknitsch) Default sensors are sorted into the folders of the HELIOS sensor overview

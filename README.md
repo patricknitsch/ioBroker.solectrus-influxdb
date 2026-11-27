@@ -65,7 +65,7 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 2.3.2 (2026-11-27)
 * (patricknitsch) New forecast sensors INVERTER_POWER_FORECAST_MIN and INVERTER_POWER_FORECAST_MAX for the variability band of pvnode Plus (refers to #275)
 
 ### 2.3.1 (2026-11-19)
@@ -83,11 +83,6 @@ It is designed for energy monitoring systems such as photovoltaic installations,
 
 ### 2.2.1 (2026-10-13)
 * (patricknitsch) Release without function. Deploying for 2.2.0 failed.
-
-### 2.2.0 (2026-10-13)
-* (patricknitsch) Formula engine: values that are only used internally can get their own alive timeout; stale inputs are shown in the overview tab under Formula Engine. If an enabled sensor uses the value, the sensor takes precedence
-* (patricknitsch) Formula engine: alive monitoring can be turned off per input, e.g. for values that are only written on change; the value is still used in the calculation
-* (patricknitsch) Alive monitoring of sensors fed by the formula engine now also checks the input values of the formula; stale inputs are marked in the overview tab
 
 **Older changelog entries can be found in [CHANGELOG_OLD.md](CHANGELOG_OLD.md).**
 
