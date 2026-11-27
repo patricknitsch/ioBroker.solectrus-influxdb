@@ -253,12 +253,14 @@ The source state must contain a JSON array of objects. Each object must have a t
 
 ### Default forecast sensors
 
-The adapter comes with three preconfigured forecast sensors:
+The adapter comes with five preconfigured forecast sensors:
 
 | Sensor | Measurement | Field | Type | JSON Field |
 |--------|-------------|-------|------|------------|
 | INVERTER_POWER_FORECAST | `inverter_forecast` | `power` | int | `y` |
 | INVERTER_POWER_FORECAST_CLEARSKY | `inverter_forecast_clearsky` | `power` | int | `clearsky` |
+| INVERTER_POWER_FORECAST_MIN | `inverter_forecast` | `power_min` | int | `y_min` |
+| INVERTER_POWER_FORECAST_MAX | `inverter_forecast` | `power_max` | int | `y_max` |
 | OUTDOOR_TEMP_FORECAST | `outdoor_forecast` | `temperature` | float | `temp` |
 
 In **Automatic** mode, a single JSON sensor detects all present fields and writes them automatically. You only need to enable one sensor and point it to the JSON source state.
@@ -311,6 +313,7 @@ The adapter will automatically detect all available fields in the JSON data and 
 
 - `y` -> `inverter_forecast.power` (always available)
 - `clearsky` -> `inverter_forecast_clearsky.power` (pvnode only)
+- `y_min` / `y_max` -> `inverter_forecast.power_min` / `power_max` (variability band, pvnode Plus only)
 - `temp` -> `outdoor_forecast.temperature` (pvnode only)
 
 ### Step 4: Verify in InfluxDB

@@ -241,7 +241,7 @@
     "influxQuickStart": "1. Utwórz token API InfluxDB 2.x z dostępem do zapisu w swoim zasobniku.\n2. Wprowadź po lewej URL, port, organizację, bucket i token – lub od Admin 8 wybierz dane logowania „Login i hasło” (login = URL, hasło = token). Zapisz.\n3. Otwórz zakładkę Sensory i zmapuj stany ioBrokera.\n4. Włącz adapter i sprawdź info.connection oraz stany bufora.",
     "internalSensorHint": "Wewnętrzne sensory są odzwierciedlane i monitorowane, ale nie są wysyłane do InfluxDB.",
     "ioBroker Source State": "Stan źródła ioBroker",
-    "jsonAutoDetectInfo": "y → inverter_forecast:power (Prognoza)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperatura)\n\nPola nieobecne w JSON są automatycznie pomijane.",
+    "jsonAutoDetectInfo": "y → inverter_forecast:power (Prognoza)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ny_min → inverter_forecast:power_min (Prognoza min)\ny_max → inverter_forecast:power_max (Prognoza maks.)\ntemp → outdoor_forecast:temperature (Temperatura)\n\nPola nieobecne w JSON są automatycznie pomijane.",
     "jsonSensorDetailHint": "Stan źródłowy musi zawierać tablicę JSON (np. z pvforecast). Każdy wpis tablicy jest parsowany i zapisywany bezpośrednio do InfluxDB z oryginalnym znacznikiem czasu. W trybie automatycznym adapter wykrywa znane pola (y, clearsky, temp) i zapisuje je do odpowiednich measurements. Dla typów niestandardowych podaj klucz JSON dla znacznika czasu i wartości.",
     "jsonSensorHint": "Dane prognozy/pogody można skonfigurować jako czujniki JSON w zakładce Czujniki (typ danych: Tablica JSON).",
     "max": "max",
@@ -366,5 +366,9 @@
     "influxPortLabel": "Port",
     "influxPortHelp": "Domyślnie 8086",
     "notifyConnectionFailDelayLabel": "Opóźnienie przed powiadomieniem o awarii połączenia (s)",
-    "notifyConnectionFailDelayHelp": "Powiadomienie jest wysyłane tylko wtedy, gdy połączenie z InfluxDB nadal jest przerwane po tym czasie. 0 = natychmiast. W tym czasie dane są buforowane."
+    "notifyConnectionFailDelayHelp": "Powiadomienie jest wysyłane tylko wtedy, gdy połączenie z InfluxDB nadal jest przerwane po tym czasie. 0 = natychmiast. W tym czasie dane są buforowane.",
+    "Forecast Min": "Prognoza min",
+    "Forecast Max": "Prognoza maks.",
+    "INVERTER_POWER_FORECAST_MIN": "INVERTER_POWER_FORECAST_MIN",
+    "INVERTER_POWER_FORECAST_MAX": "INVERTER_POWER_FORECAST_MAX"
 }

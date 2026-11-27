@@ -241,7 +241,7 @@
     "influxQuickStart": "1. Crea un token API InfluxDB 2.x con accesso in scrittura al tuo bucket.\n2. Inserisci a sinistra URL, porta, organizzazione, bucket e token – oppure, da Admin 8, scegli credenziali \"Login e password\" (login = URL, password = token). Salva.\n3. Apri la scheda Sensori e mappa gli stati di ioBroker.\n4. Abilitare l'adattatore e controllare info.connection e gli stati del buffer.",
     "internalSensorHint": "I sensori interni vengono rispecchiati e monitorati, ma non inviati a InfluxDB.",
     "ioBroker Source State": "Stato di origine di ioBroker",
-    "jsonAutoDetectInfo": "y → inverter_forecast:power (Previsione)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ntemp → outdoor_forecast:temperature (Temperatura)\n\nI campi non presenti nel JSON vengono ignorati automaticamente.",
+    "jsonAutoDetectInfo": "y → inverter_forecast:power (Previsione)\nclearsky → inverter_forecast_clearsky:power (Clearsky)\ny_min → inverter_forecast:power_min (Previsione min)\ny_max → inverter_forecast:power_max (Previsione max)\ntemp → outdoor_forecast:temperature (Temperatura)\n\nI campi non presenti nel JSON vengono ignorati automaticamente.",
     "jsonSensorDetailHint": "Lo stato sorgente deve contenere un array JSON (es. da pvforecast). Ogni voce dell'array viene analizzata e scritta direttamente in InfluxDB con il timestamp originale. In modalità automatica, l'adattatore rileva i campi noti (y, clearsky, temp) e li scrive nei measurement corretti. Per i tipi personalizzati, specifica la chiave JSON per timestamp e valore.",
     "jsonSensorHint": "I dati di previsione/meteo possono essere configurati come sensori JSON nella scheda Sensori (tipo di dati: Array JSON).",
     "max": "max",
@@ -366,5 +366,9 @@
     "influxPortLabel": "Porta",
     "influxPortHelp": "Predefinita 8086",
     "notifyConnectionFailDelayLabel": "Ritardo prima della notifica di interruzione della connessione (s)",
-    "notifyConnectionFailDelayHelp": "La notifica viene inviata solo se la connessione a InfluxDB è ancora interrotta dopo questo tempo. 0 = subito. Nel frattempo i dati vengono bufferizzati."
+    "notifyConnectionFailDelayHelp": "La notifica viene inviata solo se la connessione a InfluxDB è ancora interrotta dopo questo tempo. 0 = subito. Nel frattempo i dati vengono bufferizzati.",
+    "Forecast Min": "Previsione min",
+    "Forecast Max": "Previsione max",
+    "INVERTER_POWER_FORECAST_MIN": "INVERTER_POWER_FORECAST_MIN",
+    "INVERTER_POWER_FORECAST_MAX": "INVERTER_POWER_FORECAST_MAX"
 }

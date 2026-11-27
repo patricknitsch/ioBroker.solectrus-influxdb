@@ -241,7 +241,7 @@
     "influxQuickStart": "1. 创建一个对您的存储桶具有写入权限的 InfluxDB 2.x API 令牌。\n2. 在左侧输入 URL、端口、组织、存储桶和令牌——或自 Admin 8 起选择“登录名和密码”形式的凭据（登录名 = URL，密码 = 令牌）。保存。\n3. 打开传感器选项卡并映射您的 ioBroker 状态。\n4. 启用适配器并检查 info.connection 和缓冲区状态。",
     "internalSensorHint": "内部传感器会被镜像和监控，但不会发送到 InfluxDB。",
     "ioBroker Source State": "ioBroker 源状态",
-    "jsonAutoDetectInfo": "y → inverter_forecast:power（预报）\nclearsky → inverter_forecast_clearsky:power（Clearsky）\ntemp → outdoor_forecast:temperature（温度）\n\nJSON 中不存在的字段将自动跳过。",
+    "jsonAutoDetectInfo": "y → inverter_forecast:power（预报）\nclearsky → inverter_forecast_clearsky:power（Clearsky）\ny_min → inverter_forecast:power_min（预报最小值）\ny_max → inverter_forecast:power_max（预报最大值）\ntemp → outdoor_forecast:temperature（温度）\n\nJSON 中不存在的字段将自动跳过。",
     "jsonSensorDetailHint": "源状态必须包含一个 JSON 数组（例如来自 pvforecast）。每个数组条目被解析并直接写入 InfluxDB，使用原始时间戳。在自动模式下，适配器检测已知字段（y、clearsky、temp）并将其写入正确的 measurements。对于自定义类型，请指定时间戳和值的 JSON 键。",
     "jsonSensorHint": "预报/天气数据可以在传感器选项卡中配置为 JSON 传感器（数据类型：JSON 数组）。",
     "max": "max",
@@ -366,5 +366,9 @@
     "influxPortLabel": "端口",
     "influxPortHelp": "默认 8086",
     "notifyConnectionFailDelayLabel": "连接故障通知前的等待时间（秒）",
-    "notifyConnectionFailDelayHelp": "仅当 InfluxDB 连接在此时间后仍中断时才发送通知。0 = 立即发送。在此期间数据会被缓存。"
+    "notifyConnectionFailDelayHelp": "仅当 InfluxDB 连接在此时间后仍中断时才发送通知。0 = 立即发送。在此期间数据会被缓存。",
+    "Forecast Min": "预报最小值",
+    "Forecast Max": "预报最大值",
+    "INVERTER_POWER_FORECAST_MIN": "INVERTER_POWER_FORECAST_MIN",
+    "INVERTER_POWER_FORECAST_MAX": "INVERTER_POWER_FORECAST_MAX"
 }

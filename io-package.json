@@ -854,6 +854,28 @@
       {
         "enabled": false,
         "group": "Forecast",
+        "SensorName": "INVERTER_POWER_FORECAST_MIN",
+        "sourceState": "",
+        "type": "json",
+        "jsonPreset": "auto",
+        "measurement": "inverter_forecast",
+        "field": "power_min",
+        "internal": false
+      },
+      {
+        "enabled": false,
+        "group": "Forecast",
+        "SensorName": "INVERTER_POWER_FORECAST_MAX",
+        "sourceState": "",
+        "type": "json",
+        "jsonPreset": "auto",
+        "measurement": "inverter_forecast",
+        "field": "power_max",
+        "internal": false
+      },
+      {
+        "enabled": false,
+        "group": "Forecast",
         "SensorName": "OUTDOOR_TEMP_FORECAST",
         "sourceState": "",
         "type": "json",
